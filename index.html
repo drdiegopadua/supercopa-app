@@ -1,26 +1,183 @@
 <!DOCTYPE html>
-      </thead>
+<html lang="pt-BR">
+<head>
 
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td class="team-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-            Alpha
-          </td>
-          <td>9</td>
-        </tr>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050816">
 
-        <tr>
-          <td>2</td>
-          <td class="team-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-            Titans
-          </td>
-          <td>6</td>
-        </tr>
-      </tbody>
-    </table>
+<title>Super Voleibol Copa</title>
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<header class="topbar">
+
+  <div class="brand">
+    <img src="logo.png" class="brand-logo">
+
+    <div>
+      <small>6ª EDIÇÃO</small>
+      <h1>SUPER VOLEIBOL COPA</h1>
+    </div>
+  </div>
+
+  <button class="theme-btn" id="themeToggle">
+    🌙
+  </button>
+
+</header>
+
+<section class="hero">
+
+  <div class="hero-overlay"></div>
+
+  <img src="logo.png" class="hero-logo">
+
+  <div class="hero-content">
+
+    <div class="live-chip">
+      <span class="pulse"></span>
+      AO VIVO
+    </div>
+
+    <h2>
+      O MAIOR TORNEIO MASCULINO
+      DE VOLEIBOL DA REGIÃO
+    </h2>
+
+    <p>
+      Jogos ao vivo • classificação • mata-mata • estatísticas
+    </p>
+
+    <div class="countdown" id="countdown">
+      Carregando...
+    </div>
+
+    <div class="hero-buttons">
+      <button class="gold-btn">
+        📅 VER JOGOS
+      </button>
+
+      <button class="outline-btn">
+        🏆 VER TABELA
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="highlights">
+
+  <div class="highlight-card glass">
+    <span>🏐</span>
+    <strong>16</strong>
+    <small>EQUIPES</small>
+  </div>
+
+  <div class="highlight-card glass">
+    <span>🔥</span>
+    <strong>48</strong>
+    <small>JOGOS</small>
+  </div>
+
+  <div class="highlight-card glass">
+    <span>👥</span>
+    <strong>5 MIL+</strong>
+    <small>PÚBLICO</small>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-title">
+    🔴 JOGOS AO VIVO
+  </div>
+
+  <div class="game-card glass live-game">
+
+    <div class="teams-row">
+
+      <div class="team-block">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+        <span>AFC</span>
+      </div>
+
+      <div class="score-block">
+        <small>2º SET</small>
+        <h3>18 × 14</h3>
+      </div>
+
+      <div class="team-block">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+        <span>TITANS</span>
+      </div>
+
+    </div>
+
+    <div class="live-footer">
+      Ginásio Poliesportivo • 2.143 assistindo
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-title">
+    🏆 MATA-MATA
+  </div>
+
+  <div class="bracket-container">
+
+    <div class="bracket-column">
+
+      <h4>QUARTAS</h4>
+
+      <div class="bracket-match glass">
+        <span>AFC</span>
+        <strong>3</strong>
+      </div>
+
+      <div class="bracket-match glass">
+        <span>LOBOS</span>
+        <strong>1</strong>
+      </div>
+
+    </div>
+
+    <div class="bracket-column">
+
+      <h4>SEMI</h4>
+
+      <div class="bracket-match glass winner">
+        <span>AFC</span>
+        <strong>3</strong>
+      </div>
+
+    </div>
+
+    <div class="bracket-column final-column">
+
+      <h4>FINAL</h4>
+
+      <div class="champion-card">
+        🏆
+      </div>
+
+    </div>
 
   </div>
 
@@ -56,5 +213,6 @@
 </nav>
 
 <script src="app.js"></script>
+
 </body>
 </html>
