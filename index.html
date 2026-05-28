@@ -3,201 +3,1162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super Voleibol Copa</title>
-
-<link rel="stylesheet" href="style.css">
+<title>Super Voleibol Copa · 6ª Edição</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050816;
+    --bg2: #060c1e;
+    --gold: #F4C542;
+    --gold2: #e8b429;
+    --blue: #0E3B78;
+    --blue2: #0a2d5e;
+    --card: rgba(8,18,40,0.85);
+    --card2: rgba(14,25,55,0.9);
+    --border: rgba(255,255,255,0.07);
+    --border-gold: rgba(244,197,66,0.25);
+    --text: rgba(255,255,255,0.88);
+    --muted: rgba(255,255,255,0.45);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* GRID NOISE OVERLAY */
+  body::before {
+    content:'';
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: radial-gradient(circle at 20% 0%, #0E3B78 0%, transparent 55%),
+                      radial-gradient(circle at 80% 100%, #071a3e 0%, transparent 55%);
+    opacity:.9;
+  }
+
+  /* ===================== TOPBAR ===================== */
+  .topbar {
+    position: sticky; top:0; z-index:100;
+    height:68px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 18px;
+    background: rgba(5,8,22,0.88);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .logo-icon {
+    width:42px; height:42px;
+    background: linear-gradient(135deg, var(--gold), #e8a010);
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; box-shadow: 0 4px 20px rgba(244,197,66,0.3);
+  }
+  .brand-text small { display:block; font-size:10px; color:var(--gold); font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+  .brand-text h1 { font-family:'Anton',sans-serif; font-size:16px; letter-spacing:.5px; line-height:1.1; }
+  .topbar-badge {
+    display:flex; align-items:center; gap:6px;
+    background: rgba(255,60,60,0.12);
+    border:1px solid rgba(255,60,60,0.3);
+    padding:6px 12px; border-radius:999px;
+    font-size:11px; font-weight:700; color:#ff6b6b;
+  }
+  .topbar-badge .dot {
+    width:6px; height:6px; border-radius:50%; background:#ff4040;
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ===================== PAGES ===================== */
+  main { position:relative; z-index:1; padding-bottom:100px; }
+  .page { display:none; animation: pageIn .35s ease; }
+  .page.active-page { display:block; }
+  @keyframes pageIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    position:relative; margin:14px; border-radius:26px; overflow:hidden;
+    min-height: 480px;
+    background: linear-gradient(165deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.9) 100%),
+                url('https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=1200&auto=format&fit=crop') center/cover;
+    box-shadow: 0 24px 60px rgba(0,0,0,.6);
+  }
+  .hero::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background: linear-gradient(to top, var(--bg) 0%, transparent 40%);
+  }
+  .hero-content { position:relative; z-index:2; padding:30px 26px 26px; }
+  .hero-eyebrow {
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(255,60,60,.13); border:1px solid rgba(255,60,60,.3);
+    padding:8px 16px; border-radius:999px; margin-bottom:22px;
+    font-size:12px; font-weight:700; color:#ff7070; letter-spacing:1px;
+  }
+  .hero h2 {
+    font-family:'Anton',sans-serif;
+    font-size:48px; line-height:.95; margin-bottom:12px;
+    text-transform:uppercase; letter-spacing:-.5px;
+  }
+  .hero h2 span { color:var(--gold); }
+  .hero-sub { color:var(--muted); font-size:13px; margin-bottom:24px; line-height:1.5; }
+
+  /* COUNTDOWN */
+  .countdown-wrap {
+    display:flex; gap:10px; margin-bottom:26px;
+  }
+  .cd-unit {
+    flex:1; background:rgba(14,59,120,.3); border:1px solid var(--border-gold);
+    border-radius:14px; padding:10px 6px 8px;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .cd-num {
+    font-family:'Anton',sans-serif; font-size:30px; color:var(--gold); line-height:1;
+  }
+  .cd-label { font-size:9px; color:var(--muted); font-weight:700; letter-spacing:1.5px; margin-top:3px; text-transform:uppercase; }
+  .cd-sep { display:flex; align-items:center; color:var(--gold); font-size:20px; font-weight:900; padding-top:4px; }
+
+  .hero-buttons { display:flex; gap:12px; }
+  .btn-primary {
+    flex:1; height:50px; border-radius:14px; border:none; cursor:pointer;
+    background: linear-gradient(135deg, var(--gold), #e8a010);
+    color:#050816; font-weight:800; font-size:13px; letter-spacing:.5px;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 6px 24px rgba(244,197,66,.3);
+  }
+  .btn-primary:active { transform:scale(.97); }
+  .btn-secondary {
+    flex:1; height:50px; border-radius:14px; border:1px solid var(--border);
+    background: rgba(255,255,255,.06); color:var(--text); cursor:pointer;
+    font-weight:700; font-size:13px; letter-spacing:.5px; transition: background .15s;
+  }
+  .btn-secondary:active { background:rgba(255,255,255,.12); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+    margin:14px;
+  }
+  .stat-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:14px 10px;
+    text-align:center;
+  }
+  .stat-num { font-family:'Anton',sans-serif; font-size:26px; color:var(--gold); }
+  .stat-lbl { font-size:10px; color:var(--muted); margin-top:2px; line-height:1.3; }
+
+  /* TEAMS PREVIEW */
+  .section-header { display:flex; align-items:center; justify-content:space-between; padding:0 16px; margin-bottom:12px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; }
+  .section-link { font-size:12px; color:var(--gold); font-weight:700; }
+
+  .teams-scroll { display:flex; gap:10px; padding:0 14px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:4px; }
+  .teams-scroll::-webkit-scrollbar { display:none; }
+  .team-chip {
+    flex-shrink:0; scroll-snap-align:start;
+    background:var(--card2); border:1px solid var(--border);
+    border-radius:14px; padding:12px 16px;
+    display:flex; align-items:center; gap:10px; min-width:160px;
+  }
+  .team-chip.champion { border-color: var(--border-gold); }
+  .team-avatar {
+    width:38px; height:38px; border-radius:10px; background:var(--blue);
+    display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
+  }
+  .team-info {}
+  .team-name { font-weight:800; font-size:13px; }
+  .team-city { font-size:11px; color:var(--muted); margin-top:1px; }
+  .team-badge { font-size:9px; color:var(--gold); font-weight:700; letter-spacing:.5px; margin-top:3px; }
+
+  /* ===================== PAGE TITLES ===================== */
+  .page-title { padding:18px 16px 14px; font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
+  .page-title span { color:var(--gold); }
+
+  /* ===================== TABS ===================== */
+  .tab-bar {
+    display:flex; gap:8px; padding:0 14px 14px; overflow-x:auto;
+  }
+  .tab-bar::-webkit-scrollbar { display:none; }
+  .tab-btn {
+    flex-shrink:0; padding:8px 16px; border-radius:999px;
+    border: 1px solid var(--border); background:var(--card);
+    color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; transition:.15s;
+  }
+  .tab-btn.active { background:var(--gold); border-color:var(--gold); color:#050816; }
+
+  /* ===================== GAME CARDS ===================== */
+  .cards-list { padding:0 14px; display:flex; flex-direction:column; gap:12px; }
+  .game-card {
+    background:var(--card2); border:1px solid var(--border);
+    border-radius:var(--radius); padding:16px; overflow:hidden; position:relative;
+  }
+  .game-card.live { border-color: rgba(255,60,60,.4); }
+  .game-card.live::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,#ff4040,transparent);
+    animation: scanline 2s linear infinite;
+  }
+  @keyframes scanline { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
+
+  .gc-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .gc-phase { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
+  .gc-date { font-size:11px; color:var(--muted); }
+  .live-tag {
+    display:inline-flex; align-items:center; gap:5px;
+    background:rgba(255,60,60,.15); border:1px solid rgba(255,60,60,.35);
+    padding:4px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#ff6b6b;
+  }
+
+  .gc-main { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .gc-team { display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; }
+  .gc-team-icon { width:52px; height:52px; border-radius:14px; background:var(--blue2); display:flex; align-items:center; justify-content:center; font-size:24px; }
+  .gc-team-name { font-size:13px; font-weight:800; text-align:center; }
+  .gc-team-city { font-size:10px; color:var(--muted); text-align:center; }
+  .gc-score { text-align:center; }
+  .gc-score-main { font-family:'Anton',sans-serif; font-size:44px; color:var(--gold); line-height:1; letter-spacing:2px; }
+  .gc-score-sets { font-size:11px; color:var(--muted); margin-top:4px; }
+  .gc-vs { font-family:'Anton',sans-serif; font-size:20px; color:var(--muted); letter-spacing:2px; }
+
+  .gc-footer { display:flex; justify-content:space-between; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); }
+
+  /* ===================== TABLE ===================== */
+  .table-wrap { margin:0 14px; background:var(--card2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+  .table-header { display:grid; grid-template-columns:36px 1fr 36px 36px 36px 36px 44px; padding:12px 14px; background:rgba(14,59,120,.3); border-bottom:1px solid var(--border); }
+  .th { font-size:10px; font-weight:700; color:var(--muted); letter-spacing:1px; text-transform:uppercase; text-align:center; }
+  .th:nth-child(2) { text-align:left; }
+  .table-row { display:grid; grid-template-columns:36px 1fr 36px 36px 36px 36px 44px; padding:13px 14px; border-bottom:1px solid var(--border); align-items:center; transition:.15s; }
+  .table-row:last-child { border-bottom:none; }
+  .table-row:hover { background:rgba(255,255,255,.03); }
+  .table-row.leader { background:rgba(244,197,66,.04); }
+  .td { font-size:13px; text-align:center; }
+  .td:nth-child(2) { text-align:left; }
+  .td-pos { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; color:var(--muted); }
+  .td-pos.gold-pos { color:var(--gold); }
+  .td-name { font-weight:800; font-size:13px; display:flex; align-items:center; gap:8px; }
+  .td-name-badge { font-size:9px; background:rgba(244,197,66,.15); color:var(--gold); padding:2px 6px; border-radius:999px; font-weight:700; }
+  .td-pts { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; color:var(--gold); }
+
+  /* GROUP LABEL */
+  .group-label {
+    padding:10px 14px 6px; font-size:11px; font-weight:700;
+    color:var(--gold); letter-spacing:2px; text-transform:uppercase;
+  }
+
+  /* ===================== BRACKET ===================== */
+  .bracket-container { padding:0 14px; overflow-x:auto; }
+  .bracket-container::-webkit-scrollbar { display:none; }
+  .bracket-inner { display:flex; gap:14px; min-width: fit-content; padding-bottom:4px; }
+  .bracket-col { width:190px; flex-shrink:0; }
+  .bracket-col h3 {
+    font-family:'Barlow Condensed',sans-serif; font-weight:800;
+    text-transform:uppercase; letter-spacing:1px; font-size:13px;
+    color:var(--gold); margin-bottom:10px; padding:0 2px;
+  }
+  .match-card {
+    background:var(--card2); border:1px solid var(--border); border-radius:14px;
+    overflow:hidden; margin-bottom:10px;
+  }
+  .match-card.final { border-color:var(--border-gold); box-shadow:0 0 20px rgba(244,197,66,.1); }
+  .match-team {
+    padding:11px 14px; display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--border);
+  }
+  .match-team:last-child { border-bottom:none; }
+  .match-team-icon { width:30px; height:30px; border-radius:8px; background:var(--blue2); display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .match-team-name { font-size:13px; font-weight:700; flex:1; }
+  .match-team-score { font-family:'Anton',sans-serif; font-size:18px; color:var(--gold); }
+  .match-team-score.winner { color:var(--gold); }
+  .match-team-score.empty { color:var(--muted); font-size:14px; font-family:'DM Sans',sans-serif; }
+  .match-meta { padding:6px 14px 8px; font-size:10px; color:var(--muted); background:rgba(0,0,0,.2); font-weight:600; letter-spacing:.5px; }
+  .champion-card {
+    background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.3));
+    border:1px solid var(--border-gold); border-radius:16px; padding:20px;
+    text-align:center; margin-top:12px;
+  }
+  .champion-icon { font-size:40px; margin-bottom:8px; }
+  .champion-name { font-family:'Anton',sans-serif; font-size:22px; color:var(--gold); }
+  .champion-label { font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+
+  /* ===================== MAIS PAGE ===================== */
+  .mais-grid { padding:0 14px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .mais-card {
+    background:var(--card2); border:1px solid var(--border); border-radius:16px;
+    padding:18px 14px; text-align:center; cursor:pointer; transition:.15s;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .mais-card:active { background:rgba(255,255,255,.06); }
+  .mais-card-icon { font-size:32px; }
+  .mais-card-label { font-size:13px; font-weight:800; }
+  .mais-card-sub { font-size:11px; color:var(--muted); }
+
+  .mais-card.featured {
+    grid-column:span 2; flex-direction:row; text-align:left; gap:14px;
+    background:linear-gradient(135deg,rgba(14,59,120,.5),rgba(8,18,40,.8));
+    border-color:var(--border-gold);
+  }
+  .mais-card.featured .mais-card-icon { font-size:40px; flex-shrink:0; }
+  .mais-card.featured .mais-card-info {}
+  .mais-card.featured .mais-card-label { font-size:16px; }
+
+  .info-block { margin:14px; background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:16px; }
+  .info-block h4 { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; text-transform:uppercase; margin-bottom:10px; color:var(--gold); }
+  .info-row { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+  .info-row:last-child { border-bottom:none; padding-bottom:0; }
+  .info-row-icon { font-size:18px; flex-shrink:0; margin-top:2px; }
+  .info-row-text {}
+  .info-row-label { font-size:13px; font-weight:700; }
+  .info-row-val { font-size:12px; color:var(--muted); margin-top:2px; }
+
+  .cta-block {
+    margin:14px; padding:22px; border-radius:18px;
+    background:linear-gradient(135deg,rgba(14,59,120,.6),rgba(8,18,40,.95));
+    border:1px solid var(--border-gold); text-align:center;
+  }
+  .cta-block h3 { font-family:'Anton',sans-serif; font-size:22px; color:var(--gold); margin-bottom:6px; }
+  .cta-block p { font-size:13px; color:var(--muted); margin-bottom:16px; line-height:1.5; }
+  .cta-block a {
+    display:inline-block; padding:12px 28px; background:linear-gradient(135deg,var(--gold),#e8a010);
+    color:#050816; font-weight:800; border-radius:12px; text-decoration:none; font-size:13px;
+    box-shadow:0 6px 20px rgba(244,197,66,.3);
+  }
+
+  .faq-block { margin:14px; }
+  .faq-item {
+    background:var(--card2); border:1px solid var(--border); border-radius:14px;
+    margin-bottom:8px; overflow:hidden;
+  }
+  .faq-q {
+    padding:14px 16px; font-size:13px; font-weight:700; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .faq-arrow { color:var(--gold); font-size:16px; transition:.2s; }
+  .faq-a { display:none; padding:0 16px 14px; font-size:12px; color:var(--muted); line-height:1.6; }
+  .faq-item.open .faq-a { display:block; }
+  .faq-item.open .faq-arrow { transform:rotate(180deg); }
+
+  /* ===================== BOTTOM NAV ===================== */
+  .bottom-nav {
+    position:fixed; bottom:0; left:0; right:0; z-index:100;
+    height:80px;
+    display:flex; align-items:center;
+    background: rgba(4,7,18,.92);
+    backdrop-filter:blur(28px);
+    border-top:1px solid var(--border);
+  }
+  .nav-btn {
+    flex:1; background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:8px 4px;
+    color:var(--muted); transition:.15s;
+  }
+  .nav-btn .nav-icon { font-size:20px; }
+  .nav-btn small { font-size:10px; font-weight:700; letter-spacing:.3px; }
+  .nav-btn.active { color:var(--gold); }
+  .nav-btn.active .nav-icon {
+    filter: drop-shadow(0 0 6px rgba(244,197,66,.5));
+  }
+
+  /* ===================== SCROLL HINTS ===================== */
+  .scroll-hint { font-size:11px; color:var(--muted); padding:0 16px 10px; display:flex; align-items:center; gap:6px; }
+</style>
 </head>
 <body>
 
 <header class="topbar">
-
   <div class="brand">
-    <img src="assets/logo.png" class="logo">
-
-    <div>
-      <small>6ª EDIÇÃO</small>
-      <h1>SUPER VOLEIBOL COPA</h1>
+    <div class="logo-icon">🏐</div>
+    <div class="brand-text">
+      <small>6ª EDIÇÃO · 2026</small>
+      <h1>SUPERCOPA AFC</h1>
     </div>
   </div>
-
+  <div class="topbar-badge">
+    <span class="dot"></span>
+    EM BREVE
+  </div>
 </header>
 
 <main>
 
+  <!-- ========== HOME ========== -->
   <section id="homePage" class="page active-page">
 
     <section class="hero">
-
-      <div class="overlay"></div>
-
       <div class="hero-content">
-
-        <div class="live-chip">
-          🔴 AO VIVO
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          SUPERCOPA DE VOLEIBOL · NOVEMBRO 2026
         </div>
+        <h2>O MAIOR<br><span>TORNEIO</span><br>DA REGIÃO</h2>
+        <p class="hero-sub">Região das Montanhas · Afonso Cláudio, ES<br>28 e 29 de Novembro de 2026</p>
 
-        <h2>
-          O MAIOR TORNEIO
-          MASCULINO DA REGIÃO
-        </h2>
-
-        <p>
-          Jogos • Tabela • Mata-mata • Estatísticas
-        </p>
-
-        <div class="countdown" id="countdown">
-          12 DIAS
+        <div class="countdown-wrap" id="countdownWrap">
+          <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-label">Dias</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-num" id="cdHrs">--</div><div class="cd-label">Hrs</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-num" id="cdMin">--</div><div class="cd-label">Min</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-num" id="cdSec">--</div><div class="cd-label">Seg</div></div>
         </div>
 
         <div class="hero-buttons">
-          <button onclick="openTab('gamesPage')">
-            VER JOGOS
-          </button>
-
-          <button onclick="openTab('tablePage')">
-            VER TABELA
-          </button>
+          <button class="btn-primary" onclick="openTab('gamesPage', document.querySelectorAll('.nav-btn')[1])">VER JOGOS</button>
+          <button class="btn-secondary" onclick="openTab('tablePage', document.querySelectorAll('.nav-btn')[2])">TABELA</button>
         </div>
-
       </div>
-
     </section>
 
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num">12</div>
+        <div class="stat-lbl">Times no Vôlei</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6</div>
+        <div class="stat-lbl">Times no Basket</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="font-size:18px">R$0</div>
+        <div class="stat-lbl">Taxa de Inscrição</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6ª</div>
+        <div class="stat-lbl">Edição 2026</div>
+      </div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <div class="section-header">
+        <span class="section-title">Times Inscritos</span>
+        <span class="section-link" onclick="openTab('tablePage', document.querySelectorAll('.nav-btn')[2])">VER TABELA →</span>
+      </div>
+      <p class="scroll-hint">👉 Deslize para ver mais</p>
+      <div class="teams-scroll">
+        <div class="team-chip champion">
+          <div class="team-avatar">🏆</div>
+          <div class="team-info">
+            <div class="team-name">ES Volei</div>
+            <div class="team-city">Vitória, ES</div>
+            <div class="team-badge">CAMPEÃO 2025</div>
+          </div>
+        </div>
+        <div class="team-chip">
+          <div class="team-avatar">🥈</div>
+          <div class="team-info">
+            <div class="team-name">Equipe UVI</div>
+            <div class="team-city">Itaperuna, RJ</div>
+            <div class="team-badge">VICE 2025</div>
+          </div>
+        </div>
+        <div class="team-chip">
+          <div class="team-avatar">🏠</div>
+          <div class="team-info">
+            <div class="team-name">CT das Montanhas</div>
+            <div class="team-city">Afonso Cláudio, ES</div>
+            <div class="team-badge">EQUIPE DA CASA</div>
+          </div>
+        </div>
+        <div class="team-chip" style="border-style:dashed; opacity:.6;">
+          <div class="team-avatar">❓</div>
+          <div class="team-info">
+            <div class="team-name">Equipe X</div>
+            <div class="team-city">Cidade, RJ</div>
+            <div class="team-badge">EM BREVE</div>
+          </div>
+        </div>
+        <div class="team-chip" style="border-style:dashed; opacity:.6;">
+          <div class="team-avatar">❓</div>
+          <div class="team-info">
+            <div class="team-name">Equipe X</div>
+            <div class="team-city">Cidade, ES</div>
+            <div class="team-badge">EM BREVE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;">
+      <div class="section-header">
+        <span class="section-title">🔥 Próximas Fases</span>
+      </div>
+      <div class="cards-list">
+        <div class="game-card" style="background:linear-gradient(135deg,rgba(14,59,120,.4),rgba(8,18,40,.9)); border-color:var(--border-gold);">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="font-size:36px;">📅</div>
+            <div>
+              <div style="font-size:14px; font-weight:800;">Fase de Grupos</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:2px;">28 de Novembro · Dia 1</div>
+              <div style="font-size:11px; color:var(--gold); margin-top:4px; font-weight:700;">4 Grupos · 12 Times</div>
+            </div>
+          </div>
+        </div>
+        <div class="game-card" style="background:linear-gradient(135deg,rgba(14,59,120,.3),rgba(8,18,40,.9));">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="font-size:36px;">⚡</div>
+            <div>
+              <div style="font-size:14px; font-weight:800;">Quartas + Semifinal</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:2px;">29 de Novembro · Dia 2</div>
+              <div style="font-size:11px; color:var(--gold); margin-top:4px; font-weight:700;">Mata-mata · Melhor de 3 sets</div>
+            </div>
+          </div>
+        </div>
+        <div class="game-card" style="background:linear-gradient(135deg,rgba(244,197,66,.08),rgba(8,18,40,.9)); border-color:var(--border-gold);">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="font-size:36px;">🏆</div>
+            <div>
+              <div style="font-size:14px; font-weight:800;">Grande Final</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:2px;">29 de Novembro · Ginásio Central</div>
+              <div style="font-size:11px; color:var(--gold); margin-top:4px; font-weight:700;">Transmissão Ao Vivo · R$5.000 em prêmios</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
+  <!-- ========== JOGOS ========== -->
   <section id="gamesPage" class="page">
 
-    <h2 class="title">📅 Jogos</h2>
+    <div class="page-title">📅 <span>Jogos</span> & Resultados</div>
 
-    <div class="game-card">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterGames('todos',this)">Todos</button>
+      <button class="tab-btn" onclick="filterGames('grupos',this)">Grupos</button>
+      <button class="tab-btn" onclick="filterGames('quartas',this)">Quartas</button>
+      <button class="tab-btn" onclick="filterGames('semi',this)">Semifinal</button>
+      <button class="tab-btn" onclick="filterGames('final',this)">Final</button>
+    </div>
 
-      <div class="game-header">
-        <span class="live">AO VIVO</span>
-        <span>2º SET</span>
+    <div class="cards-list" id="gamesList">
+
+      <!-- GRUPOS -->
+      <div class="group-label" data-phase="grupos">FASE DE GRUPOS · GRUPO A</div>
+
+      <div class="game-card" data-phase="grupos">
+        <div class="gc-header">
+          <span class="gc-phase">Grupo A · Rodada 1</span>
+          <span class="gc-date">28/11 · 09:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🏆</div>
+            <div class="gc-team-name">ES Volei</div>
+            <div class="gc-team-city">Vitória, ES</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+            <div class="gc-score-sets">Em breve</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🏐</div>
+            <div class="gc-team-name">Equipe X</div>
+            <div class="gc-team-city">Cidade, ES</div>
+          </div>
+        </div>
       </div>
 
-      <div class="game-main">
-
-        <div class="team">
-          <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-          <span>AFC</span>
+      <div class="game-card" data-phase="grupos">
+        <div class="gc-header">
+          <span class="gc-phase">Grupo A · Rodada 2</span>
+          <span class="gc-date">28/11 · 11:00h</span>
         </div>
-
-        <div class="score">
-          18 × 14
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🏆</div>
+            <div class="gc-team-name">ES Volei</div>
+            <div class="gc-team-city">Vitória, ES</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+            <div class="gc-score-sets">Em breve</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🏐</div>
+            <div class="gc-team-name">Equipe X</div>
+            <div class="gc-team-city">Cidade, RJ</div>
+          </div>
         </div>
+      </div>
 
-        <div class="team">
-          <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-          <span>TITANS</span>
+      <div class="group-label" data-phase="grupos">FASE DE GRUPOS · GRUPO B</div>
+      <div class="game-card" data-phase="grupos">
+        <div class="gc-header">
+          <span class="gc-phase">Grupo B · Rodada 1</span>
+          <span class="gc-date">28/11 · 10:00h</span>
         </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🥈</div>
+            <div class="gc-team-name">Equipe UVI</div>
+            <div class="gc-team-city">Itaperuna, RJ</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+            <div class="gc-score-sets">Em breve</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🏐</div>
+            <div class="gc-team-name">Equipe X</div>
+            <div class="gc-team-city">Cidade, ES</div>
+          </div>
+        </div>
+      </div>
 
+      <div class="group-label" data-phase="grupos">FASE DE GRUPOS · GRUPO C</div>
+      <div class="game-card" data-phase="grupos">
+        <div class="gc-header">
+          <span class="gc-phase">Grupo C · Rodada 1</span>
+          <span class="gc-date">28/11 · 10:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🏠</div>
+            <div class="gc-team-name">CT Montanhas</div>
+            <div class="gc-team-city">Afonso Cláudio, ES</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+            <div class="gc-score-sets">Em breve</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🏐</div>
+            <div class="gc-team-name">Equipe X</div>
+            <div class="gc-team-city">Cidade, ES</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUARTAS -->
+      <div class="group-label" data-phase="quartas">QUARTAS DE FINAL</div>
+
+      <div class="game-card" data-phase="quartas">
+        <div class="gc-header">
+          <span class="gc-phase">Q1 · 1º A × 2º B</span>
+          <span class="gc-date">29/11 · 08:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🔵</div>
+            <div class="gc-team-name">1º Grupo A</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🔴</div>
+            <div class="gc-team-name">2º Grupo B</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card" data-phase="quartas">
+        <div class="gc-header">
+          <span class="gc-phase">Q2 · 1º B × 2º A</span>
+          <span class="gc-date">29/11 · 09:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🔵</div>
+            <div class="gc-team-name">1º Grupo B</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🔴</div>
+            <div class="gc-team-name">2º Grupo A</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card" data-phase="quartas">
+        <div class="gc-header">
+          <span class="gc-phase">Q3 · 1º C × 2º D</span>
+          <span class="gc-date">29/11 · 10:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🟢</div>
+            <div class="gc-team-name">1º Grupo C</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🟡</div>
+            <div class="gc-team-name">2º Grupo D</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card" data-phase="quartas">
+        <div class="gc-header">
+          <span class="gc-phase">Q4 · 1º D × 2º C</span>
+          <span class="gc-date">29/11 · 11:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🟡</div>
+            <div class="gc-team-name">1º Grupo D</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🟢</div>
+            <div class="gc-team-name">2º Grupo C</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMI -->
+      <div class="group-label" data-phase="semi">SEMIFINAL</div>
+
+      <div class="game-card" data-phase="semi">
+        <div class="gc-header">
+          <span class="gc-phase">SF1 · Venc. Q1 × Venc. Q2</span>
+          <span class="gc-date">29/11 · 14:00h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">⚡</div>
+            <div class="gc-team-name">Vencedor Q1</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">⚡</div>
+            <div class="gc-team-name">Vencedor Q2</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card" data-phase="semi">
+        <div class="gc-header">
+          <span class="gc-phase">SF2 · Venc. Q3 × Venc. Q4</span>
+          <span class="gc-date">29/11 · 15:30h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">⚡</div>
+            <div class="gc-team-name">Vencedor Q3</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs">VS</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">⚡</div>
+            <div class="gc-team-name">Vencedor Q4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINAL -->
+      <div class="group-label" data-phase="final">🏆 GRANDE FINAL</div>
+
+      <div class="game-card" data-phase="final" style="background:linear-gradient(135deg,rgba(244,197,66,.07),rgba(8,18,40,.9)); border-color:var(--border-gold);">
+        <div class="gc-header">
+          <span class="gc-phase" style="color:var(--gold);">Final · Venc. SF1 × Venc. SF2</span>
+          <span class="gc-date">29/11 · 17:30h</span>
+        </div>
+        <div class="gc-main">
+          <div class="gc-team">
+            <div class="gc-team-icon">🔥</div>
+            <div class="gc-team-name">Finalista 1</div>
+          </div>
+          <div class="gc-score">
+            <div class="gc-vs" style="color:var(--gold);">VS</div>
+            <div class="gc-score-sets" style="color:var(--gold);">Transmissão Ao Vivo</div>
+          </div>
+          <div class="gc-team">
+            <div class="gc-team-icon">🔥</div>
+            <div class="gc-team-name">Finalista 2</div>
+          </div>
+        </div>
       </div>
 
     </div>
 
   </section>
 
+  <!-- ========== TABELA ========== -->
   <section id="tablePage" class="page">
 
-    <h2 class="title">🏆 Tabela</h2>
+    <div class="page-title">📊 <span>Classificação</span></div>
 
-    <div class="table-card">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterTable('grupoA',this)">Grupo A</button>
+      <button class="tab-btn" onclick="filterTable('grupoB',this)">Grupo B</button>
+      <button class="tab-btn" onclick="filterTable('grupoC',this)">Grupo C</button>
+      <button class="tab-btn" onclick="filterTable('grupoD',this)">Grupo D</button>
+    </div>
 
-      <table>
+    <div class="table-wrap" id="tableWrap">
+      <div class="table-header">
+        <div class="th">#</div>
+        <div class="th" style="text-align:left">Equipe</div>
+        <div class="th">PJ</div>
+        <div class="th">V</div>
+        <div class="th">D</div>
+        <div class="th">SP</div>
+        <div class="th" style="color:var(--gold)">PTS</div>
+      </div>
+      <div id="tableBody"></div>
+    </div>
 
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Equipe</th>
-            <th>Pts</th>
-          </tr>
-        </thead>
+    <div style="margin:12px 14px; font-size:11px; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap;">
+      <span>PJ = Partidas Jogadas</span>
+      <span>V = Vitórias</span>
+      <span>D = Derrotas</span>
+      <span>SP = Saldo Pts</span>
+      <span style="color:var(--gold)">PTS = Pontos</span>
+    </div>
 
-        <tbody>
-
-          <tr>
-            <td>1</td>
-            <td>AFC</td>
-            <td>9</td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>TITANS</td>
-            <td>6</td>
-          </tr>
-
-        </tbody>
-
-      </table>
-
+    <div style="margin-top:6px; padding:0 14px 6px;">
+      <div class="section-title" style="font-size:18px; margin-bottom:10px;">Avança de fase</div>
+    </div>
+    <div class="cards-list">
+      <div class="game-card" style="padding:12px 16px;">
+        <div style="font-size:12px; color:var(--muted); line-height:1.6;">
+          ✅ <strong>1º e 2º de cada grupo</strong> avançam para as quartas de final.<br>
+          🔄 Confrontos cruzados: 1º do grupo A vs 2º do grupo B, e assim por diante.<br>
+          🏆 Campeão recebe premiação em dinheiro, troféu e medalhas.
+        </div>
+      </div>
     </div>
 
   </section>
 
+  <!-- ========== MATA-MATA ========== -->
   <section id="bracketPage" class="page">
 
-    <h2 class="title">🏆 Mata-mata</h2>
+    <div class="page-title">🏆 <span>Mata-Mata</span></div>
 
-    <div class="bracket-wrapper">
+    <div class="bracket-container">
+      <div class="bracket-inner">
 
-      <div class="bracket-column">
-
-        <h3>Quartas</h3>
-
-        <div class="match-card">
-          AFC 3 × 1 LOBOS
+        <div class="bracket-col">
+          <h3>Quartas de Final</h3>
+          <div class="match-card">
+            <div class="match-meta">Q1 · 29/11 08:00h</div>
+            <div class="match-team"><div class="match-team-icon">🔵</div><div class="match-team-name">1º Grupo A</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">🔴</div><div class="match-team-name">2º Grupo B</div><div class="match-team-score empty">—</div></div>
+          </div>
+          <div class="match-card">
+            <div class="match-meta">Q2 · 29/11 09:00h</div>
+            <div class="match-team"><div class="match-team-icon">🔴</div><div class="match-team-name">1º Grupo B</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">🔵</div><div class="match-team-name">2º Grupo A</div><div class="match-team-score empty">—</div></div>
+          </div>
+          <div class="match-card">
+            <div class="match-meta">Q3 · 29/11 10:00h</div>
+            <div class="match-team"><div class="match-team-icon">🟢</div><div class="match-team-name">1º Grupo C</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">🟡</div><div class="match-team-name">2º Grupo D</div><div class="match-team-score empty">—</div></div>
+          </div>
+          <div class="match-card">
+            <div class="match-meta">Q4 · 29/11 11:00h</div>
+            <div class="match-team"><div class="match-team-icon">🟡</div><div class="match-team-name">1º Grupo D</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">🟢</div><div class="match-team-name">2º Grupo C</div><div class="match-team-score empty">—</div></div>
+          </div>
         </div>
 
-        <div class="match-card">
-          TITANS 3 × 0 FÊNIX
+        <div class="bracket-col">
+          <h3>Semifinal</h3>
+          <div class="match-card">
+            <div class="match-meta">SF1 · 29/11 14:00h</div>
+            <div class="match-team"><div class="match-team-icon">⚡</div><div class="match-team-name">Venc. Q1</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">⚡</div><div class="match-team-name">Venc. Q2</div><div class="match-team-score empty">—</div></div>
+          </div>
+          <div class="match-card" style="margin-top:40px;">
+            <div class="match-meta">SF2 · 29/11 15:30h</div>
+            <div class="match-team"><div class="match-team-icon">⚡</div><div class="match-team-name">Venc. Q3</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">⚡</div><div class="match-team-name">Venc. Q4</div><div class="match-team-score empty">—</div></div>
+          </div>
+        </div>
+
+        <div class="bracket-col">
+          <h3>🏆 Grande Final</h3>
+          <div class="match-card final">
+            <div class="match-meta" style="color:var(--gold);">FINAL · 29/11 17:30h</div>
+            <div class="match-team"><div class="match-team-icon">🔥</div><div class="match-team-name">Venc. SF1</div><div class="match-team-score empty">—</div></div>
+            <div class="match-team"><div class="match-team-icon">🔥</div><div class="match-team-name">Venc. SF2</div><div class="match-team-score empty">—</div></div>
+          </div>
+          <div class="champion-card">
+            <div class="champion-icon">🏆</div>
+            <div class="champion-name">Aguardando</div>
+            <div class="champion-label">Campeão 2026</div>
+          </div>
         </div>
 
       </div>
+    </div>
 
-      <div class="bracket-column">
+  </section>
 
-        <h3>Semi</h3>
+  <!-- ========== MAIS ========== -->
+  <section id="maisPage" class="page">
 
-        <div class="match-card gold">
-          AFC × TITANS
+    <div class="page-title">⚙️ <span>Mais</span></div>
+
+    <div class="mais-grid">
+      <div class="mais-card featured" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')">
+        <div class="mais-card-icon">📝</div>
+        <div class="mais-card-info">
+          <div class="mais-card-label">Fazer Inscrição</div>
+          <div class="mais-card-sub">Garanta sua vaga no torneio · Sem taxa</div>
         </div>
-
       </div>
+      <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')">
+        <div class="mais-card-icon">📋</div>
+        <div class="mais-card-label">Regulamento</div>
+        <div class="mais-card-sub">Regras oficiais</div>
+      </div>
+      <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/times.html')">
+        <div class="mais-card-icon">🏐</div>
+        <div class="mais-card-label">Times</div>
+        <div class="mais-card-sub">Todos os inscritos</div>
+      </div>
+      <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/galeria.html')">
+        <div class="mais-card-icon">📸</div>
+        <div class="mais-card-label">Galeria</div>
+        <div class="mais-card-sub">Fotos do evento</div>
+      </div>
+      <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/historia.html')">
+        <div class="mais-card-icon">🏅</div>
+        <div class="mais-card-label">História</div>
+        <div class="mais-card-sub">Edições anteriores</div>
+      </div>
+      <div class="mais-card" onclick="window.open('https://www.instagram.com/supercopaafc/')">
+        <div class="mais-card-icon">📱</div>
+        <div class="mais-card-label">Instagram</div>
+        <div class="mais-card-sub">@supercopaafc</div>
+      </div>
+      <div class="mais-card" onclick="window.open('https://wa.link/900kb2')">
+        <div class="mais-card-icon">💬</div>
+        <div class="mais-card-label">WhatsApp</div>
+        <div class="mais-card-sub">Fale conosco</div>
+      </div>
+    </div>
 
+    <div class="info-block" style="margin-top:16px;">
+      <h4>📍 Evento</h4>
+      <div class="info-row">
+        <div class="info-row-icon">📅</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Datas · Voleibol</div>
+          <div class="info-row-val">28 e 29 de Novembro de 2026</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon">📍</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Local</div>
+          <div class="info-row-val">Afonso Cláudio, ES · Ginásio Central</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon">🏐</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Times</div>
+          <div class="info-row-val">12 equipes · Fase de grupos + Mata-mata</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon">💰</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Premiação</div>
+          <div class="info-row-val">R$5.000 em premiação · Troféus e Medalhas</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon">✅</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Taxa de Inscrição</div>
+          <div class="info-row-val" style="color:var(--gold); font-weight:700;">GRATUITO · R$0,00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-block">
+      <div class="page-title" style="padding:0 0 12px;">❓ Dúvidas</div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é a Supercopa? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">A Supercopa de Afonso Cláudio é o maior evento multiesporte da Região das Montanhas, reunindo Voleibol e Basquete com times de todo o Brasil.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Qual o valor da taxa de inscrição? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">NÓS NÃO COBRAMOS TAXA DE INSCRIÇÃO. O evento é completamente gratuito para as equipes participantes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Quem pode participar? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Equipes de Voleibol e Basquetebol de qualquer lugar do Brasil podem se inscrever!</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como funciona a fase de grupos? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Todos os times se enfrentam dentro do seu grupo e os 2 melhores avançam para o mata-mata. No 1º dia, todo ponto importa!</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como faço a inscrição? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Você faz uma pré-inscrição pelo site e a Comissão Organizadora avalia e envia convites para as equipes selecionadas. Fique esperto para não perder o prazo!</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Haverá transmissão ao vivo? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Sim! Os jogos terão transmissão e acompanhamento em tempo real no site e nas redes sociais oficiais da Supercopa.</div>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h3>PRONTO PARA O JOGO?</h3>
+      <p>As inscrições para o Voleibol abrem em Setembro. Apenas 12 vagas para a edição 2026.</p>
+      <a href="https://www.supercopaafc.com.br/inscricao.html" target="_blank">INSCREVER MEU TIME →</a>
+    </div>
+
+    <div style="text-align:center; padding:20px 14px; font-size:11px; color:var(--muted); line-height:1.8;">
+      SUPERCOPA · 6ª Edição · 2026<br>
+      Campeonato Multiesporte de Afonso Cláudio<br>
+      <span style="color:var(--gold);">supercopaafc.com.br</span>
     </div>
 
   </section>
 
 </main>
 
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-
-  <button class="nav-btn active" onclick="openTab('homePage', this)">
-    🏠
+  <button class="nav-btn active" onclick="openTab('homePage',this)">
+    <span class="nav-icon">🏠</span>
     <small>Início</small>
   </button>
-
-  <button class="nav-btn" onclick="openTab('gamesPage', this)">
-    📅
+  <button class="nav-btn" onclick="openTab('gamesPage',this)">
+    <span class="nav-icon">📅</span>
     <small>Jogos</small>
   </button>
-
-  <button class="nav-btn" onclick="openTab('tablePage', this)">
-    📊
+  <button class="nav-btn" onclick="openTab('tablePage',this)">
+    <span class="nav-icon">📊</span>
     <small>Tabela</small>
   </button>
-
-  <button class="nav-btn" onclick="openTab('bracketPage', this)">
-    🏆
+  <button class="nav-btn" onclick="openTab('bracketPage',this)">
+    <span class="nav-icon">🏆</span>
     <small>Mata-mata</small>
   </button>
-
+  <button class="nav-btn" onclick="openTab('maisPage',this)">
+    <span class="nav-icon">⋯</span>
+    <small>Mais</small>
+  </button>
 </nav>
 
-<script src="app.js"></script>
+<script>
+// ===== NAVIGATION =====
+function openTab(pageId, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+  document.getElementById(pageId).classList.add('active-page');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== COUNTDOWN — Voleibol: 28 Nov 2026 =====
+const targetDate = new Date('2026-11-28T08:00:00');
+function updateCountdown() {
+  const now = new Date();
+  const diff = targetDate - now;
+  if (diff <= 0) {
+    document.getElementById('cdDays').textContent = '00';
+    document.getElementById('cdHrs').textContent = '00';
+    document.getElementById('cdMin').textContent = '00';
+    document.getElementById('cdSec').textContent = '00';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdDays').textContent = String(d).padStart(2,'0');
+  document.getElementById('cdHrs').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdMin').textContent = String(m).padStart(2,'0');
+  document.getElementById('cdSec').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ===== GAMES FILTER =====
+function filterGames(phase, btn) {
+  document.querySelectorAll('.tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const items = document.querySelectorAll('#gamesList [data-phase]');
+  items.forEach(el => {
+    if (phase === 'todos' || el.dataset.phase === phase) {
+      el.style.display = '';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+}
+
+// ===== TABLE DATA =====
+const tableData = {
+  grupoA: [
+    { pos:1, name:'ES Volei', city:'Vitória, ES', badge:'CAMPEÃO 25', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:2, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:3, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+  ],
+  grupoB: [
+    { pos:1, name:'Equipe UVI', city:'Itaperuna, RJ', badge:'VICE 25', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:2, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:3, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+  ],
+  grupoC: [
+    { pos:1, name:'CT Montanhas', city:'Afonso Cláudio, ES', badge:'CASA', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:2, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:3, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+  ],
+  grupoD: [
+    { pos:1, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:2, name:'Equipe X', city:'Cidade, RJ', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+    { pos:3, name:'Equipe X', city:'Cidade, ES', badge:'', pj:0, v:0, d:0, sp:0, pts:0 },
+  ]
+};
+
+function renderTable(group) {
+  const body = document.getElementById('tableBody');
+  const rows = tableData[group] || [];
+  body.innerHTML = rows.map((r, i) => `
+    <div class="table-row ${i < 2 ? 'leader' : ''}">
+      <div class="td"><span class="td-pos ${i===0?'gold-pos':''}">${r.pos}</span></div>
+      <div class="td td-name">
+        ${r.name}
+        ${r.badge ? `<span class="td-name-badge">${r.badge}</span>` : ''}
+      </div>
+      <div class="td">${r.pj}</div>
+      <div class="td">${r.v}</div>
+      <div class="td">${r.d}</div>
+      <div class="td">${r.sp > 0 ? '+'+r.sp : r.sp}</div>
+      <div class="td"><span class="td-pts">${r.pts}</span></div>
+    </div>
+  `).join('');
+}
+renderTable('grupoA');
+
+function filterTable(group, btn) {
+  document.querySelectorAll('.tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable(group);
+}
+
+// ===== FAQ =====
+function toggleFaq(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
 </body>
 </html>
