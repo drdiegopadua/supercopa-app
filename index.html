@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050816">
-
 <title>Super Voleibol Copa</title>
 
-<link rel="manifest" href="manifest.json">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="style.css">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header class="topbar">
 
   <div class="brand">
-    <img src="logo.png" class="brand-logo">
+    <img src="assets/logo.png" class="logo">
 
     <div>
       <small>6ª EDIÇÃO</small>
@@ -31,188 +22,182 @@
     </div>
   </div>
 
-  <button class="theme-btn" id="themeToggle">
-    🌙
-  </button>
-
 </header>
 
-<section class="hero">
+<main>
 
-  <div class="hero-overlay"></div>
+  <section id="homePage" class="page active-page">
 
-  <img src="logo.png" class="hero-logo">
+    <section class="hero">
 
-  <div class="hero-content">
+      <div class="overlay"></div>
 
-    <div class="live-chip">
-      <span class="pulse"></span>
-      AO VIVO
-    </div>
+      <div class="hero-content">
 
-    <h2>
-      O MAIOR TORNEIO MASCULINO
-      DE VOLEIBOL DA REGIÃO
-    </h2>
+        <div class="live-chip">
+          🔴 AO VIVO
+        </div>
 
-    <p>
-      Jogos ao vivo • classificação • mata-mata • estatísticas
-    </p>
+        <h2>
+          O MAIOR TORNEIO
+          MASCULINO DA REGIÃO
+        </h2>
 
-    <div class="countdown" id="countdown">
-      Carregando...
-    </div>
+        <p>
+          Jogos • Tabela • Mata-mata • Estatísticas
+        </p>
 
-    <div class="hero-buttons">
-      <button class="gold-btn">
-        📅 VER JOGOS
-      </button>
+        <div class="countdown" id="countdown">
+          12 DIAS
+        </div>
 
-      <button class="outline-btn">
-        🏆 VER TABELA
-      </button>
-    </div>
+        <div class="hero-buttons">
+          <button onclick="openTab('gamesPage')">
+            VER JOGOS
+          </button>
 
-  </div>
+          <button onclick="openTab('tablePage')">
+            VER TABELA
+          </button>
+        </div>
 
-</section>
-
-<section class="highlights">
-
-  <div class="highlight-card glass">
-    <span>🏐</span>
-    <strong>16</strong>
-    <small>EQUIPES</small>
-  </div>
-
-  <div class="highlight-card glass">
-    <span>🔥</span>
-    <strong>48</strong>
-    <small>JOGOS</small>
-  </div>
-
-  <div class="highlight-card glass">
-    <span>👥</span>
-    <strong>5 MIL+</strong>
-    <small>PÚBLICO</small>
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="section-title">
-    🔴 JOGOS AO VIVO
-  </div>
-
-  <div class="game-card glass live-game">
-
-    <div class="teams-row">
-
-      <div class="team-block">
-        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-        <span>AFC</span>
       </div>
 
-      <div class="score-block">
-        <small>2º SET</small>
-        <h3>18 × 14</h3>
+    </section>
+
+  </section>
+
+  <section id="gamesPage" class="page">
+
+    <h2 class="title">📅 Jogos</h2>
+
+    <div class="game-card">
+
+      <div class="game-header">
+        <span class="live">AO VIVO</span>
+        <span>2º SET</span>
       </div>
 
-      <div class="team-block">
-        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-        <span>TITANS</span>
+      <div class="game-main">
+
+        <div class="team">
+          <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+          <span>AFC</span>
+        </div>
+
+        <div class="score">
+          18 × 14
+        </div>
+
+        <div class="team">
+          <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+          <span>TITANS</span>
+        </div>
+
       </div>
 
     </div>
 
-    <div class="live-footer">
-      Ginásio Poliesportivo • 2.143 assistindo
-    </div>
+  </section>
 
-  </div>
+  <section id="tablePage" class="page">
 
-</section>
+    <h2 class="title">🏆 Tabela</h2>
 
-<section class="section">
+    <div class="table-card">
 
-  <div class="section-title">
-    🏆 MATA-MATA
-  </div>
+      <table>
 
-  <div class="bracket-container">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Equipe</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
 
-    <div class="bracket-column">
+        <tbody>
 
-      <h4>QUARTAS</h4>
+          <tr>
+            <td>1</td>
+            <td>AFC</td>
+            <td>9</td>
+          </tr>
 
-      <div class="bracket-match glass">
-        <span>AFC</span>
-        <strong>3</strong>
-      </div>
+          <tr>
+            <td>2</td>
+            <td>TITANS</td>
+            <td>6</td>
+          </tr>
 
-      <div class="bracket-match glass">
-        <span>LOBOS</span>
-        <strong>1</strong>
-      </div>
+        </tbody>
 
-    </div>
-
-    <div class="bracket-column">
-
-      <h4>SEMI</h4>
-
-      <div class="bracket-match glass winner">
-        <span>AFC</span>
-        <strong>3</strong>
-      </div>
+      </table>
 
     </div>
 
-    <div class="bracket-column final-column">
+  </section>
 
-      <h4>FINAL</h4>
+  <section id="bracketPage" class="page">
 
-      <div class="champion-card">
-        🏆
+    <h2 class="title">🏆 Mata-mata</h2>
+
+    <div class="bracket-wrapper">
+
+      <div class="bracket-column">
+
+        <h3>Quartas</h3>
+
+        <div class="match-card">
+          AFC 3 × 1 LOBOS
+        </div>
+
+        <div class="match-card">
+          TITANS 3 × 0 FÊNIX
+        </div>
+
+      </div>
+
+      <div class="bracket-column">
+
+        <h3>Semi</h3>
+
+        <div class="match-card gold">
+          AFC × TITANS
+        </div>
+
       </div>
 
     </div>
 
-  </div>
+  </section>
 
-</section>
+</main>
 
 <nav class="bottom-nav">
 
-  <button class="nav-item active">
-    <span>🏠</span>
+  <button class="nav-btn active" onclick="openTab('homePage', this)">
+    🏠
     <small>Início</small>
   </button>
 
-  <button class="nav-item">
-    <span>📅</span>
+  <button class="nav-btn" onclick="openTab('gamesPage', this)">
+    📅
     <small>Jogos</small>
   </button>
 
-  <button class="nav-item">
-    <span>📊</span>
+  <button class="nav-btn" onclick="openTab('tablePage', this)">
+    📊
     <small>Tabela</small>
   </button>
 
-  <button class="nav-item">
-    <span>🏆</span>
+  <button class="nav-btn" onclick="openTab('bracketPage', this)">
+    🏆
     <small>Mata-mata</small>
-  </button>
-
-  <button class="nav-item">
-    <span>⚙️</span>
-    <small>Mais</small>
   </button>
 
 </nav>
 
 <script src="app.js"></script>
-
 </body>
 </html>
