@@ -1,1101 +1,640 @@
+# ARQUIVOS PRONTOS — SUPERCOPA AFC APP MODERNO
+
+## 1. index.html
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#1A3FA8" />
-  <meta name="description" content="Supercopa AFC 2026 — Acompanhe a classificação e jogos em tempo real" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Supercopa" />
-  <title>SUPERCOPA AFC 2026 — Vôlei</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary-blue: #1A3FA8;
-      --primary-blue-dark: #0D1A3A;
-      --accent-gold: #E8C96A;
-      --accent-gold-dark: #C8A84B;
-      --white: #FFFFFF;
-      --gray-light: #F5F5F5;
-      --gray-medium: #4A5578;
-      --gray-light-text: #888888;
-      --border-color: #E0E0E0;
-      --nav-h: 70px;
-      --tab-h: 56px;
-    }
-
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-      -webkit-tap-highlight-color: transparent; 
-    }
-
-    html, body { 
-      height: 100%; 
-      background: var(--white); 
-      color: var(--primary-blue-dark); 
-      font-family: 'DM Sans', sans-serif; 
-      overflow-x: hidden; 
-      font-weight: 400;
-    }
-
-    header {
-      position: sticky; 
-      top: 0; 
-      z-index: 100;
-      background: var(--white);
-      border-bottom: 2px solid var(--border-color);
-      padding: 0 24px;
-      height: var(--nav-h);
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .logo { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 28px; 
-      letter-spacing: 1px; 
-      color: var(--primary-blue); 
-      line-height: 1; 
-      font-weight: 700;
-    }
-
-    .logo span { 
-      color: var(--accent-gold); 
-      font-weight: 700;
-    }
-
-    .live-badge { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      font-size: 12px; 
-      font-weight: 600; 
-      letter-spacing: 0.5px; 
-      color: #00AA44; 
-      text-transform: uppercase; 
-    }
-
-    .live-dot { 
-      width: 8px; 
-      height: 8px; 
-      border-radius: 50%; 
-      background: #00AA44; 
-      animation: pulse 1.4s ease-in-out infinite; 
-    }
-
-    @keyframes pulse { 
-      0%,100%{opacity:1} 
-      50%{opacity:0.4} 
-    }
-
-    .tabs { 
-      position: sticky; 
-      top: var(--nav-h); 
-      z-index: 99; 
-      background: var(--gray-light); 
-      border-bottom: 2px solid var(--border-color); 
-      display: flex; 
-      overflow-x: auto; 
-      scrollbar-width: none; 
-    }
-
-    .tabs::-webkit-scrollbar { 
-      display: none; 
-    }
-
-    .tab { 
-      flex: 0 0 auto; 
-      padding: 0 20px; 
-      height: var(--tab-h); 
-      display: flex; 
-      align-items: center; 
-      font-size: 14px; 
-      font-weight: 600; 
-      letter-spacing: 0.3px; 
-      color: var(--gray-medium); 
-      border-bottom: 3px solid transparent; 
-      cursor: pointer; 
-      white-space: nowrap; 
-      transition: all .25s ease; 
-    }
-
-    .tab:hover {
-      color: var(--primary-blue);
-    }
-
-    .tab.active { 
-      color: var(--primary-blue); 
-      border-bottom-color: var(--primary-blue); 
-    }
-
-    .page { 
-      display: none; 
-      padding: 24px; 
-      padding-bottom: 80px; 
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .page.active { 
-      display: block; 
-    }
-
-    .hero { 
-      background: linear-gradient(135deg, var(--primary-blue) 0%, #0F2E7D 100%);
-      border-radius: 20px; 
-      padding: 40px; 
-      margin-bottom: 32px; 
-      position: relative; 
-      overflow: hidden;
-      color: var(--white);
-      box-shadow: 0 10px 30px rgba(26, 63, 168, 0.15);
-    }
-
-    .hero::before { 
-      content: '🏐'; 
-      position: absolute; 
-      right: -20px; 
-      top: -20px; 
-      font-size: 120px; 
-      opacity: 0.1; 
-    }
-
-    .hero-title { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 42px; 
-      letter-spacing: 1px; 
-      color: var(--accent-gold); 
-      line-height: 1.2; 
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .hero-sub { 
-      font-size: 16px; 
-      color: rgba(255,255,255,0.9); 
-      margin-top: 8px;
-      font-weight: 500;
-    }
-
-    .hero-dates { 
-      margin-top: 20px; 
-      display: flex; 
-      gap: 12px; 
-      flex-wrap: wrap; 
-    }
-
-    .hero-date { 
-      background: rgba(255,255,255,0.15); 
-      border: 1px solid rgba(255,255,255,0.3); 
-      border-radius: 10px; 
-      padding: 10px 16px; 
-      font-size: 13px; 
-      font-weight: 600;
-      backdrop-filter: blur(10px);
-    }
-
-    .hero-date span { 
-      color: var(--accent-gold); 
-    }
-
-    .hero-stats { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 16px; 
-      margin-top: 24px; 
-    }
-
-    .stat-box { 
-      background: rgba(255,255,255,0.1); 
-      border: 1px solid rgba(255,255,255,0.2); 
-      border-radius: 12px; 
-      padding: 16px; 
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .stat-num { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 36px; 
-      color: var(--accent-gold); 
-      line-height: 1; 
-      font-weight: 700;
-    }
-
-    .stat-label { 
-      font-size: 12px; 
-      color: rgba(255,255,255,0.8); 
-      margin-top: 6px; 
-      letter-spacing: 0.5px; 
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .section-title { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 24px; 
-      letter-spacing: 0.5px; 
-      color: var(--primary-blue-dark); 
-      margin-bottom: 16px;
-      margin-top: 32px;
-      font-weight: 700;
-    }
-
-    .section-title:first-child {
-      margin-top: 0;
-    }
-
-    .section-title span { 
-      color: var(--accent-gold); 
-    }
-
-    .card { 
-      background: var(--white); 
-      border: 1px solid var(--border-color); 
-      border-radius: 14px; 
-      overflow: hidden; 
-      margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .card-header { 
-      padding: 16px 20px; 
-      border-bottom: 1px solid var(--border-color); 
-      font-size: 13px; 
-      font-weight: 700; 
-      letter-spacing: 0.5px; 
-      text-transform: uppercase; 
-      color: var(--primary-blue); 
-      display: flex; 
-      align-items: center; 
-      gap: 10px;
-      background: var(--gray-light);
-    }
-
-    .card-header .dot { 
-      width: 8px; 
-      height: 8px; 
-      border-radius: 50%; 
-      background: var(--accent-gold); 
-    }
-
-    .class-table { 
-      width: 100%; 
-      border-collapse: collapse; 
-      font-size: 14px; 
-    }
-
-    .class-table thead th { 
-      padding: 12px 16px; 
-      text-align: left; 
-      font-size: 12px; 
-      font-weight: 700; 
-      letter-spacing: 0.5px; 
-      text-transform: uppercase; 
-      color: var(--gray-medium); 
-      border-bottom: 2px solid var(--border-color);
-      background: var(--gray-light);
-    }
-
-    .class-table th:not(:first-child):not(:nth-child(2)) { 
-      text-align: center; 
-    }
-
-    .class-table tbody tr { 
-      border-bottom: 1px solid var(--border-color); 
-      transition: background-color .15s ease;
-    }
-
-    .class-table tbody tr:hover {
-      background-color: var(--gray-light);
-    }
-
-    .class-table tbody tr:last-child { 
-      border-bottom: none; 
-    }
-
-    .class-table td { 
-      padding: 14px 16px; 
-    }
-
-    .class-table td:not(:first-child):not(:nth-child(2)) { 
-      text-align: center; 
-      color: var(--gray-medium); 
-    }
-
-    .pos { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 18px; 
-      color: var(--gray-medium);
-      font-weight: 700;
-    }
-
-    .pos-1 { 
-      color: var(--accent-gold); 
-    }
-
-    .pos-2 { 
-      color: #AAA; 
-    }
-
-    .team-name { 
-      font-weight: 700; 
-      font-size: 15px;
-      color: var(--primary-blue-dark);
-    }
-
-    .pts { 
-      font-weight: 700; 
-      font-size: 16px; 
-      color: var(--primary-blue) !important; 
-    }
-
-    .qualify-stripe { 
-      display: inline-block; 
-      width: 3px; 
-      height: 36px; 
-      background: var(--accent-gold); 
-      border-radius: 2px; 
-      vertical-align: middle; 
-      margin-right: 8px; 
-    }
-
-    .loading { 
-      padding: 40px; 
-      text-align: center; 
-      color: var(--gray-medium); 
-      font-size: 14px; 
-    }
-
-    .spinner { 
-      width: 28px; 
-      height: 28px; 
-      border: 3px solid var(--border-color); 
-      border-top-color: var(--primary-blue); 
-      border-radius: 50%; 
-      animation: spin .8s linear infinite; 
-      margin: 0 auto 16px; 
-    }
-
-    @keyframes spin { 
-      to { transform: rotate(360deg); } 
-    }
-
-    .jogo-card { 
-      background: var(--white); 
-      border: 1px solid var(--border-color); 
-      border-radius: 14px; 
-      padding: 16px; 
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: all .2s ease;
-    }
-
-    .jogo-card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      border-color: var(--primary-blue);
-    }
-
-    .jogo-meta { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      font-size: 12px; 
-      color: var(--gray-medium); 
-      margin-bottom: 12px; 
-      font-weight: 600; 
-      text-transform: uppercase; 
-      letter-spacing: 0.3px; 
-    }
-
-    .jogo-status-badge { 
-      padding: 4px 10px; 
-      border-radius: 8px; 
-      font-size: 11px; 
-      font-weight: 700; 
-      letter-spacing: 0.3px; 
-    }
-
-    .badge-realizado { 
-      background: rgba(0, 170, 68, 0.15); 
-      color: #00AA44; 
-    }
-
-    .badge-agendado { 
-      background: rgba(232, 201, 106, 0.15); 
-      color: var(--accent-gold-dark); 
-    }
-
-    .jogo-times { 
-      display: grid; 
-      grid-template-columns: 1fr auto 1fr; 
-      align-items: center; 
-      gap: 12px; 
-    }
-
-    .jogo-time { 
-      text-align: center; 
-    }
-
-    .jogo-time-name { 
-      font-weight: 700; 
-      font-size: 15px; 
-      line-height: 1.3;
-      color: var(--primary-blue-dark);
-    }
-
-    .jogo-sets { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--primary-blue);
-    }
-
-    .jogo-sets-sep { 
-      font-size: 24px; 
-      color: var(--gray-medium); 
-    }
-
-    .jogo-sets-x { 
-      font-size: 16px; 
-      color: var(--gray-medium); 
-      font-family: 'DM Sans', sans-serif; 
-      font-weight: 600; 
-    }
-
-    .jogo-detail { 
-      text-align: center; 
-      font-size: 12px; 
-      color: var(--gray-medium); 
-      margin-top: 8px; 
-      letter-spacing: 0.5px; 
-    }
-
-    .winner-name { 
-      color: var(--accent-gold-dark); 
-      font-size: 12px; 
-      text-align: center; 
-      margin-top: 8px; 
-      font-weight: 700; 
-    }
-
-    .mm-section-title { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 20px; 
-      letter-spacing: 0.5px; 
-      color: var(--primary-blue); 
-      margin: 24px 0 12px;
-      font-weight: 700;
-    }
-
-    .mm-card { 
-      background: var(--white); 
-      border: 1px solid var(--border-color); 
-      border-radius: 14px; 
-      overflow: hidden; 
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .mm-card-header { 
-      padding: 12px 16px; 
-      background: var(--gray-light); 
-      border-bottom: 1px solid var(--border-color); 
-      font-size: 12px; 
-      font-weight: 700; 
-      letter-spacing: 0.5px; 
-      text-transform: uppercase; 
-      color: var(--primary-blue); 
-    }
-
-    .mm-row { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 14px 16px; 
-      border-bottom: 1px solid var(--border-color); 
-    }
-
-    .mm-row:last-child { 
-      border-bottom: none; 
-    }
-
-    .mm-row.winner-row { 
-      background: rgba(232, 201, 106, 0.08); 
-    }
-
-    .mm-team { 
-      font-weight: 700; 
-      font-size: 15px;
-      color: var(--primary-blue-dark);
-    }
-
-    .mm-score { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 28px; 
-      color: var(--accent-gold); 
-      font-weight: 700;
-    }
-
-    .mm-score.loser { 
-      color: var(--gray-medium); 
-    }
-
-    .mm-sets-detail { 
-      font-size: 12px; 
-      color: var(--gray-medium); 
-      margin-top: 2px; 
-      letter-spacing: 0.3px; 
-    }
-
-    .campeon-box { 
-      background: linear-gradient(135deg, rgba(232, 201, 106, 0.1), rgba(232, 201, 106, 0.05)); 
-      border: 2px solid var(--accent-gold); 
-      border-radius: 16px; 
-      padding: 32px; 
-      text-align: center; 
-      margin-top: 24px;
-      box-shadow: 0 4px 16px rgba(232, 201, 106, 0.1);
-    }
-
-    .campeon-emoji { 
-      font-size: 56px; 
-    }
-
-    .campeon-label { 
-      font-size: 12px; 
-      font-weight: 700; 
-      letter-spacing: 1px; 
-      color: var(--gray-medium); 
-      text-transform: uppercase; 
-      margin-top: 12px; 
-    }
-
-    .campeon-name { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 32px; 
-      letter-spacing: 0.5px; 
-      color: var(--primary-blue); 
-      margin-top: 8px;
-      font-weight: 700;
-    }
-
-    .campeon-pending { 
-      color: var(--gray-medium); 
-      font-style: italic; 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 16px; 
-    }
-
-    .refresh-bar { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 12px 16px; 
-      font-size: 12px; 
-      color: var(--gray-medium); 
-      background: var(--gray-light); 
-      border-radius: 10px; 
-      margin-bottom: 16px;
-      border: 1px solid var(--border-color);
-    }
-
-    .refresh-btn { 
-      background: none; 
-      border: none; 
-      color: var(--primary-blue); 
-      font-size: 12px; 
-      font-weight: 700; 
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-
-    .refresh-btn:hover {
-      color: var(--accent-gold);
-    }
-
-    .info-card { 
-      background: var(--white); 
-      border: 1px solid var(--border-color); 
-      border-radius: 14px; 
-      padding: 24px; 
-      margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .info-card h3 { 
-      font-family: 'DM Sans', sans-serif; 
-      font-size: 18px; 
-      letter-spacing: 0.3px; 
-      color: var(--primary-blue); 
-      margin-bottom: 16px;
-      font-weight: 700;
-    }
-
-    .info-row { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: flex-start; 
-      padding: 12px 0; 
-      border-bottom: 1px solid var(--border-color); 
-      font-size: 14px; 
-    }
-
-    .info-row:last-child { 
-      border-bottom: none; 
-    }
-
-    .info-row label { 
-      color: var(--gray-medium); 
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .info-row a { 
-      color: var(--primary-blue); 
-      text-decoration: none;
-      font-weight: 600;
-      transition: color .2s ease;
-    }
-
-    .info-row a:hover {
-      color: var(--accent-gold);
-    }
-
-    .fase-item { 
-      display: flex; 
-      align-items: flex-start; 
-      gap: 14px; 
-      padding: 14px 0; 
-      border-bottom: 1px solid var(--border-color); 
-      font-size: 14px; 
-    }
-
-    .fase-item:last-child { 
-      border-bottom: none; 
-    }
-
-    .fase-num { 
-      width: 32px; 
-      height: 32px; 
-      border-radius: 50%; 
-      background: var(--accent-gold); 
-      border: none; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 13px; 
-      font-weight: 700; 
-      color: var(--white); 
-      flex-shrink: 0;
-    }
-
-    .fase-desc { 
-      color: var(--gray-medium); 
-      font-size: 13px; 
-      margin-top: 2px; 
-    }
-
-    .empty { 
-      padding: 40px 20px; 
-      text-align: center; 
-      color: var(--gray-medium); 
-    }
-
-    .empty-icon { 
-      font-size: 48px; 
-      margin-bottom: 12px; 
-    }
-
-    .grupos-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 16px; 
-    }
-
-    @media(max-width:768px) { 
-      .grupos-grid { 
-        grid-template-columns: 1fr; 
-      }
-      .hero {
-        padding: 24px;
-      }
-      .hero-title {
-        font-size: 32px;
-      }
-      .hero-stats {
-        grid-template-columns: 1fr;
-      }
-      .section-title {
-        font-size: 20px;
-      }
-      .tab {
-        padding: 0 14px;
-        font-size: 13px;
-      }
-    }
-
-    @media(max-width:480px) { 
-      .grupos-grid { 
-        grid-template-columns: 1fr; 
-      }
-      header {
-        padding: 0 16px;
-      }
-      .page {
-        padding: 16px;
-      }
-      .hero {
-        padding: 20px;
-      }
-      .hero-title {
-        font-size: 28px;
-      }
-      .jogo-times {
-        gap: 8px;
-      }
-      .jogo-sets {
-        font-size: 24px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B1220">
+<title>Supercopa AFC</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
+<header class="topbar">
   <div class="logo">SUPER<span>◥</span>COPA</div>
-  <div class="live-badge"><div class="live-dot"></div>AO VIVO</div>
+
+  <button id="themeToggle" class="theme-btn">
+    🌙
+  </button>
 </header>
 
-<nav class="tabs">
-  <div class="tab active" data-page="inicio">🏠 Início</div>
-  <div class="tab" data-page="classificacao">📊 Classificação</div>
-  <div class="tab" data-page="jogos">📅 Jogos</div>
-  <div class="tab" data-page="matamata">🏆 Mata-Mata</div>
-  <div class="tab" data-page="info">ℹ️ Info</div>
+<section class="hero">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <div class="live-chip">
+      <span class="pulse"></span>
+      AO VIVO
+    </div>
+
+    <h1>SUPERCOPA AFC</h1>
+
+    <p>
+      O maior torneio de voleibol da região serrana
+    </p>
+
+    <div class="countdown" id="countdown">
+      Carregando contador...
+    </div>
+
+    <div class="hero-buttons">
+      <button>📅 Jogos</button>
+      <button>🏆 Tabela</button>
+    </div>
+
+  </div>
+</section>
+
+<section class="cards-grid">
+
+  <div class="mini-card glass">
+    <h3>🏐 Times</h3>
+    <strong>12</strong>
+  </div>
+
+  <div class="mini-card glass">
+    <h3>🏆 Grupos</h3>
+    <strong>4</strong>
+  </div>
+
+  <div class="mini-card glass">
+    <h3>⭐ MVP</h3>
+    <strong>Lucas</strong>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-header">
+    <h2>🔴 Jogos ao Vivo</h2>
+  </div>
+
+  <div class="game-card glass live">
+
+    <div class="game-teams">
+
+      <div class="team">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+        <span>Alpha</span>
+      </div>
+
+      <div class="score">
+        2 × 1
+      </div>
+
+      <div class="team">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+        <span>Titans</span>
+      </div>
+
+    </div>
+
+    <div class="set-info">
+      4º SET • 21 x 19
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-header">
+    <h2>📊 Classificação</h2>
+  </div>
+
+  <div class="table-card glass">
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Equipe</th>
+          <th>Pts</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="team-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+            Alpha
+          </td>
+          <td>9</td>
+        </tr>
+
+        <tr>
+          <td>2</td>
+          <td class="team-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+            Titans
+          </td>
+          <td>6</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</section>
+
+<nav class="bottom-nav">
+
+  <button class="nav-item active">
+    <span>🏠</span>
+    <small>Início</small>
+  </button>
+
+  <button class="nav-item">
+    <span>📅</span>
+    <small>Jogos</small>
+  </button>
+
+  <button class="nav-item">
+    <span>📊</span>
+    <small>Tabela</small>
+  </button>
+
+  <button class="nav-item">
+    <span>🏆</span>
+    <small>Mata-mata</small>
+  </button>
+
+  <button class="nav-item">
+    <span>⚙️</span>
+    <small>Mais</small>
+  </button>
+
 </nav>
 
-<!-- INÍCIO -->
-<div class="page active" id="page-inicio">
-  <div class="hero">
-    <div class="hero-title">SUPERCOPA DE VOLEIBOL</div>
-    <div class="hero-sub">6ª Edição · Afonso Cláudio, ES · O Maior da Região das Montanhas</div>
-    <div class="hero-dates">
-      <div class="hero-date">🏐 <span>28 e 29 de Novembro</span></div>
-      <div class="hero-date">📍 <span>Afonso Cláudio, ES</span></div>
-    </div>
-    <div class="hero-stats">
-      <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">Times</div></div>
-      <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Grupos</div></div>
-      <div class="stat-box"><div class="stat-num">R$0</div><div class="stat-label">Inscrição</div></div>
-    </div>
-  </div>
-  <div class="section-title">ÚLTIMOS <span>JOGOS</span></div>
-  <div id="home-jogos"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
-  <div class="section-title">CLASSIFICAÇÃO <span>GERAL</span></div>
-  <div id="home-class"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
-</div>
-
-<!-- CLASSIFICAÇÃO -->
-<div class="page" id="page-classificacao">
-  <div class="refresh-bar">
-    <span id="ts-class">Atualizando...</span>
-    <button class="refresh-btn" onclick="loadAll()">↻ Atualizar</button>
-  </div>
-  <div id="class-content"><div class="loading"><div class="spinner"></div>Carregando dados...</div></div>
-</div>
-
-<!-- JOGOS -->
-<div class="page" id="page-jogos">
-  <div class="refresh-bar">
-    <span id="ts-jogos">Atualizando...</span>
-    <button class="refresh-btn" onclick="loadAll()">↻ Atualizar</button>
-  </div>
-  <div id="jogos-content"><div class="loading"><div class="spinner"></div>Carregando jogos...</div></div>
-</div>
-
-<!-- MATA-MATA -->
-<div class="page" id="page-matamata">
-  <div class="refresh-bar">
-    <span id="ts-mm">Atualizando...</span>
-    <button class="refresh-btn" onclick="loadAll()">↻ Atualizar</button>
-  </div>
-  <div id="mm-content"><div class="loading"><div class="spinner"></div>Carregando chaveamento...</div></div>
-</div>
-
-<!-- INFO -->
-<div class="page" id="page-info">
-  <div class="info-card">
-    <h3>📋 SOBRE O TORNEIO</h3>
-    <div class="info-row"><label>Evento</label><span>Supercopa de Voleibol 2026</span></div>
-    <div class="info-row"><label>Edição</label><span>6ª Edição</span></div>
-    <div class="info-row"><label>Data</label><span>28 e 29 de Novembro de 2026</span></div>
-    <div class="info-row"><label>Local</label><span>Afonso Cláudio, Espírito Santo</span></div>
-    <div class="info-row"><label>Times</label><span>12 equipes</span></div>
-    <div class="info-row"><label>Inscrição</label><span style="color:var(--accent-gold);font-weight:700">GRATUITA</span></div>
-  </div>
-  <div class="info-card">
-    <h3>⚡ FASES DO CAMPEONATO</h3>
-    <div class="fase-item"><div class="fase-num">1</div><div><div style="font-weight:700">Fase de Grupos</div><div class="fase-desc">Todos se enfrentam no grupo. Top 2 avançam.</div></div></div>
-    <div class="fase-item"><div class="fase-num">2</div><div><div style="font-weight:700">Quartas de Final</div><div class="fase-desc">8 classificados. Mata-mata, melhor de 3 sets.</div></div></div>
-    <div class="fase-item"><div class="fase-num">3</div><div><div style="font-weight:700">Semifinal</div><div class="fase-desc">Quatro times disputam as vagas na final.</div></div></div>
-    <div class="fase-item"><div class="fase-num">4</div><div><div style="font-weight:700">Grande Final 🏆</div><div class="fase-desc">Arena lotada, transmissão ao vivo e premiação.</div></div></div>
-  </div>
-  <div class="info-card">
-    <h3>📲 CONTATO</h3>
-    <div class="info-row"><label>Instagram</label><a href="https://instagram.com/supercopaafc" target="_blank">@supercopaafc</a></div>
-    <div class="info-row"><label>WhatsApp</label><a href="https://wa.link/900kb2" target="_blank">Fale conosco</a></div>
-    <div class="info-row"><label>Site</label><a href="https://supercopaafc.com.br" target="_blank">supercopaafc.com.br</a></div>
-  </div>
-</div>
-
-<script>
-// ── CONFIGURAÇÃO ──────────────────────────────────────────
-const VOLEI_SHEET_ID   = '12-yxLsIplLMAj0Y9jCpzl2OGJLKPhy_lWAtvYP-Vvh8';
-const API_KEY          = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
-// ─────────────────────────────────────────────────────────
-
-const CLASS_GRUPOS = [
-  { title: 'Grupo A', rows: [5,6,7] },
-  { title: 'Grupo B', rows: [11,12,13] },
-  { title: 'Grupo C', rows: [17,18,19] },
-  { title: 'Grupo D', rows: [23,24,25] },
-];
-const JOGOS_GRUPOS = [
-  { title: 'Grupo A', rows: [10,11,12] },
-  { title: 'Grupo B', rows: [22,23,24] },
-  { title: 'Grupo C', rows: [34,35,36] },
-  { title: 'Grupo D', rows: [46,47,48] },
-];
-// Mata-mata: Quartas rows 5-8, Semis 12-13, Final 17, Campeão row 20 col A
-const MM_QUARTAS = [{id:'Q1',r:5},{id:'Q2',r:6},{id:'Q3',r:7},{id:'Q4',r:8}];
-const MM_SEMIS   = [{id:'SF1',r:12},{id:'SF2',r:13}];
-const MM_FINAL   = [{id:'FIN',r:17}];
-
-let cacheClass = [], cacheJogos = [], cacheMM = [];
-
-function sheetUrl(sheetName, range) {
-  return `https://sheets.googleapis.com/v4/spreadsheets/${VOLEI_SHEET_ID}/values/${encodeURIComponent("'"+sheetName+"'!"+range)}?key=${API_KEY}`;
-}
-function cc(rows, r, col) {
-  return (rows[r] && rows[r][col] != null) ? rows[r][col].toString().trim() : '';
-}
-
-async function loadAll() {
-  const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  ['ts-class','ts-jogos','ts-mm'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = 'Atualizado às ' + now;
-  });
-  try {
-    const [rC, rJ, rM] = await Promise.all([
-      fetch(sheetUrl('Classificação','A1:K26')),
-      fetch(sheetUrl('Fase de Grupos','A1:Q49')),
-      fetch(sheetUrl('Mata-Mata','A1:Q21')),
-    ]);
-    const [dC, dJ, dM] = await Promise.all([rC.json(), rJ.json(), rM.json()]);
-    cacheClass = dC.values || [];
-    cacheJogos = dJ.values || [];
-    cacheMM    = dM.values || [];
-    renderClassificacao();
-    renderJogos();
-    renderMataMata();
-    renderHome();
-  } catch(e) {
-    console.error(e);
-    document.getElementById('class-content').innerHTML = '<div class="empty">❌ Erro ao carregar dados. Verifique sua conexão.</div>';
-  }
-}
-
-// ── CLASSIFICAÇÃO ─────────────────────────────────────────
-function renderClassificacao() {
-  let html = '<div class="grupos-grid">';
-  CLASS_GRUPOS.forEach(grupo => {
-    let rows = '';
-    grupo.rows.forEach((r, i) => {
-      const pos    = cc(cacheClass, r, 0) || (i+1);
-      const equipe = cc(cacheClass, r, 1);
-      const pts    = cc(cacheClass, r, 2) || '0';
-      const v      = cc(cacheClass, r, 3) || '0';
-      const d      = cc(cacheClass, r, 4) || '0';
-      if (!equipe) return;
-      const qualify = i < 2 ? `<span class="qualify-stripe"></span>` : '';
-      rows += `<tr>
-        <td style="padding:14px 16px">${qualify}<span class="pos pos-${i+1}">${pos}</span></td>
-        <td style="padding:14px 16px"><div class="team-name">${equipe}</div></td>
-        <td class="pts">${pts}</td><td>${v}</td><td>${d}</td>
-      </tr>`;
-    });
-    html += `<div class="card">
-      <div class="card-header"><div class="dot"></div>${grupo.title}</div>
-      <table class="class-table">
-        <thead><tr><th>#</th><th>Equipe</th><th>Pts</th><th>V</th><th>D</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-  });
-  html += '</div>';
-  document.getElementById('class-content').innerHTML = html;
-}
-
-// ── JOGOS ─────────────────────────────────────────────────
-function buildSetsDetail(r, rows) {
-  const parts = [];
-  [[2,7],[3,8],[4,9]].forEach(([ca,cb]) => {
-    const a = cc(rows,r,ca), b = cc(rows,r,cb);
-    if (a && b) parts.push(a+'/'+b);
-  });
-  return parts.join('  ');
-}
-
-function jogoCardHTML(grupo, r, idx) {
-  const rows    = cacheJogos;
-  const casa    = cc(rows,r,1);
-  const visit   = cc(rows,r,11);
-  if (!casa && !visit) return '';
-  const setsC   = cc(rows,r,12);
-  const setsV   = cc(rows,r,13);
-  const winner  = cc(rows,r,14);
-  const detail  = buildSetsDetail(r, rows);
-  const done    = winner && winner !== '—' && !winner.toLowerCase().includes('aguard');
-  const badge   = done
-    ? '<span class="jogo-status-badge badge-realizado">Realizado</span>'
-    : '<span class="jogo-status-badge badge-agendado">Agendado</span>';
-  const placar  = (setsC !== '' && setsV !== '')
-    ? `<div class="jogo-sets"><span>${setsC}</span><span class="jogo-sets-sep">×</span><span>${setsV}</span></div>`
-    : `<div class="jogo-sets"><span class="jogo-sets-x">vs</span></div>`;
-  return `<div class="jogo-card">
-    <div class="jogo-meta"><span>${grupo.title} · Jogo ${idx+1}</span>${badge}</div>
-    <div class="jogo-times">
-      <div class="jogo-time"><div class="jogo-time-name">${casa}</div></div>
-      ${placar}
-      <div class="jogo-time"><div class="jogo-time-name">${visit}</div></div>
-    </div>
-    ${detail ? `<div class="jogo-detail">${detail}</div>` : ''}
-    ${done ? `<div class="winner-name">🏆 ${winner}</div>` : ''}
-  </div>`;
-}
-
-function renderJogos() {
-  let html = '';
-  JOGOS_GRUPOS.forEach(grupo => {
-    grupo.rows.forEach((r, idx) => { html += jogoCardHTML(grupo, r, idx); });
-  });
-  document.getElementById('jogos-content').innerHTML = html || '<div class="empty"><div class="empty-icon">📅</div>Jogos a confirmar</div>';
-}
-
-// ── MATA-MATA ─────────────────────────────────────────────
-function mmCardHTML(label, r) {
-  const rows   = cacheMM;
-  const nameA  = cc(rows,r,1) || '—';
-  const nameB  = cc(rows,r,11) || '—';
-  const setsA  = cc(rows,r,12) || '-';
-  const setsB  = cc(rows,r,13) || '-';
-  const winner = cc(rows,r,14);
-  const detail = buildSetsDetail(r, rows);
-  const isWin  = winner && winner !== '—' && !winner.toLowerCase().includes('aguard');
-  const wA = isWin && winner === nameA;
-  const wB = isWin && winner === nameB;
-  return `<div class="mm-card">
-    <div class="mm-card-header">${label}</div>
-    <div class="mm-row ${wA?'winner-row':''}">
-      <div><div class="mm-team">${nameA}</div>${wA&&detail?`<div class="mm-sets-detail">${detail}</div>`:''}</div>
-      <div class="mm-score ${isWin&&!wA?'loser':''}">${setsA}</div>
-    </div>
-    <div class="mm-row ${wB?'winner-row':''}">
-      <div><div class="mm-team">${nameB}</div></div>
-      <div class="mm-score ${isWin&&!wB?'loser':''}">${setsB}</div>
-    </div>
-  </div>`;
-}
-
-function renderMataMata() {
-  const campeo = cc(cacheMM, 20, 0);
-  const isWaiting = !campeo || campeo === '—' || campeo.toLowerCase().includes('aguard');
-  let html = '';
-  html += '<div class="mm-section-title">⚡ QUARTAS DE FINAL</div>';
-  MM_QUARTAS.forEach(({id,r}) => { html += mmCardHTML(id, r); });
-  html += '<div class="mm-section-title">🔥 SEMIFINAIS</div>';
-  MM_SEMIS.forEach(({id,r}) => { html += mmCardHTML(id, r); });
-  html += '<div class="mm-section-title">🏆 GRANDE FINAL</div>';
-  MM_FINAL.forEach(({id,r}) => { html += mmCardHTML(id, r); });
-  html += `<div class="campeon-box">
-    <div class="campeon-emoji">🏆</div>
-    <div class="campeon-label">Campeão da Supercopa</div>
-    <div class="campeon-name ${isWaiting?'campeon-pending':''}">${isWaiting ? 'Aguardando' : campeo}</div>
-  </div>`;
-  document.getElementById('mm-content').innerHTML = html;
-}
-
-// ── HOME ──────────────────────────────────────────────────
-function renderHome() {
-  // últimos 3 jogos realizados
-  let jogosHTML = '';
-  let count = 0;
-  for (let g = JOGOS_GRUPOS.length - 1; g >= 0 && count < 3; g--) {
-    const grupo = JOGOS_GRUPOS[g];
-    for (let i = grupo.rows.length - 1; i >= 0 && count < 3; i--) {
-      const r = grupo.rows[i];
-      const w = cc(cacheJogos,r,14);
-      if (w && w !== '—' && !w.toLowerCase().includes('aguard')) {
-        jogosHTML += jogoCardHTML(grupo, r, i);
-        count++;
-      }
-    }
-  }
-  document.getElementById('home-jogos').innerHTML = jogosHTML || '<div class="empty"><div class="empty-icon">⏳</div>Ainda sem jogos realizados</div>';
-
-  // top 4 da classificação (primeiros de cada grupo)
-  let rows = '';
-  CLASS_GRUPOS.forEach(grupo => {
-    const r = grupo.rows[0];
-    const equipe = cc(cacheClass,r,1);
-    const pts    = cc(cacheClass,r,2)||'0';
-    const v      = cc(cacheClass,r,3)||'0';
-    if (!equipe) return;
-    rows += `<tr>
-      <td style="padding:14px 16px;font-size:12px;color:var(--primary-blue);font-weight:700">${grupo.title.replace('Grupo ','G')}</td>
-      <td style="padding:14px 16px"><div class="team-name">${equipe}</div></td>
-      <td class="pts" style="text-align:center">${pts}</td>
-      <td style="text-align:center;color:var(--gray-medium)">${v}</td>
-    </tr>`;
-  });
-  document.getElementById('home-class').innerHTML = `<div class="card">
-    <table class="class-table">
-      <thead><tr><th>Grp</th><th>1º Lugar</th><th>Pts</th><th>V</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`;
-}
-
-// ── NAVEGAÇÃO ─────────────────────────────────────────────
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('page-' + tab.dataset.page).classList.add('active');
-    window.scrollTo(0,0);
-  });
-});
-
-// ── INIT ──────────────────────────────────────────────────
-loadAll();
-setInterval(loadAll, 30000);
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
+```
+
+---
+
+# 2. style.css
+
+```css
+:root {
+  --bg: #070B16;
+  --card: rgba(255,255,255,0.06);
+  --text: #FFFFFF;
+  --gold: #E8C96A;
+  --blue: #1A3FA8;
+  --border: rgba(255,255,255,0.08);
+}
+
+[data-theme="light"] {
+  --bg: #F5F7FB;
+  --card: rgba(255,255,255,0.8);
+  --text: #111827;
+  --border: rgba(0,0,0,0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  padding-bottom: 100px;
+}
+
+.topbar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(0,0,0,0.4);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.logo span {
+  color: var(--gold);
+}
+
+.theme-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card);
+  color: white;
+  cursor: pointer;
+}
+
+.hero {
+  position: relative;
+  min-height: 320px;
+  margin: 20px;
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.75)),
+    url('https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1600&auto=format&fit=crop');
+
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+}
+
+.live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255,0,0,0.15);
+  border: 1px solid rgba(255,0,0,0.25);
+  margin-bottom: 20px;
+}
+
+.pulse {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: .5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.hero h1 {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 24px;
+}
+
+.countdown {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.hero-buttons button {
+  border: none;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero-buttons button:first-child {
+  background: var(--gold);
+}
+
+.hero-buttons button:last-child {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  padding: 0 20px;
+  margin-top: 20px;
+}
+
+.glass {
+  backdrop-filter: blur(20px);
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.mini-card {
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.mini-card h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.mini-card strong {
+  font-size: 28px;
+}
+
+.section {
+  padding: 20px;
+}
+
+.section-header {
+  margin-bottom: 16px;
+}
+
+.game-card {
+  padding: 20px;
+  border-radius: 24px;
+}
+
+.game-card.live {
+  border: 1px solid rgba(255,0,0,0.2);
+  box-shadow: 0 0 20px rgba(255,0,0,0.15);
+}
+
+.game-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.team img {
+  width: 58px;
+  height: 58px;
+}
+
+.score {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.set-info {
+  margin-top: 14px;
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+}
+
+.table-card {
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 18px;
+}
+
+th {
+  text-align: left;
+  color: rgba(255,255,255,0.6);
+}
+
+tbody tr {
+  border-top: 1px solid var(--border);
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-row img {
+  width: 28px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 78px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(0,0,0,0.75);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-item.active {
+  color: var(--gold);
+}
+
+@media(max-width:768px) {
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .score {
+    font-size: 32px;
+  }
+
+}
+```
+
+---
+
+# 3. app.js
+
+```javascript
+const themeToggle = document.getElementById('themeToggle');
+
+const savedTheme = localStorage.getItem('theme');
+
+if(savedTheme){
+  document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+themeToggle.addEventListener('click', () => {
+
+  const current = document.documentElement.getAttribute('data-theme');
+
+  const next = current === 'light'
+    ? 'dark'
+    : 'light';
+
+  document.documentElement.setAttribute('data-theme', next);
+
+  localStorage.setItem('theme', next);
+
+});
+
+const targetDate = new Date('2026-11-28T08:00:00');
+
+function updateCountdown(){
+
+  const now = new Date();
+
+  const diff = targetDate - now;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  document.getElementById('countdown').innerHTML = `
+    Faltam ${days} dias
+  `;
+
+}
+
+updateCountdown();
+
+setInterval(updateCountdown, 1000);
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+```
+
+---
+
+# 4. manifest.json
+
+```json
+{
+  "name": "Supercopa AFC",
+  "short_name": "Supercopa",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#070B16",
+  "theme_color": "#070B16",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```
+
+---
+
+# 5. sw.js
+
+```javascript
+const CACHE_NAME = 'supercopa-v1';
+
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/style.css',
+  '/app.js'
+];
+
+self.addEventListener('install', event => {
+
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+
+});
+
+self.addEventListener('fetch', event => {
+
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+
+});
+```
+
+---
+
+# 6. ESTRUTURA DE PASTAS
+
+```text
+/projeto
+  index.html
+  style.css
+  app.js
+  sw.js
+  manifest.json
+
+/assets
+  /teams
+  /icons
+  /backgrounds
+```
+
+---
+
+# 7. PRÓXIMOS PASSOS
+
+Depois disso você pode adicionar:
+
+* Firebase
+* Google Sheets dinâmico
+* Sistema ao vivo real
+* Push notifications
+* Login admin
+* Streaming
+* Mata-mata visual
+* Página dos times
+* Estatísticas
+* Backend próprio
