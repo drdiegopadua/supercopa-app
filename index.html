@@ -370,7 +370,9 @@
     content: '';
     position: absolute; inset: 0;
     background: repeating-linear-gradient(-55deg,transparent,transparent 20px,rgba(255,255,255,0.02) 20px,rgba(255,255,255,0.02) 21px);
+    pointer-events: none;
   }
+  .hero > * { position: relative; z-index: 1; }
   .live-badge {
     display: inline-flex; align-items: center; gap: 5px;
     background: var(--red-live); color: white;
@@ -523,6 +525,29 @@
   }
   .nav-item.active { color: var(--gold); }
   .nav-icon { font-size: 20px; line-height: 1; }
+
+  /* ── Feedback visual para cliques ── */
+  .toast {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 78px;
+    z-index: 20;
+    background: rgba(7,21,48,0.96);
+    border: 1px solid rgba(240,165,0,0.35);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--white);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -664,8 +689,8 @@
         <div class="countdown-item"><div class="count-num" id="cd-s">33</div><div class="count-label">Seg</div></div>
       </div>
       <div class="hero-actions">
-        <button class="btn-primary">📅 VER JOGOS</button>
-        <button class="btn-outline">🏆 VER TABELA</button>
+        <button class="btn-primary" type="button" data-open-tab="jogos">📅 VER JOGOS</button>
+        <button class="btn-outline" type="button" data-open-tab="tabela">🏆 VER TABELA</button>
       </div>
     </div>
 
@@ -731,19 +756,19 @@
 
   <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <div class="nav-item active">
+    <div class="nav-item active" data-tab="inicio">
       <div class="nav-icon">🏠</div>Início
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-tab="jogos">
       <div class="nav-icon">📅</div>Jogos
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-tab="tabela">
       <div class="nav-icon">📋</div>Tabela
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-tab="mata-mata">
       <div class="nav-icon">🏆</div>Mata-mata
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-tab="mais">
       <div class="nav-icon">⋯</div>Mais
     </div>
   </div>
@@ -790,12 +815,59 @@
     }, 1000);
   })();
 
-  // ─── Nav tab switching ───
+  // ─── Ações dos botões e navegação inferior ───
+  function showToast(message) {
+    let toast = document.querySelector('.toast');
+
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'toast';
+      document.getElementById('app').appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add('show');
+
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2200);
+  }
+
+  function activateTab(tabName) {
+    const selected = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
+
+    if (!selected) return;
+
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    selected.classList.add('active');
+
+    const labels = {
+      'inicio': 'Você está na tela inicial.',
+      'jogos': 'Abrindo a área de jogos. Inclua aqui a lista de partidas.',
+      'tabela': 'Abrindo a tabela de classificação. Inclua aqui a tabela do campeonato.',
+      'mata-mata': 'Abrindo a fase mata-mata. Inclua aqui as chaves eliminatórias.',
+      'mais': 'Abrindo mais opções do torneio.'
+    };
+
+    showToast(labels[tabName] || 'Opção selecionada.');
+  }
+
   document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      item.classList.add('active');
-    });
+    item.addEventListener('click', () => activateTab(item.dataset.tab));
+  });
+
+  document.querySelectorAll('[data-open-tab]').forEach(button => {
+    button.addEventListener('click', () => activateTab(button.dataset.openTab));
+  });
+
+  document.querySelector('.header-bell')?.addEventListener('click', () => {
+    showToast('Você ainda não possui novas notificações.');
+  });
+
+  document.querySelector('.section-link')?.addEventListener('click', event => {
+    event.preventDefault();
+    showToast('Abrindo todas as notícias. Inclua aqui a tela ou rota de notícias.');
   });
 </script>
 </body>
