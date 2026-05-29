@@ -70,7 +70,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .splash-ring:nth-child(2){width:110px;height:110px;animation-delay:.3s;}
 .splash-ring:nth-child(3){width:80px;height:80px;animation-delay:.6s;}
 @keyframes ringPulse{0%,100%{transform:scale(1);opacity:.15}50%{transform:scale(1.06);opacity:.4}}
-.splash-logo-img{width:80px;height:80px;object-fit:contain;position:relative;z-index:1;animation:splashPop .8s cubic-bezier(.34,1.56,.64,1) .2s both;filter:drop-shadow(0 0 30px rgba(244,197,66,.5));}
+.splash-logo-img{width:80px;height:80px;object-fit:contain;position:relative;z-index:1;animation:splashPop .8s cubic-bezier(.34,1.56,.64,1) .2s both;filter:drop-shadow(0 0 30px rgba(244,197,66,.5));border-radius:18px;}
 @keyframes splashPop{from{opacity:0;transform:scale(.3) rotate(-15deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 .splash-name{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:1px;color:#fff;animation:fadeUp .5s ease .9s both;}
 .splash-ed{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;animation:fadeUp .5s ease 1.05s both;margin-top:4px;}
@@ -560,18 +560,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   <div class="splash-track"><div class="splash-fill"></div></div>
 </div>
 
-<!-- PWA INSTALL BANNER -->
-<div id="installBanner">
-  <div class="install-icon">📲</div>
-  <div class="install-text">
-    <strong>Instalar App</strong>
-    <span>Adicione à tela inicial · funciona offline</span>
-  </div>
-  <div class="install-actions">
-    <button class="install-btn" onclick="installPWA()">Instalar</button>
-    <button class="install-dismiss" onclick="dismissInstall()">✕</button>
-  </div>
-</div>
+<!-- PWA INSTALL BANNER (oculto - usado só via Mais) -->
+<div id="installBanner" style="display:none!important;"></div>
 
 <!-- ONBOARDING -->
 <div id="onboarding">
