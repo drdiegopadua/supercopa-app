@@ -989,7 +989,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="mais-card full" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')"><div class="mais-card-ic">📝</div><div><div class="mais-card-lbl">Fazer Inscrição</div><div class="mais-card-sub">Garanta sua vaga · Sem taxa</div></div></div>
     <div class="mais-card" onclick="nav('historyPage',null)"><div class="mais-card-ic">🏅</div><div class="mais-card-lbl">História</div><div class="mais-card-sub">Edições anteriores</div></div>
     <div class="mais-card" onclick="nav('mapPage',null)"><div class="mais-card-ic">🗺️</div><div class="mais-card-lbl">Mapa</div><div class="mais-card-sub">Planta do ginásio</div></div>
-    <div class="mais-card" onclick="document.getElementById('onboarding').classList.add('on');document.getElementById('onboarding').style.display='flex';"><div class="mais-card-ic">👋</div><div class="mais-card-lbl">Onboarding</div><div class="mais-card-sub">Abrir introdução</div></div>
+    <div class="mais-card" onclick="openOnboarding();"><div class="mais-card-ic">👋</div><div class="mais-card-lbl">Onboarding</div><div class="mais-card-sub">Abrir introdução</div></div>
     <div class="mais-card" onclick="nav('schedulePage',null)"><div class="mais-card-ic">📅</div><div class="mais-card-lbl">Agenda</div><div class="mais-card-sub">Programação completa</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')"><div class="mais-card-ic">📋</div><div class="mais-card-lbl">Regulamento</div><div class="mais-card-sub">Regras oficiais</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/galeria.html')"><div class="mais-card-ic">📸</div><div class="mais-card-lbl">Galeria</div><div class="mais-card-sub">Fotos do evento</div></div>
@@ -1137,7 +1137,18 @@ window.addEventListener('load',()=>{
     }
   }, 2700);
 });
-function closeOnboarding(){document.getElementById('onboarding').classList.remove('on');localStorage.setItem('onboarded','1');setTimeout(showInstallBanner,1000);}
+function closeOnboarding(){
+  const onboarding=document.getElementById('onboarding');
+
+  if(onboarding){
+    onboarding.classList.remove('on');
+    onboarding.style.display='none';
+  }
+
+  localStorage.setItem('onboarded','1');
+
+  setTimeout(showInstallBanner,1200);
+}
 
 // ==================== PWA ====================
 let deferredPrompt=null;
@@ -1451,6 +1462,19 @@ function toggleFaq(el){el.parentElement.classList.toggle('open');}
 
 // ==================== NEWS CLICK ====================
 document.querySelectorAll('.news-card').forEach(c=>{c.addEventListener('click',()=>showToast('📰 Em breve: notícias completas!'));});
+
+
+function openOnboarding(){
+  const onboarding=document.getElementById('onboarding');
+
+  if(!onboarding) return;
+
+  onboarding.style.display='flex';
+
+  setTimeout(()=>{
+    onboarding.classList.add('on');
+  },10);
+}
 </script>
 </body>
 </html>
