@@ -561,7 +561,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 </div>
 
 <!-- PWA INSTALL BANNER (oculto - usado só via Mais) -->
-<div id="installBanner" style="display:none!important;"></div>
+<div id="installBanner"></div>
 
 <!-- ONBOARDING -->
 <div id="onboarding">
@@ -989,6 +989,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="mais-card full" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')"><div class="mais-card-ic">📝</div><div><div class="mais-card-lbl">Fazer Inscrição</div><div class="mais-card-sub">Garanta sua vaga · Sem taxa</div></div></div>
     <div class="mais-card" onclick="nav('historyPage',null)"><div class="mais-card-ic">🏅</div><div class="mais-card-lbl">História</div><div class="mais-card-sub">Edições anteriores</div></div>
     <div class="mais-card" onclick="nav('mapPage',null)"><div class="mais-card-ic">🗺️</div><div class="mais-card-lbl">Mapa</div><div class="mais-card-sub">Planta do ginásio</div></div>
+    <div class="mais-card" onclick="document.getElementById('onboarding').classList.add('on');document.getElementById('onboarding').style.display='flex';"><div class="mais-card-ic">👋</div><div class="mais-card-lbl">Onboarding</div><div class="mais-card-sub">Abrir introdução</div></div>
     <div class="mais-card" onclick="nav('schedulePage',null)"><div class="mais-card-ic">📅</div><div class="mais-card-lbl">Agenda</div><div class="mais-card-sub">Programação completa</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')"><div class="mais-card-ic">📋</div><div class="mais-card-lbl">Regulamento</div><div class="mais-card-sub">Regras oficiais</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/galeria.html')"><div class="mais-card-ic">📸</div><div class="mais-card-lbl">Galeria</div><div class="mais-card-sub">Fotos do evento</div></div>
@@ -1123,8 +1124,17 @@ setImgs();
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('splash').classList.add('out');
-    if(!localStorage.getItem('onboarded')) setTimeout(()=>document.getElementById('onboarding').classList.add('on'),700);
-    else setTimeout(showInstallBanner, 2000);
+
+    const onboarding = document.getElementById('onboarding');
+
+    if(onboarding && !localStorage.getItem('onboarded')){
+      setTimeout(()=>{
+        onboarding.style.display='flex';
+        onboarding.classList.add('on');
+      },700);
+    } else {
+      setTimeout(showInstallBanner, 2000);
+    }
   }, 2700);
 });
 function closeOnboarding(){document.getElementById('onboarding').classList.remove('on');localStorage.setItem('onboarded','1');setTimeout(showInstallBanner,1000);}
@@ -1137,13 +1147,23 @@ const isInStandaloneMode=()=>('standalone' in navigator && navigator.standalone)
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
 
 function showInstallBanner(){
+  const ic=document.getElementById('installCard');
+
+  // Mantém botão instalar disponível na aba Mais
+  if(ic){
+    ic.style.display='flex';
+  }
+
   if(isInStandaloneMode()){
-    // Já instalado: esconde o card de instalar
-    const ic=document.getElementById('installCard');if(ic)ic.style.display='none';
     return;
   }
-  if(localStorage.getItem('installDismissed'))return;
-  document.getElementById('installBanner').classList.add('show');
+
+  if(localStorage.getItem('installDismissed')) return;
+
+  const banner=document.getElementById('installBanner');
+  if(banner){
+    banner.classList.add('show');
+  }
 }
 
 function installPWA(){
