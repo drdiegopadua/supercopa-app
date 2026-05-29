@@ -540,6 +540,122 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .lv-placeholder{height:180px;background:linear-gradient(135deg,rgba(14,59,120,.4),rgba(8,18,40,.9));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;}
 .lv-play{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a010);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 20px rgba(244,197,66,.3);}
 .lv-sub{font-size:11px;color:var(--muted);}
+
+/* ============================================================
+   AI CHAT
+============================================================ */
+.chat-wrap{padding:0 14px;display:flex;flex-direction:column;gap:10px;min-height:300px;}
+.chat-bubble{max-width:82%;padding:11px 14px;border-radius:18px;font-size:13px;line-height:1.5;animation:bubbleIn .25s ease;}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chat-bubble.ai{background:var(--card2);border:1px solid var(--border);border-bottom-left-radius:4px;align-self:flex-start;}
+.chat-bubble.user{background:linear-gradient(135deg,var(--blue),var(--blue2));border-bottom-right-radius:4px;align-self:flex-end;color:#fff;}
+.chat-bubble.typing{display:flex;gap:5px;align-items:center;padding:14px 16px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:typingBounce .8s ease infinite;}
+.typing-dot:nth-child(2){animation-delay:.15s;}
+.typing-dot:nth-child(3){animation-delay:.3s;}
+@keyframes typingBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.chat-input-row{position:sticky;bottom:90px;padding:10px 14px;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:8px;z-index:10;}
+.chat-inp{flex:1;height:44px;border-radius:13px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:13px;padding:0 14px;outline:none;transition:border .2s;}
+.chat-inp:focus{border-color:var(--border-gold);}
+.chat-send{width:44px;height:44px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-size:18px;flex-shrink:0;}
+.chat-suggestions{display:flex;gap:7px;padding:0 14px 12px;overflow-x:auto;flex-wrap:nowrap;}
+.chat-suggestions::-webkit-scrollbar{display:none;}
+.chat-sug{flex-shrink:0;padding:7px 13px;border-radius:999px;border:1px solid var(--border-gold);background:var(--gold-dim);color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.ai-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(14,59,120,.3));border:1px solid rgba(99,102,241,.3);padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;color:#a5b4fc;margin-bottom:8px;}
+
+/* ============================================================
+   BOLÃO
+============================================================ */
+.bolao-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:10px;transition:background .35s,border .35s;}
+.bolao-teams{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;}
+.bolao-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bolao-team-ic{width:44px;height:44px;border-radius:12px;background:var(--blue2);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.bolao-team-nm{font-size:11px;font-weight:800;text-align:center;}
+.bolao-vs{font-family:'Anton',sans-serif;font-size:16px;color:var(--muted);}
+.bolao-pickers{display:flex;gap:8px;align-items:center;justify-content:center;}
+.bolao-sc-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-gold);background:var(--gold-dim);color:var(--gold);font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.bolao-sc-val{font-family:'Anton',sans-serif;font-size:26px;color:var(--gold);min-width:28px;text-align:center;}
+.bolao-confirm{width:100%;height:42px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;margin-top:10px;}
+.bolao-confirm:disabled{opacity:.4;cursor:not-allowed;}
+.bolao-confirmed{display:flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:10px 14px;font-size:12px;color:#22c55e;font-weight:700;margin-top:8px;}
+.ranking-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);}
+.ranking-row:last-child{border-bottom:none;}
+.rank-pos{font-family:'Anton',sans-serif;font-size:18px;color:var(--gold);width:28px;flex-shrink:0;}
+.rank-name{font-weight:800;font-size:13px;flex:1;}
+.rank-pts{font-family:'Anton',sans-serif;font-size:18px;color:var(--gold);}
+.rank-badge{font-size:10px;color:var(--muted);background:rgba(255,255,255,.05);padding:2px 7px;border-radius:999px;}
+
+/* ============================================================
+   QUIZ
+============================================================ */
+.quiz-progress-bar{height:4px;background:var(--border);border-radius:999px;margin:0 14px 16px;overflow:hidden;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e8a010);border-radius:999px;transition:width .4s ease;}
+.quiz-card{margin:0 14px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:background .35s,border .35s;}
+.quiz-num{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.quiz-q{font-size:15px;font-weight:800;line-height:1.4;margin-bottom:20px;}
+.quiz-options{display:flex;flex-direction:column;gap:9px;}
+.quiz-opt{padding:13px 16px;border-radius:13px;border:1px solid var(--border);background:var(--card);font-size:13px;font-weight:700;cursor:pointer;text-align:left;transition:.2s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--border-gold);background:var(--gold-dim);}
+.quiz-opt.correct{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.5);color:#22c55e;}
+.quiz-opt.wrong{background:rgba(255,64,64,.12);border-color:rgba(255,64,64,.35);color:#ff6b6b;}
+.quiz-opt:disabled{cursor:not-allowed;}
+.quiz-feedback{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:12px;font-weight:700;line-height:1.5;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#22c55e;}
+.quiz-feedback.nok{background:rgba(255,64,64,.1);border:1px solid rgba(255,64,64,.25);color:#ff6b6b;}
+.quiz-next{width:100%;height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;margin-top:12px;display:none;}
+.quiz-next.show{display:block;}
+.quiz-result{text-align:center;padding:24px 14px;}
+.quiz-result-num{font-family:'Anton',sans-serif;font-size:64px;color:var(--gold);}
+.quiz-result-lbl{font-size:14px;color:var(--muted);margin-top:4px;}
+.quiz-result-msg{font-size:15px;font-weight:800;margin-top:12px;}
+.quiz-restart{height:48px;padding:0 32px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:14px;margin-top:16px;}
+.quiz-score-strip{display:flex;gap:8px;padding:0 14px 14px;}
+.quiz-sc-item{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:13px;padding:10px 8px;text-align:center;}
+.quiz-sc-num{font-family:'Anton',sans-serif;font-size:20px;color:var(--gold);}
+.quiz-sc-lbl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+/* ============================================================
+   GALLERY
+============================================================ */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:0 14px;}
+.gallery-item{aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;background:var(--card2);}
+.gallery-item-ic{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:26px;transition:transform .2s;}
+.gallery-item:active .gallery-item-ic{transform:scale(.93);}
+.gallery-item-lbl{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.5px;}
+.gallery-lightbox{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px;}
+.gallery-lightbox.on{display:flex;}
+.gallery-lightbox-img{font-size:80px;animation:popIn .3s ease;}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.gallery-lightbox-cap{font-size:14px;font-weight:700;color:#fff;}
+.gallery-lightbox-sub{font-size:12px;color:rgba(255,255,255,.5);}
+.gallery-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.1);border:none;border-radius:50%;width:38px;height:38px;color:#fff;font-size:18px;cursor:pointer;}
+
+/* ============================================================
+   QR CODE
+============================================================ */
+.qr-wrap{margin:0 14px;background:var(--card2);border:1px solid var(--border-gold);border-radius:var(--r);padding:24px;text-align:center;transition:background .35s;}
+.qr-canvas{display:block;margin:0 auto 16px;border-radius:12px;background:#fff;padding:10px;}
+.qr-title{font-family:'Anton',sans-serif;font-size:20px;color:var(--gold);margin-bottom:4px;}
+.qr-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+.qr-btn{height:44px;padding:0 24px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;cursor:pointer;}
+
+/* ============================================================
+   SOCIAL CARD GENERATOR
+============================================================ */
+.social-card-preview{margin:0 14px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#050816,#0E3B78);border:2px solid var(--border-gold);padding:20px;text-align:center;position:relative;}
+.sc-gen-logo{font-size:40px;margin-bottom:8px;}
+.sc-gen-title{font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;}
+.sc-gen-score{font-family:'Anton',sans-serif;font-size:48px;color:var(--gold);letter-spacing:4px;margin:8px 0;}
+.sc-gen-teams{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.6);margin-top:4px;}
+.sc-gen-footer{font-size:10px;color:rgba(255,255,255,.4);margin-top:12px;letter-spacing:1px;}
+.sc-controls{margin:12px 14px;display:flex;flex-direction:column;gap:8px;}
+.sc-row{display:flex;gap:8px;}
+.sc-inp{flex:1;height:42px;border-radius:11px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:13px;padding:0 13px;outline:none;}
+.sc-inp:focus{border-color:var(--border-gold);}
+.sc-score-row{display:flex;align-items:center;justify-content:center;gap:12px;}
+.sc-sc-inp{width:60px;height:48px;border-radius:12px;border:1px solid var(--border-gold);background:var(--card);color:var(--gold);font-family:'Anton',sans-serif;font-size:26px;text-align:center;outline:none;}
+.sc-gen-btn{width:100%;height:46px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -987,11 +1103,16 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
     <div class="mais-card full" id="installCard" onclick="installPWA()" style="background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.4));border-color:var(--border-gold);"><div class="mais-card-ic">📲</div><div><div class="mais-card-lbl" style="color:var(--gold)">Instalar Aplicativo</div><div class="mais-card-sub">Adicionar à tela inicial</div></div></div>
     <div class="mais-card full" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')"><div class="mais-card-ic">📝</div><div><div class="mais-card-lbl">Fazer Inscrição</div><div class="mais-card-sub">Garanta sua vaga · Sem taxa</div></div></div>
+    <div class="mais-card" onclick="nav('chatPage',null)"><div class="mais-card-ic">🤖</div><div class="mais-card-lbl">Chat IA</div><div class="mais-card-sub">Pergunte à IA</div></div>
+    <div class="mais-card" onclick="nav('bolaoPage',null)"><div class="mais-card-ic">🎯</div><div class="mais-card-lbl">Bolão</div><div class="mais-card-sub">Faça seus palpites</div></div>
+    <div class="mais-card" onclick="nav('quizPage',null);initQuiz()"><div class="mais-card-ic">🧠</div><div class="mais-card-lbl">Quiz</div><div class="mais-card-sub">Teste seus conhecimentos</div></div>
+    <div class="mais-card" onclick="nav('galleryPage',null);renderGallery('2025')"><div class="mais-card-ic">📸</div><div class="mais-card-lbl">Galeria</div><div class="mais-card-sub">Fotos do evento</div></div>
+    <div class="mais-card" onclick="nav('cardgenPage',null)"><div class="mais-card-ic">🖼️</div><div class="mais-card-lbl">Card Social</div><div class="mais-card-sub">Compartilhe placar</div></div>
+    <div class="mais-card" onclick="nav('qrPage',null);drawQR()"><div class="mais-card-ic">📲</div><div class="mais-card-lbl">QR Code</div><div class="mais-card-sub">Compartilhe o app</div></div>
     <div class="mais-card" onclick="nav('historyPage',null)"><div class="mais-card-ic">🏅</div><div class="mais-card-lbl">História</div><div class="mais-card-sub">Edições anteriores</div></div>
     <div class="mais-card" onclick="nav('mapPage',null)"><div class="mais-card-ic">🗺️</div><div class="mais-card-lbl">Mapa</div><div class="mais-card-sub">Planta do ginásio</div></div>
     <div class="mais-card" onclick="nav('schedulePage',null)"><div class="mais-card-ic">📅</div><div class="mais-card-lbl">Agenda</div><div class="mais-card-sub">Programação completa</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')"><div class="mais-card-ic">📋</div><div class="mais-card-lbl">Regulamento</div><div class="mais-card-sub">Regras oficiais</div></div>
-    <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/galeria.html')"><div class="mais-card-ic">📸</div><div class="mais-card-lbl">Galeria</div><div class="mais-card-sub">Fotos do evento</div></div>
     <div class="mais-card" onclick="window.open('https://www.instagram.com/supercopaafc/')"><div class="mais-card-ic">📱</div><div class="mais-card-lbl">Instagram</div><div class="mais-card-sub">@supercopaafc</div></div>
     <div class="mais-card" onclick="window.open('https://wa.link/900kb2')"><div class="mais-card-ic">💬</div><div class="mais-card-lbl">WhatsApp</div><div class="mais-card-sub">Fale conosco</div></div>
   </div>
@@ -1481,6 +1602,456 @@ function toggleFaq(el){el.parentElement.classList.toggle('open');}
 
 // ==================== NEWS CLICK ====================
 document.querySelectorAll('.news-card').forEach(c=>{c.addEventListener('click',()=>showToast('📰 Em breve: notícias completas!'));});
+
+// ==================== AI CHAT ====================
+const CHAT_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior torneio multiesporte da Região das Montanhas em Afonso Cláudio, ES. Responda em português, de forma animada e esportiva. Informações do evento: 6ª edição, 28 e 29 de Novembro de 2026, 12 times de voleibol e 6 de basquete, inscrição gratuita, premiação de R$5.000. Times inscritos: ES Volei (campeão 2025), Equipe UVI (vice), CT Montanhas (equipe da casa). Regras: fase de grupos (1º e 2º avançam), quartas, semifinal e final. Seja conciso, use emojis e incentive o espírito esportivo.`;
+
+let chatHistory = [];
+
+async function sendChat() {
+  const inp = document.getElementById('chatInput');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  inp.value = '';
+  appendBubble(msg, 'user');
+  chatHistory.push({role:'user', content: msg});
+  const typing = appendTyping();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: CHAT_SYSTEM,
+        messages: chatHistory.slice(-8)
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Não entendi, pode repetir?';
+    typing.remove();
+    appendBubble(reply, 'ai');
+    chatHistory.push({role:'assistant', content: reply});
+  } catch(e) {
+    typing.remove();
+    appendBubble('⚠️ Erro de conexão. Tente novamente.', 'ai');
+  }
+}
+
+function appendBubble(text, who) {
+  const wrap = document.getElementById('chatMessages');
+  const b = document.createElement('div');
+  b.className = 'chat-bubble ' + who;
+  b.innerHTML = text.replace(/\n/g,'<br>');
+  wrap.appendChild(b);
+  wrap.scrollTop = wrap.scrollHeight;
+  return b;
+}
+
+function appendTyping() {
+  const wrap = document.getElementById('chatMessages');
+  const b = document.createElement('div');
+  b.className = 'chat-bubble ai typing';
+  b.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  wrap.appendChild(b);
+  wrap.scrollTop = wrap.scrollHeight;
+  return b;
+}
+
+function sendSuggestion(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  sendChat();
+}
+
+// ==================== PREDICTION ====================
+async function getPrediction(t1, t2) {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 120,
+        messages: [{role:'user', content:`Supercopa AFC 2026 voleibol. ${t1} vs ${t2}. Dê uma previsão bem curta e animada (max 2 frases + emojis). Responda em português.`}]
+      })
+    });
+    const data = await res.json();
+    return data.content?.[0]?.text || '⚡ Vai ser um jogo emocionante!';
+  } catch(e) { return '⚡ Vai ser um jogo incrível! Torcida decide!'; }
+}
+
+// ==================== BOLÃO ====================
+const bolaoGames = [
+  {id:'b1', t1:'ES Volei', t2:'Equipe X', t1ic:'🏆', t2ic:'🏐', fase:'Grupo A · 28/11'},
+  {id:'b2', t1:'Equipe UVI', t2:'Equipe X', t1ic:'🥈', t2ic:'🏐', fase:'Grupo B · 28/11'},
+  {id:'b3', t1:'CT Montanhas', t2:'Equipe X', t1ic:'🏠', t2ic:'🏐', fase:'Grupo C · 28/11'},
+  {id:'b4', t1:'Time A', t2:'Time B', t1ic:'⚡', t2ic:'⚡', fase:'Final · 29/11'},
+];
+const bolaoState = JSON.parse(localStorage.getItem('bolao') || '{}');
+const bolaoRanking = JSON.parse(localStorage.getItem('bolaoRanking') || JSON.stringify([
+  {name:'João Torcedor', pts:8, acertos:3},
+  {name:'Maria Fã', pts:6, acertos:2},
+  {name:'Pedro Neto', pts:4, acertos:1},
+  {name:'Ana Lima', pts:2, acertos:1},
+]));
+const bolaoScores = {};
+
+function renderBolao() {
+  const c = document.getElementById('bolaoCards');
+  c.innerHTML = bolaoGames.map(g => {
+    const saved = bolaoState[g.id];
+    const confirmed = saved !== undefined;
+    return `<div class="bolao-card">
+      <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">${g.fase}</div>
+      <div class="bolao-teams">
+        <div class="bolao-team"><div class="bolao-team-ic">${g.t1ic}</div><div class="bolao-team-nm">${g.t1}</div></div>
+        <div class="bolao-vs">VS</div>
+        <div class="bolao-team"><div class="bolao-team-ic">${g.t2ic}</div><div class="bolao-team-nm">${g.t2}</div></div>
+      </div>
+      ${confirmed ? `<div class="bolao-confirmed">✅ Palpite salvo: ${saved.s1} × ${saved.s2}</div>` : `
+      <div class="bolao-pickers">
+        <button class="bolao-sc-btn" onclick="bChange('${g.id}','s1',-1)">−</button>
+        <div class="bolao-sc-val" id="bv-${g.id}-s1">${bolaoScores[g.id+'s1']||0}</div>
+        <button class="bolao-sc-btn" onclick="bChange('${g.id}','s1',1)">+</button>
+        <div style="font-family:'Anton',sans-serif;font-size:20px;color:var(--muted);margin:0 4px;">×</div>
+        <button class="bolao-sc-btn" onclick="bChange('${g.id}','s2',-1)">−</button>
+        <div class="bolao-sc-val" id="bv-${g.id}-s2">${bolaoScores[g.id+'s2']||0}</div>
+        <button class="bolao-sc-btn" onclick="bChange('${g.id}','s2',1)">+</button>
+      </div>
+      <button class="bolao-confirm" onclick="confirmBolao('${g.id}','${g.t1}','${g.t2}')">CONFIRMAR PALPITE</button>`}
+    </div>`;
+  }).join('');
+}
+
+function bChange(gid, key, delta) {
+  const k = gid+key;
+  bolaoScores[k] = Math.max(0, Math.min(3, (bolaoScores[k]||0)+delta));
+  const el = document.getElementById('bv-'+gid+'-'+key);
+  if(el) el.textContent = bolaoScores[k];
+}
+
+function confirmBolao(gid, t1, t2) {
+  const s1 = bolaoScores[gid+'s1']||0;
+  const s2 = bolaoScores[gid+'s2']||0;
+  bolaoState[gid] = {s1, s2};
+  localStorage.setItem('bolao', JSON.stringify(bolaoState));
+  renderBolao();
+  showToast('🎯 Palpite ' + s1 + ' × ' + s2 + ' confirmado!');
+  if(navigator.vibrate) navigator.vibrate([8,20,8]);
+}
+
+function bolaoTab(tab, btn) {
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('bolaoPane').style.display = tab==='palpites'?'block':'none';
+  document.getElementById('rankingPane').style.display = tab==='ranking'?'block':'none';
+  if(tab==='ranking') renderRanking();
+}
+
+function renderRanking() {
+  const el = document.getElementById('rankingList');
+  if(!el) return;
+  const medals = ['🥇','🥈','🥉'];
+  el.innerHTML = bolaoRanking.map((r,i) => `
+    <div class="ranking-row">
+      <div class="rank-pos">${medals[i]||i+1}</div>
+      <div class="rank-name">${r.name}<br><span class="rank-badge">${r.acertos} acerto${r.acertos!==1?'s':''}</span></div>
+      <div class="rank-pts">${r.pts}<span style="font-size:10px;color:var(--muted);font-family:'DM Sans',sans-serif"> pts</span></div>
+    </div>`).join('');
+}
+
+// ==================== QUIZ ====================
+const quizQuestions = [
+  {q:'Quantos sets são necessários para vencer uma partida de vôlei?', opts:['2 sets','3 sets','4 sets','5 sets'], ans:1, exp:'No vôlei, vence quem fizer 3 sets primeiro (melhor de 5)! 🏐'},
+  {q:'Qual a altura da rede no vôlei masculino?', opts:['2,24m','2,43m','2,50m','2,35m'], ans:1, exp:'A rede masculina mede 2,43m de altura. No feminino é 2,24m! 📏'},
+  {q:'O que é um "ace" no vôlei?', opts:['Erro do adversário','Ponto direto no saque','Bloqueio perfeito','Ataque certeiro'], ans:1, exp:'Ace é quando o saque cai direto no chão adversário sem que ninguém toque! 🎯'},
+  {q:'Quantos jogadores compõem uma equipe de vôlei em quadra?', opts:['5 jogadores','6 jogadores','7 jogadores','8 jogadores'], ans:1, exp:'São 6 jogadores por equipe em quadra! 👥'},
+  {q:'Qual a pontuação máxima de um set regular?', opts:['21 pontos','23 pontos','25 pontos','30 pontos'], ans:2, exp:'Sets regulares vão até 25 pontos (com 2 de vantagem). O 5º set vai até 15! 🔢'},
+  {q:'O que é o "libero" no vôlei?', opts:['O levantador','Jogador especialista em defesa','O oposto','O capitão'], ans:1, exp:'O libero é o especialista em defesa, usa colete diferente e não pode sacar ou atacar! 🛡️'},
+  {q:'Quantos toques a equipe pode dar antes de mandar a bola ao adversário?', opts:['2 toques','3 toques','4 toques','5 toques'], ans:1, exp:'Cada equipe tem direito a 3 toques antes de passar a bola! ✋'},
+  {q:'O que é um "bloqueio duplo"?', opts:['Dois saques seguidos','Dois jogadores bloqueando juntos','Bloquear duas vezes','Bloqueio no 2º toque'], ans:1, exp:'Bloqueio duplo é quando dois jogadores saltam juntos na rede para bloquear o ataque! 🤝'},
+  {q:'Em que ano o vôlei se tornou esporte olímpico?', opts:['1952','1960','1964','1972'], ans:2, exp:'O vôlei estreou nos Jogos Olímpicos de Tóquio em 1964! 🏅'},
+  {q:'Qual país tem mais títulos mundiais de vôlei masculino?', opts:['EUA','Rússia','Brasil','Itália'], ans:2, exp:'O Brasil é o maior campeão do mundo no vôlei masculino com 3 títulos! 🇧🇷'},
+];
+let qIdx=0, qAcertos=0, qErros=0, quizActive=false;
+
+function initQuiz() {
+  qIdx=0; qAcertos=0; qErros=0; quizActive=true;
+  document.getElementById('qScoreAcertos').textContent='0';
+  document.getElementById('qScoreErros').textContent='0';
+  document.getElementById('qScoreTotal').textContent=quizQuestions.length;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const total = quizQuestions.length;
+  document.getElementById('quizFill').style.width = (qIdx/total*100)+'%';
+  if(qIdx >= total) { showQuizResult(); return; }
+  const q = quizQuestions[qIdx];
+  document.getElementById('quizContent').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-num">Pergunta ${qIdx+1} de ${total}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qFeedback"></div>
+      <button class="quiz-next" id="qNext" onclick="nextQuestion()">PRÓXIMA →</button>
+    </div>`;
+}
+
+function answerQuiz(chosen) {
+  const q = quizQuestions[qIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(b=>b.disabled=true);
+  const fb = document.getElementById('qFeedback');
+  if(chosen===q.ans){
+    opts[chosen].classList.add('correct');
+    qAcertos++;
+    document.getElementById('qScoreAcertos').textContent=qAcertos;
+    fb.className='quiz-feedback show ok';
+    fb.textContent='✅ Correto! '+q.exp;
+    if(navigator.vibrate)navigator.vibrate(30);
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    qErros++;
+    document.getElementById('qScoreErros').textContent=qErros;
+    fb.className='quiz-feedback show nok';
+    fb.textContent='❌ Errou! '+q.exp;
+  }
+  const nxt = document.getElementById('qNext');
+  if(nxt) nxt.classList.add('show');
+  document.getElementById('quizFill').style.width=((qIdx+1)/quizQuestions.length*100)+'%';
+}
+
+function nextQuestion(){qIdx++;renderQuestion();}
+
+function showQuizResult(){
+  const pct = Math.round(qAcertos/quizQuestions.length*100);
+  const msg = pct>=80?'🏆 Craque do vôlei!':pct>=50?'👏 Bom conhecimento!':'📚 Estude mais sobre vôlei!';
+  document.getElementById('quizContent').innerHTML=`
+    <div class="quiz-result">
+      <div class="quiz-result-num">${qAcertos}/${quizQuestions.length}</div>
+      <div class="quiz-result-lbl">${pct}% de aproveitamento</div>
+      <div class="quiz-result-msg">${msg}</div>
+      <button class="quiz-restart" onclick="initQuiz()">JOGAR NOVAMENTE</button>
+    </div>`;
+  document.getElementById('quizFill').style.width='100%';
+  if(pct>=80) launchFireworks('Quiz Master!');
+}
+
+// ==================== GALLERY ====================
+const galleryData = {
+  '2025':[{ic:'🏆',cap:'Campeão ES Volei',sub:'Final · Novembro 2025'},{ic:'🏐',cap:'Grande Final',sub:'Ginásio Central · 2025'},{ic:'🥇',cap:'Premiação',sub:'Troféus e Medalhas 2025'},{ic:'👥',cap:'Equipes',sub:'12 times participantes'},{ic:'🎉',cap:'Abertura',sub:'Cerimônia de abertura'},{ic:'📸',cap:'Momentos',sub:'Destaques do evento'},{ic:'💪',cap:'Ação',sub:'Melhores jogadas'},{ic:'🤝',cap:'Fair Play',sub:'Espírito esportivo'},{ic:'🎊',cap:'Encerramento',sub:'Festa final 2025'}],
+  '2024':[{ic:'🏆',cap:'Campeão Equipe UVI',sub:'Final · Novembro 2024'},{ic:'🏐',cap:'Semifinal',sub:'Jogos emocionantes'},{ic:'🥇',cap:'MVP Pedro Costa',sub:'Melhor jogador 2024'},{ic:'👥',cap:'10 Times',sub:'4ª edição do torneio'},{ic:'🎉',cap:'Abertura 2024',sub:'Ginásio lotado'},{ic:'📸',cap:'Galeria',sub:'Memórias de 2024'}],
+  '2023':[{ic:'🏆',cap:'CT Montanhas Campeão',sub:'1ª vitória em casa · 2023'},{ic:'🏀',cap:'Basquete estreia',sub:'Primeiro ano multiesporte'},{ic:'🥇',cap:'MVP Carlos Lima',sub:'Melhor jogador 2023'},{ic:'👥',cap:'10 Times',sub:'3ª edição'}],
+  '2022':[{ic:'🏆',cap:'ES Volei Bicampeão',sub:'2ª edição · 2022'},{ic:'🎉',cap:'Retorno Pós-pandemia',sub:'Volta do torneio'},{ic:'🥇',cap:'MVP Rafael Andrade',sub:'Destaque 2022'}],
+};
+
+function renderGallery(year) {
+  const items = galleryData[year] || [];
+  document.getElementById('galleryGrid').innerHTML = items.map((item,i) => `
+    <div class="gallery-item" onclick="openLightbox('${item.ic}','${item.cap}','${item.sub}')">
+      <div class="gallery-item-ic">
+        <div>${item.ic}</div>
+        <div class="gallery-item-lbl">${item.cap.substring(0,12)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function gallTab(year, btn) {
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderGallery(year);
+}
+
+function openLightbox(ic, cap, sub) {
+  document.getElementById('lbImg').textContent = ic;
+  document.getElementById('lbCap').textContent = cap;
+  document.getElementById('lbSub').textContent = sub;
+  document.getElementById('galleryLightbox').classList.add('on');
+}
+
+function closeLightbox() {
+  document.getElementById('galleryLightbox').classList.remove('on');
+}
+
+// ==================== SOCIAL CARD ====================
+function updateCard() {
+  const t1 = document.getElementById('scT1').value || 'Time 1';
+  const t2 = document.getElementById('scT2').value || 'Time 2';
+  const s1 = document.getElementById('scS1').value || '0';
+  const s2 = document.getElementById('scS2').value || '0';
+  document.getElementById('scGenT1').textContent = t1;
+  document.getElementById('scGenT2').textContent = t2;
+  document.getElementById('scGenScore').textContent = s1 + ' × ' + s2;
+}
+
+function shareCard() {
+  const t1 = document.getElementById('scT1').value || 'Time 1';
+  const t2 = document.getElementById('scT2').value || 'Time 2';
+  const s1 = document.getElementById('scS1').value || '0';
+  const s2 = document.getElementById('scS2').value || '0';
+  const text = `🏐 SUPERCOPA AFC 2026\n\n${t1} ${s1} × ${s2} ${t2}\n\nAcompanhe em: supercopaafc.com.br\n#SupercopaAFC #Voleibol`;
+  if(navigator.share) navigator.share({title:'Supercopa AFC 2026', text});
+  else if(navigator.clipboard){navigator.clipboard.writeText(text);showToast('📋 Card copiado!');}
+}
+
+// ==================== QR CODE ====================
+function drawQR() {
+  const canvas = document.getElementById('qrCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = 200;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,size,size);
+  // Draw a visual QR-like pattern
+  ctx.fillStyle = '#050816';
+  const cell = 8;
+  // Finder patterns (3 corners)
+  function finder(x,y){
+    ctx.fillRect(x,y,7*cell,7*cell);
+    ctx.fillStyle='#fff';ctx.fillRect(x+cell,y+cell,5*cell,5*cell);
+    ctx.fillStyle='#050816';ctx.fillRect(x+2*cell,y+2*cell,3*cell,3*cell);
+    ctx.fillStyle='#050816';
+  }
+  finder(cell,cell); finder(size-8*cell,cell); finder(cell,size-8*cell);
+  // Random data dots
+  const seed = 42;
+  for(let r=0;r<25;r++){for(let c=0;c<25;c++){
+    const skip=(r<8&&c<8)||(r<8&&c>16)||(r>16&&c<8);
+    if(!skip&&Math.sin(r*17+c*13+seed)>0.1){
+      ctx.fillStyle='#050816';ctx.fillRect(cell+c*cell,cell+r*cell,cell-1,cell-1);
+    }
+  }}
+  // Center logo text
+  ctx.fillStyle='rgba(244,197,66,0.9)';
+  ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('AFC',size/2,size/2+4);
+}
+
+function downloadQR() {
+  const canvas = document.getElementById('qrCanvas');
+  if(!canvas){showToast('⚠️ QR Code não disponível');return;}
+  const link=document.createElement('a');
+  link.download='supercopa-afc-qrcode.png';
+  link.href=canvas.toDataURL();
+  link.click();
+  showToast('⬇️ QR Code baixado!');
+}
+
+// ==================== INIT NEW FEATURES ====================
+renderBolao();
+
 </script>
+
+<!-- ==================== AI CHAT ==================== -->
+<section id="chatPage" class="page">
+  <div class="ptitle">🤖 <span>Chat com IA</span></div>
+  <div style="padding:0 14px 10px;"><div class="ai-badge">✨ Powered by Claude · Anthropic</div></div>
+  <div class="chat-suggestions">
+    <button class="chat-sug" onclick="sendSuggestion(this)">Quem vai ganhar?</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Explica as regras do vôlei</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Qual o melhor time?</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Quando começa a final?</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">O que é um ace?</button>
+  </div>
+  <div class="chat-wrap" id="chatMessages">
+    <div class="chat-bubble ai">👋 Olá! Sou o assistente da <strong>Supercopa AFC 2026</strong>. Posso responder perguntas sobre o torneio, regras de voleibol, times inscritos e muito mais. Como posso ajudar?</div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-inp" id="chatInput" placeholder="Digite sua pergunta..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</section>
+
+<!-- ==================== BOLÃO ==================== -->
+<section id="bolaoPage" class="page">
+  <div class="ptitle">🎯 <span>Bolão</span></div>
+  <div style="padding:0 14px 6px;font-size:12px;color:var(--muted);">Palpite nos resultados e suba no ranking!</div>
+  <div class="tabs" style="padding-top:10px;">
+    <button class="tab on" onclick="bolaoTab('palpites',this)">Meus Palpites</button>
+    <button class="tab" onclick="bolaoTab('ranking',this)">🏅 Ranking</button>
+  </div>
+  <div id="bolaoPane">
+    <div class="cards" id="bolaoCards" style="padding-bottom:14px;"></div>
+  </div>
+  <div id="rankingPane" style="display:none;">
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:var(--r);margin:0 14px;overflow:hidden;" id="rankingList"></div>
+  </div>
+</section>
+
+<!-- ==================== QUIZ ==================== -->
+<section id="quizPage" class="page">
+  <div class="ptitle">🧠 <span>Quiz</span> de Vôlei</div>
+  <div class="quiz-score-strip">
+    <div class="quiz-sc-item"><div class="quiz-sc-num" id="qScoreAcertos">0</div><div class="quiz-sc-lbl">Acertos</div></div>
+    <div class="quiz-sc-item"><div class="quiz-sc-num" id="qScoreErros">0</div><div class="quiz-sc-lbl">Erros</div></div>
+    <div class="quiz-sc-item"><div class="quiz-sc-num" id="qScoreTotal">10</div><div class="quiz-sc-lbl">Total</div></div>
+  </div>
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
+  <div id="quizContent"></div>
+</section>
+
+<!-- ==================== GALLERY ==================== -->
+<section id="galleryPage" class="page">
+  <div class="ptitle">📸 <span>Galeria</span></div>
+  <div class="tabs" style="padding-top:4px;">
+    <button class="tab on" onclick="gallTab('2025',this)">2025</button>
+    <button class="tab" onclick="gallTab('2024',this)">2024</button>
+    <button class="tab" onclick="gallTab('2023',this)">2023</button>
+    <button class="tab" onclick="gallTab('2022',this)">2022</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+<!-- Gallery Lightbox -->
+<div class="gallery-lightbox" id="galleryLightbox">
+  <button class="gallery-close" onclick="closeLightbox()">✕</button>
+  <div class="gallery-lightbox-img" id="lbImg">📸</div>
+  <div class="gallery-lightbox-cap" id="lbCap">Foto</div>
+  <div class="gallery-lightbox-sub" id="lbSub">Supercopa AFC</div>
+</div>
+
+<!-- ==================== SOCIAL CARD ==================== -->
+<section id="cardgenPage" class="page">
+  <div class="ptitle">🖼️ <span>Card</span> para Redes</div>
+  <div style="padding:0 14px 12px;font-size:12px;color:var(--muted);">Gere um card com o placar para postar no Instagram e WhatsApp</div>
+  <div class="social-card-preview" id="socialCardPreview">
+    <div class="sc-gen-logo">🏐</div>
+    <div class="sc-gen-title">SUPERCOPA AFC 2026</div>
+    <div class="sc-gen-score" id="scGenScore">3 × 1</div>
+    <div class="sc-gen-teams"><span id="scGenT1">ES Volei</span><span id="scGenT2">Equipe UVI</span></div>
+    <div class="sc-gen-footer">supercopaafc.com.br · 6ª Edição</div>
+  </div>
+  <div class="sc-controls">
+    <div class="sc-row">
+      <input class="sc-inp" id="scT1" placeholder="Time 1" value="ES Volei" oninput="updateCard()">
+      <input class="sc-inp" id="scT2" placeholder="Time 2" value="Equipe UVI" oninput="updateCard()">
+    </div>
+    <div class="sc-score-row">
+      <input class="sc-sc-inp" id="scS1" type="number" min="0" max="3" value="3" oninput="updateCard()">
+      <div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);">×</div>
+      <input class="sc-sc-inp" id="scS2" type="number" min="0" max="3" value="1" oninput="updateCard()">
+    </div>
+    <button class="sc-gen-btn" onclick="shareCard()">📤 Compartilhar Card</button>
+  </div>
+</section>
+
+<!-- ==================== QR CODE ==================== -->
+<section id="qrPage" class="page">
+  <div class="ptitle">📲 <span>QR Code</span></div>
+  <div style="padding:0 14px 16px;font-size:12px;color:var(--muted);">Compartilhe o QR Code no ginásio para que todos acessem o app</div>
+  <div class="qr-wrap">
+    <canvas id="qrCanvas" class="qr-canvas" width="200" height="200"></canvas>
+    <div class="qr-title">Supercopa AFC</div>
+    <div class="qr-sub">supercopaafc.com.br<br>Escaneie e acesse o app ao vivo</div>
+    <button class="qr-btn" onclick="downloadQR()">⬇️ Baixar QR Code</button>
+  </div>
+  <div style="margin:14px;background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:16px;font-size:12px;color:var(--muted);line-height:1.7;transition:background .35s,border .35s;">
+    💡 <strong style="color:var(--text)">Dica:</strong> Imprima este QR Code e cole nas quadras, entrada e arquibancada para que a torcida acompanhe os jogos em tempo real pelo celular.
+  </div>
+</section>
+
 </body>
 </html>
