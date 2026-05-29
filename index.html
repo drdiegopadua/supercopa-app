@@ -995,6 +995,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <div class="theme-left"><div class="theme-ic" id="thIc">🌙</div><div><div class="theme-lbl" id="thLbl">Modo Noite</div><div class="theme-sub" id="thSub">Design escuro ativado</div></div></div>
       <label class="toggle"><input type="checkbox" id="thToggle" onchange="toggleTheme(this)"><div class="toggle-track"></div><div class="toggle-thumb" id="thThumb">🌙</div></label>
     </div>
+    <div class="mais-card full" id="installCard" onclick="installPWA()" style="background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.4));border-color:var(--border-gold);"><div class="mais-card-ic">📲</div><div><div class="mais-card-lbl" style="color:var(--gold)">Instalar Aplicativo</div><div class="mais-card-sub">Adicionar à tela inicial</div></div></div>
     <div class="mais-card full" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')"><div class="mais-card-ic">📝</div><div><div class="mais-card-lbl">Fazer Inscrição</div><div class="mais-card-sub">Garanta sua vaga · Sem taxa</div></div></div>
     <div class="mais-card" onclick="nav('historyPage',null)"><div class="mais-card-ic">🏅</div><div class="mais-card-lbl">História</div><div class="mais-card-sub">Edições anteriores</div></div>
     <div class="mais-card" onclick="nav('mapPage',null)"><div class="mais-card-ic">🗺️</div><div class="mais-card-lbl">Mapa</div><div class="mais-card-sub">Planta do ginásio</div></div>
@@ -1140,9 +1141,37 @@ function closeOnboarding(){document.getElementById('onboarding').classList.remov
 
 // ==================== PWA ====================
 let deferredPrompt=null;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandaloneMode=()=>('standalone' in navigator && navigator.standalone)||window.matchMedia('(display-mode: standalone)').matches;
+
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-function showInstallBanner(){if(!localStorage.getItem('installDismissed')&&deferredPrompt)document.getElementById('installBanner').classList.add('show');}
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{dismissInstall();});}}
+
+function showInstallBanner(){
+  if(isInStandaloneMode()){
+    // Já instalado: esconde o card de instalar
+    const ic=document.getElementById('installCard');if(ic)ic.style.display='none';
+    return;
+  }
+  if(localStorage.getItem('installDismissed'))return;
+  document.getElementById('installBanner').classList.add('show');
+}
+
+function installPWA(){
+  if(deferredPrompt){
+    // Chrome/Android: prompt nativo
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{dismissInstall();});
+  } else if(isIOS){
+    // iOS Safari: mostrar instruções
+    showToast('📲 No Safari: toque em compartilhar (⬆️) e depois "Adicionar à Tela de Início"');
+    setTimeout(()=>dismissInstall(),4000);
+  } else {
+    // Outros navegadores: orientar o usuário
+    showToast('💡 No menu do navegador, escolha "Instalar aplicativo" ou "Adicionar à tela inicial"');
+    setTimeout(()=>dismissInstall(),4000);
+  }
+}
+
 function dismissInstall(){document.getElementById('installBanner').classList.remove('show');localStorage.setItem('installDismissed','1');}
 
 // ==================== NAVIGATION ====================
