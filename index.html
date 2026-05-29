@@ -561,7 +561,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 </div>
 
 <!-- PWA INSTALL BANNER (oculto - usado só via Mais) -->
-<div id="installBanner"></div>
+<div id="installBanner" style="display:none!important;"></div>
 
 <!-- ONBOARDING -->
 <div id="onboarding">
@@ -989,7 +989,6 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="mais-card full" onclick="window.open('https://www.supercopaafc.com.br/inscricao.html')"><div class="mais-card-ic">📝</div><div><div class="mais-card-lbl">Fazer Inscrição</div><div class="mais-card-sub">Garanta sua vaga · Sem taxa</div></div></div>
     <div class="mais-card" onclick="nav('historyPage',null)"><div class="mais-card-ic">🏅</div><div class="mais-card-lbl">História</div><div class="mais-card-sub">Edições anteriores</div></div>
     <div class="mais-card" onclick="nav('mapPage',null)"><div class="mais-card-ic">🗺️</div><div class="mais-card-lbl">Mapa</div><div class="mais-card-sub">Planta do ginásio</div></div>
-    <div class="mais-card" onclick="openOnboarding();"><div class="mais-card-ic">👋</div><div class="mais-card-lbl">Onboarding</div><div class="mais-card-sub">Abrir introdução</div></div>
     <div class="mais-card" onclick="nav('schedulePage',null)"><div class="mais-card-ic">📅</div><div class="mais-card-lbl">Agenda</div><div class="mais-card-sub">Programação completa</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')"><div class="mais-card-ic">📋</div><div class="mais-card-lbl">Regulamento</div><div class="mais-card-sub">Regras oficiais</div></div>
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/galeria.html')"><div class="mais-card-ic">📸</div><div class="mais-card-lbl">Galeria</div><div class="mais-card-sub">Fotos do evento</div></div>
@@ -1122,22 +1121,38 @@ setImgs();
 
 // ==================== SPLASH ====================
 window.addEventListener('load',()=>{
+
   setTimeout(()=>{
-    document.getElementById('splash').classList.add('out');
 
-    const onboarding = document.getElementById('onboarding');
+    const splash=document.getElementById('splash');
+    const onboarding=document.getElementById('onboarding');
 
-    if(onboarding && !localStorage.getItem('onboarded')){
-      setTimeout(()=>{
-        onboarding.style.display='flex';
-        onboarding.classList.add('on');
-      },700);
-    } else {
-      setTimeout(showInstallBanner, 2000);
+    if(splash){
+      splash.classList.add('out');
     }
-  }, 2700);
+
+    if(!localStorage.getItem('onboarded')){
+
+      setTimeout(()=>{
+
+        if(onboarding){
+          onboarding.style.display='flex';
+          onboarding.classList.add('on');
+        }
+
+      },700);
+
+    } else {
+
+      setTimeout(showInstallBanner,2000);
+
+    }
+
+  },2700);
+
 });
 function closeOnboarding(){
+
   const onboarding=document.getElementById('onboarding');
 
   if(onboarding){
@@ -1147,7 +1162,21 @@ function closeOnboarding(){
 
   localStorage.setItem('onboarded','1');
 
-  setTimeout(showInstallBanner,1200);
+  setTimeout(showInstallBanner,1000);
+
+}
+
+
+
+function openOnboarding(){
+
+  const onboarding=document.getElementById('onboarding');
+
+  if(onboarding){
+    onboarding.style.display='flex';
+    onboarding.classList.add('on');
+  }
+
 }
 
 // ==================== PWA ====================
@@ -1158,23 +1187,13 @@ const isInStandaloneMode=()=>('standalone' in navigator && navigator.standalone)
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
 
 function showInstallBanner(){
-  const ic=document.getElementById('installCard');
-
-  // Mantém botão instalar disponível na aba Mais
-  if(ic){
-    ic.style.display='flex';
-  }
-
   if(isInStandaloneMode()){
+    // Já instalado: esconde o card de instalar
+    const ic=document.getElementById('installCard');if(ic)ic.style.display='none';
     return;
   }
-
-  if(localStorage.getItem('installDismissed')) return;
-
-  const banner=document.getElementById('installBanner');
-  if(banner){
-    banner.classList.add('show');
-  }
+  if(localStorage.getItem('installDismissed'))return;
+  document.getElementById('installBanner').classList.add('show');
 }
 
 function installPWA(){
@@ -1462,19 +1481,6 @@ function toggleFaq(el){el.parentElement.classList.toggle('open');}
 
 // ==================== NEWS CLICK ====================
 document.querySelectorAll('.news-card').forEach(c=>{c.addEventListener('click',()=>showToast('📰 Em breve: notícias completas!'));});
-
-
-function openOnboarding(){
-  const onboarding=document.getElementById('onboarding');
-
-  if(!onboarding) return;
-
-  onboarding.style.display='flex';
-
-  setTimeout(()=>{
-    onboarding.classList.add('on');
-  },10);
-}
 </script>
 </body>
 </html>
