@@ -1170,7 +1170,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="nav-btn on" onclick="nav('homePage',this)"><span class="ni">🏠</span><small>Início</small></button>
-  <button class="nav-btn nav-badge" onclick="nav('gamesPage',this)"><span class="ni">📅</span><small>Jogos</small></button>
+  <button class="nav-btn" onclick="nav('gamesPage',this)"><span class="ni">📅</span><small>Jogos</small></button>
   <button class="nav-btn" onclick="nav('tablePage',this)"><span class="ni">📊</span><small>Tabela</small></button>
   <button class="nav-btn" onclick="nav('bracketPage',this)"><span class="ni">🏆</span><small>Mata-mata</small></button>
   <button class="nav-btn" onclick="nav('maisPage',this)"><span class="ni">⋯</span><small>Mais</small></button>
@@ -1854,6 +1854,7 @@ SUPERCOPA AFC - BASE DE CONHECIMENTO COMPLETA:
 `;
 const AI_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior evento multiesporte da Região das Montanhas em Afonso Cláudio, ES. USE ESTE CONHECIMENTO PARA RESPONDER: ${SUPERCOPA_KB}. Regras: 1) Responda em português, de forma animada e esportiva com emojis. 2) Seja conciso (máx 3 parágrafos). 3) Se a pergunta for sobre algo que não está no conhecimento acima, diga: "Essa pergunta precisa ser respondida pela Comissão Organizadora! Entre em contato pelo WhatsApp: https://wa.link/900kb2 🏐". 4) Nunca invente informações. 5) Para regras gerais de vôlei e basquete, pode responder normalmente.`;
 
+const ANTHROPIC_KEY = 'YOUR_KEY_HERE';
 let chatHistory = [];
 
 async function sendChat() {
@@ -1867,7 +1868,12 @@ async function sendChat() {
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body: JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:500,
@@ -2186,7 +2192,12 @@ async function saveWinner() {
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body: JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:200,
