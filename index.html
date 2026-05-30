@@ -427,21 +427,32 @@ body.day .sb-ov{background:linear-gradient(95deg,rgba(5,20,60,.85) 0%,rgba(5,20,
 ============================================================ */
 #teamModal{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;}
 #teamModal.on{display:flex;}
-.tm-sheet{background:var(--bg2);border-radius:26px 26px 0 0;padding:26px 22px 44px;width:100%;max-width:480px;animation:slideUp .35s cubic-bezier(.34,1.2,.64,1);max-height:82vh;overflow-y:auto;position:relative;}
+.tm-sheet{background:var(--bg2);border-radius:26px 26px 0 0;padding:26px 22px 44px;width:100%;max-width:480px;animation:slideUp .35s cubic-bezier(.34,1.2,.64,1);max-height:88vh;overflow-y:auto;position:relative;}
 .tm-handle{width:38px;height:4px;background:rgba(255,255,255,.1);border-radius:999px;margin:0 auto 18px;}
-.tm-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
-.tm-av{width:56px;height:56px;border-radius:15px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
-.tm-name{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;}
-.tm-city{font-size:12px;color:var(--muted);margin-top:2px;}
-.tm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
-.ts{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:11px 8px;text-align:center;}
-.ts-n{font-family:'Anton',sans-serif;font-size:20px;color:var(--gold);}
-.ts-l{font-size:9px;color:var(--muted);margin-top:2px;}
-.player-row{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:9px 12px;margin-bottom:7px;}
+.tm-header{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+.tm-av{width:62px;height:62px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 4px 14px rgba(14,59,120,.4);}
+.tm-name{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;line-height:1.05;}
+.tm-city{font-size:12px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px;}
+.tm-badge-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px;}
+.tm-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid var(--border-gold);color:var(--gold);background:rgba(244,197,66,.08);}
+.tm-insta{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid rgba(193,53,132,.35);color:#c13584;background:rgba(193,53,132,.07);display:flex;align-items:center;gap:5px;cursor:pointer;text-decoration:none;}
+.tm-section{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin:16px 0 8px;}
+.tm-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.tm-info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;}
+.tm-info-ic{font-size:16px;margin-bottom:4px;}
+.tm-info-lbl{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.tm-info-val{font-size:12px;font-weight:800;margin-top:2px;line-height:1.3;}
+.tm-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:4px;}
+.ts{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px 8px;text-align:center;transition:background .35s,border .35s;}
+.ts.highlight{background:linear-gradient(135deg,rgba(244,197,66,.1),rgba(14,59,120,.2));border-color:var(--border-gold);}
+.ts-n{font-family:'Anton',sans-serif;font-size:26px;color:var(--gold);}
+.ts-l{font-size:9px;color:var(--muted);margin-top:3px;font-weight:700;letter-spacing:.5px;}
+.tm-update-note{font-size:9px;color:var(--muted);text-align:right;margin-top:6px;display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.player-row{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:9px 12px;margin-bottom:7px;transition:background .35s,border .35s;}
 .pr-num{font-family:'Anton',sans-serif;font-size:17px;color:var(--gold);width:26px;flex-shrink:0;}
 .pr-name{font-size:12px;font-weight:700;flex:1;}
 .pr-pos{font-size:9px;color:var(--muted);background:rgba(255,255,255,.05);padding:2px 7px;border-radius:999px;}
-.modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.07);border:none;border-radius:50%;width:34px;height:34px;font-size:17px;display:flex;align-items:center;justify-content:center;}
+.modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.07);border:none;border-radius:50%;width:34px;height:34px;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 
 /* ============================================================
    MAIS PAGE
@@ -712,18 +723,45 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   <div class="tm-sheet">
     <button class="modal-close" onclick="closeTeamModal()">✕</button>
     <div class="tm-handle"></div>
+
+    <!-- CABEÇALHO -->
     <div class="tm-header">
-      <div class="tm-av" id="tmAv">🏆</div>
+      <div class="tm-av" id="tmAv">🏐</div>
       <div>
-        <div class="tm-name" id="tmName">ES Volei</div>
-        <div class="tm-city" id="tmCity">Vitória, ES</div>
+        <div class="tm-name" id="tmName">—</div>
+        <div class="tm-city" id="tmCity">—</div>
       </div>
     </div>
-    <div class="tm-stats">
-      <div class="ts"><div class="ts-n" id="tmPJ">0</div><div class="ts-l">Jogos</div></div>
-      <div class="ts"><div class="ts-n" id="tmV">0</div><div class="ts-l">Vitórias</div></div>
-      <div class="ts"><div class="ts-n" id="tmPTS">0</div><div class="ts-l">Pontos</div></div>
+
+    <!-- BADGES (instagram + destaque) -->
+    <div class="tm-badge-row" id="tmBadges"></div>
+
+    <!-- RESPONSÁVEL E CAPITÃO -->
+    <div class="tm-section">📋 Informações</div>
+    <div class="tm-info-grid">
+      <div class="tm-info-card">
+        <div class="tm-info-ic">👔</div>
+        <div class="tm-info-lbl">Responsável</div>
+        <div class="tm-info-val" id="tmResp">—</div>
+      </div>
+      <div class="tm-info-card">
+        <div class="tm-info-ic">🏅</div>
+        <div class="tm-info-lbl">Capitão</div>
+        <div class="tm-info-val" id="tmCap">—</div>
+      </div>
     </div>
+
+    <!-- ESTATÍSTICAS 2026 (da planilha) -->
+    <div class="tm-section">📊 Desempenho · Edição 2026</div>
+    <div class="tm-stats">
+      <div class="ts"><div class="ts-n" id="tmPJ">—</div><div class="ts-l">Partidas</div></div>
+      <div class="ts highlight"><div class="ts-n" id="tmV">—</div><div class="ts-l">Vitórias</div></div>
+    </div>
+    <div class="tm-update-note" id="tmUpdateNote">
+      <span>🔄</span><span>Dados atualizados da planilha</span>
+    </div>
+
+    <!-- ELENCO -->
     <div id="tmPlayers"></div>
   </div>
 </div>
@@ -1487,6 +1525,11 @@ async function loadVoleiDataIndex() {
       })).filter(r=>r.name&&r.name!=='—');
     });
     renderTable(curGrp);
+    // Atualiza cache de stats dos times (jogos e vitórias)
+    if (typeof computeTeamStatsFromSheet === 'function') {
+      computeTeamStatsFromSheet();
+      refreshOpenTeamStats();
+    }
 
     // ══════════════════════════════════════════════════════════════════════
     // 2. JOGOS (gamesPage) — renderiza tudo dinamicamente
@@ -1685,18 +1728,128 @@ function filterTable(g,btn){
 function searchTeam(v){ renderTable(curGrp,v); }
 
 // ==================== TEAM MODAL ====================
+
+// ── Dados estáticos dos times (instagram, responsável, capitão, badge) ──────
+const teamInfo = {
+  'ES Volei':      { insta:'@esvolei',      resp:'Marcos Antônio',  cap:'João Silva',    badge:'🏆 CAMPEÃO 2025', av:'🏆' },
+  'Equipe UVI':    { insta:'@equipeuvi',    resp:'Fernanda Costa',  cap:'Pedro Costa',   badge:'🥈 VICE 2025',    av:'🥈' },
+  'CT Montanhas':  { insta:'@ctmontanhas',  resp:'Diego Padua',     cap:'Carlos Lima',   badge:'🏠 EQUIPE DA CASA', av:'🏠' },
+};
+
+// ── Cache dos stats (PJ e V) vindos da planilha ──────────────────────────────
+// Preenchido por computeTeamStatsFromSheet() e renovado a cada 1 hora
+const teamStatsCache = {};  // { 'Nome do Time': { pj: N, v: N, lastUpdated: timestamp } }
+let _teamStatsCacheTime = 0;
+const TEAM_STATS_TTL = 60 * 60 * 1000; // 1 hora
+
+// ── Computa PJ e V para cada time a partir dos dados já em tableData ─────────
+function computeTeamStatsFromSheet() {
+  const counts = {}; // { nome: { pj:0, v:0 } }
+
+  // tableData já tem pj e v vindos da planilha de Classificação (colunas PJ e V)
+  // então só consolidamos todos os grupos
+  ['grupoA','grupoB','grupoC','grupoD'].forEach(g => {
+    (tableData[g] || []).forEach(r => {
+      if (!r.name || r.name === '—') return;
+      counts[r.name] = { pj: Number(r.pj)||0, v: Number(r.v)||0 };
+    });
+  });
+
+  const now = Date.now();
+  Object.keys(counts).forEach(name => {
+    teamStatsCache[name] = { ...counts[name], lastUpdated: now };
+  });
+  _teamStatsCacheTime = now;
+}
+
+// ── Busca stats para um time, retornando { pj, v } ──────────────────────────
+function getTeamStats(name) {
+  if (teamStatsCache[name]) return teamStatsCache[name];
+  // fallback: varre tableData em tempo real
+  for (const g of ['grupoA','grupoB','grupoC','grupoD']) {
+    const row = (tableData[g]||[]).find(r => r.name === name);
+    if (row) return { pj: Number(row.pj)||0, v: Number(row.v)||0 };
+  }
+  return { pj: 0, v: 0 };
+}
+
+// ── Atualiza o painel de stats se o modal do time estiver aberto ─────────────
+function refreshOpenTeamStats() {
+  const modal = document.getElementById('teamModal');
+  if (!modal || !modal.classList.contains('on')) return;
+  const name = document.getElementById('tmName').textContent;
+  if (!name || name === '—') return;
+  computeTeamStatsFromSheet();
+  const s = getTeamStats(name);
+  const pjEl = document.getElementById('tmPJ');
+  const vEl  = document.getElementById('tmV');
+  if (pjEl) pjEl.textContent = s.pj;
+  if (vEl)  vEl.textContent  = s.v;
+  const noteEl = document.getElementById('tmUpdateNote');
+  if (noteEl) {
+    const now = new Date();
+    noteEl.innerHTML = `<span>🔄</span><span>Atualizado às ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}</span>`;
+  }
+}
+
+// ── Atualização horária dos stats do modal ───────────────────────────────────
+setInterval(async () => {
+  if (Date.now() - _teamStatsCacheTime >= TEAM_STATS_TTL) {
+    await loadVoleiDataIndex(); // recarrega planilha completa
+    computeTeamStatsFromSheet();
+    refreshOpenTeamStats();
+  }
+}, 60 * 1000); // verifica a cada 1 min, executa quando 1h passou
+
 const players={'ES Volei':[{n:1,name:'João Silva',pos:'Levantador'},{n:7,name:'Lucas Melo',pos:'Central'},{n:12,name:'Rafael Andrade',pos:'Oposto'},{n:15,name:'Bruno Lima',pos:'Libero'}],'Equipe UVI':[{n:4,name:'Pedro Costa',pos:'Ponteiro'},{n:8,name:'André Souza',pos:'Central'},{n:11,name:'Gabriel Reis',pos:'Oposto'}],'CT Montanhas':[{n:3,name:'Carlos Lima',pos:'Levantador'},{n:9,name:'Mateus Ferr.',pos:'Ponteiro'},{n:14,name:'Diego Alves',pos:'Central'}]};
-function openTeam(name,city,av,pj,v,pts){
-  document.getElementById('tmAv').textContent=av;
-  document.getElementById('tmName').textContent=name;
-  document.getElementById('tmCity').textContent=city;
-  document.getElementById('tmPJ').textContent=pj;
-  document.getElementById('tmV').textContent=v;
-  document.getElementById('tmPTS').textContent=pts;
-  const pl=players[name]||[];
-  document.getElementById('tmPlayers').innerHTML=pl.length
-    ?'<div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:7px;letter-spacing:1px;text-transform:uppercase;">Elenco</div>'+pl.map(p=>`<div class="player-row"><div class="pr-num">#${p.n}</div><div class="pr-name">${p.name}</div><span class="pr-pos">${p.pos}</span></div>`).join('')
-    :'<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px;">Elenco não divulgado</div>';
+
+function openTeam(name, city, av, pj, v, pts) {
+  const info = teamInfo[name] || {};
+
+  // Avatar
+  document.getElementById('tmAv').textContent = info.av || av || '🏐';
+
+  // Nome e cidade
+  document.getElementById('tmName').textContent = name || '—';
+  document.getElementById('tmCity').innerHTML   = `📍 ${city || '—'}`;
+
+  // Badges (destaque + instagram)
+  const badgesEl = document.getElementById('tmBadges');
+  let badgesHtml = '';
+  if (info.badge) badgesHtml += `<span class="tm-badge">${info.badge}</span>`;
+  if (info.insta) {
+    const href = `https://instagram.com/${info.insta.replace('@','')}`;
+    badgesHtml += `<a class="tm-insta" href="${href}" target="_blank" rel="noopener">📷 ${info.insta}</a>`;
+  }
+  badgesEl.innerHTML = badgesHtml || '<span class="tm-badge">Supercopa AFC 2026</span>';
+
+  // Responsável e Capitão
+  document.getElementById('tmResp').textContent = info.resp || '—';
+  document.getElementById('tmCap').textContent  = info.cap  || '—';
+
+  // Stats: tenta pegar do cache da planilha, senão usa o que veio por parâmetro
+  computeTeamStatsFromSheet();
+  const stats = getTeamStats(name);
+  const statPJ = stats.pj > 0 ? stats.pj : (pj ?? '—');
+  const statV  = stats.v  >= 0 && (stats.pj > 0 || pj > 0) ? stats.v : (v ?? '—');
+  document.getElementById('tmPJ').textContent = statPJ;
+  document.getElementById('tmV').textContent  = statV;
+
+  // Nota de atualização
+  const noteEl = document.getElementById('tmUpdateNote');
+  if (noteEl) {
+    const now = new Date();
+    noteEl.innerHTML = `<span>🔄</span><span>Atualizado às ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} · atualiza a cada 1h</span>`;
+  }
+
+  // Elenco
+  const pl = players[name] || [];
+  document.getElementById('tmPlayers').innerHTML = pl.length
+    ? `<div class="tm-section">👥 Elenco</div>` + pl.map(p =>
+        `<div class="player-row"><div class="pr-num">#${p.n}</div><div class="pr-name">${p.name}</div><span class="pr-pos">${p.pos}</span></div>`
+      ).join('')
+    : '';
+
   document.getElementById('teamModal').classList.add('on');
 }
 function closeTeamModal(){document.getElementById('teamModal').classList.remove('on');}
