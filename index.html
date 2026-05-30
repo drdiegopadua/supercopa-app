@@ -1300,24 +1300,36 @@ function nav(pid,btn){
 }
 
 // ==================== THEME ====================
+function isDayTime(){
+  const h=new Date().getHours();
+  return h>=7 && h<18; // 07:00–17:59 = dia; 18:00–06:59 = noite
+}
+function applyTheme(isDay){
+  document.body.classList.toggle('day',isDay);
+  const toggle=document.getElementById('thToggle');if(toggle)toggle.checked=isDay;
+  ['thIc','thThumb'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=isDay?'☀️':'🌙';});
+  const l=document.getElementById('thLbl');if(l)l.textContent=isDay?'Modo Dia':'Modo Noite';
+  const s=document.getElementById('thSub');if(s)s.textContent=isDay?'Design claro ativado':'Design escuro ativado';
+}
 function toggleTheme(cb){
   const d=cb.checked;
-  document.body.classList.toggle('day',d);
-  document.getElementById('thIc').textContent=d?'☀️':'🌙';
-  document.getElementById('thLbl').textContent=d?'Modo Dia':'Modo Noite';
-  document.getElementById('thSub').textContent=d?'Design claro ativado':'Design escuro ativado';
-  document.getElementById('thThumb').textContent=d?'☀️':'🌙';
+  applyTheme(d);
   localStorage.setItem('theme',d?'day':'night');
+  localStorage.setItem('themeManual','1'); // usuário escolheu manualmente
   showToast(d?'☀️ Modo Dia ativado':'🌙 Modo Noite ativado');
 }
 (()=>{
-  if(localStorage.getItem('theme')==='day'){
-    document.body.classList.add('day');
-    const t=document.getElementById('thToggle');if(t)t.checked=true;
-    ['thIc','thThumb'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='☀️';});
-    const l=document.getElementById('thLbl');if(l)l.textContent='Modo Dia';
-    const s=document.getElementById('thSub');if(s)s.textContent='Design claro ativado';
-  }
+  // Se o usuário nunca alterou manualmente, usa o horário automático
+  const manual=localStorage.getItem('themeManual');
+  const saved=localStorage.getItem('theme');
+  const isDay=manual ? saved==='day' : isDayTime();
+  applyTheme(isDay);
+  // Verifica a cada minuto se deve trocar o tema automaticamente
+  setInterval(()=>{
+    if(!localStorage.getItem('themeManual')){
+      applyTheme(isDayTime());
+    }
+  },60000);
 })();
 
 // ==================== COUNTDOWN FLIP ====================
