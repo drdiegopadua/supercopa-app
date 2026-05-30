@@ -1854,7 +1854,8 @@ SUPERCOPA AFC - BASE DE CONHECIMENTO COMPLETA:
 `;
 const AI_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior evento multiesporte da Região das Montanhas em Afonso Cláudio, ES. USE ESTE CONHECIMENTO PARA RESPONDER: ${SUPERCOPA_KB}. Regras: 1) Responda em português, de forma animada e esportiva com emojis. 2) Seja conciso (máx 3 parágrafos). 3) Se a pergunta for sobre algo que não está no conhecimento acima, diga: "Essa pergunta precisa ser respondida pela Comissão Organizadora! Entre em contato pelo WhatsApp: https://wa.link/900kb2 🏐". 4) Nunca invente informações. 5) Para regras gerais de vôlei e basquete, pode responder normalmente.`;
 
-const ANTHROPIC_KEY = 'YOUR_KEY_HERE';
+const GEMINI_KEY = 'AIzaSyC5znFBGRO_ifAH6hLfqGOEHRyxuBFf0Lk';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
 let chatHistory = [];
 
 async function sendChat() {
@@ -1863,29 +1864,22 @@ async function sendChat() {
   if (!msg) return;
   inp.value = '';
   appendBubble(msg, 'user');
-  chatHistory.push({role:'user', content: msg});
+  chatHistory.push({role:'user', parts:[{text:msg}]});
   const typing = appendTyping();
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(GEMINI_URL, {
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:500,
-        system: AI_SYSTEM,
-        messages: chatHistory.slice(-10)
+        system_instruction:{parts:[{text: AI_SYSTEM}]},
+        contents: chatHistory.slice(-10)
       })
     });
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Não consegui responder. Tente novamente!';
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Não consegui responder. Tente novamente!';
     typing.remove();
     appendBubble(reply, 'ai');
-    chatHistory.push({role:'assistant', content: reply});
+    chatHistory.push({role:'model', parts:[{text:reply}]});
   } catch(e) {
     typing.remove();
     appendBubble('⚠️ Sem conexão. Tente novamente. Para dúvidas: https://wa.link/900kb2', 'ai');
@@ -2190,22 +2184,15 @@ async function saveWinner() {
   const btn = document.querySelector('.quiz-save-btn');
   if(btn){btn.textContent='Enviando...';btn.disabled=true;}
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(GEMINI_URL, {
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:200,
-        messages:[{role:'user',content:`Gere um email curto em português para drdiegopadua@gmail.com informando que ${name} (telefone: ${phone}) acertou todas as 40 questões do Quiz da Supercopa AFC 2026 no app. Formato: Assunto na primeira linha, corpo do email simples.`}]
+        contents:[{role:'user',parts:[{text:`Gere um email curto em português para drdiegopadua@gmail.com informando que ${name} (telefone: ${phone}) acertou todas as 40 questões do Quiz da Supercopa AFC 2026 no app. Formato: Assunto na primeira linha, corpo do email simples.`}]}]
       })
     });
     const data = await res.json();
-    const emailContent = data.content?.[0]?.text || '';
+    const emailContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     // Use mailto as fallback
     const subject = encodeURIComponent('🏆 Ganhador do Quiz - Supercopa AFC 2026');
     const body = encodeURIComponent(`Parabéns! Temos um vencedor do Quiz da Supercopa AFC 2026!\n\nNome: ${name}\nTelefone: ${phone}\n\nEsta pessoa acertou todas as 40 questões do Quiz no app da Supercopa!\n\nData/hora: ${new Date().toLocaleString('pt-BR')}`);
@@ -2332,7 +2319,7 @@ startIndexSheetCycle();
 <section id="chatPage" class="page">
   <div class="ptitle">🤖 <span>Chat com IA</span></div>
   <div style="padding:0 14px 8px;display:flex;align-items:center;gap:8px;">
-    <div class="ai-badge">✨ Powered by Claude · Anthropic</div>
+    <div class="ai-badge">✨ Powered by Gemini · Google</div>
     <button style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;" onclick="clearChat()">Limpar</button>
   </div>
   <div class="chat-sugs" id="chatSugs">
