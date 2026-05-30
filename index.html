@@ -10,6 +10,7 @@
 <title>Supercopa AFC · 6ª Edição</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* ============================================================
    VARIABLES
@@ -669,12 +670,16 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .lb-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.1);border:none;border-radius:50%;width:38px;height:38px;color:#fff;font-size:18px;cursor:pointer;}
 
 /* ============================================================ SOCIAL CARD ============================================================ */
-.sc-preview{margin:0 14px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#050816,#0E3B78);border:2px solid var(--border-gold);padding:20px;text-align:center;}
-.sc-preview-logo{font-size:38px;margin-bottom:6px;}
-.sc-preview-title{font-family:'Anton',sans-serif;font-size:20px;color:#fff;text-transform:uppercase;}
-.sc-preview-score{font-family:'Anton',sans-serif;font-size:46px;color:var(--gold);letter-spacing:4px;margin:7px 0;}
-.sc-preview-teams{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
-.sc-preview-footer{font-size:9px;color:rgba(255,255,255,.35);margin-top:10px;letter-spacing:1px;}
+.sc-preview{margin:0 14px;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,#050816 0%,#0E3B78 60%,#071a3e 100%);border:2px solid rgba(244,197,66,0.5);padding:28px 22px 22px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.6);}
+.sc-preview-logo{font-size:44px;margin-bottom:8px;filter:drop-shadow(0 0 12px rgba(244,197,66,.5));}
+.sc-preview-title{font-family:'Anton',sans-serif;font-size:13px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:3px;margin-bottom:2px;}
+.sc-preview-edition{font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.sc-preview-teams-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;}
+.sc-preview-team{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff;text-transform:uppercase;line-height:1.2;}
+.sc-preview-team.right{text-align:right;}
+.sc-preview-score{font-family:'Anton',sans-serif;font-size:52px;color:var(--gold);letter-spacing:6px;line-height:1;text-shadow:0 0 24px rgba(244,197,66,.4);flex-shrink:0;}
+.sc-preview-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(244,197,66,.3),transparent);margin:14px 0 10px;}
+.sc-preview-footer{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;}
 .sc-controls{margin:10px 14px;display:flex;flex-direction:column;gap:8px;padding-bottom:160px;}
 .sc-row{display:flex;gap:8px;}
 .sc-inp{flex:1;height:42px;border-radius:11px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:13px;padding:0 12px;outline:none;}
@@ -2955,14 +2960,63 @@ function updateCard() {
   const l2=document.getElementById('scT2lbl'); if(l2) l2.textContent=t2;
 }
 
-function shareCard() {
-  const t1=document.getElementById('scT1')?.value||'Time 1';
-  const t2=document.getElementById('scT2')?.value||'Time 2';
-  const s1=document.getElementById('scS1')?.value||'0';
-  const s2=document.getElementById('scS2')?.value||'0';
-  const txt=`🏐 SUPERCOPA AFC 2026\n\n${t1} ${s1} × ${s2} ${t2}\n\nAcompanhe: supercopaafc.com.br\n#SupercopaAFC #Voleibol #AfonsoClaudio`;
-  if(navigator.share) navigator.share({title:'Supercopa AFC 2026',text:txt});
-  else if(navigator.clipboard){navigator.clipboard.writeText(txt);showToast('📋 Card copiado!');}
+async function gerarImagemCard(acao) {
+  const preview = document.getElementById('scPreview');
+  if (!preview) return;
+
+  const t1 = document.getElementById('scT1')?.value || 'Time 1';
+  const t2 = document.getElementById('scT2')?.value || 'Time 2';
+  const s1 = document.getElementById('scS1')?.value || '0';
+  const s2 = document.getElementById('scS2')?.value || '0';
+
+  showToast('⏳ Gerando imagem...');
+
+  try {
+    const canvas = await html2canvas(preview, {
+      scale: 3,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false
+    });
+
+    const dataUrl = canvas.toDataURL('image/png');
+
+    if (acao === 'download') {
+      const link = document.createElement('a');
+      link.download = `supercopa-afc-${t1.replace(/\s/g,'-')}-${s1}x${s2}-${t2.replace(/\s/g,'-')}.png`;
+      link.href = dataUrl;
+      link.click();
+      showToast('🖼️ Imagem salva!');
+      return;
+    }
+
+    // acao === 'share'
+    if (navigator.share && navigator.canShare) {
+      // Converte dataUrl para Blob para compartilhar como arquivo
+      const res  = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], 'supercopa-afc.png', { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Supercopa AFC 2026',
+          text: `🏐 ${t1} ${s1} × ${s2} ${t2} | Supercopa AFC 2026`
+        });
+        return;
+      }
+    }
+
+    // Fallback: baixa a imagem se não puder compartilhar arquivo
+    const link = document.createElement('a');
+    link.download = 'supercopa-afc.png';
+    link.href = dataUrl;
+    link.click();
+    showToast('🖼️ Imagem salva! Compartilhe pelo seu app favorito.');
+
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️ Erro ao gerar imagem. Tente novamente.');
+  }
 }
 
 // ==========================================================
@@ -3107,12 +3161,17 @@ startIndexSheetCycle();
 <section id="cardgenPage" class="page">
   <div class="ptitle">🖼️ <span>Card Social</span></div>
   <div style="padding:0 14px 12px;font-size:12px;color:var(--muted);">Gere um card com placar para postar no Instagram e WhatsApp</div>
-  <div class="sc-preview">
+  <div class="sc-preview" id="scPreview">
     <div class="sc-preview-logo">🏐</div>
-    <div class="sc-preview-title">SUPERCOPA AFC 2026</div>
-    <div class="sc-preview-score" id="scScore">3 × 1</div>
-    <div class="sc-preview-teams"><span id="scT1lbl">ES Volei</span><span id="scT2lbl">Equipe UVI</span></div>
-    <div class="sc-preview-footer">supercopaafc.com.br · 6ª Edição · Nov 2026</div>
+    <div class="sc-preview-title">Supercopa AFC</div>
+    <div class="sc-preview-edition">6ª Edição · 2026</div>
+    <div class="sc-preview-teams-row">
+      <div class="sc-preview-team left" id="scT1lbl">ES Volei</div>
+      <div class="sc-preview-score" id="scScore">3 × 1</div>
+      <div class="sc-preview-team right" id="scT2lbl">Equipe UVI</div>
+    </div>
+    <div class="sc-preview-divider"></div>
+    <div class="sc-preview-footer">supercopaafc.com.br · #SupercopaAFC</div>
   </div>
   <div class="sc-controls">
     <div class="sc-row">
@@ -3124,7 +3183,8 @@ startIndexSheetCycle();
       <div style="font-family:Anton,sans-serif;font-size:20px;color:var(--gold)">×</div>
       <input class="sc-sc-inp" id="scS2" type="number" min="0" max="3" value="1" oninput="updateCard()">
     </div>
-    <button class="sc-btn" onclick="shareCard()">📤 Compartilhar Card</button>
+    <button class="sc-btn" onclick="gerarImagemCard('share')">📤 Compartilhar Card</button>
+    <button class="sc-btn" style="background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border);margin-top:0;" onclick="gerarImagemCard('download')">⬇️ Baixar como Imagem</button>
   </div>
 </section>
 
