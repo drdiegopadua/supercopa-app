@@ -552,7 +552,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .lv-play{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a010);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 20px rgba(244,197,66,.3);}
 .lv-sub{font-size:11px;color:var(--muted);}
 /* ============================================================ AI CHAT ============================================================ */
-#chatPage{display:none;flex-direction:column;height:calc(100dvh - 64px - 78px);overflow:hidden;}
+#chatPage{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;bottom:78px;overflow:hidden;z-index:10;}
 #chatPage.active{display:flex;animation:pgIn .3s ease;}
 .chat-header{flex-shrink:0;padding:10px 14px 4px;display:flex;align-items:center;gap:8px;}
 .chat-sugs{flex-shrink:0;display:flex;gap:7px;padding:0 14px 8px;overflow-x:auto;flex-wrap:nowrap;}
