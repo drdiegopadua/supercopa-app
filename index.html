@@ -948,71 +948,9 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <button class="tab" onclick="filterGames('final',this)">Final</button>
   </div>
   <div class="cards" id="gamesList">
-    <div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A</div>
-    <div class="gc" data-phase="grupos" data-gid="g1">
-      <div class="gc-top"><span class="gc-phase">Grupo A · Rodada 1</span><span class="gc-dt">28/11 · 09:00h</span></div>
-      <div class="gc-mid">
-        <div class="gc-t"><div class="gc-t-ic">🏆</div><div class="gc-t-nm">ES Volei</div><div class="gc-t-city">Vitória, ES</div></div>
-        <div class="gc-sc"><div class="gc-vs" id="scr-g1">VS</div><div class="gc-sc-sets" id="sets-g1">Em breve</div></div>
-        <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">Equipe X</div><div class="gc-t-city">Cidade, ES</div></div>
-      </div>
-      <div class="gc-stats" id="stats-g1">
-        <div class="gc-stats-title">Estatísticas</div>
-        <div class="gc-stats-grid">
-          <div class="gsg-val right" id="ace1-g1">—</div><div class="gsg-cat">ACES</div><div class="gsg-val left" id="ace2-g1">—</div>
-          <div class="gsg-val right" id="blk1-g1">—</div><div class="gsg-cat">BLOQ.</div><div class="gsg-val left" id="blk2-g1">—</div>
-        </div>
-      </div>
-      <div class="gc-bot">
-        <span class="gc-loc">📍 Quadra A</span>
-        <div class="gc-actions">
-          <button class="btn-share" onclick="shareGame('ES Volei vs Equipe X','28/11 09:00h')">📤</button>
-          <button class="btn-watch" id="w-g1" onclick="toggleWatch('g1')">🔔 Acompanhar</button>
-        </div>
-      </div>
-    </div>
-    <div class="gc" data-phase="grupos" data-gid="g2">
-      <div class="gc-top"><span class="gc-phase">Grupo A · Rodada 2</span><span class="gc-dt">28/11 · 11:00h</span></div>
-      <div class="gc-mid">
-        <div class="gc-t"><div class="gc-t-ic">🏆</div><div class="gc-t-nm">ES Volei</div><div class="gc-t-city">Vitória, ES</div></div>
-        <div class="gc-sc"><div class="gc-vs" id="scr-g2">VS</div><div class="gc-sc-sets" id="sets-g2">Em breve</div></div>
-        <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">Equipe Y</div><div class="gc-t-city">Cidade, RJ</div></div>
-      </div>
-      <div class="gc-bot"><span class="gc-loc">📍 Quadra A</span><div class="gc-actions"><button class="btn-share" onclick="shareGame('ES Volei vs Equipe Y','28/11 11:00h')">📤</button><button class="btn-watch" id="w-g2" onclick="toggleWatch('g2')">🔔 Acompanhar</button></div></div>
-    </div>
-    <div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B</div>
-    <div class="gc" data-phase="grupos" data-gid="g3">
-      <div class="gc-top"><span class="gc-phase">Grupo B · Rodada 1</span><span class="gc-dt">28/11 · 10:00h</span></div>
-      <div class="gc-mid">
-        <div class="gc-t"><div class="gc-t-ic">🥈</div><div class="gc-t-nm">Equipe UVI</div><div class="gc-t-city">Itaperuna, RJ</div></div>
-        <div class="gc-sc"><div class="gc-vs" id="scr-g3">VS</div><div class="gc-sc-sets" id="sets-g3">Em breve</div></div>
-        <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">Equipe X</div><div class="gc-t-city">Cidade, ES</div></div>
-      </div>
-      <div class="gc-stats" id="stats-g3"><div class="gc-stats-title">Estatísticas</div><div class="gc-stats-grid"><div class="gsg-val right" id="ace1-g3">—</div><div class="gsg-cat">ACES</div><div class="gsg-val left" id="ace2-g3">—</div><div class="gsg-val right" id="blk1-g3">—</div><div class="gsg-cat">BLOQ.</div><div class="gsg-val left" id="blk2-g3">—</div></div></div>
-      <div class="gc-bot"><span class="gc-loc">📍 Quadra B</span><div class="gc-actions"><button class="btn-share" onclick="shareGame('Equipe UVI vs Equipe X','28/11 10:00h')">📤</button><button class="btn-watch" id="w-g3" onclick="toggleWatch('g3')">🔔 Acompanhar</button></div></div>
-    </div>
-    <div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO C</div>
-    <div class="gc" data-phase="grupos" data-gid="g4">
-      <div class="gc-top"><span class="gc-phase">Grupo C · Rodada 1</span><span class="gc-dt">28/11 · 10:00h</span></div>
-      <div class="gc-mid">
-        <div class="gc-t"><div class="gc-t-ic">🏠</div><div class="gc-t-nm">CT Montanhas</div><div class="gc-t-city">Afonso Cláudio, ES</div></div>
-        <div class="gc-sc"><div class="gc-vs" id="scr-g4">VS</div><div class="gc-sc-sets" id="sets-g4">Em breve</div></div>
-        <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">Equipe X</div><div class="gc-t-city">Cidade, ES</div></div>
-      </div>
-      <div class="gc-bot"><span class="gc-loc">📍 Quadra A</span><div class="gc-actions"><button class="btn-share" onclick="shareGame('CT Montanhas vs Equipe X','28/11 10:00h')">📤</button><button class="btn-watch" id="w-g4" onclick="toggleWatch('g4')">🔔 Acompanhar</button></div></div>
-    </div>
-    <div class="grp-lbl" data-phase="quartas">QUARTAS DE FINAL</div>
-    <div class="gc" data-phase="quartas"><div class="gc-top"><span class="gc-phase">Q1 · 1ºA × 2ºB</span><span class="gc-dt">29/11 · 08:00h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">🔵</div><div class="gc-t-nm">1º Grupo A</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">🔴</div><div class="gc-t-nm">2º Grupo B</div></div></div><div class="gc-bot"><span class="gc-loc">📍 Quadra A</span><button class="btn-watch" onclick="toggleWatch('q1')">🔔 Acompanhar</button></div></div>
-    <div class="gc" data-phase="quartas"><div class="gc-top"><span class="gc-phase">Q2 · 1ºB × 2ºA</span><span class="gc-dt">29/11 · 09:00h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">🔵</div><div class="gc-t-nm">1º Grupo B</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">🔴</div><div class="gc-t-nm">2º Grupo A</div></div></div><div class="gc-bot"><span class="gc-loc">📍 Quadra B</span><button class="btn-watch" onclick="toggleWatch('q2')">🔔 Acompanhar</button></div></div>
-    <div class="gc" data-phase="quartas"><div class="gc-top"><span class="gc-phase">Q3 · 1ºC × 2ºD</span><span class="gc-dt">29/11 · 10:00h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">🟢</div><div class="gc-t-nm">1º Grupo C</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">🟡</div><div class="gc-t-nm">2º Grupo D</div></div></div><div class="gc-bot"><span class="gc-loc">📍 Quadra A</span><button class="btn-watch" onclick="toggleWatch('q3')">🔔 Acompanhar</button></div></div>
-    <div class="gc" data-phase="quartas"><div class="gc-top"><span class="gc-phase">Q4 · 1ºD × 2ºC</span><span class="gc-dt">29/11 · 11:00h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">🟡</div><div class="gc-t-nm">1º Grupo D</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">🟢</div><div class="gc-t-nm">2º Grupo C</div></div></div><div class="gc-bot"><span class="gc-loc">📍 Quadra B</span><button class="btn-watch" onclick="toggleWatch('q4')">🔔 Acompanhar</button></div></div>
-    <div class="grp-lbl" data-phase="semi">SEMIFINAL</div>
-    <div class="gc" data-phase="semi"><div class="gc-top"><span class="gc-phase">SF1 · Venc.Q1 × Venc.Q2</span><span class="gc-dt">29/11 · 14:00h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">⚡</div><div class="gc-t-nm">Vencedor Q1</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">⚡</div><div class="gc-t-nm">Vencedor Q2</div></div></div></div>
-    <div class="gc" data-phase="semi"><div class="gc-top"><span class="gc-phase">SF2 · Venc.Q3 × Venc.Q4</span><span class="gc-dt">29/11 · 15:30h</span></div><div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">⚡</div><div class="gc-t-nm">Vencedor Q3</div></div><div class="gc-sc"><div class="gc-vs">VS</div></div><div class="gc-t"><div class="gc-t-ic">⚡</div><div class="gc-t-nm">Vencedor Q4</div></div></div></div>
-    <div class="grp-lbl" data-phase="final">🏆 GRANDE FINAL</div>
-    <div class="gc" data-phase="final" style="background:linear-gradient(135deg,rgba(244,197,66,.06),rgba(8,18,40,.9));border-color:var(--border-gold);">
-      <div class="gc-top"><span class="gc-phase" style="color:var(--gold)">Final · 29/11</span><span class="gc-dt">17:30h</span></div>
-      <div class="gc-mid"><div class="gc-t"><div class="gc-t-ic">🔥</div><div class="gc-t-nm">Finalista 1</div></div><div class="gc-sc"><div class="gc-vs" style="color:var(--gold)">VS</div><div class="gc-sc-sets" style="color:var(--gold)">Ao Vivo</div></div><div class="gc-t"><div class="gc-t-ic">🔥</div><div class="gc-t-nm">Finalista 2</div></div></div>
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
+      <div style="font-size:28px;margin-bottom:8px">⏳</div>
+      Carregando jogos da planilha...
     </div>
   </div>
 </section>
@@ -1353,7 +1291,7 @@ function nav(pid,btn){
   window.scrollTo({top:0,behavior:'smooth'});
   if(navigator.vibrate)navigator.vibrate(6);
   // Integração Google Sheets: carrega e inicia ciclo nas abas de jogos/tabela
-  if(pid==='gamesPage'||pid==='tablePage'){
+  if(pid==='gamesPage'||pid==='tablePage'||pid==='bracketPage'){
     loadVoleiDataIndex();
     startIndexSheetCycle();
   } else {
@@ -1450,110 +1388,242 @@ const tableData = {
 };
 let curGrp = 'grupoA';
 
-// ── busca planilha e atualiza jogos + classificação ─────────────────────────
+// ── helpers ────────────────────────────────────────────────────────────────
+function _cc(rows,r,col){ return (rows[r]&&rows[r][col]!=null)?rows[r][col].toString().trim():''; }
+
+function _buildSetsDetail(rows, row) {
+  const s = [];
+  [[2,7],[3,8],[4,9]].forEach(([ca,cb]) => {
+    const a=_cc(rows,row,ca), b=_cc(rows,row,cb);
+    if(a&&b) s.push(a+'/'+b);
+  });
+  return s.join('  ');
+}
+
+// ── renderiza um card de jogo dinamicamente ────────────────────────────────
+function _makeGameCard(phase, dataPhase, meta, casa, visit, setsC, setsV, vencedor, rows, row, gid, loc) {
+  const finalizado = vencedor && vencedor !== 'A DEFINIR' && vencedor !== '—';
+  const temPlacar  = setsC || setsV || finalizado;
+  const setsDetail = _buildSetsDetail(rows, row);
+
+  let scoreHtml;
+  if (temPlacar) {
+    scoreHtml = `<div class="gc-sc-num">${setsC||'0'} × ${setsV||'0'}</div>
+                 ${setsDetail ? `<div class="gc-sc-sets">${setsDetail}</div>` : ''}`;
+  } else {
+    scoreHtml = `<div class="gc-vs">VS</div><div class="gc-sc-sets">Em breve</div>`;
+  }
+
+  const watchId = gid ? `id="w-${gid}"` : '';
+  const watchClick = gid ? `onclick="toggleWatch('${gid}')"` : '';
+  const watchLabel = gid && watched.has(gid) ? '✅ Acompanhando' : '🔔 Acompanhar';
+  const watchClass = gid && watched.has(gid) ? 'btn-watch on' : 'btn-watch';
+
+  const liveClass = (temPlacar && !finalizado) ? ' live-card' : '';
+
+  return `<div class="gc${liveClass}" data-phase="${dataPhase}"${gid?` data-gid="${gid}"`:''}">
+    <div class="gc-top">
+      <span class="gc-phase">${phase}</span>
+      <span class="gc-dt">${meta}</span>
+    </div>
+    <div class="gc-mid">
+      <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">${casa||'—'}</div></div>
+      <div class="gc-sc">${scoreHtml}</div>
+      <div class="gc-t"><div class="gc-t-ic">🏐</div><div class="gc-t-nm">${visit||'—'}</div></div>
+    </div>
+    ${finalizado ? `<div class="gc-bot"><span class="gc-loc">📍 ${loc}</span><div class="gc-actions"><span style="font-size:11px;color:var(--green);font-weight:700;">✅ ${vencedor}</span><button class="${watchClass}" ${watchId} ${watchClick}>${watchLabel}</button></div></div>`
+                 : `<div class="gc-bot"><span class="gc-loc">📍 ${loc}</span><div class="gc-actions"><button class="${watchClass}" ${watchId} ${watchClick}>${watchLabel}</button></div></div>`}
+  </div>`;
+}
+
+// ── busca planilha e atualiza tudo ─────────────────────────────────────────
 async function loadVoleiDataIndex() {
   const makeUrl = (sheet, range) =>
     `https://sheets.googleapis.com/v4/spreadsheets/${INDEX_VOLEI_SHEET_ID}/values/${encodeURIComponent("'"+sheet+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
 
   try {
-    const [resClass, resJogos] = await Promise.all([
+    const [resClass, resJogos, resMata] = await Promise.all([
       fetch(makeUrl('Classificação','A1:K26')),
-      fetch(makeUrl('Fase de Grupos','A1:Q49'))
+      fetch(makeUrl('Fase de Grupos','A1:Q49')),
+      fetch(makeUrl('Mata-Mata','A1:Q21'))
     ]);
-    const [dataClass, dataJogos] = await Promise.all([resClass.json(), resJogos.json()]);
-    if (!resClass.ok || !resJogos.ok) throw new Error('Sheets error');
+    const [dataClass, dataJogos, dataMata] = await Promise.all([
+      resClass.json(), resJogos.json(), resMata.json()
+    ]);
 
-    const rowsC = dataClass.values  || [];
-    const rowsJ = dataJogos.values  || [];
-    const cc = (rows,r,col) => (rows[r]&&rows[r][col]!=null)?rows[r][col].toString().trim():'';
+    const rowsC = dataClass.values || [];
+    const rowsJ = dataJogos.values || [];
+    const rowsM = dataMata.values  || [];
 
-    // ── Classificação → tableData ──────────────────────────────────────────
-    // Grupo A → índices 5-7 | B → 11-13 | C → 17-19 | D → 23-25
-    // cols: 0=POS 1=Equipe 2=PTS 3=V 4=D 5=SP (ajuste conforme planilha)
-    const grpMap = {
-      grupoA: [5,6,7], grupoB: [11,12,13],
-      grupoC: [17,18,19], grupoD: [23,24,25]
-    };
+    // ══════════════════════════════════════════════════════════════════════
+    // 1. CLASSIFICAÇÃO → tableData
+    // Grupo A → idx 5-7 | B → 11-13 | C → 17-19 | D → 23-25
+    // cols: 0=POS 1=Equipe 2=PTS 3=V 4=D 5=Cidade 6=PJ 7=SP
+    // ══════════════════════════════════════════════════════════════════════
+    const grpMap = { grupoA:[5,6,7], grupoB:[11,12,13], grupoC:[17,18,19], grupoD:[23,24,25] };
     Object.keys(grpMap).forEach(g => {
       tableData[g] = grpMap[g].map(r => ({
-        pos:  cc(rowsC,r,0) || '—',
-        name: cc(rowsC,r,1) || '—',
-        city: cc(rowsC,r,5) || '',
+        pos:  _cc(rowsC,r,0)||'—',
+        name: _cc(rowsC,r,1)||'—',
+        city: _cc(rowsC,r,5)||'',
         badge:'',
-        pj:   cc(rowsC,r,6) || '0',
-        v:    cc(rowsC,r,3) || '0',
-        d:    cc(rowsC,r,4) || '0',
-        sp:   cc(rowsC,r,7) || '0',
-        pts:  cc(rowsC,r,2) || '0'
-      })).filter(r => r.name && r.name !== '—');
+        pj:   _cc(rowsC,r,6)||'0',
+        v:    _cc(rowsC,r,3)||'0',
+        d:    _cc(rowsC,r,4)||'0',
+        sp:   _cc(rowsC,r,7)||'0',
+        pts:  _cc(rowsC,r,2)||'0'
+      })).filter(r=>r.name&&r.name!=='—');
     });
-    // re-renderiza grupo ativo
     renderTable(curGrp);
 
-    // ── Jogos da Fase de Grupos → atualiza placares nos cards ─────────────
-    // Mapeamento igual ao tabela.html:
-    // Grupo A → rows 10-12 | B → 22-24 | C → 34-36 | D → 46-48
-    // cols: B=1(Casa) C=2 D=3 E=4(sets casa) H=7 I=8 J=9(sets vis)
-    //       L=11(Visit) M=12(setsC) N=13(setsV) O=14(Vencedor)
-    const jogosGrupos = [
-      { grp:'A', rows:[10,11,12], ids:['g1','g2','g3'] },
-      { grp:'B', rows:[22,23,24], ids:['g3','g3b','g3c'] },
-      { grp:'C', rows:[34,35,36], ids:['g4','g4b','g4c'] },
-      { grp:'D', rows:[46,47,48], ids:['g4d','g4e','g4f'] }
-    ];
-    // Só atualiza os cards que existem no DOM (g1–g4 estão no index)
-    // Mapeamos rows do grupo A (rodadas 1 e 2 do Grupo A = g1,g2)
-    // e primeira rodada de B=g3, C=g4
-    const domMap = [
-      { row:10, id:'g1' },
-      { row:11, id:'g2' },
-      { row:22, id:'g3' },
-      { row:34, id:'g4' }
-    ];
-    domMap.forEach(({ row, id }) => {
-      const casa   = cc(rowsJ, row, 1);
-      const visit  = cc(rowsJ, row, 11);
-      const setsC  = cc(rowsJ, row, 12) || '0';
-      const setsV  = cc(rowsJ, row, 13) || '0';
-      const vencedor = cc(rowsJ, row, 14);
+    // ══════════════════════════════════════════════════════════════════════
+    // 2. JOGOS (gamesPage) — renderiza tudo dinamicamente
+    // Fase de Grupos: A→rows 10-12 | B→22-24 | C→34-36 | D→46-48
+    // cols: B=1(Casa) C=2 D=3 E=4 H=7 I=8 J=9 L=11(Visit) M=12(sC) N=13(sV) O=14(Venc)
+    // ══════════════════════════════════════════════════════════════════════
+    const gamesList = document.getElementById('gamesList');
+    if (gamesList) {
+      const grupos = [
+        { label:'FASE DE GRUPOS · GRUPO A', rows:[10,11,12], grp:'A', locs:['Quadra A','Quadra A','Quadra B'] },
+        { label:'FASE DE GRUPOS · GRUPO B', rows:[22,23,24], grp:'B', locs:['Quadra B','Quadra A','Quadra B'] },
+        { label:'FASE DE GRUPOS · GRUPO C', rows:[34,35,36], grp:'C', locs:['Quadra A','Quadra B','Quadra A'] },
+        { label:'FASE DE GRUPOS · GRUPO D', rows:[46,47,48], grp:'D', locs:['Quadra B','Quadra A','Quadra B'] }
+      ];
 
-      // Placar principal (sets)
-      const scrEl = document.getElementById('scr-'+id);
-      const setEl = document.getElementById('sets-'+id);
-      if (scrEl && (setsC!=='0' || setsV!=='0' || vencedor)) {
-        scrEl.textContent = setsC + ' × ' + setsV;
-        scrEl.style.fontFamily = "'Anton',sans-serif";
-        scrEl.style.fontSize   = '32px';
-        scrEl.style.color      = 'var(--gold)';
-        scrEl.style.letterSpacing = '2px';
-      }
-      if (setEl) {
-        // detalhe dos sets individuais
-        const s = [];
-        [[2,7],[3,8],[4,9]].forEach(([ca,cb]) => {
-          const a=cc(rowsJ,row,ca), b=cc(rowsJ,row,cb);
-          if(a&&b) s.push(a+'/'+b);
+      let html = '';
+
+      grupos.forEach(({ label, rows, grp, locs }) => {
+        html += `<div class="grp-lbl" data-phase="grupos">${label}</div>`;
+        rows.forEach((row, idx) => {
+          const casa     = _cc(rowsJ,row,1);
+          const visit    = _cc(rowsJ,row,11);
+          if (!casa && !visit) return;
+          const setsC    = _cc(rowsJ,row,12);
+          const setsV    = _cc(rowsJ,row,13);
+          const vencedor = _cc(rowsJ,row,14);
+          const hora     = _cc(rowsJ,row,15)||'';
+          const gid      = `sg${grp}${idx+1}`;
+          html += _makeGameCard(
+            `Grupo ${grp} · Rodada ${idx+1}`, 'grupos',
+            hora||'28/11', casa, visit, setsC, setsV, vencedor,
+            rowsJ, row, gid, locs[idx]||'Quadra A'
+          );
         });
-        if (s.length) setEl.textContent = s.join('  ');
-        else if (!vencedor) setEl.textContent = 'Em breve';
-      }
+      });
 
-      // Nomes das equipes (atualiza se a planilha tiver)
-      if (casa || visit) {
-        const gc = document.querySelector(`[data-gid="${id}"]`);
-        if (gc) {
-          const nms = gc.querySelectorAll('.gc-t-nm');
-          if (nms[0] && casa)  nms[0].textContent = casa;
-          if (nms[1] && visit) nms[1].textContent = visit;
-        }
-      }
+      // ── Quartas de Final (aba Mata-Mata rows 5-8) ──────────────────────
+      // cols iguais: B=1 L=11 M=12 N=13 O=14
+      const quartasMeta = ['29/11 · 08:00h','29/11 · 09:00h','29/11 · 10:00h','29/11 · 11:00h'];
+      const quartasLoc  = ['Quadra A','Quadra B','Quadra A','Quadra B'];
+      html += `<div class="grp-lbl" data-phase="quartas">QUARTAS DE FINAL</div>`;
+      [5,6,7,8].forEach((row,idx) => {
+        const casa     = _cc(rowsM,row,1)||`1º Grupo ${['A','B','C','D'][idx]}`;
+        const visit    = _cc(rowsM,row,11)||`2º Grupo ${['B','A','D','C'][idx]}`;
+        const setsC    = _cc(rowsM,row,12);
+        const setsV    = _cc(rowsM,row,13);
+        const vencedor = _cc(rowsM,row,14);
+        html += _makeGameCard(
+          `Q${idx+1}`, 'quartas', quartasMeta[idx],
+          casa, visit, setsC, setsV, vencedor,
+          rowsM, row, `q${idx+1}`, quartasLoc[idx]
+        );
+      });
 
-      // card live
-      if (vencedor && vencedor !== '—' && vencedor !== 'A DEFINIR') {
-        const gc = document.querySelector(`[data-gid="${id}"]`);
-        if (gc) gc.classList.remove('live-card');
+      // ── Semifinais (rows 12-13) ────────────────────────────────────────
+      html += `<div class="grp-lbl" data-phase="semi">SEMIFINAL</div>`;
+      [12,13].forEach((row,idx) => {
+        const casa     = _cc(rowsM,row,1)||`Venc. Q${idx===0?'1':'3'}`;
+        const visit    = _cc(rowsM,row,11)||`Venc. Q${idx===0?'2':'4'}`;
+        const setsC    = _cc(rowsM,row,12);
+        const setsV    = _cc(rowsM,row,13);
+        const vencedor = _cc(rowsM,row,14);
+        html += _makeGameCard(
+          `SF${idx+1}`, 'semi', `29/11 · ${idx===0?'14:00':'15:30'}h`,
+          casa, visit, setsC, setsV, vencedor,
+          rowsM, row, `sf${idx+1}`, 'Quadra A'
+        );
+      });
+
+      // ── Grande Final (row 17) ──────────────────────────────────────────
+      html += `<div class="grp-lbl" data-phase="final" style="color:var(--gold)">🏆 GRANDE FINAL</div>`;
+      const finRow = 17;
+      const finCasa    = _cc(rowsM,finRow,1)||'Venc. SF1';
+      const finVisit   = _cc(rowsM,finRow,11)||'Venc. SF2';
+      const finSetsC   = _cc(rowsM,finRow,12);
+      const finSetsV   = _cc(rowsM,finRow,13);
+      const finVenc    = _cc(rowsM,finRow,14);
+      html += _makeGameCard(
+        'Grande Final', 'final', '29/11 · 17:30h',
+        finCasa, finVisit, finSetsC, finSetsV, finVenc,
+        rowsM, finRow, 'fin', 'Quadra A'
+      );
+
+      gamesList.innerHTML = html;
+
+      // reaplica watched state
+      watched.forEach(id => {
+        const b = document.getElementById('w-'+id);
+        if (b) { b.classList.add('on'); b.innerHTML='✅ Acompanhando'; }
+      });
+
+      // reaplica filtro ativo
+      const activeTab = document.querySelector('#gamesPage .tab.on');
+      if (activeTab) {
+        const phase = activeTab.getAttribute('onclick').match(/'([^']+)'/)?.[1];
+        if (phase && phase !== 'todos') filterGames(phase, activeTab);
       }
-    });
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 3. MATA-MATA (bracketPage) — atualiza nomes, placares e campeão
+    // Quartas: rows 5-8 | Semis: rows 12-13 | Final: row 17 | Campeão: row 20 col 0
+    // ══════════════════════════════════════════════════════════════════════
+    function _applyBracket(prefix, row, rows, idA, idB, nmA, nmB) {
+      const nameA  = _cc(rows,row,1)  || '—';
+      const nameB  = _cc(rows,row,11) || '—';
+      const setsA  = _cc(rows,row,12) || '—';
+      const setsB  = _cc(rows,row,13) || '—';
+      const winner = _cc(rows,row,14);
+
+      const elNA = document.getElementById(nmA);
+      const elNB = document.getElementById(nmB);
+      const elSA = document.getElementById(idA);
+      const elSB = document.getElementById(idB);
+
+      if (elNA) elNA.textContent = nameA;
+      if (elNB) elNB.textContent = nameB;
+
+      if (elSA) {
+        elSA.textContent = setsA;
+        elSA.className   = 'mt-sc' + (winner===nameA?' winner':winner?' loser':' empty');
+      }
+      if (elSB) {
+        elSB.textContent = setsB;
+        elSB.className   = 'mt-sc' + (winner===nameB?' winner':winner?' loser':' empty');
+      }
+    }
+
+    // Quartas (ids: bq1t1/bq1t2 … bq4t1/bq4t2, nomes fixos no HTML)
+    _applyBracket('q1', 5, rowsM, 'bq1t1','bq1t2', null, null);
+    _applyBracket('q2', 6, rowsM, 'bq2t1','bq2t2', null, null);
+    _applyBracket('q3', 7, rowsM, 'bq3t1','bq3t2', null, null);
+    _applyBracket('q4', 8, rowsM, 'bq4t1','bq4t2', null, null);
+
+    // Semis (nomes dinâmicos)
+    _applyBracket('sf1',12, rowsM, 'bsf1t1','bsf1t2','sf1t1nm','sf1t2nm');
+    _applyBracket('sf2',13, rowsM, 'bsf2t1','bsf2t2','sf2t1nm','sf2t2nm');
+
+    // Final
+    _applyBracket('fin',17, rowsM, 'bfint1','bfint2','fint1nm','fint2nm');
+
+    // Campeão (row 20, col 0)
+    const campeo   = _cc(rowsM, 20, 0);
+    const champEl  = document.getElementById('champName');
+    if (champEl) {
+      const waiting = !campeo || campeo==='—' || campeo.toLowerCase().includes('aguard');
+      champEl.textContent = waiting ? 'Aguardando' : campeo;
+      if (!waiting) launchFireworks(campeo);
+    }
 
   } catch(e) {
     console.warn('Sheets index error:', e);
