@@ -570,39 +570,49 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .chat-sug{flex-shrink:0;padding:7px 13px;border-radius:999px;border:1px solid var(--border-gold);background:rgba(244,197,66,.08);color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .ai-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(14,59,120,.28));border:1px solid rgba(99,102,241,.28);padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;color:#a5b4fc;}
 
-/* ============================================================ BOLÃO ============================================================ */
+/* ============================================================ BOLAO ============================================================ */
 .bolao-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:10px;transition:background .35s,border .35s;}
-.bolao-teams{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 14px;}
-.bolao-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.bolao-team-ic{width:44px;height:44px;border-radius:12px;background:var(--blue2);display:flex;align-items:center;justify-content:center;font-size:20px;}
-.bolao-team-nm{font-size:11px;font-weight:800;text-align:center;line-height:1.2;}
-.bolao-vs{font-family:'Anton',sans-serif;font-size:16px;color:var(--muted);}
-.set-picker{margin-bottom:10px;}
-.set-picker-label{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
-.set-rows{display:flex;flex-direction:column;gap:6px;}
-.set-row{display:flex;align-items:center;gap:8px;}
-.set-num{font-size:10px;color:var(--muted);width:38px;flex-shrink:0;}
-.pt-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border-gold);background:rgba(244,197,66,.1);color:var(--gold);font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
-.pt-val{font-family:'Anton',sans-serif;font-size:18px;color:var(--gold);min-width:22px;text-align:center;}
-.set-sep{color:var(--muted);font-size:14px;font-weight:700;margin:0 2px;}
+.bolao-phase-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;}
+.bolao-phase-badge.sabado{background:rgba(244,197,66,.12);border:1px solid rgba(244,197,66,.35);color:var(--gold);}
+.bolao-phase-badge.domingo-semi{background:rgba(99,102,241,.14);border:1px solid rgba(99,102,241,.35);color:#a5b4fc;}
+.bolao-phase-badge.domingo-camp{background:rgba(255,64,64,.12);border:1px solid rgba(255,64,64,.35);color:#ff8080;}
+.bolao-phase-badge.encerrado{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);}
+.bolao-prize{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(244,197,66,.1),rgba(14,59,120,.2));border:1px solid var(--border-gold);border-radius:13px;padding:11px 14px;margin-bottom:14px;}
+.bolao-prize-icon{font-size:26px;flex-shrink:0;}
+.bolao-prize-text strong{display:block;font-size:12px;font-weight:800;color:var(--gold);}
+.bolao-prize-text span{font-size:11px;color:var(--muted);}
+.bolao-group-block{margin-bottom:14px;}
+.bolao-group-title{font-size:10px;color:var(--gold);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border-gold);}
+.bolao-pick-label{font-size:10px;color:var(--muted);font-weight:700;margin-bottom:3px;}
+.bolao-select{width:100%;padding:10px 12px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:700;outline:none;appearance:none;-webkit-appearance:none;transition:border .2s,background .35s;cursor:pointer;margin-bottom:6px;}
+.bolao-select:focus{border-color:var(--border-gold);}
 .bolao-contact{margin-top:12px;display:flex;flex-direction:column;gap:7px;}
 .bolao-contact input{padding:10px 13px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;outline:none;transition:border .2s,background .35s;}
 .bolao-contact input:focus{border-color:var(--border-gold);}
-.bolao-confirm{width:100%;height:42px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;margin-top:10px;cursor:pointer;}
+.bolao-confirm{width:100%;height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:13px;margin-top:10px;cursor:pointer;}
 .bolao-confirm:disabled{opacity:.4;cursor:not-allowed;}
+.bolao-encerrado{width:100%;padding:14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-align:center;color:var(--muted);font-size:12px;font-weight:700;margin-top:8px;}
+.bolao-sent-badge{display:flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:12px;font-weight:700;color:#22c55e;}
 .bet-history{margin-top:10px;background:rgba(14,59,120,.2);border-radius:12px;padding:10px 12px;}
 .bet-history-title{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
-.bet-item{font-size:11px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.bet-item{font-size:11px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;}
 .bet-item:last-child{border-bottom:none;}
 .bet-name{font-weight:700;color:var(--text);}
-.bet-score{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--gold);font-weight:800;}
+.bet-score{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--gold);font-weight:800;text-align:right;flex:1;}
 .ranking-wrap{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);margin:0 14px;overflow:hidden;}
 .ranking-row{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid var(--border);}
 .ranking-row:last-child{border-bottom:none;}
 .rank-pos{font-family:'Anton',sans-serif;font-size:17px;color:var(--gold);width:26px;flex-shrink:0;}
 .rank-name{font-weight:800;font-size:12px;flex:1;}
-.rank-pts{font-family:'Anton',sans-serif;font-size:17px;color:var(--gold);}
+.rank-pts{font-family:'Anton',sans-serif;font-size:17px;color:var(--gold);text-align:right;}
 .rank-sub{font-size:9px;color:var(--muted);background:rgba(255,255,255,.05);padding:2px 6px;border-radius:999px;}
+.rank-acertos{font-size:9px;color:var(--green);display:block;}
+.bolao-tabs-wrap{display:flex;gap:6px;padding:8px 14px;overflow-x:auto;}
+.bolao-tabs-wrap::-webkit-scrollbar{display:none;}
+.bolao-tab-btn{flex-shrink:0;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s;}
+.bolao-tab-btn.on{background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;border-color:transparent;}
+.bolao-section{display:none;padding:0 14px 14px;}
+.bolao-section.active{display:block;}
 
 /* ============================================================ QUIZ ============================================================ */
 .quiz-pg-bar{height:4px;background:var(--border);border-radius:999px;margin:0 14px 14px;overflow:hidden;}
@@ -779,7 +789,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="adm-tabs">
       <button class="adm-tab on" onclick="admTab('score',this)">Placar</button>
       <button class="adm-tab" onclick="admTab('teams',this)">Times</button>
-      <button class="adm-tab" onclick="admTab('mvp',this)">Melhor da Partida</button>
+      <button class="adm-tab" onclick="admTab('mvp',this)">MVP</button>
+      <button class="adm-tab" onclick="admTab('bolao',this)">🎯 Bolão</button>
     </div>
     <!-- TAB: SCORE -->
     <div id="admScore">
@@ -839,10 +850,39 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         </div>
       </div>
     </div>
+    <!-- TAB: BOLAO -->
+    <div id="admBolao" style="display:none;">
+      <div class="adm-section">
+        <h4 style="margin-bottom:12px;font-size:13px;color:var(--gold);">🎯 Controle dos Bolões</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;">
+            <div style="font-size:11px;font-weight:800;margin-bottom:8px;">🗓️ Sábado · Classificados</div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(34,197,94,.2);color:#22c55e;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminAbrirBolao('sabado')">🟢 Abrir</button>
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(255,64,64,.15);color:#ff6b6b;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminFecharBolao('sabado')">🔴 Fechar</button>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;">
+            <div style="font-size:11px;font-weight:800;margin-bottom:8px;">⚡ Domingo · Finalistas</div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(34,197,94,.2);color:#22c55e;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminAbrirBolao('semi')">🟢 Abrir</button>
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(255,64,64,.15);color:#ff6b6b;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminFecharBolao('semi')">🔴 Fechar</button>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;">
+            <div style="font-size:11px;font-weight:800;margin-bottom:8px;">🏆 Domingo · Campeão</div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(34,197,94,.2);color:#22c55e;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminAbrirBolao('camp')">🟢 Abrir</button>
+              <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(255,64,64,.15);color:#ff6b6b;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminFecharBolao('camp')">🔴 Fechar</button>
+            </div>
+          </div>
+        </div>
+        <div class="adm-lbl" style="margin-top:12px;">Senha Admin</div>
+        <input class="adm-inp" type="password" placeholder="Senha..." id="admPwBolao">
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
 <!-- TOPBAR -->
@@ -2009,6 +2049,12 @@ function admTab(tab,btn){
   document.getElementById('admScore').style.display=tab==='score'?'block':'none';
   document.getElementById('admTeams').style.display=tab==='teams'?'block':'none';
   document.getElementById('admMvp').style.display=tab==='mvp'?'block':'none';
+  document.getElementById('admBolao').style.display=tab==='bolao'?'block':'none';
+}
+function checkPwBolao(){
+  const v=document.getElementById('admPwBolao')?.value;
+  if(v!==PW){showToast('❌ Senha incorreta');return false;}
+  return true;
 }
 function checkPw(id){const e=document.getElementById(id);if(e.value!==PW){showToast('❌ Senha incorreta');return false;}return true;}
 
@@ -2284,137 +2330,392 @@ function clearChat() {
 }
 
 // ==========================================================
-// BOLÃO
+// BOLAO — Sistema de 3 fases com Google Sheets
 // ==========================================================
-const bolaoGames = [
-  {id:'bg1', t1:'ES Volei', t2:'Equipe X', t1ic:'🏆', t2ic:'🏐', fase:'Grupo A · 28/11'},
-  {id:'bg2', t1:'Equipe UVI', t2:'Equipe X', t1ic:'🥈', t2ic:'🏐', fase:'Grupo B · 28/11'},
-  {id:'bg3', t1:'CT Montanhas', t2:'Equipe X', t1ic:'🏠', t2ic:'🏐', fase:'Grupo C · 28/11'},
-  {id:'bg4', t1:'Time A', t2:'Time B', t1ic:'⚡', t2ic:'⚡', fase:'Grande Final · 29/11'},
-];
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbdC_3x4ZU12iAGeewgnglrF6_2fvcF0zajEK8n9rlIZEl2LkiJtgYoSkwg7SxRLDi/exec';
 
-// bets[gameId] = [{name, contact, sets:[{p1,p2},...]}]
-let bets = JSON.parse(localStorage.getItem('bets_v2') || '{}');
-let bolaoInputs = {};
+// Estado de cada bolão: 'aberto' | 'encerrado'
+// Você (admin) altera via painel admin com senha
+const BOLAO_STATE_KEY = 'bolao_state_v1';
+function getBolaoState() {
+  return JSON.parse(localStorage.getItem(BOLAO_STATE_KEY) || '{"sabado":"aberto","semi":"fechado","camp":"fechado"}');
+}
+function setBolaoState(key, val) {
+  const s = getBolaoState(); s[key] = val;
+  localStorage.setItem(BOLAO_STATE_KEY, JSON.stringify(s));
+}
 
-function renderBolao() {
-  const c = document.getElementById('bolaoCards');
-  if (!c) return;
-  c.innerHTML = bolaoGames.map(g => {
-    const gameBets = bets[g.id] || [];
-    const maxSets = 5;
-    return `<div class="bolao-card">
-      <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">${g.fase}</div>
-      <div class="bolao-teams">
-        <div class="bolao-team"><div class="bolao-team-ic">${g.t1ic}</div><div class="bolao-team-nm">${g.t1}</div></div>
-        <div class="bolao-vs">VS</div>
-        <div class="bolao-team"><div class="bolao-team-ic">${g.t2ic}</div><div class="bolao-team-nm">${g.t2}</div></div>
-      </div>
-      <div class="set-picker">
-        <div class="set-picker-label">Placar por set (pontos)</div>
-        <div class="set-rows" id="setRows-${g.id}">
-          ${[1,2,3].map(s=>`
-          <div class="set-row">
-            <div class="set-num">Set ${s}</div>
-            <button class="pt-btn" onclick="bPt('${g.id}',${s},'t1',-1)">−</button>
-            <div class="pt-val" id="bpt-${g.id}-${s}-t1">25</div>
-            <div class="set-sep">×</div>
-            <div class="pt-val" id="bpt-${g.id}-${s}-t2">18</div>
-            <button class="pt-btn" onclick="bPt('${g.id}',${s},'t2',1)">+</button>
-            <button class="pt-btn" onclick="bPt('${g.id}',${s},'t2',-1)">−</button>
-          </div>`).join('')}
-        </div>
-        <div style="margin-top:8px;font-size:11px;color:var(--muted);">Sets ganhos: <span id="sets-${g.id}-t1" style="color:var(--gold);font-weight:800;">0</span> × <span id="sets-${g.id}-t2" style="color:var(--gold);font-weight:800;">0</span></div>
-      </div>
-      <div class="bolao-contact">
-        <input id="bname-${g.id}" placeholder="Seu nome *" type="text">
-        <input id="bphone-${g.id}" placeholder="Seu telefone/WhatsApp *" type="tel">
-      </div>
-      <button class="bolao-confirm" onclick="confirmBet('${g.id}','${g.t1}','${g.t2}')">🎯 CONFIRMAR PALPITE</button>
-      ${gameBets.length > 0 ? `
-      <div class="bet-history">
-        <div class="bet-history-title">📋 Apostas deste jogo (${gameBets.length})</div>
-        ${gameBets.map(b=>`
-        <div class="bet-item">
-          <div class="bet-name">${b.name}</div>
-          <div class="bet-score">${b.scoreStr}</div>
-        </div>`).join('')}
-      </div>` : ''}
+// Palpites locais (para não pedir nome de novo)
+const BOLAO_LOCAL_KEY = 'bolao_local_v1';
+function getLocalBets() { return JSON.parse(localStorage.getItem(BOLAO_LOCAL_KEY)||'{}'); }
+function saveLocalBet(tipo, data) {
+  const b = getLocalBets(); b[tipo] = data;
+  localStorage.setItem(BOLAO_LOCAL_KEY, JSON.stringify(b));
+}
+
+// ── GRUPOS: lidos do tableData (Google Sheets) ─────────────────────────────
+function getGrupoTimes(g) {
+  const rows = tableData[g] || [];
+  // Retorna nomes dos times, filtra vazios
+  return rows.map(r => r.name).filter(n => n && n !== '—');
+}
+
+// ── Aba switcher ───────────────────────────────────────────────────────────
+function switchBolaoTab(tab, btn) {
+  document.querySelectorAll('.bolao-tab-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.bolao-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('bsec-' + tab).classList.add('active');
+  if (tab === 'sabado') renderBolaoSabado();
+  if (tab === 'semi')   renderBolaoSemi();
+  if (tab === 'camp')   renderBolaoCamp();
+  if (tab === 'ranking') renderBolaoRanking();
+}
+
+// ==========================================================
+// BOLAO 1 — SÁBADO: 1º e 2º de cada grupo
+// ==========================================================
+function renderBolaoSabado() {
+  const el = document.getElementById('bolao-sabado-content');
+  if (!el) return;
+  const state = getBolaoState();
+  const aberto = state.sabado === 'aberto';
+  const localBets = getLocalBets();
+  const jaApostou = !!localBets.sabado;
+
+  const grupos = ['grupoA','grupoB','grupoC','grupoD'];
+  const labels = ['Grupo A','Grupo B','Grupo C','Grupo D'];
+
+  // Monta os selects de cada grupo
+  let gruposHtml = grupos.map((g, i) => {
+    const times = getGrupoTimes(g);
+    const opts = times.length
+      ? times.map(t => `<option value="${t}">${t}</option>`).join('')
+      : `<option value="">Aguardando times...</option>`;
+    const prevSel = jaApostou ? (localBets.sabado.grupos?.[g] || {}) : {};
+
+    return `<div class="bolao-group-block">
+      <div class="bolao-group-title">🏐 ${labels[i]}</div>
+      <div class="bolao-pick-label">🥇 1º Lugar</div>
+      <select class="bolao-select" id="bs-1-${g}" ${!aberto||jaApostou?'disabled':''}>
+        <option value="">Selecione o 1º...</option>${opts}
+      </select>
+      <div class="bolao-pick-label">🥈 2º Lugar</div>
+      <select class="bolao-select" id="bs-2-${g}" ${!aberto||jaApostou?'disabled':''}>
+        <option value="">Selecione o 2º...</option>${opts}
+      </select>
     </div>`;
   }).join('');
-  // init inputs
-  bolaoGames.forEach(g => {
-    if (!bolaoInputs[g.id]) bolaoInputs[g.id] = {1:{t1:25,t2:18},2:{t1:25,t2:20},3:{t1:15,t2:12}};
-    updateSetDisplay(g.id);
+
+  el.innerHTML = `<div class="bolao-card">
+    <span class="bolao-phase-badge ${aberto?'sabado':'encerrado'}">${aberto?'🟢 Aberto até sábado à noite':'🔴 Encerrado'}</span>
+    <div class="bolao-prize">
+      <div class="bolao-prize-icon">🎁</div>
+      <div class="bolao-prize-text">
+        <strong>Kit Gigante Grupo Coroa</strong>
+        <span>Acerte todos os classificados e ganhe!</span>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      Escolha quem passa em <strong style="color:var(--text)">1º e 2º lugar</strong> em cada grupo para o mata-mata.
+    </div>
+    ${gruposHtml}
+    ${aberto && !jaApostou ? `
+    <div class="bolao-contact">
+      <input id="bs-nome" placeholder="Seu nome *" type="text">
+      <input id="bs-fone" placeholder="WhatsApp (para contato se ganhar)" type="tel">
+    </div>
+    <button class="bolao-confirm" onclick="confirmarBolaoSabado()">🎯 CONFIRMAR PALPITE</button>
+    ` : jaApostou ? `
+    <div class="bolao-sent-badge">✅ Palpite enviado! Boa sorte, ${localBets.sabado.nome}!</div>
+    <div class="bet-history">
+      <div class="bet-history-title">Seu palpite</div>
+      ${Object.entries(localBets.sabado.grupos||{}).map(([g,v])=>`
+      <div class="bet-item"><span class="bet-name">${labels[grupos.indexOf(g)]}</span><span class="bet-score">1º ${v.p1||'?'} · 2º ${v.p2||'?'}</span></div>`).join('')}
+    </div>
+    ` : `<div class="bolao-encerrado">🔴 Bolão encerrado. Acompanhe o ranking!</div>`}
+  </div>`;
+
+  // Pré-preenche se já apostou
+  if (jaApostou && localBets.sabado.grupos) {
+    grupos.forEach(g => {
+      const sel1 = document.getElementById(`bs-1-${g}`);
+      const sel2 = document.getElementById(`bs-2-${g}`);
+      const v = localBets.sabado.grupos[g] || {};
+      if (sel1 && v.p1) sel1.value = v.p1;
+      if (sel2 && v.p2) sel2.value = v.p2;
+    });
+  }
+}
+
+async function confirmarBolaoSabado() {
+  const nome  = document.getElementById('bs-nome')?.value.trim();
+  const fone  = document.getElementById('bs-fone')?.value.trim();
+  if (!nome) return showToast('⚠️ Digite seu nome!');
+
+  const grupos = ['grupoA','grupoB','grupoC','grupoD'];
+  const labels = {'grupoA':'Grupo A','grupoB':'Grupo B','grupoC':'Grupo C','grupoD':'Grupo D'};
+  const gruposData = {};
+  for (const g of grupos) {
+    const p1 = document.getElementById(`bs-1-${g}`)?.value;
+    const p2 = document.getElementById(`bs-2-${g}`)?.value;
+    if (!p1 || !p2) return showToast(`⚠️ Preencha o ${labels[g]} completo!`);
+    if (p1 === p2) return showToast(`⚠️ ${labels[g]}: 1º e 2º não podem ser o mesmo time!`);
+    gruposData[g] = { p1, p2 };
+  }
+
+  const btn = document.querySelector('#bolao-sabado-content .bolao-confirm');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
+
+  const resumo = Object.entries(gruposData).map(([g,v])=>`${labels[g]}: 1º ${v.p1} / 2º ${v.p2}`).join(' | ');
+
+  try {
+    await fetch(SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ tipo:'sabado', nome, contato: fone||'—', palpite: resumo, detalhe: JSON.stringify(gruposData) })
+    });
+    saveLocalBet('sabado', { nome, fone: fone||'', grupos: gruposData });
+    showToast(`🎯 Palpite enviado, ${nome}!`);
+    if (navigator.vibrate) navigator.vibrate([8,20,8]);
+    renderBolaoSabado();
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = '🎯 CONFIRMAR PALPITE'; }
+    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
+  }
+}
+
+// ==========================================================
+// BOLAO 2 — DOMINGO: FINALISTAS (2 semifinalistas que chegarão à final)
+// ==========================================================
+function renderBolaoSemi() {
+  const el = document.getElementById('bolao-semi-content');
+  if (!el) return;
+  const state = getBolaoState();
+  const aberto = state.semi === 'aberto';
+  const localBets = getLocalBets();
+  const jaApostou = !!localBets.semi;
+
+  // Times do mata-mata = 1º e 2º de cada grupo (vêm do tableData se disponível)
+  const todosOs8 = ['grupoA','grupoB','grupoC','grupoD'].flatMap(g => {
+    const t = getGrupoTimes(g);
+    return t.length >= 2 ? [t[0], t[1]] : [];
   });
+  const opts8 = todosOs8.length
+    ? todosOs8.map(t => `<option value="${t}">${t}</option>`).join('')
+    : ['grupoA','grupoB','grupoC','grupoD'].flatMap((g,i)=>[
+        `<option value="1º Grupo ${['A','B','C','D'][i]}">1º Grupo ${['A','B','C','D'][i]}</option>`,
+        `<option value="2º Grupo ${['A','B','C','D'][i]}">2º Grupo ${['A','B','C','D'][i]}</option>`
+      ]).join('');
+
+  el.innerHTML = `<div class="bolao-card">
+    <span class="bolao-phase-badge ${aberto?'domingo-semi':'encerrado'}">${aberto?'🟢 Aberto — Domingo':'🔴 Abre no Domingo'}</span>
+    <div class="bolao-prize">
+      <div class="bolao-prize-icon">⚡</div>
+      <div class="bolao-prize-text">
+        <strong>Quem chega à Grande Final?</strong>
+        <span>Escolha os 2 finalistas do torneio</span>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      Dos 8 times no mata-mata, quem serão os <strong style="color:var(--text)">2 finalistas</strong>?
+    </div>
+    <div class="bolao-pick-label">🏅 Finalista 1</div>
+    <select class="bolao-select" id="semi-f1" ${!aberto||jaApostou?'disabled':''}>
+      <option value="">Selecione o Finalista 1...</option>${opts8}
+    </select>
+    <div class="bolao-pick-label">🏅 Finalista 2</div>
+    <select class="bolao-select" id="semi-f2" ${!aberto||jaApostou?'disabled':''}>
+      <option value="">Selecione o Finalista 2...</option>${opts8}
+    </select>
+    ${aberto && !jaApostou ? `
+    <div class="bolao-contact">
+      <input id="semi-nome" placeholder="Seu nome *" type="text">
+      <input id="semi-fone" placeholder="WhatsApp (opcional)" type="tel">
+    </div>
+    <button class="bolao-confirm" onclick="confirmarBolaoSemi()">⚡ CONFIRMAR FINALISTAS</button>
+    ` : jaApostou ? `
+    <div class="bolao-sent-badge">✅ Palpite enviado! Finalistas: ${localBets.semi.f1} e ${localBets.semi.f2}</div>
+    ` : `<div class="bolao-encerrado">🔴 Este bolão abre no domingo de manhã.</div>`}
+  </div>`;
+
+  if (jaApostou && localBets.semi) {
+    const s1 = document.getElementById('semi-f1');
+    const s2 = document.getElementById('semi-f2');
+    if (s1) s1.value = localBets.semi.f1;
+    if (s2) s2.value = localBets.semi.f2;
+  }
 }
 
-function bPt(gid, set, team, delta) {
-  if (!bolaoInputs[gid]) bolaoInputs[gid] = {1:{t1:25,t2:18},2:{t1:25,t2:20},3:{t1:15,t2:12}};
-  bolaoInputs[gid][set][team] = Math.max(0, Math.min(40, bolaoInputs[gid][set][team] + delta));
-  updateSetDisplay(gid);
+async function confirmarBolaoSemi() {
+  const nome = document.getElementById('semi-nome')?.value.trim();
+  const fone = document.getElementById('semi-fone')?.value.trim();
+  const f1   = document.getElementById('semi-f1')?.value;
+  const f2   = document.getElementById('semi-f2')?.value;
+  if (!nome) return showToast('⚠️ Digite seu nome!');
+  if (!f1 || !f2) return showToast('⚠️ Selecione os 2 finalistas!');
+  if (f1 === f2) return showToast('⚠️ Os dois finalistas precisam ser times diferentes!');
+
+  const btn = document.querySelector('#bolao-semi-content .bolao-confirm');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
+
+  try {
+    await fetch(SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ tipo:'semi', nome, contato: fone||'—', palpite: `${f1} × ${f2}`, detalhe: JSON.stringify({f1,f2}) })
+    });
+    saveLocalBet('semi', { nome, fone: fone||'', f1, f2 });
+    showToast(`⚡ Finalistas enviados, ${nome}!`);
+    if (navigator.vibrate) navigator.vibrate([8,20,8]);
+    renderBolaoSemi();
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = '⚡ CONFIRMAR FINALISTAS'; }
+    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
+  }
 }
 
-function updateSetDisplay(gid) {
-  const inp = bolaoInputs[gid] || {};
-  let sT1=0, sT2=0;
-  [1,2,3].forEach(s => {
-    const row = inp[s] || {t1:25,t2:18};
-    const e1 = document.getElementById(`bpt-${gid}-${s}-t1`);
-    const e2 = document.getElementById(`bpt-${gid}-${s}-t2`);
-    if(e1) e1.textContent = row.t1;
-    if(e2) e2.textContent = row.t2;
-    if(row.t1 > row.t2) sT1++; else if(row.t2 > row.t1) sT2++;
+// ==========================================================
+// BOLAO 3 — DOMINGO: CAMPEÃO
+// ==========================================================
+function renderBolaoCamp() {
+  const el = document.getElementById('bolao-camp-content');
+  if (!el) return;
+  const state = getBolaoState();
+  const aberto = state.camp === 'aberto';
+  const localBets = getLocalBets();
+  const jaApostou = !!localBets.camp;
+
+  const todosOs8 = ['grupoA','grupoB','grupoC','grupoD'].flatMap(g => {
+    const t = getGrupoTimes(g);
+    return t.length >= 2 ? [t[0], t[1]] : [];
   });
-  const st1 = document.getElementById(`sets-${gid}-t1`);
-  const st2 = document.getElementById(`sets-${gid}-t2`);
-  if(st1) st1.textContent = sT1;
-  if(st2) st2.textContent = sT2;
+  const opts = todosOs8.length
+    ? todosOs8.map(t => `<option value="${t}">${t}</option>`).join('')
+    : ['A','B','C','D'].flatMap(g=>[
+        `<option value="1º Grupo ${g}">1º Grupo ${g}</option>`,
+        `<option value="2º Grupo ${g}">2º Grupo ${g}</option>`
+      ]).join('');
+
+  el.innerHTML = `<div class="bolao-card">
+    <span class="bolao-phase-badge ${aberto?'domingo-camp':'encerrado'}">${aberto?'🟢 Aberto — Domingo':'🔴 Abre no Domingo'}</span>
+    <div class="bolao-prize">
+      <div class="bolao-prize-icon">🏆</div>
+      <div class="bolao-prize-text">
+        <strong>Quem vai ser CAMPEÃO?</strong>
+        <span>1 palpite, 1 campeão — simples assim!</span>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      Dos 8 times, quem levantará o troféu da <strong style="color:var(--text)">Supercopa AFC 2026</strong>?
+    </div>
+    <div class="bolao-pick-label">🏆 Campeão</div>
+    <select class="bolao-select" id="camp-pick" ${!aberto||jaApostou?'disabled':''}>
+      <option value="">Selecione o Campeão...</option>${opts}
+    </select>
+    ${aberto && !jaApostou ? `
+    <div class="bolao-contact">
+      <input id="camp-nome" placeholder="Seu nome *" type="text">
+      <input id="camp-fone" placeholder="WhatsApp (opcional)" type="tel">
+    </div>
+    <button class="bolao-confirm" onclick="confirmarBolaoCamp()">🏆 CONFIRMAR CAMPEÃO</button>
+    ` : jaApostou ? `
+    <div class="bolao-sent-badge">✅ Você apostou em: <strong style="margin-left:4px">${localBets.camp.campeao}</strong> 🏆</div>
+    ` : `<div class="bolao-encerrado">🔴 Este bolão abre no domingo de manhã.</div>`}
+  </div>`;
+
+  if (jaApostou && localBets.camp) {
+    const s = document.getElementById('camp-pick');
+    if (s) s.value = localBets.camp.campeao;
+  }
 }
 
-function confirmBet(gid, t1nm, t2nm) {
-  const name = document.getElementById(`bname-${gid}`)?.value.trim();
-  const phone = document.getElementById(`bphone-${gid}`)?.value.trim();
-  if (!name) { showToast('⚠️ Digite seu nome'); return; }
-  if (!phone) { showToast('⚠️ Digite seu telefone'); return; }
-  const inp = bolaoInputs[gid] || {};
-  const scoreStr = [1,2,3].map(s=>`Set${s}: ${inp[s]?.t1||0}×${inp[s]?.t2||0}`).join(' | ');
-  // Check duplicate
-  if (!bets[gid]) bets[gid] = [];
-  const dup = bets[gid].find(b => b.scoreStr === scoreStr);
-  if (dup) { showToast('❌ Este palpite já foi feito! Tente um placar diferente.'); return; }
-  bets[gid].push({name, phone, scoreStr, time: new Date().toLocaleString('pt-BR')});
-  localStorage.setItem('bets_v2', JSON.stringify(bets));
-  renderBolao();
-  showToast(`🎯 Palpite de ${name} confirmado!`);
-  if(navigator.vibrate) navigator.vibrate([8,20,8]);
+async function confirmarBolaoCamp() {
+  const nome    = document.getElementById('camp-nome')?.value.trim();
+  const fone    = document.getElementById('camp-fone')?.value.trim();
+  const campeao = document.getElementById('camp-pick')?.value;
+  if (!nome) return showToast('⚠️ Digite seu nome!');
+  if (!campeao) return showToast('⚠️ Selecione um campeão!');
+
+  const btn = document.querySelector('#bolao-camp-content .bolao-confirm');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
+
+  try {
+    await fetch(SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ tipo:'camp', nome, contato: fone||'—', palpite: campeao, detalhe: campeao })
+    });
+    saveLocalBet('camp', { nome, fone: fone||'', campeao });
+    showToast(`🏆 Campeão enviado, ${nome}!`);
+    if (navigator.vibrate) navigator.vibrate([8,20,8]);
+    renderBolaoCamp();
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = '🏆 CONFIRMAR CAMPEÃO'; }
+    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
+  }
 }
 
-function bolaoTab(tab, btn) {
-  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('bolaoPane').style.display = tab==='palpites'?'block':'none';
-  document.getElementById('rankingPane').style.display = tab==='ranking'?'block':'none';
-  if(tab==='ranking') renderBolaoRanking();
-}
-
-function renderBolaoRanking() {
+// ==========================================================
+// RANKING ao vivo (lê do Sheets)
+// ==========================================================
+async function renderBolaoRanking() {
   const el = document.getElementById('rankingList');
-  if(!el) return;
-  const all = [];
-  Object.values(bets).forEach(game => game.forEach(b => {
-    const ex = all.find(r=>r.name===b.name);
-    if(ex) ex.count++; else all.push({name:b.name, phone:b.phone, count:1});
-  }));
-  all.sort((a,b)=>b.count-a.count);
-  const medals = ['🥇','🥈','🥉'];
-  el.innerHTML = all.length ? all.map((r,i)=>`
-    <div class="ranking-row">
-      <div class="rank-pos">${medals[i]||i+1}</div>
-      <div class="rank-name">${r.name}<br><span class="rank-sub">${r.phone}</span></div>
-      <div class="rank-pts">${r.count}<span style="font-size:10px;color:var(--muted);font-family:'DM Sans',sans-serif"> jogos</span></div>
-    </div>`).join('') : '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Nenhum palpite ainda</div>';
+  if (!el) return;
+  el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">⏳ Carregando ranking...</div>';
+  try {
+    const res  = await fetch(SHEETS_URL + '?action=ranking&t=' + Date.now());
+    const lista = await res.json();
+    const medals = ['🥇','🥈','🥉'];
+    if (!lista.length) {
+      el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">Nenhum palpite ainda 🎯</div>';
+      return;
+    }
+    el.innerHTML = lista.map((r,i) => `
+      <div class="ranking-row">
+        <div class="rank-pos">${medals[i]||i+1}</div>
+        <div class="rank-name">${r.nome}<br><span class="rank-sub">${r.contato||''}</span></div>
+        <div class="rank-pts">
+          <span style="color:var(--green);font-family:'Anton',sans-serif;font-size:20px;">${r.acertos||0}</span>
+          <span class="rank-acertos">acertos</span>
+          <span style="font-size:10px;color:var(--muted);">${r.palpites||0} palpites</span>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">Erro ao carregar. Tente novamente.</div>';
+  }
 }
+
+// ==========================================================
+// ADMIN — Abrir/Fechar bolões (senha protegida)
+// Funções chamadas pelo painel admin existente
+// ==========================================================
+function adminAbrirBolao(tipo) {
+  setBolaoState(tipo, 'aberto');
+  // Atualiza visualização se o bolão estiver aberto
+  const active = document.querySelector('.bolao-section.active');
+  if (active) {
+    const id = active.id.replace('bsec-','');
+    if (id === 'sabado') renderBolaoSabado();
+    if (id === 'semi')   renderBolaoSemi();
+    if (id === 'camp')   renderBolaoCamp();
+  }
+  showToast(`✅ Bolão "${tipo}" aberto!`);
+}
+function adminFecharBolao(tipo) {
+  setBolaoState(tipo, 'encerrado');
+  const active = document.querySelector('.bolao-section.active');
+  if (active) {
+    const id = active.id.replace('bsec-','');
+    if (id === 'sabado') renderBolaoSabado();
+    if (id === 'semi')   renderBolaoSemi();
+    if (id === 'camp')   renderBolaoCamp();
+  }
+  showToast(`🔴 Bolão "${tipo}" encerrado!`);
+}
+
+// Inicializa o bolão visível
+function renderBolao() { renderBolaoSabado(); }
 
 // ==========================================================
 // QUIZ - 40 QUESTIONS
@@ -2718,17 +3019,36 @@ startIndexSheetCycle();
   </div>
 </section>
 
-<!-- ==================== BOLÃO ==================== -->
+<!-- ==================== BOLAO ==================== -->
 <section id="bolaoPage" class="page">
   <div class="ptitle">🎯 <span>Bolão</span></div>
-  <div style="padding:0 14px 6px;font-size:12px;color:var(--muted);">Palpite no placar por set e pontos. Salve seu nome e contato para ser premiado!</div>
-  <div class="tabs" style="padding-top:10px;">
-    <button class="tab on" onclick="bolaoTab('palpites',this)">Meus Palpites</button>
-    <button class="tab" onclick="bolaoTab('ranking',this)">🏅 Ranking</button>
+
+  <!-- tabs dos 3 boloes -->
+  <div class="bolao-tabs-wrap" id="bolaoTabsWrap">
+    <button class="bolao-tab-btn on" onclick="switchBolaoTab('sabado',this)">🗓️ Sábado · Grupos</button>
+    <button class="bolao-tab-btn" onclick="switchBolaoTab('semi',this)">⚡ Domingo · Finalistas</button>
+    <button class="bolao-tab-btn" onclick="switchBolaoTab('camp',this)">🏆 Domingo · Campeão</button>
+    <button class="bolao-tab-btn" onclick="switchBolaoTab('ranking',this)">🏅 Ranking</button>
   </div>
-  <div id="bolaoPane"><div class="cards" id="bolaoCards" style="padding-bottom:14px;"></div></div>
-  <div id="rankingPane" style="display:none;">
-    <div class="ranking-wrap" id="rankingList"></div>
+
+  <!-- BOLAO SABADO -->
+  <div class="bolao-section active" id="bsec-sabado">
+    <div id="bolao-sabado-content"></div>
+  </div>
+
+  <!-- BOLAO FINALISTAS -->
+  <div class="bolao-section" id="bsec-semi">
+    <div id="bolao-semi-content"></div>
+  </div>
+
+  <!-- BOLAO CAMPEAO -->
+  <div class="bolao-section" id="bsec-camp">
+    <div id="bolao-camp-content"></div>
+  </div>
+
+  <!-- RANKING GERAL -->
+  <div class="bolao-section" id="bsec-ranking">
+    <div class="ranking-wrap" id="rankingList" style="margin:0;"></div>
   </div>
 </section>
 
