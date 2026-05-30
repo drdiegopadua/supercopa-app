@@ -132,7 +132,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    PAGES
 ============================================================ */
-main{position:relative;z-index:1;padding-bottom:calc(90px + env(safe-area-inset-bottom,0px));}
+main{position:relative;z-index:1;padding-bottom:160px;}
 .page{display:none;}
 .page.active{display:block;animation:pgIn .3s ease;}
 @keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -552,7 +552,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .lv-play{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a010);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 20px rgba(244,197,66,.3);}
 .lv-sub{font-size:11px;color:var(--muted);}
 /* ============================================================ AI CHAT ============================================================ */
-#chatPage{display:none;flex-direction:column;height:calc(100vh - 64px - 78px - env(safe-area-inset-bottom,0px));overflow:hidden;}
+#chatPage{display:none;flex-direction:column;height:calc(100dvh - 64px - 78px);overflow:hidden;}
 #chatPage.active{display:flex;animation:pgIn .3s ease;}
 .chat-header{flex-shrink:0;padding:10px 14px 4px;display:flex;align-items:center;gap:8px;}
 .chat-sugs{flex-shrink:0;display:flex;gap:7px;padding:0 14px 8px;overflow-x:auto;flex-wrap:nowrap;}
@@ -568,7 +568,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .typing-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:tBounce .8s ease infinite;}
 .typing-dot:nth-child(2){animation-delay:.15s;}.typing-dot:nth-child(3){animation-delay:.3s;}
 @keyframes tBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.chat-input-row{flex-shrink:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--border);display:flex;gap:8px;z-index:50;transition:background .35s;}
+.chat-input-row{flex-shrink:0;padding:10px 14px 16px;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:8px;z-index:50;transition:background .35s;}
 .chat-inp{flex:1;height:44px;border-radius:13px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:13px;padding:0 14px;outline:none;transition:border .2s,background .35s;}
 .chat-inp:focus{border-color:var(--border-gold);}
 .chat-send{width:44px;height:44px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-size:18px;flex-shrink:0;cursor:pointer;}
@@ -617,7 +617,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .bolao-tabs-wrap::-webkit-scrollbar{display:none;}
 .bolao-tab-btn{flex-shrink:0;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s;}
 .bolao-tab-btn.on{background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;border-color:transparent;}
-.bolao-section{display:none;padding:0 14px 14px;}
+.bolao-section{display:none;padding:0 14px 160px;}
 .bolao-section.active{display:block;}
 
 /* ============================================================ QUIZ ============================================================ */
@@ -2477,11 +2477,10 @@ async function confirmarBolaoSabado() {
   const resumo = Object.entries(gruposData).map(([g,v])=>`${labels[g]}: 1º ${v.p1} / 2º ${v.p2}`).join(' | ');
 
   try {
-    await fetch(SHEETS_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ tipo:'sabado', nome, contato: fone||'—', palpite: resumo, detalhe: JSON.stringify(gruposData) })
+    const params = new URLSearchParams({
+      tipo: 'sabado', nome, contato: fone||'—', palpite: resumo, detalhe: JSON.stringify(gruposData)
     });
+    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
     saveLocalBet('sabado', { nome, fone: fone||'', grupos: gruposData });
     showToast(`🎯 Palpite enviado, ${nome}!`);
     if (navigator.vibrate) navigator.vibrate([8,20,8]);
@@ -2568,11 +2567,10 @@ async function confirmarBolaoSemi() {
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
 
   try {
-    await fetch(SHEETS_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ tipo:'semi', nome, contato: fone||'—', palpite: `${f1} × ${f2}`, detalhe: JSON.stringify({f1,f2}) })
+    const params = new URLSearchParams({
+      tipo: 'semi', nome, contato: fone||'—', palpite: `${f1} × ${f2}`, detalhe: JSON.stringify({f1,f2})
     });
+    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
     saveLocalBet('semi', { nome, fone: fone||'', f1, f2 });
     showToast(`⚡ Finalistas enviados, ${nome}!`);
     if (navigator.vibrate) navigator.vibrate([8,20,8]);
@@ -2650,11 +2648,10 @@ async function confirmarBolaoCamp() {
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
 
   try {
-    await fetch(SHEETS_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ tipo:'camp', nome, contato: fone||'—', palpite: campeao, detalhe: campeao })
+    const params = new URLSearchParams({
+      tipo: 'camp', nome, contato: fone||'—', palpite: campeao, detalhe: campeao
     });
+    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
     saveLocalBet('camp', { nome, fone: fone||'', campeao });
     showToast(`🏆 Campeão enviado, ${nome}!`);
     if (navigator.vibrate) navigator.vibrate([8,20,8]);
