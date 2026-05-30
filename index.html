@@ -2000,24 +2000,66 @@ document.querySelectorAll('.news-card').forEach(c=>{c.addEventListener('click',(
 // ==========================================================
 const SUPERCOPA_KB = `
 SUPERCOPA AFC - BASE DE CONHECIMENTO COMPLETA:
+
+=== IDENTIFICAÇÃO ===
 - Nome: Supercopa de Afonso Cláudio (Supercopa AFC) - 6ª Edição 2026
-- Maior evento multiesporte da Região das Montanhas - Afonso Cláudio, ES, Brasil
-- VOLEIBOL: 28 e 29 de Novembro de 2026
+- O MAIOR torneio multiesporte da Região das Montanhas, um dos maiores do Espírito Santo
+- ÚNICO torneio multiesporte da região (vôlei + basquete)
+- ÚNICO campeonato que não cobra taxa de inscrição E ainda premia em dinheiro
+
+=== DATAS E HORÁRIOS ===
+- VOLEIBOL: Sábado 28/11/2026 (fase de grupos, início às 13h) e Domingo 29/11/2026 (mata-mata)
 - BASQUETE: 25 e 26 de Julho de 2026
-- INSCRIÇÃO: 100% GRATUITA, sem nenhuma taxa de qualquer tipo
-- PREMIAÇÃO VÔLEI: R$5.000 em dinheiro + troféus + medalhas (campeão e vice) + prêmio Melhor da Partida individual
-- PREMIAÇÃO BASQUETE: troféus + medalhas + destaques individuais
-- TIMES VÔLEI (12 equipes): ES Volei-Vitória,ES (Campeão 2025 Grupo A), Equipe UVI-Itaperuna,RJ (Vice 2025 Grupo B), CT das Montanhas-Afonso Cláudio,ES (Casa Grupo C), outros a confirmar
-- TIMES BASQUETE (6 equipes): CT das Montanhas (casa) + outros a confirmar
-- FORMATO VÔLEI: Grupos → Quartas → Semi → Final. 1º e 2º de cada grupo avançam. Melhor de 3 sets.
-- FORMATO BASQUETE: Grupos → Semi → Final (sem quartas)
-- SITE: www.supercopaafc.com.br | INSTAGRAM: @supercopaafc | WHATSAPP: https://wa.link/900kb2
-- GINÁSIO: Ginásio Central de Afonso Cláudio. Portões abrem 07:30h. Estacionamento gratuito.
-- HISTÓRIA: 1ª ed. 2019 CT Montanhas campeão; 2022 ES Volei; 2023 CT Montanhas (estreia basquete); 2024 UVI; 2025 ES Volei
-- Para dúvidas que não souber responder: encaminhar para WhatsApp https://wa.link/900kb2
-- Email organização: drdiegopadua@gmail.com
+
+=== QUADRAS ===
+- QUADRA PRINCIPAL: Quadra Eurico Vieira de Resende — https://maps.app.goo.gl/97guWnfykP9dqFMn9
+- QUADRA ALTERNATIVA: Quadra Anadir Barone — https://maps.app.goo.gl/46MtT4ouqGcnkPQHA
+- Haverá TRANSMISSÃO ONLINE dos jogos da quadra principal
+
+=== INSCRIÇÃO ===
+- 100% GRATUITA — sem nenhuma taxa de qualquer tipo
+
+=== PREMIAÇÃO VÔLEI (R$ 5.000 investidos no total) ===
+- Campeão: premiação em dinheiro + troféu + medalhas
+- Vice-campeão: premiação em dinheiro + troféu + medalhas
+- Seleção do Campeonato: premiação em dinheiro
+- Patrocinador principal: GRUPO COROA (com várias novidades para os atletas)
+
+=== TIMES VÔLEI (12 equipes) ===
+- ES Volei (Campeão 2025)
+- Equipe UVI (Vice-campeão 2025)
+- CT das Montanhas (time da casa)
+- Equipes D, E, F, G, H, I, J, K, L (a confirmar)
+
+=== TIMES BASQUETE ===
+- CT das Montanhas (time da casa) + outros a confirmar
+
+=== FORMATO VÔLEI ===
+- Fase de grupos (sábado) → Mata-mata (domingo): Quartas → Semi → Final
+- 1º e 2º de cada grupo avançam. Melhor de 3 sets.
+
+=== FORMATO BASQUETE ===
+- Grupos → Semi → Final (sem quartas)
+
+=== REGULAMENTO ===
+- Regras completas do campeonato: https://www.supercopaafc.com.br/regulamento.html
+
+=== HISTÓRIA DAS EDIÇÕES ===
+- Histórico completo das edições anteriores: https://www.supercopaafc.com.br/historia.html
+- 1ª ed. 2019: CT das Montanhas campeão
+- 2022: ES Volei campeão
+- 2023: CT das Montanhas campeão (estreia do basquete)
+- 2024: UVI campeão
+- 2025: ES Volei campeão | Vice: Equipe UVI
+
+=== CONTATO ===
+- Organizador: Diego Pádua
+- WhatsApp: https://wa.me/5527999050053
+- Email: drdiegopadua@gmail.com
+- Site: www.supercopaafc.com.br
+- Instagram: @supercopaafc
 `;
-const AI_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior evento multiesporte da Região das Montanhas em Afonso Cláudio, ES. USE ESTE CONHECIMENTO PARA RESPONDER: ${SUPERCOPA_KB}. Regras: 1) Responda em português, de forma animada e esportiva com emojis. 2) Seja conciso (máx 3 parágrafos). 3) Se a pergunta for sobre algo que não está no conhecimento acima, diga: "Essa pergunta precisa ser respondida pela Comissão Organizadora! Entre em contato pelo WhatsApp: https://wa.link/900kb2 🏐". 4) Nunca invente informações. 5) Para regras gerais de vôlei e basquete, pode responder normalmente.`;
+const AI_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior evento multiesporte da Região das Montanhas em Afonso Cláudio, ES. USE ESTE CONHECIMENTO PARA RESPONDER: ${SUPERCOPA_KB}. Regras: 1) Responda em português, de forma animada e esportiva com emojis. 2) Seja conciso (máx 3 parágrafos). 3) Para perguntas sobre regulamento, envie o link https://www.supercopaafc.com.br/regulamento.html. 4) Para perguntas sobre edições anteriores, envie o link https://www.supercopaafc.com.br/historia.html. 5) Se a pergunta for sobre algo que não está no conhecimento acima, diga: "Essa pergunta precisa ser respondida pelo organizador! Fale com o Diego Pádua pelo WhatsApp: https://wa.me/5527999050053 🏐". 6) Nunca invente informações. 7) Para regras gerais de vôlei e basquete, pode responder normalmente.`;
 
 const GROQ_KEY = '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';
 let chatHistory = [];
