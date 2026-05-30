@@ -1352,6 +1352,13 @@ function nav(pid,btn){
   if(btn)btn.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(navigator.vibrate)navigator.vibrate(6);
+  // Integração Google Sheets: carrega e inicia ciclo nas abas de jogos/tabela
+  if(pid==='gamesPage'||pid==='tablePage'){
+    loadVoleiDataIndex();
+    startIndexSheetCycle();
+  } else {
+    stopIndexSheetCycle();
+  }
 }
 
 // ==================== THEME ====================
@@ -1430,29 +1437,170 @@ function shareGame(game,time){
   else showToast('📤 '+game);
 }
 
-// ==================== TABLE ====================
-const tableData={
-  grupoA:[{pos:1,name:'ES Volei',city:'Vitória, ES',badge:'CAMPEÃO 25',pj:0,v:0,d:0,sp:0,pts:0},{pos:2,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0},{pos:3,name:'Equipe Y',city:'Cidade, RJ',badge:'',pj:0,v:0,d:0,sp:0,pts:0}],
-  grupoB:[{pos:1,name:'Equipe UVI',city:'Itaperuna, RJ',badge:'VICE 25',pj:0,v:0,d:0,sp:0,pts:0},{pos:2,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0},{pos:3,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0}],
-  grupoC:[{pos:1,name:'CT Montanhas',city:'Afonso Cláudio, ES',badge:'CASA',pj:0,v:0,d:0,sp:0,pts:0},{pos:2,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0},{pos:3,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0}],
-  grupoD:[{pos:1,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0},{pos:2,name:'Equipe X',city:'Cidade, RJ',badge:'',pj:0,v:0,d:0,sp:0,pts:0},{pos:3,name:'Equipe X',city:'Cidade, ES',badge:'',pj:0,v:0,d:0,sp:0,pts:0}]
+// ==================== GOOGLE SHEETS CONFIG (VOLEIBOL) ====================
+const INDEX_VOLEI_SHEET_ID  = '12-yxLsIplLMAj0Y9jCpzl2OGJLKPhy_lWAtvYP-Vvh8';
+const INDEX_GOOGLE_API_KEY  = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
+let _indexSheetTimer = null;
+let _indexCountdown  = 30;
+let _indexCdTimer    = null;
+
+// ── dados em memória (usados pelo filtro/busca local) ──────────────────────
+const tableData = {
+  grupoA: [], grupoB: [], grupoC: [], grupoD: []
 };
-let curGrp='grupoA';
-function renderTable(grp,filter=''){
-  curGrp=grp;
-  const rows=(tableData[grp]||[]).filter(r=>!filter||r.name.toLowerCase().includes(filter.toLowerCase()));
-  document.getElementById('tableBody').innerHTML=rows.map((r,i)=>`
+let curGrp = 'grupoA';
+
+// ── busca planilha e atualiza jogos + classificação ─────────────────────────
+async function loadVoleiDataIndex() {
+  const makeUrl = (sheet, range) =>
+    `https://sheets.googleapis.com/v4/spreadsheets/${INDEX_VOLEI_SHEET_ID}/values/${encodeURIComponent("'"+sheet+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
+
+  try {
+    const [resClass, resJogos] = await Promise.all([
+      fetch(makeUrl('Classificação','A1:K26')),
+      fetch(makeUrl('Fase de Grupos','A1:Q49'))
+    ]);
+    const [dataClass, dataJogos] = await Promise.all([resClass.json(), resJogos.json()]);
+    if (!resClass.ok || !resJogos.ok) throw new Error('Sheets error');
+
+    const rowsC = dataClass.values  || [];
+    const rowsJ = dataJogos.values  || [];
+    const cc = (rows,r,col) => (rows[r]&&rows[r][col]!=null)?rows[r][col].toString().trim():'';
+
+    // ── Classificação → tableData ──────────────────────────────────────────
+    // Grupo A → índices 5-7 | B → 11-13 | C → 17-19 | D → 23-25
+    // cols: 0=POS 1=Equipe 2=PTS 3=V 4=D 5=SP (ajuste conforme planilha)
+    const grpMap = {
+      grupoA: [5,6,7], grupoB: [11,12,13],
+      grupoC: [17,18,19], grupoD: [23,24,25]
+    };
+    Object.keys(grpMap).forEach(g => {
+      tableData[g] = grpMap[g].map(r => ({
+        pos:  cc(rowsC,r,0) || '—',
+        name: cc(rowsC,r,1) || '—',
+        city: cc(rowsC,r,5) || '',
+        badge:'',
+        pj:   cc(rowsC,r,6) || '0',
+        v:    cc(rowsC,r,3) || '0',
+        d:    cc(rowsC,r,4) || '0',
+        sp:   cc(rowsC,r,7) || '0',
+        pts:  cc(rowsC,r,2) || '0'
+      })).filter(r => r.name && r.name !== '—');
+    });
+    // re-renderiza grupo ativo
+    renderTable(curGrp);
+
+    // ── Jogos da Fase de Grupos → atualiza placares nos cards ─────────────
+    // Mapeamento igual ao tabela.html:
+    // Grupo A → rows 10-12 | B → 22-24 | C → 34-36 | D → 46-48
+    // cols: B=1(Casa) C=2 D=3 E=4(sets casa) H=7 I=8 J=9(sets vis)
+    //       L=11(Visit) M=12(setsC) N=13(setsV) O=14(Vencedor)
+    const jogosGrupos = [
+      { grp:'A', rows:[10,11,12], ids:['g1','g2','g3'] },
+      { grp:'B', rows:[22,23,24], ids:['g3','g3b','g3c'] },
+      { grp:'C', rows:[34,35,36], ids:['g4','g4b','g4c'] },
+      { grp:'D', rows:[46,47,48], ids:['g4d','g4e','g4f'] }
+    ];
+    // Só atualiza os cards que existem no DOM (g1–g4 estão no index)
+    // Mapeamos rows do grupo A (rodadas 1 e 2 do Grupo A = g1,g2)
+    // e primeira rodada de B=g3, C=g4
+    const domMap = [
+      { row:10, id:'g1' },
+      { row:11, id:'g2' },
+      { row:22, id:'g3' },
+      { row:34, id:'g4' }
+    ];
+    domMap.forEach(({ row, id }) => {
+      const casa   = cc(rowsJ, row, 1);
+      const visit  = cc(rowsJ, row, 11);
+      const setsC  = cc(rowsJ, row, 12) || '0';
+      const setsV  = cc(rowsJ, row, 13) || '0';
+      const vencedor = cc(rowsJ, row, 14);
+
+      // Placar principal (sets)
+      const scrEl = document.getElementById('scr-'+id);
+      const setEl = document.getElementById('sets-'+id);
+      if (scrEl && (setsC!=='0' || setsV!=='0' || vencedor)) {
+        scrEl.textContent = setsC + ' × ' + setsV;
+        scrEl.style.fontFamily = "'Anton',sans-serif";
+        scrEl.style.fontSize   = '32px';
+        scrEl.style.color      = 'var(--gold)';
+        scrEl.style.letterSpacing = '2px';
+      }
+      if (setEl) {
+        // detalhe dos sets individuais
+        const s = [];
+        [[2,7],[3,8],[4,9]].forEach(([ca,cb]) => {
+          const a=cc(rowsJ,row,ca), b=cc(rowsJ,row,cb);
+          if(a&&b) s.push(a+'/'+b);
+        });
+        if (s.length) setEl.textContent = s.join('  ');
+        else if (!vencedor) setEl.textContent = 'Em breve';
+      }
+
+      // Nomes das equipes (atualiza se a planilha tiver)
+      if (casa || visit) {
+        const gc = document.querySelector(`[data-gid="${id}"]`);
+        if (gc) {
+          const nms = gc.querySelectorAll('.gc-t-nm');
+          if (nms[0] && casa)  nms[0].textContent = casa;
+          if (nms[1] && visit) nms[1].textContent = visit;
+        }
+      }
+
+      // card live
+      if (vencedor && vencedor !== '—' && vencedor !== 'A DEFINIR') {
+        const gc = document.querySelector(`[data-gid="${id}"]`);
+        if (gc) gc.classList.remove('live-card');
+      }
+    });
+
+  } catch(e) {
+    console.warn('Sheets index error:', e);
+  }
+}
+
+// ── auto-refresh 30s para as abas Jogos e Tabela ───────────────────────────
+function startIndexSheetCycle() {
+  stopIndexSheetCycle();
+  _indexCountdown = 30;
+  _indexCdTimer = setInterval(() => {
+    _indexCountdown--;
+    if (_indexCountdown <= 0) {
+      _indexCountdown = 30;
+      loadVoleiDataIndex();
+    }
+  }, 1000);
+}
+function stopIndexSheetCycle() {
+  clearInterval(_indexSheetTimer);
+  clearInterval(_indexCdTimer);
+  _indexSheetTimer = null;
+  _indexCdTimer    = null;
+}
+
+// ── renderTable usa tableData (agora preenchido pelo Sheets) ───────────────
+function renderTable(grp, filter='') {
+  curGrp = grp;
+  const rows = (tableData[grp]||[]).filter(r => !filter || r.name.toLowerCase().includes(filter.toLowerCase()));
+  document.getElementById('tableBody').innerHTML = rows.map((r,i) => `
     <div class="tbl-row ${i<2?'top2':''}" onclick="openTeam('${r.name}','${r.city}','🏐',${r.pj},${r.v},${r.pts})">
-      <div class="td"><span class="td-pos ${i===0?'g':''}">${r.pos}</span></div>
+      <div class="td"><span class="td-pos ${i===0?'g':''}">${r.pos}º</span></div>
       <div class="td td-nm">${r.name}${r.badge?`<span class="td-bdg">${r.badge}</span>`:''}</div>
       <div class="td">${r.pj}</div><div class="td">${r.v}</div><div class="td">${r.d}</div>
-      <div class="td">${r.sp>0?'+'+r.sp:r.sp}</div>
+      <div class="td">${Number(r.sp)>0?'+'+r.sp:r.sp}</div>
       <div class="td"><span class="td-pts">${r.pts}</span></div>
     </div>`).join('');
 }
+// carga inicial das abas (sem dados ainda — Sheets vai preencher)
 renderTable('grupoA');
-function filterTable(g,btn){document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTable(g);}
-function searchTeam(v){renderTable(curGrp,v);}
+
+function filterTable(g,btn){
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTable(g);
+}
+function searchTeam(v){ renderTable(curGrp,v); }
 
 // ==================== TEAM MODAL ====================
 const players={'ES Volei':[{n:1,name:'João Silva',pos:'Levantador'},{n:7,name:'Lucas Melo',pos:'Central'},{n:12,name:'Rafael Andrade',pos:'Oposto'},{n:15,name:'Bruno Lima',pos:'Libero'}],'Equipe UVI':[{n:4,name:'Pedro Costa',pos:'Ponteiro'},{n:8,name:'André Souza',pos:'Central'},{n:11,name:'Gabriel Reis',pos:'Oposto'}],'CT Montanhas':[{n:3,name:'Carlos Lima',pos:'Levantador'},{n:9,name:'Mateus Ferr.',pos:'Ponteiro'},{n:14,name:'Diego Alves',pos:'Central'}]};
@@ -2093,6 +2241,9 @@ function downloadQR(){
 // INIT
 // ==========================================================
 renderBolao();
+// Carrega dados do Google Sheets para jogos e classificação de vôlei
+loadVoleiDataIndex();
+startIndexSheetCycle();
 
 </script>
 
