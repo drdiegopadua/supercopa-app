@@ -2019,8 +2019,7 @@ SUPERCOPA AFC - BASE DE CONHECIMENTO COMPLETA:
 `;
 const AI_SYSTEM = `Você é o assistente oficial da Supercopa AFC 2026, o maior evento multiesporte da Região das Montanhas em Afonso Cláudio, ES. USE ESTE CONHECIMENTO PARA RESPONDER: ${SUPERCOPA_KB}. Regras: 1) Responda em português, de forma animada e esportiva com emojis. 2) Seja conciso (máx 3 parágrafos). 3) Se a pergunta for sobre algo que não está no conhecimento acima, diga: "Essa pergunta precisa ser respondida pela Comissão Organizadora! Entre em contato pelo WhatsApp: https://wa.link/900kb2 🏐". 4) Nunca invente informações. 5) Para regras gerais de vôlei e basquete, pode responder normalmente.`;
 
-const GEMINI_KEY = 'AIzaSyC5znFBGRO_ifAH6hLfqGOEHRyxuBFf0Lk';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+const GROQ_KEY = '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';
 let chatHistory = [];
 
 async function sendChat() {
@@ -2029,22 +2028,29 @@ async function sendChat() {
   if (!msg) return;
   inp.value = '';
   appendBubble(msg, 'user');
-  chatHistory.push({role:'user', parts:[{text:msg}]});
+  chatHistory.push({role:'user', content: msg});
   const typing = appendTyping();
   try {
-    const res = await fetch(GEMINI_URL, {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + GROQ_KEY
+      },
       body: JSON.stringify({
-        system_instruction:{parts:[{text: AI_SYSTEM}]},
-        contents: chatHistory.slice(-10)
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 1000,
+        messages: [
+          {role:'system', content: AI_SYSTEM},
+          ...chatHistory.slice(-10)
+        ]
       })
     });
     const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Não consegui responder. Tente novamente!';
+    const reply = data.choices?.[0]?.message?.content || 'Não consegui responder. Tente novamente!';
     typing.remove();
     appendBubble(reply, 'ai');
-    chatHistory.push({role:'model', parts:[{text:reply}]});
+    chatHistory.push({role:'assistant', content: reply});
   } catch(e) {
     typing.remove();
     appendBubble('⚠️ Sem conexão. Tente novamente. Para dúvidas: https://wa.link/900kb2', 'ai');
@@ -2484,7 +2490,7 @@ startIndexSheetCycle();
 <section id="chatPage" class="page">
   <div class="ptitle">🤖 <span>Chat com IA</span></div>
   <div style="padding:0 14px 8px;display:flex;align-items:center;gap:8px;">
-    <div class="ai-badge">✨ Powered by Gemini · Google</div>
+    <div class="ai-badge">✨ Powered by Groq · Gratuito</div>
     <button style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;" onclick="clearChat()">Limpar</button>
   </div>
   <div class="chat-sugs" id="chatSugs">
