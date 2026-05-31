@@ -899,6 +899,9 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   </div>
   <div class="topbar-right">
     <div class="live-pill"><span class="live-dot"></span>EM BREVE</div>
+    <button id="installTopBtn" onclick="triggerInstall()" style="display:none;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1px solid var(--border-gold);background:linear-gradient(135deg,rgba(244,197,66,.18),rgba(14,59,120,.25));color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.3px;cursor:pointer;backdrop-filter:blur(8px);transition:background .15s;" title="Instalar App">
+      <span style="font-size:14px;">📲</span> Instalar
+    </button>
   </div>
 </header>
 
@@ -1174,6 +1177,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   <div style="padding:0 16px 14px;font-size:13px;color:var(--text2);line-height:1.6;">
     Da primeira quadra ao maior campeonato multiesporte da Região das Montanhas. Conheça cada edição, cada campeão e como o torneio se tornou uma tradição em Afonso Cláudio.
   </div>
+
   <!-- Stats -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 14px 16px;">
     <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;transition:background .35s,border .35s;"><div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold)">5+</div><div style="font-size:9px;color:var(--muted);margin-top:2px;">Edições</div></div>
@@ -1181,43 +1185,119 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;transition:background .35s,border .35s;"><div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold)">6</div><div style="font-size:9px;color:var(--muted);margin-top:2px;">Times Basq.</div></div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;transition:background .35s,border .35s;"><div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold)">2</div><div style="font-size:9px;color:var(--muted);margin-top:2px;">Modalidades</div></div>
   </div>
+
+  <!-- O que é a Supercopa -->
+  <div style="margin:0 14px 16px;background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:16px;transition:background .35s,border .35s;">
+    <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">O torneio</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;">O que é a <em style="color:var(--gold);font-style:normal;">Supercopa?</em></div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px;">
+      A <strong style="color:var(--text)">Supercopa de Afonso Cláudio</strong> é o principal campeonato multiesporte da cidade, realizado anualmente desde 2021. Nasceu da vontade de reunir a comunidade em torno do esporte, promovendo competição, integração e valorização dos atletas locais.
+    </p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px;">
+      O torneio começou focado no <strong style="color:var(--text)">Vôlei</strong>, modalidade que apaixona a região, e ao longo dos anos foi crescendo em estrutura, número de times e qualidade técnica. Em 2026, damos um passo histórico: <strong style="color:var(--gold)">o Basquete entra no torneio</strong>, ampliando ainda mais o alcance da competição.
+    </p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;">
+      Cada edição é marcada por jogos acirrados, rivalidades saudáveis e muito esporte de alto nível — tudo isso no coração do Espírito Santo.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:18px;flex-shrink:0;">📍</span><div><div style="font-size:12px;font-weight:800;">Afonso Cláudio · ES</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Realizado na cidade de Afonso Cláudio, no coração do Espírito Santo, reunindo atletas da região.</div></div></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:18px;flex-shrink:0;">🏐</span><div><div style="font-size:12px;font-weight:800;">Vôlei desde 2021</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">5 edições consecutivas de vôlei de alto nível, com times cada vez mais competitivos e disputas emocionantes.</div></div></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:18px;flex-shrink:0;">🏀</span><div><div style="font-size:12px;font-weight:800;">Basquete estreia em 2026</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">A 6ª edição marca a chegada do Basquete ao torneio, com 6 times na disputa inaugural da modalidade.</div></div></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:18px;flex-shrink:0;">🤝</span><div><div style="font-size:12px;font-weight:800;">Comunidade e esporte</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Mais do que um campeonato, a Supercopa é um evento que une famílias, amigos e a comunidade em torno do esporte.</div></div></div>
+    </div>
+  </div>
+
+  <!-- Linha do tempo -->
+  <div style="padding:4px 16px 10px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;">
+    Linha do tempo · Edição por <em style="color:var(--gold);font-style:normal;">Edição</em>
+  </div>
   <div class="timeline">
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2026 · 6ª Ed. 🔥</div>
-      <div class="tl-ch">🏐 Vôlei · 12 times · 🏀 Basquete · 6 times</div>
-      <div class="tl-det">A edição mais ambiciosa da história · Duas modalidades<br>Primeira edição multiesporte completa</div>
-      <div class="tl-mvp">⭐ Edição em andamento</div>
+      <div class="tl-yr">2021 · 1ª Edição · Vôlei</div>
+      <div class="tl-ch">O começo de tudo</div>
+      <div class="tl-det">A Supercopa nasce em Afonso Cláudio com sua primeira edição de Vôlei. Um sonho que se tornou realidade, reunindo times da cidade e da região pela primeira vez em uma competição organizada e apaixonante.</div>
+      <div class="tl-mvp">🏆 Campeão · Volei VNI</div>
     </div></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2025 · 5ª Ed.</div>
-      <div class="tl-ch">🏆 ES Volei — Vitória, ES</div>
-      <div class="tl-det">Edição comemorativa de cinco anos · 12 times · Ginásio Central<br>Vice: Equipe UVI · 3º: CT Montanhas</div>
-      <div class="tl-mvp">🥇 João Silva — MVP</div>
+      <div class="tl-yr">2022 · 2ª Edição · Vôlei</div>
+      <div class="tl-ch">Crescendo e evoluindo</div>
+      <div class="tl-det">A segunda edição chegou com mais times, mais público e ainda mais emoção. O torneio consolida seu lugar no calendário esportivo da cidade e a rivalidade entre os times começa a ganhar força.</div>
+      <div class="tl-mvp">🏆 Campeão · RPB Volei</div>
     </div></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2024 · 4ª Ed.</div>
-      <div class="tl-ch">🏆 Liverpool Volei — Grande Vitória, ES</div>
-      <div class="tl-det">Alto nível técnico · Organização ainda mais profissional<br>Vice: ES Volei</div>
-      <div class="tl-mvp">🥇 Pedro Costa — MVP</div>
+      <div class="tl-yr">2023 · 3ª Edição · Vôlei</div>
+      <div class="tl-ch">Rivalidades acirradas</div>
+      <div class="tl-det">A terceira edição entra para a história como uma das mais disputadas. Times já experientes no torneio se enfrentam em jogos que ficaram na memória de quem esteve presente nas arquibancadas.</div>
+      <div class="tl-mvp">🏆 Campeão · Equipe UVI</div>
     </div></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2023 · 3ª Ed.</div>
-      <div class="tl-ch">🏆 Equipe UVI — Itaperuna, RJ</div>
-      <div class="tl-det">Uma das mais disputadas · Rivalidades acirradas<br>Vice: ES Volei</div>
-      <div class="tl-mvp">🥇 Carlos Lima — MVP</div>
+      <div class="tl-yr">2024 · 4ª Edição · Vôlei</div>
+      <div class="tl-ch">Alto nível técnico</div>
+      <div class="tl-det">A qualidade técnica atingiu um novo patamar. Com mais atletas experientes e uma organização ainda mais profissional, a quarta edição mostrou que a Supercopa veio para ficar e crescer a cada ano.</div>
+      <div class="tl-mvp">🏆 Campeão · Liverpool Volei</div>
     </div></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2022 · 2ª Ed.</div>
-      <div class="tl-ch">🏆 RPB Volei — Cachoeiro do Itapemirim, ES</div>
-      <div class="tl-det">Torneio consolida calendário esportivo · Rivalidades ganham força<br>Vice: CT Montanhas</div>
-      <div class="tl-mvp">🥇 Rafael Andrade — MVP</div>
+      <div class="tl-yr">2025 · 5ª Edição · Vôlei · Premiação</div>
+      <div class="tl-ch">Cinco anos de história</div>
+      <div class="tl-det">A edição comemorativa de cinco anos celebrou tudo o que a Supercopa construiu: amizades, rivalidades, emoções e um legado esportivo sólido para Afonso Cláudio. Um marco inesquecível na trajetória do torneio.</div>
+      <div class="tl-mvp">🏆 Campeão · ES Volei</div>
     </div></div>
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-      <div class="tl-yr">2021 · 1ª Ed.</div>
-      <div class="tl-ch">🏆 Volei VNI — Venda Nova do Imigrante, ES</div>
-      <div class="tl-det">A Supercopa nasce em Afonso Cláudio · Edição inaugural<br>A origem do maior torneio da Região das Montanhas</div>
-      <div class="tl-mvp">⭐ Edição Inaugural</div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="border-color:var(--border-gold);background:linear-gradient(135deg,rgba(244,197,66,.06),var(--card2));">
+      <div class="tl-yr">2026 · 6ª Edição · Vôlei + Basquete 🔥</div>
+      <div class="tl-ch" style="color:var(--gold);">Um novo capítulo começa</div>
+      <div class="tl-det">A edição mais ambiciosa da história chega em 2026. Pela primeira vez, <strong style="color:var(--text)">duas modalidades</strong> disputam simultaneamente: 12 times de Vôlei e 6 times de Basquete. A Supercopa escreve um novo capítulo — e você faz parte dele.</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+        <div class="tl-mvp">🏐 Vôlei · 12 times</div>
+        <div class="tl-mvp">🏀 Basquete · 6 times</div>
+      </div>
     </div></div>
+  </div>
+
+  <!-- Hall da Fama -->
+  <div style="margin:8px 14px 16px;background:var(--card2);border:1px solid var(--border-gold);border-radius:16px;padding:16px;transition:background .35s,border .35s;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px;">Hall da Fama · Campeões da <em style="color:var(--gold);font-style:normal;">Supercopa</em></div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;">
+        <div style="font-size:22px;flex-shrink:0;">🥇</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;">Volei VNI</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">📍 Venda Nova do Imigrante, ES</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">2021</div><div style="font-size:9px;color:var(--muted);">1ª Edição</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;">
+        <div style="font-size:22px;flex-shrink:0;">🥇</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;">RPB Volei</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">📍 Cachoeiro do Itapemirim, ES</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">2022</div><div style="font-size:9px;color:var(--muted);">2ª Edição</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;">
+        <div style="font-size:22px;flex-shrink:0;">🥇</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;">Equipe UVI</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">📍 Itaperuna, RJ</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">2023</div><div style="font-size:9px;color:var(--muted);">3ª Edição</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;">
+        <div style="font-size:22px;flex-shrink:0;">🥇</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;">Liverpool Volei</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">📍 Grande Vitória, ES</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">2024</div><div style="font-size:9px;color:var(--muted);">4ª Edição</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:background .35s,border .35s;">
+        <div style="font-size:22px;flex-shrink:0;">🥇</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;">ES Volei</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">📍 Grande Vitória, ES</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">2025</div><div style="font-size:9px;color:var(--muted);">5ª Edição</div></div>
+      </div>
+    </div>
   </div>
   <!-- Comissão Organizadora -->
   <div style="margin:16px 14px 0;background:var(--card2);border:1px solid var(--border-gold);border-radius:16px;padding:16px;transition:background .35s,border .35s;">
@@ -1529,7 +1609,25 @@ let deferredPrompt=null;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 const isInStandaloneMode=()=>('standalone' in navigator && navigator.standalone)||window.matchMedia('(display-mode: standalone)').matches;
 
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  const btn=document.getElementById('installTopBtn');
+  if(btn&&!isInStandaloneMode())btn.style.display='flex';
+});
+
+function triggerInstall(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{
+      document.getElementById('installTopBtn').style.display='none';
+    });
+  } else if(isIOS){
+    showToast('📲 No Safari: toque em compartilhar (⬆️) e depois "Adicionar à Tela de Início"');
+  } else {
+    showToast('💡 No menu do navegador, escolha "Instalar aplicativo" ou "Adicionar à tela inicial"');
+  }
+}
 
 function showInstallBanner(){
   if(isInStandaloneMode()){
