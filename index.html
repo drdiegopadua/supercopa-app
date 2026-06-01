@@ -3148,14 +3148,6 @@ _arteImg.onload = () => desenharCard();
 // Dimensões originais da arte: 1080 x 1920
 const ARTE_W = 1080, ARTE_H = 1920;
 
-// Posições dos campos (em px na arte original 1080x1920)
-// Área central da imagem para textos
-const POS = {
-  t1:    { cx: 540, cy: 760 },
-  t2:    { cx: 540, cy: 1000 },
-  score: { cx: 540, cy: 870 }
-};
-
 function updateCard() {
   desenharCard();
 }
@@ -3168,7 +3160,6 @@ function desenharCard() {
   const t2    = document.getElementById('scT2')?.value || 'Time 2';
   const s1    = document.getElementById('scS1')?.value || '0';
   const s2    = document.getElementById('scS2')?.value || '0';
-  const score = s1 + '  ×  ' + s2;
 
   canvas.width  = ARTE_W;
   canvas.height = ARTE_H;
@@ -3177,31 +3168,58 @@ function desenharCard() {
   // Desenha a arte de fundo
   ctx.drawImage(_arteImg, 0, 0, ARTE_W, ARTE_H);
 
-  // Função auxiliar para texto centralizado com sombra
-  function drawText(text, cx, cy, size, color, font) {
-    ctx.font = `${font || 'bold'} ${size}px Anton, Arial Black, Arial`;
+  // Função auxiliar: texto centralizado com sombra forte
+  function drawText(text, cx, cy, size, color, weight) {
+    ctx.save();
+    ctx.font = `${weight || '900'} ${size}px Anton, 'Arial Black', Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    // Sombra
-    ctx.shadowColor = 'rgba(0,0,0,0.7)';
-    ctx.shadowBlur = 8;
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = 12;
+    ctx.shadowOffsetX = 3;
+    ctx.shadowOffsetY = 3;
     ctx.fillStyle = color;
     ctx.fillText(text.toUpperCase(), cx, cy);
-    ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+    ctx.restore();
   }
 
-  // Time 1
-  const sz1 = t1.length > 14 ? 58 : t1.length > 10 ? 70 : 82;
-  drawText(t1, POS.t1.cx, POS.t1.cy, sz1, '#ffffff');
+  // Função para texto com contorno dourado (usado no placar)
+  function drawTextOutlined(text, cx, cy, size, fillColor, strokeColor) {
+    ctx.save();
+    ctx.font = `900 ${size}px Anton, 'Arial Black', Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    ctx.shadowBlur = 16;
+    ctx.shadowOffsetX = 4;
+    ctx.shadowOffsetY = 4;
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = strokeColor || 'rgba(0,0,0,0.6)';
+    ctx.strokeText(text.toUpperCase(), cx, cy);
+    ctx.fillStyle = fillColor;
+    ctx.fillText(text.toUpperCase(), cx, cy);
+    ctx.restore();
+  }
 
-  // Time 2
-  const sz2 = t2.length > 14 ? 58 : t2.length > 10 ? 70 : 82;
-  drawText(t2, POS.t2.cx, POS.t2.cy, sz2, '#ffffff');
+  const CX = ARTE_W / 2; // 540
 
-  // Placar
-  drawText(score, POS.score.cx, POS.score.cy, 90, '#F4C542');
+  // ── TIME 1 (topo, acima do placar) ──────────────────────
+  // Na imagem: "ES VOLEI" fica em torno de y=690 (proporção ~36% da altura)
+  const cy_t1 = Math.round(ARTE_H * 0.355);
+  const sz1 = t1.length > 16 ? 60 : t1.length > 12 ? 72 : t1.length > 8 ? 82 : 90;
+  drawText(t1, CX, cy_t1, sz1, '#ffffff');
+
+  // ── PLACAR (centro) ──────────────────────────────────────
+  // Na imagem: "3 × 1" fica em torno de y=850 (~44%)
+  const cy_score = Math.round(ARTE_H * 0.435);
+  const scoreStr = s1 + '  ×  ' + s2;
+  drawTextOutlined(scoreStr, CX, cy_score, 110, '#F4C542', 'rgba(0,0,0,0.5)');
+
+  // ── TIME 2 (abaixo do placar) ────────────────────────────
+  // Na imagem: "EQUIPE UVI" fica em torno de y=1010 (~53%)
+  const cy_t2 = Math.round(ARTE_H * 0.525);
+  const sz2 = t2.length > 16 ? 60 : t2.length > 12 ? 72 : t2.length > 8 ? 82 : 90;
+  drawText(t2, CX, cy_t2, sz2, '#ffffff');
 }
 
 // Inicia ao carregar
