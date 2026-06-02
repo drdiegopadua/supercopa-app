@@ -3205,19 +3205,18 @@ function desenharCard() {
 
   // ── TIME 1 (topo, acima do placar) ──────────────────────
   // Na imagem: "ES VOLEI" fica em torno de y=690 (proporção ~36% da altura)
-  const cy_t1 = Math.round(ARTE_H * 0.355);
+  // TIME 1 — abaixo de "RESULTADO FINAL" (~48% da altura)
+  const cy_t1 = Math.round(ARTE_H * 0.480);
   const sz1 = t1.length > 16 ? 60 : t1.length > 12 ? 72 : t1.length > 8 ? 82 : 90;
   drawText(t1, CX, cy_t1, sz1, '#ffffff');
 
-  // ── PLACAR (centro) ──────────────────────────────────────
-  // Na imagem: "3 × 1" fica em torno de y=850 (~44%)
-  const cy_score = Math.round(ARTE_H * 0.435);
+  // ── PLACAR (~56%) ─────────────────────────────────────────
+  const cy_score = Math.round(ARTE_H * 0.555);
   const scoreStr = s1 + '  ×  ' + s2;
   drawTextOutlined(scoreStr, CX, cy_score, 110, '#F4C542', 'rgba(0,0,0,0.5)');
 
-  // ── TIME 2 (abaixo do placar) ────────────────────────────
-  // Na imagem: "EQUIPE UVI" fica em torno de y=1010 (~53%)
-  const cy_t2 = Math.round(ARTE_H * 0.525);
+  // ── TIME 2 (~64%) ─────────────────────────────────────────
+  const cy_t2 = Math.round(ARTE_H * 0.635);
   const sz2 = t2.length > 16 ? 60 : t2.length > 12 ? 72 : t2.length > 8 ? 82 : 90;
   drawText(t2, CX, cy_t2, sz2, '#ffffff');
 }
