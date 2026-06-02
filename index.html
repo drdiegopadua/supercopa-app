@@ -624,7 +624,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 /* ============================================================ QUIZ ============================================================ */
 .quiz-pg-bar{height:4px;background:var(--border);border-radius:999px;margin:0 14px 14px;overflow:hidden;}
 .quiz-pg-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e8a010);border-radius:999px;transition:width .4s ease;}
-.quiz-card{margin:0 14px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:20px;padding-bottom:80px;transition:background .35s,border .35s;}
+.quiz-card{margin:0 14px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:20px;padding-bottom:120px;transition:background .35s,border .35s;}
 .quiz-num{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
 .quiz-q{font-size:14px;font-weight:800;line-height:1.4;margin-bottom:18px;}
 .quiz-opts{display:flex;flex-direction:column;gap:8px;}
@@ -3025,7 +3025,8 @@ function updateQuizStrip() {
   const el1=document.getElementById('qAcertos'); if(el1) el1.textContent=qAcertos;
   const el2=document.getElementById('qErros'); if(el2) el2.textContent=qErros;
   const el3=document.getElementById('qTotal'); if(el3) el3.textContent=QUIZ_QUESTIONS.length;
-  const pct=qIdx>0?Math.round(qAcertos/qIdx*100):0;
+  const respondidas = qAcertos + qErros;
+  const pct = respondidas > 0 ? Math.round(qAcertos/respondidas*100) : 0;
   const el4=document.getElementById('qPerc'); if(el4) el4.textContent=pct+'%';
 }
 
