@@ -2936,12 +2936,88 @@ const QUIZ_QUESTIONS = [
   {q:'Qual a missão principal da Supercopa AFC?', opts:['Apenas premiar campeões','Promover esporte, integração e entretenimento na Região das Montanhas','Somente times locais','Competição apenas feminina'], ans:1, exp:'A Supercopa promove esporte, integração e entretenimento para toda a região! 🌟'},
 ];
 
-let qIdx=0, qAcertos=0, qErros=0, quizPerfect=false;
+// URL do Google Apps Script — substitua após criar o script
+const QUIZ_SHEETS_URL = 'COLE_SUA_URL_AQUI';
+
+let qIdx=0, qAcertos=0, qErros=0, qNome='', qStartTime=null;
 
 function initQuiz() {
-  qIdx=0; qAcertos=0; qErros=0; quizPerfect=false;
-  updateQuizStrip();
+  const el = document.getElementById('quizContent');
+  if(!el) return;
+
+  // Verifica se já respondeu
+  const jaRespondeu = localStorage.getItem('quizRespondido_supercopa2026');
+  if(jaRespondeu) {
+    const dados = JSON.parse(jaRespondeu);
+    el.innerHTML = `
+      <div class="quiz-result" style="padding:30px 14px;">
+        <div style="font-size:48px;margin-bottom:12px;">🔒</div>
+        <div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);margin-bottom:8px;">QUIZ JÁ RESPONDIDO</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">
+          Olá, <strong style="color:var(--text)">${dados.nome}</strong>!<br>
+          Você já respondeu o quiz em <strong style="color:var(--text)">${dados.data}</strong>.<br><br>
+          Resultado: <strong style="color:var(--gold)">${dados.acertos}/${dados.total} (${dados.pct}%)</strong>
+        </div>
+        <div style="font-size:12px;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;line-height:1.6;">
+          ⚠️ Cada participante pode responder o quiz <strong>apenas uma vez</strong>.<br>
+          O prêmio vai para quem completar todas as ${QUIZ_QUESTIONS.length} perguntas com maior % de acertos.
+        </div>
+      </div>`;
+    document.getElementById('quizFill').style.width='100%';
+    updateQuizStrip();
+    return;
+  }
+
+  // Tela de início — pede o nome
+  qIdx=0; qAcertos=0; qErros=0; qNome=''; qStartTime=null;
   document.getElementById('quizFill').style.width='0%';
+  updateQuizStrip();
+
+  el.innerHTML = `
+    <div style="padding:24px 14px;">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:48px;margin-bottom:10px;">🧠</div>
+        <div style="font-family:'Anton',sans-serif;font-size:24px;color:var(--gold);text-transform:uppercase;">Quiz Supercopa AFC</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6;">
+          ${QUIZ_QUESTIONS.length} perguntas · apenas <strong style="color:var(--text)">1 tentativa</strong>
+        </div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border-gold);border-radius:16px;padding:16px;margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">🏆 Como ganhar o prêmio</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;">
+          ✅ Responda <strong style="color:var(--text)">todas as ${QUIZ_QUESTIONS.length} perguntas</strong><br>
+          ✅ Quem tiver a <strong style="color:var(--text)">maior % de acertos</strong> ganha<br>
+          ⚠️ Só conta quem completar o quiz inteiro<br>
+          🔒 Você tem <strong style="color:var(--text)">apenas uma tentativa</strong>
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px;">Seu nome completo *</label>
+        <input id="quizNomeInput" type="text" placeholder="Digite seu nome completo"
+          style="width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-weight:700;outline:none;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px;">Seu WhatsApp *</label>
+        <input id="quizFoneInput" type="tel" placeholder="(00) 00000-0000"
+          style="width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-weight:700;outline:none;box-sizing:border-box;">
+      </div>
+      <button onclick="startQuizComNome()" style="width:100%;height:50px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:15px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">
+        🚀 INICIAR QUIZ
+      </button>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5;">
+        Ao iniciar, seu nome e resultado serão registrados.<br>Não será possível refazer o quiz.
+      </div>
+    </div>`;
+}
+
+function startQuizComNome() {
+  const nome = document.getElementById('quizNomeInput')?.value.trim();
+  const fone = document.getElementById('quizFoneInput')?.value.trim();
+  if(!nome){ showToast('⚠️ Digite seu nome completo!'); return; }
+  if(!fone){ showToast('⚠️ Digite seu WhatsApp!'); return; }
+  qNome = nome;
+  qFone = fone;
+  qStartTime = Date.now();
   renderQuestion();
 }
 
@@ -2996,62 +3072,72 @@ function answerQ(chosen) {
 
 function nextQ(){qIdx++; renderQuestion();}
 
-function showQuizResult() {
+let qFone = '';
+
+async function showQuizResult() {
   const total = QUIZ_QUESTIONS.length;
   const pct = Math.round(qAcertos/total*100);
-  const perfect = qAcertos === total;
-  const msg = perfect ? '🏆 PERFEITO! Você é o maior fã da Supercopa!' : pct>=80?'⭐ Incrível! Você conhece muito bem!':pct>=60?'👏 Bom resultado!':'📚 Continue estudando o vôlei!';
+  const tempoSegundos = qStartTime ? Math.round((Date.now()-qStartTime)/1000) : 0;
+  const msg = pct===100?'🏆 PERFEITO! Incrível!':pct>=80?'⭐ Muito bom!':pct>=60?'👏 Bom resultado!':'📚 Continue estudando!';
   const el = document.getElementById('quizContent');
   if(!el) return;
+
+  // Salva bloqueio no dispositivo
+  const registro = {
+    nome: qNome, acertos: qAcertos, total, pct,
+    data: new Date().toLocaleString('pt-BR')
+  };
+  localStorage.setItem('quizRespondido_supercopa2026', JSON.stringify(registro));
+
+  // Mostra resultado
   el.innerHTML = `
     <div class="quiz-result">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">Resultado de <strong style="color:var(--text)">${qNome}</strong></div>
       <div class="quiz-result-n">${qAcertos}/${total}</div>
       <div class="quiz-result-l">${pct}% de aproveitamento</div>
       <div class="quiz-result-msg">${msg}</div>
-      <button class="quiz-restart" onclick="initQuiz()">JOGAR NOVAMENTE 🔄</button>
     </div>
-    ${perfect ? `
-    <div class="quiz-winner-form" id="quizWinnerForm">
-      <h3>🎉 Você acertou tudo!</h3>
-      <p>Parabéns! Você é o primeiro a acertar todas as 40 perguntas! Deixe seu nome e telefone para a Comissão entrar em contato e te premiar!</p>
-      <input id="winnerName" placeholder="Seu nome completo *" type="text">
-      <input id="winnerPhone" placeholder="Seu telefone/WhatsApp *" type="tel">
-      <button class="quiz-save-btn" onclick="saveWinner()">🏆 SALVAR E ENVIAR</button>
-    </div>` : ''}`;
-  if(pct >= 80) launchFireworks('Quiz ' + pct + '% 🎉');
+    <div id="quizEnvioStatus" style="margin:16px 14px 0;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+      <div style="font-size:13px;color:var(--muted);">⏳ Registrando seu resultado...</div>
+    </div>`;
+
+  if(pct >= 80) launchFireworks(qNome + ' ' + pct + '% 🎉');
   updateQuizStrip();
+
+  // Envia para Google Sheets
+  await enviarParaSheets(qNome, qFone, qAcertos, total, pct, tempoSegundos);
 }
 
-async function saveWinner() {
-  const name = document.getElementById('winnerName')?.value.trim();
-  const phone = document.getElementById('winnerPhone')?.value.trim();
-  if(!name||!phone){showToast('⚠️ Preencha nome e telefone!');return;}
-  const btn = document.querySelector('.quiz-save-btn');
-  if(btn){btn.textContent='Enviando...';btn.disabled=true;}
+async function enviarParaSheets(nome, fone, acertos, total, pct, tempo) {
+  const statusEl = document.getElementById('quizEnvioStatus');
+  if(!statusEl) return;
+
+  if(!QUIZ_SHEETS_URL || QUIZ_SHEETS_URL === 'COLE_SUA_URL_AQUI') {
+    statusEl.innerHTML = `<div style="font-size:12px;color:var(--muted);">⚠️ URL do Google Sheets ainda não configurada.<br>Resultado salvo apenas neste dispositivo.</div>`;
+    return;
+  }
+
   try {
-    const res = await fetch(GEMINI_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+    await fetch(QUIZ_SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        contents:[{role:'user',parts:[{text:`Gere um email curto em português para drdiegopadua@gmail.com informando que ${name} (telefone: ${phone}) acertou todas as 40 questões do Quiz da Supercopa AFC 2026 no app. Formato: Assunto na primeira linha, corpo do email simples.`}]}]
+        nome, fone, acertos, total,
+        percentual: pct,
+        tempo_segundos: tempo,
+        data: new Date().toLocaleString('pt-BR')
       })
     });
-    const data = await res.json();
-    const emailContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    // Use mailto as fallback
-    const subject = encodeURIComponent('🏆 Ganhador do Quiz - Supercopa AFC 2026');
-    const body = encodeURIComponent(`Parabéns! Temos um vencedor do Quiz da Supercopa AFC 2026!\n\nNome: ${name}\nTelefone: ${phone}\n\nEsta pessoa acertou todas as 40 questões do Quiz no app da Supercopa!\n\nData/hora: ${new Date().toLocaleString('pt-BR')}`);
-    window.open(`mailto:drdiegopadua@gmail.com?subject=${subject}&body=${body}`);
-    localStorage.setItem('quizWinner', JSON.stringify({name,phone,date:new Date().toISOString()}));
-    const form = document.getElementById('quizWinnerForm');
-    if(form) form.innerHTML = `<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:8px;">🎉</div><div style="font-family:'Anton',sans-serif;font-size:18px;color:var(--gold);">ENVIADO COM SUCESSO!</div><div style="font-size:12px;color:var(--muted);margin-top:6px;">A Comissão vai entrar em contato em breve!</div></div>`;
-    showToast('✅ Dados enviados para a Comissão!');
-    launchFireworks(name + ' é CAMPEÃO!');
+    statusEl.innerHTML = `
+      <div style="font-size:20px;margin-bottom:6px;">✅</div>
+      <div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);">RESULTADO REGISTRADO!</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5;">
+        Seu resultado foi enviado para a Comissão.<br>
+        O prêmio vai para quem completar as ${total} perguntas com a maior % de acertos!
+      </div>`;
   } catch(e) {
-    const subject = encodeURIComponent('🏆 Ganhador do Quiz - Supercopa AFC 2026');
-    const body = encodeURIComponent(`Ganhador do Quiz!\n\nNome: ${name}\nTelefone: ${phone}\nData: ${new Date().toLocaleString('pt-BR')}`);
-    window.open(`mailto:drdiegopadua@gmail.com?subject=${subject}&body=${body}`);
-    showToast('✅ Email aberto! Envie para a Comissão.');
+    statusEl.innerHTML = `<div style="font-size:12px;color:var(--muted);">⚠️ Não foi possível enviar online.<br>Resultado salvo neste dispositivo.</div>`;
   }
 }
 
