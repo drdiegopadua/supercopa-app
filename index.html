@@ -782,6 +782,26 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ADMIN MODAL -->
 <div id="adminModal">
   <div class="adm-sheet">
+    <!-- TELA DE LOGIN ADMIN -->
+    <div id="admLoginScreen">
+      <div style="text-align:center;padding:10px 0 24px;">
+        <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+        <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:4px;">Painel Admin</div>
+        <div style="font-size:12px;color:var(--muted);">Digite a senha para acessar</div>
+      </div>
+      <input class="adm-inp" type="password" id="admLoginPw" placeholder="Senha de acesso..."
+        style="font-size:20px;letter-spacing:6px;text-align:center;"
+        onkeydown="if(event.key==='Enter')admLogin()">
+      <div id="admLoginErro" style="display:none;text-align:center;font-size:12px;color:#ff6b6b;margin-top:8px;font-weight:700;">
+        ❌ Senha incorreta. Tente novamente.
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="adm-cancel" onclick="closeAdmin()" style="flex:1;">Cancelar</button>
+        <button class="adm-save" onclick="admLogin()" style="flex:2;">ENTRAR →</button>
+      </div>
+    </div>
+    <!-- PAINEL PRINCIPAL (oculto até login) -->
+    <div id="admPainelPrincipal" style="display:none;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div>
         <div style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;">🔐 Admin</div>
@@ -2238,7 +2258,27 @@ function admQuizLiberar() {
   document.getElementById('btnLiberarQuiz').style.opacity = '0.5';
 }
 
-function openAdmin(){document.getElementById('adminModal').classList.add('on');}
+function openAdmin(){
+  // Resetar para tela de login sempre que abrir
+  document.getElementById('admLoginPw').value = '';
+  document.getElementById('admLoginErro').style.display = 'none';
+  document.getElementById('admLoginScreen').style.display = 'block';
+  document.getElementById('admPainelPrincipal').style.display = 'none';
+  document.getElementById('adminModal').classList.add('on');
+}
+function admLogin(){
+  const pw = document.getElementById('admLoginPw').value;
+  if(pw === PW_QUIZ){
+    document.getElementById('admLoginScreen').style.display = 'none';
+    document.getElementById('admPainelPrincipal').style.display = 'block';
+    document.getElementById('admLoginErro').style.display = 'none';
+  } else {
+    document.getElementById('admLoginErro').style.display = 'block';
+    document.getElementById('admLoginPw').value = '';
+    document.getElementById('admLoginPw').focus();
+    if(navigator.vibrate) navigator.vibrate([100,50,100]);
+  }
+}
 function closeAdmin(){document.getElementById('adminModal').classList.remove('on');}
 document.getElementById('adminModal').addEventListener('click',e=>{if(e.target===document.getElementById('adminModal'))closeAdmin();});
 function admTab(tab,btn){
