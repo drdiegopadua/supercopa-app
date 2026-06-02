@@ -643,7 +643,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .quiz-sc{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:9px 7px;text-align:center;}
 .quiz-sc-n{font-family:'Anton',sans-serif;font-size:19px;color:var(--gold);}
 .quiz-sc-l{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-.quiz-result{text-align:center;padding:24px 14px;}
+.quiz-result{text-align:center;padding:24px 14px 100px;}
 .quiz-result-n{font-family:'Anton',sans-serif;font-size:60px;color:var(--gold);}
 .quiz-result-l{font-size:13px;color:var(--muted);margin-top:3px;}
 .quiz-result-msg{font-size:15px;font-weight:800;margin-top:10px;}
@@ -3024,9 +3024,10 @@ function startQuizComNome() {
 function updateQuizStrip() {
   const el1=document.getElementById('qAcertos'); if(el1) el1.textContent=qAcertos;
   const el2=document.getElementById('qErros'); if(el2) el2.textContent=qErros;
-  const el3=document.getElementById('qTotal'); if(el3) el3.textContent=QUIZ_QUESTIONS.length;
-  const respondidas = qAcertos + qErros;
-  const pct = respondidas > 0 ? Math.round(qAcertos/respondidas*100) : 0;
+  const total = QUIZ_QUESTIONS.length;
+  const el3=document.getElementById('qTotal'); if(el3) el3.textContent=total;
+  // % sempre sobre o total de perguntas do quiz
+  const pct = total > 0 ? Math.round(qAcertos/total*100) : 0;
   const el4=document.getElementById('qPerc'); if(el4) el4.textContent=pct+'%';
 }
 
@@ -3098,7 +3099,7 @@ async function showQuizResult() {
       <div class="quiz-result-l">${pct}% de aproveitamento</div>
       <div class="quiz-result-msg">${msg}</div>
     </div>
-    <div id="quizEnvioStatus" style="margin:16px 14px 0;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+    <div id="quizEnvioStatus" style="margin:16px 14px 90px;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
       <div style="font-size:13px;color:var(--muted);">⏳ Registrando seu resultado...</div>
     </div>`;
 
