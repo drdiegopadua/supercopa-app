@@ -3207,11 +3207,10 @@ function desenharCard() {
   // Na imagem: "ES VOLEI" fica em torno de y=690 (proporção ~36% da altura)
   // ── ÁREA DO VS (retângulos laterais) ≈ 78–85% da altura ──
   // Time 1 no retângulo ESQUERDO, Time 2 no DIREITO
-  const cy_vs   = Math.round(ARTE_H * 0.800); // centro vertical da faixa VS (subido)
-  const cx_t1   = Math.round(ARTE_W * 0.255); // centro do retângulo esquerdo
-  const cx_t2   = Math.round(ARTE_W * 0.745); // centro do retângulo direito
+  const cy_vs   = Math.round(ARTE_H * 0.790); // times subidos
+  const cx_t1   = Math.round(ARTE_W * 0.255);
+  const cx_t2   = Math.round(ARTE_W * 0.745);
 
-  // Tamanho adaptativo: nomes curtos maiores, longos menores
   function teamFontSize(name) {
     if (name.length > 14) return 38;
     if (name.length > 10) return 46;
@@ -3219,17 +3218,13 @@ function desenharCard() {
     return 60;
   }
 
-  // Time 1 (esquerda)
   drawText(t1, cx_t1, cy_vs, teamFontSize(t1), '#ffffff');
-
-  // Time 2 (direita)
   drawText(t2, cx_t2, cy_vs, teamFontSize(t2), '#ffffff');
 
-  // ── PLACAR — sem separador, números grandes (~65%) ─────────
-  const cy_score = Math.round(ARTE_H * 0.650);
-  // s1 e s2 separados com espaço amplo, sem símbolo
-  const cx_s1 = Math.round(ARTE_W * 0.37);
-  const cx_s2 = Math.round(ARTE_W * 0.63);
+  // ── PLACAR — alinhado ao X da arte (~61%), mais afastado ──
+  const cy_score = Math.round(ARTE_H * 0.610);
+  const cx_s1 = Math.round(ARTE_W * 0.30); // mais à esquerda
+  const cx_s2 = Math.round(ARTE_W * 0.70); // mais à direita
   drawTextOutlined(s1, cx_s1, cy_score, 260, '#F4C542', 'rgba(0,0,0,0.6)');
   drawTextOutlined(s2, cx_s2, cy_score, 260, '#F4C542', 'rgba(0,0,0,0.6)');
 }
