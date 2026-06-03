@@ -28,13 +28,33 @@
   --r:20px; --r-sm:12px; --r-xs:8px;
 }
 body.day {
-  --bg:#eef2fb; --bg2:#e4eaf7; --bg3:#d8e2f5;
-  --card:rgba(255,255,255,0.94); --card2:rgba(255,255,255,0.98); --card3:rgba(240,246,255,0.9);
-  --border:rgba(14,59,120,0.10); --border-gold:rgba(244,197,66,0.45);
-  --text:rgba(8,16,42,0.92); --text2:rgba(8,16,42,0.65); --muted:rgba(8,16,42,0.40);
-  --topbar:rgba(238,242,251,0.96); --nav:rgba(232,238,247,0.98);
-  --shadow:0 8px 32px rgba(14,59,120,0.12);
+  /* Cores baseadas no site oficial supercopaafc.com.br */
+  --bg:#ffffff; --bg2:#f4f6fb; --bg3:#e8edf8;
+  --gold:#F4C542; --gold2:#e8a010; --gold-dim:rgba(244,197,66,0.18);
+  --blue:#0E3B78; --blue2:#0a2d5e; --blue3:#071a3e;
+  --card:#ffffff; --card2:#f4f6fb; --card3:rgba(14,59,120,0.06);
+  --border:rgba(14,59,120,0.13); --border-gold:rgba(244,197,66,0.55); --border-blue:rgba(14,59,120,0.25);
+  --text:#0a1a3e; --text2:#2a3f6e; --muted:#7a8fb0;
+  --topbar:#0E3B78; --nav:#0E3B78;
+  --shadow:0 4px 20px rgba(14,59,120,0.14);
 }
+
+
+/* Modo DIA - topbar e nav azul marinho com texto branco */
+body.day .topbar { background: #0E3B78 !important; border-bottom: 2px solid #F4C542; }
+body.day .topbar-title { color: #ffffff !important; }
+body.day .topbar-sub { color: rgba(255,255,255,0.75) !important; }
+body.day .icon-btn { color: #ffffff !important; }
+body.day .live-dot-wrap { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
+body.day .live-dot { background: #F4C542 !important; }
+body.day .bottom-nav { background: #0E3B78 !important; border-top: 2px solid #F4C542; }
+body.day .nav-btn { color: rgba(255,255,255,0.55) !important; }
+body.day .nav-btn.active { color: #F4C542 !important; }
+body.day .nav-btn.active svg, body.day .nav-btn.active .nav-ic { color: #F4C542 !important; }
+body.day .section-title { color: #0a1a3e !important; }
+body.day .card { background: #ffffff !important; border: 1px solid rgba(14,59,120,0.13) !important; }
+body.day .adm-sheet { background: #ffffff !important; }
+body.day .adm-inp { background: #f4f6fb !important; border-color: rgba(14,59,120,0.2) !important; color: #0a1a3e !important; }
 
 /* ============================================================
    RESET & BASE
