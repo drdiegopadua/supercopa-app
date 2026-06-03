@@ -905,6 +905,24 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <input class="adm-inp" type="password" placeholder="Senha..." id="admPwBolao">
       </div>
     </div>
+    <!-- TAB: QUIZ -->
+    <div id="admQuiz" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:18px;">
+          <div style="font-size:36px;margin-bottom:8px;">🧠</div>
+          <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Gerenciar Quiz</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5;">Libere o quiz de um participante<br>para que ele possa responder novamente</div>
+        </div>
+        <div id="admQuizStatus" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--muted);text-align:center;">
+          Carregando...
+        </div>
+        <div class="adm-actions" style="margin-top:12px;">
+          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
+          <button class="adm-save" onclick="admQuizLiberar()" id="btnLiberarQuiz">🔓 LIBERAR QUIZ</button>
+        </div>
+      </div>
+    </div>
+    </div><!-- /admPainelPrincipal -->
   </div>
 </div>
 <div id="toast"></div>
@@ -2216,7 +2234,32 @@ document.getElementById('teamModal').addEventListener('click',e=>{if(e.target===
 // ==================== ADMIN ====================
 const PW='supercopa2026';
 
-const PW_QUIZ = '5912';
+function admQuizCarregarStatus() {
+  const statusEl = document.getElementById('admQuizStatus');
+  const btnEl = document.getElementById('btnLiberarQuiz');
+  if(!statusEl) return;
+  const registro = localStorage.getItem('quizRespondido_supercopa2026');
+  if(registro) {
+    const dados = JSON.parse(registro);
+    statusEl.innerHTML = `
+      <div style="color:var(--gold);font-weight:800;margin-bottom:8px;">🔒 Quiz Bloqueado neste dispositivo</div>
+      <div style="line-height:1.9;font-size:12px;">
+        <strong style="color:var(--text)">${dados.nome}</strong><br>
+        ${dados.acertos}/${dados.total} perguntas · <strong style="color:var(--gold)">${dados.pct}%</strong><br>
+        <span style="font-size:10px;color:var(--muted)">${dados.data}</span>
+      </div>`;
+    if(btnEl){ btnEl.textContent='🔓 LIBERAR QUIZ'; btnEl.style.opacity='1'; btnEl.disabled=false; }
+  } else {
+    statusEl.innerHTML = '<div style="color:#22c55e;font-weight:800;margin-bottom:4px;">✅ Quiz Liberado</div><div style="font-size:11px;color:var(--muted);">Nenhum registro encontrado neste dispositivo</div>';
+    if(btnEl){ btnEl.textContent='✅ JÁ LIBERADO'; btnEl.style.opacity='0.5'; btnEl.disabled=true; }
+  }
+}
+
+function admQuizLiberar() {
+  localStorage.removeItem('quizRespondido_supercopa2026');
+  showToast('✅ Quiz liberado com sucesso!');
+  admQuizCarregarStatus();
+}
 
 function admQuizVerificar() {
   const val = document.getElementById('admPwQuiz')?.value;
@@ -2288,6 +2331,7 @@ function admTab(tab,btn){
   document.getElementById('admMvp').style.display=tab==='mvp'?'block':'none';
   document.getElementById('admBolao').style.display=tab==='bolao'?'block':'none';
   document.getElementById('admQuiz').style.display=tab==='quiz'?'block':'none';
+  if(tab==='quiz') admQuizCarregarStatus();
 }
 function checkPwBolao(){
   const v=document.getElementById('admPwBolao')?.value;
