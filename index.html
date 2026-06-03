@@ -2632,406 +2632,362 @@ function clearChat() {
 }
 
 // ==========================================================
-// BOLAO — Sistema de 3 fases com Google Sheets
+// BOLAO — Sábado (12 jogos) + Domingo (Campeão)
 // ==========================================================
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwwZ3GMSBsHdsu8cYlLdvDadOWRKZXV5aQo3tVk7MG8hrBTcfKXUySbaAw-Pspy8ec8/exec';
 
-// Estado de cada bolão: 'aberto' | 'encerrado'
-// Você (admin) altera via painel admin com senha
-const BOLAO_STATE_KEY = 'bolao_state_v1';
-function getBolaoState() {
-  return JSON.parse(localStorage.getItem(BOLAO_STATE_KEY) || '{"sabado":"aberto","semi":"fechado","camp":"fechado"}');
-}
-function setBolaoState(key, val) {
-  const s = getBolaoState(); s[key] = val;
-  localStorage.setItem(BOLAO_STATE_KEY, JSON.stringify(s));
-}
+const BOLAO_LOCAL_KEY = 'bolao_local_v2';
+const BOLAO_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzg9nL9j0cqHr9PlyWAa_YMDphe6FD0Ahnhmh6nzpQXrlYZGGLAFmRlMqJey1IEiyEk/exec';
 
-// Palpites locais (para não pedir nome de novo)
-const BOLAO_LOCAL_KEY = 'bolao_local_v1';
 function getLocalBets() { return JSON.parse(localStorage.getItem(BOLAO_LOCAL_KEY)||'{}'); }
 function saveLocalBet(tipo, data) {
   const b = getLocalBets(); b[tipo] = data;
   localStorage.setItem(BOLAO_LOCAL_KEY, JSON.stringify(b));
 }
 
-// ── GRUPOS: lidos do tableData (Google Sheets) ─────────────────────────────
-function getGrupoTimes(g) {
-  const rows = tableData[g] || [];
-  // Retorna nomes dos times, filtra vazios
-  return rows.map(r => r.name).filter(n => n && n !== '—');
+// Lê os 12 jogos da fase de grupos direto do tableData (Google Sheets)
+function getJogosDaFaseDeGrupos() {
+  // Cada grupo tem 3 times → 3 jogos (round-robin simplificado: A vs B, A vs C, B vs C)
+  const jogos = [];
+  ['grupoA','grupoB','grupoC','grupoD'].forEach((g, gi) => {
+    const times = (tableData[g]||[]).map(t => t.name).filter(n => n && n !== '—');
+    const label = ['A','B','C','D'][gi];
+    if (times.length >= 2) jogos.push({ grupo: label, casa: times[0], visit: times[1], id: `${g}_j1` });
+    if (times.length >= 3) jogos.push({ grupo: label, casa: times[0], visit: times[2], id: `${g}_j2` });
+    if (times.length >= 3) jogos.push({ grupo: label, casa: times[1], visit: times[2], id: `${g}_j3` });
+  });
+  return jogos;
 }
 
-// ── Aba switcher ───────────────────────────────────────────────────────────
+function getTodosTimesParaCampeao() {
+  const todos = [];
+  ['grupoA','grupoB','grupoC','grupoD'].forEach(g => {
+    (tableData[g]||[]).forEach(t => { if (t.name && t.name !== '—') todos.push(t.name); });
+  });
+  return [...new Set(todos)];
+}
+
+// ── SWITCH DE ABAS ──────────────────────────────────────────────────────────
 function switchBolaoTab(tab, btn) {
   document.querySelectorAll('.bolao-tab-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   document.querySelectorAll('.bolao-section').forEach(s => s.classList.remove('active'));
   document.getElementById('bsec-' + tab).classList.add('active');
-  if (tab === 'sabado') renderBolaoSabado();
-  if (tab === 'semi')   renderBolaoSemi();
-  if (tab === 'camp')   renderBolaoCamp();
+  if (tab === 'sabado')  renderBolaoSabado();
+  if (tab === 'camp')    renderBolaoCamp();
   if (tab === 'ranking') renderBolaoRanking();
 }
 
-// ==========================================================
-// BOLAO 1 — SÁBADO: 1º e 2º de cada grupo
-// ==========================================================
+// ── BOLÃO SÁBADO — 12 jogos, escolhe o vencedor de cada ────────────────────
 function renderBolaoSabado() {
   const el = document.getElementById('bolao-sabado-content');
   if (!el) return;
-  const state = getBolaoState();
-  const aberto = state.sabado === 'aberto';
-  const localBets = getLocalBets();
-  const jaApostou = !!localBets.sabado;
+  const local = getLocalBets();
+  const jaApostou = !!local.sabado;
+  const jogos = getJogosDaFaseDeGrupos();
 
-  const grupos = ['grupoA','grupoB','grupoC','grupoD'];
-  const labels = ['Grupo A','Grupo B','Grupo C','Grupo D'];
+  const pct = 100 / 12;
 
-  // Monta os selects de cada grupo
-  let gruposHtml = grupos.map((g, i) => {
-    const times = getGrupoTimes(g);
-    const opts = times.length
-      ? times.map(t => `<option value="${t}">${t}</option>`).join('')
-      : `<option value="">Aguardando times...</option>`;
-    const prevSel = jaApostou ? (localBets.sabado.grupos?.[g] || {}) : {};
-
-    return `<div class="bolao-group-block">
-      <div class="bolao-group-title">🏐 ${labels[i]}</div>
-      <div class="bolao-pick-label">🥇 1º Lugar</div>
-      <select class="bolao-select" id="bs-1-${g}" ${!aberto||jaApostou?'disabled':''}>
-        <option value="">Selecione o 1º...</option>${opts}
-      </select>
-      <div class="bolao-pick-label">🥈 2º Lugar</div>
-      <select class="bolao-select" id="bs-2-${g}" ${!aberto||jaApostou?'disabled':''}>
-        <option value="">Selecione o 2º...</option>${opts}
-      </select>
-    </div>`;
-  }).join('');
-
-  el.innerHTML = `<div class="bolao-card">
-    <span class="bolao-phase-badge ${aberto?'sabado':'encerrado'}">${aberto?'🟢 Aberto até sábado à noite':'🔴 Encerrado'}</span>
-    <div class="bolao-prize">
-      <div class="bolao-prize-icon">🎁</div>
-      <div class="bolao-prize-text">
-        <strong>Kit Gigante Grupo Coroa</strong>
-        <span>Acerte todos os classificados e ganhe!</span>
-      </div>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
-      Escolha quem passa em <strong style="color:var(--text)">1º e 2º lugar</strong> em cada grupo para o mata-mata.
-    </div>
-    ${gruposHtml}
-    ${aberto && !jaApostou ? `
-    <div class="bolao-contact">
-      <input id="bs-nome" placeholder="Seu nome *" type="text">
-      <input id="bs-fone" placeholder="WhatsApp (para contato se ganhar)" type="tel">
-    </div>
-    <button class="bolao-confirm" onclick="confirmarBolaoSabado()">🎯 CONFIRMAR PALPITE</button>
-    ` : jaApostou ? `
-    <div class="bolao-sent-badge">✅ Palpite enviado! Boa sorte, ${localBets.sabado.nome}!</div>
-    <div class="bet-history">
-      <div class="bet-history-title">Seu palpite</div>
-      ${Object.entries(localBets.sabado.grupos||{}).map(([g,v])=>`
-      <div class="bet-item"><span class="bet-name">${labels[grupos.indexOf(g)]}</span><span class="bet-score">1º ${v.p1||'?'} · 2º ${v.p2||'?'}</span></div>`).join('')}
-    </div>
-    <button class="bolao-reset" onclick="resetBolao('sabado')">🔄 Fazer Novo Palpite</button>
-    ` : `<div class="bolao-encerrado">🔴 Bolão encerrado. Acompanhe o ranking!</div>`}
-  </div>`;
-
-  // Pré-preenche se já apostou
-  if (jaApostou && localBets.sabado.grupos) {
-    grupos.forEach(g => {
-      const sel1 = document.getElementById(`bs-1-${g}`);
-      const sel2 = document.getElementById(`bs-2-${g}`);
-      const v = localBets.sabado.grupos[g] || {};
-      if (sel1 && v.p1) sel1.value = v.p1;
-      if (sel2 && v.p2) sel2.value = v.p2;
+  if (jaApostou) {
+    const d = local.sabado;
+    let rows = '';
+    (d.palpites||[]).forEach((p,i) => {
+      rows += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;">
+        <span style="color:var(--muted)">Jogo ${i+1} · Grupo ${p.grupo}</span>
+        <span style="font-weight:800;color:var(--text)">🏐 ${p.vencedor}</span>
+      </div>`;
     });
+    el.innerHTML = `
+      <div class="bolao-card">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">✅ Palpite Enviado!</div>
+          <div style="font-size:13px;font-weight:700;">Boa sorte, <strong>${d.nome}</strong>!</div>
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border-gold);border-radius:14px;padding:14px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:800;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">Seus palpites</div>
+          ${rows}
+        </div>
+        <div style="background:rgba(244,197,66,.08);border:1px solid var(--border-gold);border-radius:12px;padding:12px;font-size:11px;color:var(--muted);line-height:1.7;text-align:center;">
+          🏆 <strong style="color:var(--gold)">Patrocinador: GRUPO COROA</strong><br>
+          Maior % de acertos ganha o prêmio!<br>
+          <strong style="color:var(--text)">Cada acerto = ${pct.toFixed(2)}%</strong>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (jogos.length === 0) {
+    el.innerHTML = `<div class="bolao-card" style="text-align:center;padding:30px 14px;">
+      <div style="font-size:32px;margin-bottom:10px;">⏳</div>
+      <div style="font-size:13px;color:var(--muted);">Aguardando os times na tabela de grupos...<br>Os jogos aparecem automaticamente!</div>
+    </div>`;
+    return;
+  }
+
+  let jogosHtml = '';
+  ['A','B','C','D'].forEach(grp => {
+    const gJogos = jogos.filter(j => j.grupo === grp);
+    if (!gJogos.length) return;
+    jogosHtml += `<div style="margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🏐 Grupo ${grp}</div>`;
+    gJogos.forEach((j, idx) => {
+      const num = jogos.indexOf(j) + 1;
+      jogosHtml += `
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:700;">JOGO ${num} · Rodada ${idx+1}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <div style="flex:1;text-align:center;font-size:12px;font-weight:800;">${j.casa}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">VS</div>
+          <div style="flex:1;text-align:center;font-size:12px;font-weight:800;">${j.visit}</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="bolao-opt-btn" id="btn_${j.id}_casa" onclick="selecionarVencedor('${j.id}','${j.casa}','${j.visit}')"
+            style="flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:var(--card);font-size:11px;font-weight:700;cursor:pointer;color:var(--text);transition:.15s;">
+            ${j.casa}
+          </button>
+          <button class="bolao-opt-btn" id="btn_${j.id}_visit" onclick="selecionarVencedor('${j.id}','${j.visit}','${j.casa}')"
+            style="flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:var(--card);font-size:11px;font-weight:700;cursor:pointer;color:var(--text);transition:.15s;">
+            ${j.visit}
+          </button>
+        </div>
+      </div>`;
+    });
+    jogosHtml += '</div>';
+  });
+
+  el.innerHTML = `
+    <div class="bolao-card">
+      <div style="background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.15));border:1px solid var(--border-gold);border-radius:14px;padding:14px;margin-bottom:16px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:4px;">🏆</div>
+        <div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);text-transform:uppercase;">Patrocinador Oficial</div>
+        <div style="font-family:'Anton',sans-serif;font-size:20px;color:var(--text);text-transform:uppercase;margin:2px 0;">GRUPO COROA</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">
+          Escolha o vencedor dos <strong style="color:var(--text)">12 jogos</strong> da fase de grupos.<br>
+          Cada acerto vale <strong style="color:var(--gold)">${pct.toFixed(2)}%</strong> · Maior % ganha o prêmio!
+        </div>
+      </div>
+      <div style="background:rgba(255,100,100,.07);border:1px solid rgba(255,100,100,.2);border-radius:12px;padding:11px 14px;margin-bottom:16px;font-size:11px;color:var(--muted);line-height:1.7;">
+        ⚠️ <strong style="color:var(--text)">Atenção:</strong> Para retirar o prêmio, o vencedor deverá estar <strong style="color:var(--text)">presente na quadra</strong> no momento do anúncio. Ausentes perdem o prêmio automaticamente.
+      </div>
+      ${jogosHtml}
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;">Seu nome *</label>
+        <input class="adm-inp" type="text" id="bolaoSabNome" placeholder="Nome completo...">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;">Seu WhatsApp *</label>
+        <input class="adm-inp" type="tel" id="bolaoSabFone" placeholder="(00) 00000-0000">
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700;">Seus palpites selecionados:</div>
+        <div id="bolaoResumo" style="font-size:11px;color:var(--muted);">Nenhum selecionado ainda</div>
+      </div>
+      <button onclick="confirmarBolaoSabado()" style="width:100%;height:50px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:15px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">
+        🎯 ENVIAR PALPITE
+      </button>
+      <div id="bolaoSabStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
+    </div>`;
+
+  // Inicializar seleções
+  window._bolaoSabSelecoes = {};
+}
+
+// Seleção visual do vencedor
+function selecionarVencedor(jid, vencedor, outro) {
+  const keyVenc = `btn_${jid}_casa`;
+  const keyOutr = `btn_${jid}_visit`;
+  // Determinar qual botão é qual
+  const allBtns = document.querySelectorAll(`[id^="btn_${jid}_"]`);
+  allBtns.forEach(b => {
+    b.style.background = 'var(--card)';
+    b.style.borderColor = 'var(--border)';
+    b.style.color = 'var(--text)';
+  });
+  // Destacar o selecionado
+  allBtns.forEach(b => {
+    if (b.textContent.trim() === vencedor) {
+      b.style.background = 'linear-gradient(135deg,rgba(244,197,66,.25),rgba(244,197,66,.1))';
+      b.style.borderColor = 'var(--gold)';
+      b.style.color = 'var(--gold)';
+    }
+  });
+  if (!window._bolaoSabSelecoes) window._bolaoSabSelecoes = {};
+  window._bolaoSabSelecoes[jid] = vencedor;
+  // Atualizar resumo
+  const jogos = getJogosDaFaseDeGrupos();
+  const resumoEl = document.getElementById('bolaoResumo');
+  if (resumoEl) {
+    const sels = Object.keys(window._bolaoSabSelecoes);
+    if (sels.length === 0) { resumoEl.innerHTML = 'Nenhum selecionado ainda'; return; }
+    resumoEl.innerHTML = jogos.map((j,i) => {
+      const sel = window._bolaoSabSelecoes[j.id];
+      return `<div style="padding:3px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+        <span style="color:var(--muted)">Jogo ${i+1}</span>
+        <span style="font-weight:700;color:${sel?'var(--gold)':'var(--muted)'}">${sel||'—'}</span>
+      </div>`;
+    }).join('') + `<div style="margin-top:6px;font-weight:800;color:var(--gold)">${sels.length}/12 selecionados</div>`;
   }
 }
 
 async function confirmarBolaoSabado() {
-  const nome  = document.getElementById('bs-nome')?.value.trim();
-  const fone  = document.getElementById('bs-fone')?.value.trim();
-  if (!nome) return showToast('⚠️ Digite seu nome!');
-
-  const grupos = ['grupoA','grupoB','grupoC','grupoD'];
-  const labels = {'grupoA':'Grupo A','grupoB':'Grupo B','grupoC':'Grupo C','grupoD':'Grupo D'};
-  const gruposData = {};
-  for (const g of grupos) {
-    const p1 = document.getElementById(`bs-1-${g}`)?.value;
-    const p2 = document.getElementById(`bs-2-${g}`)?.value;
-    if (!p1 || !p2) return showToast(`⚠️ Preencha o ${labels[g]} completo!`);
-    if (p1 === p2) return showToast(`⚠️ ${labels[g]}: 1º e 2º não podem ser o mesmo time!`);
-    gruposData[g] = { p1, p2 };
+  const nome = document.getElementById('bolaoSabNome')?.value.trim();
+  const fone = document.getElementById('bolaoSabFone')?.value.trim();
+  if (!nome) { showToast('⚠️ Digite seu nome!'); return; }
+  if (!fone) { showToast('⚠️ Digite seu WhatsApp!'); return; }
+  const jogos = getJogosDaFaseDeGrupos();
+  const sels = window._bolaoSabSelecoes || {};
+  const faltando = jogos.filter(j => !sels[j.id]);
+  if (faltando.length > 0) {
+    showToast(`⚠️ Selecione o vencedor de todos os ${jogos.length} jogos! Faltam ${faltando.length}.`);
+    return;
   }
-
-  const btn = document.querySelector('#bolao-sabado-content .bolao-confirm');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
-
-  const resumo = Object.entries(gruposData).map(([g,v])=>`${labels[g]}: 1º ${v.p1} / 2º ${v.p2}`).join(' | ');
-
+  const palpites = jogos.map((j,i) => ({ jogo: i+1, grupo: j.grupo, casa: j.casa, visit: j.visit, vencedor: sels[j.id] }));
+  const pct = (100/12);
+  const dados = { nome, fone, palpites, data: new Date().toLocaleString('pt-BR') };
+  saveLocalBet('sabado', dados);
+  // Enviar ao Sheets
+  const statusEl = document.getElementById('bolaoSabStatus');
+  if (statusEl) statusEl.textContent = '⏳ Enviando...';
   try {
-    const params = new URLSearchParams({
-      tipo: 'sabado', nome, contato: fone||'—', palpite: resumo, detalhe: JSON.stringify(gruposData)
+    await fetch(BOLAO_SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tipo: 'bolao_sabado', nome, fone,
+        palpite: palpites.map(p=>`Jogo${p.jogo}(G${p.grupo}): ${p.vencedor}`).join(' | '),
+        detalhe: JSON.stringify(palpites),
+        data: dados.data
+      })
     });
-    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
-    saveLocalBet('sabado', { nome, fone: fone||'', grupos: gruposData });
-    showToast(`🎯 Palpite enviado, ${nome}!`);
-    if (navigator.vibrate) navigator.vibrate([8,20,8]);
-    renderBolaoSabado();
-  } catch(e) {
-    if (btn) { btn.disabled = false; btn.textContent = '🎯 CONFIRMAR PALPITE'; }
-    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
-  }
+  } catch(e) {}
+  showToast(`✅ Palpite enviado, ${nome}! Boa sorte!`);
+  renderBolaoSabado();
 }
 
-// ==========================================================
-// BOLAO 2 — DOMINGO: FINALISTAS (2 semifinalistas que chegarão à final)
-// ==========================================================
-function renderBolaoSemi() {
-  const el = document.getElementById('bolao-semi-content');
-  if (!el) return;
-  const state = getBolaoState();
-  const aberto = state.semi === 'aberto';
-  const localBets = getLocalBets();
-  const jaApostou = !!localBets.semi;
-
-  // Times do mata-mata = 1º e 2º de cada grupo (vêm do tableData se disponível)
-  const todosOs8 = ['grupoA','grupoB','grupoC','grupoD'].flatMap(g => {
-    const t = getGrupoTimes(g);
-    return t.length >= 2 ? [t[0], t[1]] : [];
-  });
-  const opts8 = todosOs8.length
-    ? todosOs8.map(t => `<option value="${t}">${t}</option>`).join('')
-    : ['grupoA','grupoB','grupoC','grupoD'].flatMap((g,i)=>[
-        `<option value="1º Grupo ${['A','B','C','D'][i]}">1º Grupo ${['A','B','C','D'][i]}</option>`,
-        `<option value="2º Grupo ${['A','B','C','D'][i]}">2º Grupo ${['A','B','C','D'][i]}</option>`
-      ]).join('');
-
-  el.innerHTML = `<div class="bolao-card">
-    <span class="bolao-phase-badge ${aberto?'domingo-semi':'encerrado'}">${aberto?'🟢 Aberto — Domingo':'🔴 Abre no Domingo'}</span>
-    <div class="bolao-prize">
-      <div class="bolao-prize-icon">⚡</div>
-      <div class="bolao-prize-text">
-        <strong>Quem chega à Grande Final?</strong>
-        <span>Escolha os 2 finalistas do torneio</span>
-      </div>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
-      Dos 8 times no mata-mata, quem serão os <strong style="color:var(--text)">2 finalistas</strong>?
-    </div>
-    <div class="bolao-pick-label">🏅 Finalista 1</div>
-    <select class="bolao-select" id="semi-f1" ${!aberto||jaApostou?'disabled':''}>
-      <option value="">Selecione o Finalista 1...</option>${opts8}
-    </select>
-    <div class="bolao-pick-label">🏅 Finalista 2</div>
-    <select class="bolao-select" id="semi-f2" ${!aberto||jaApostou?'disabled':''}>
-      <option value="">Selecione o Finalista 2...</option>${opts8}
-    </select>
-    ${aberto && !jaApostou ? `
-    <div class="bolao-contact">
-      <input id="semi-nome" placeholder="Seu nome *" type="text">
-      <input id="semi-fone" placeholder="WhatsApp (opcional)" type="tel">
-    </div>
-    <button class="bolao-confirm" onclick="confirmarBolaoSemi()">⚡ CONFIRMAR FINALISTAS</button>
-    ` : jaApostou ? `
-    <div class="bolao-sent-badge">✅ Palpite enviado! Finalistas: ${localBets.semi.f1} e ${localBets.semi.f2}</div>
-    <button class="bolao-reset" onclick="resetBolao('semi')">🔄 Fazer Novo Palpite</button>
-    ` : `<div class="bolao-encerrado">🔴 Este bolão abre no domingo de manhã.</div>`}
-  </div>`;
-
-  if (jaApostou && localBets.semi) {
-    const s1 = document.getElementById('semi-f1');
-    const s2 = document.getElementById('semi-f2');
-    if (s1) s1.value = localBets.semi.f1;
-    if (s2) s2.value = localBets.semi.f2;
-  }
-}
-
-async function confirmarBolaoSemi() {
-  const nome = document.getElementById('semi-nome')?.value.trim();
-  const fone = document.getElementById('semi-fone')?.value.trim();
-  const f1   = document.getElementById('semi-f1')?.value;
-  const f2   = document.getElementById('semi-f2')?.value;
-  if (!nome) return showToast('⚠️ Digite seu nome!');
-  if (!f1 || !f2) return showToast('⚠️ Selecione os 2 finalistas!');
-  if (f1 === f2) return showToast('⚠️ Os dois finalistas precisam ser times diferentes!');
-
-  const btn = document.querySelector('#bolao-semi-content .bolao-confirm');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
-
-  try {
-    const params = new URLSearchParams({
-      tipo: 'semi', nome, contato: fone||'—', palpite: `${f1} × ${f2}`, detalhe: JSON.stringify({f1,f2})
-    });
-    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
-    saveLocalBet('semi', { nome, fone: fone||'', f1, f2 });
-    showToast(`⚡ Finalistas enviados, ${nome}!`);
-    if (navigator.vibrate) navigator.vibrate([8,20,8]);
-    renderBolaoSemi();
-  } catch(e) {
-    if (btn) { btn.disabled = false; btn.textContent = '⚡ CONFIRMAR FINALISTAS'; }
-    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
-  }
-}
-
-// ==========================================================
-// BOLAO 3 — DOMINGO: CAMPEÃO
-// ==========================================================
+// ── BOLÃO DOMINGO — CAMPEÃO ─────────────────────────────────────────────────
 function renderBolaoCamp() {
   const el = document.getElementById('bolao-camp-content');
   if (!el) return;
-  const state = getBolaoState();
-  const aberto = state.camp === 'aberto';
-  const localBets = getLocalBets();
-  const jaApostou = !!localBets.camp;
+  const local = getLocalBets();
+  const jaApostou = !!local.camp;
+  const times = getTodosTimesParaCampeao();
 
-  const todosOs8 = ['grupoA','grupoB','grupoC','grupoD'].flatMap(g => {
-    const t = getGrupoTimes(g);
-    return t.length >= 2 ? [t[0], t[1]] : [];
-  });
-  const opts = todosOs8.length
-    ? todosOs8.map(t => `<option value="${t}">${t}</option>`).join('')
-    : ['A','B','C','D'].flatMap(g=>[
-        `<option value="1º Grupo ${g}">1º Grupo ${g}</option>`,
-        `<option value="2º Grupo ${g}">2º Grupo ${g}</option>`
-      ]).join('');
-
-  el.innerHTML = `<div class="bolao-card">
-    <span class="bolao-phase-badge ${aberto?'domingo-camp':'encerrado'}">${aberto?'🟢 Aberto — Domingo':'🔴 Abre no Domingo'}</span>
-    <div class="bolao-prize">
-      <div class="bolao-prize-icon">🏆</div>
-      <div class="bolao-prize-text">
-        <strong>Quem vai ser CAMPEÃO?</strong>
-        <span>1 palpite, 1 campeão — simples assim!</span>
-      </div>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
-      Dos 8 times, quem levantará o troféu da <strong style="color:var(--text)">Supercopa AFC 2026</strong>?
-    </div>
-    <div class="bolao-pick-label">🏆 Campeão</div>
-    <select class="bolao-select" id="camp-pick" ${!aberto||jaApostou?'disabled':''}>
-      <option value="">Selecione o Campeão...</option>${opts}
-    </select>
-    ${aberto && !jaApostou ? `
-    <div class="bolao-contact">
-      <input id="camp-nome" placeholder="Seu nome *" type="text">
-      <input id="camp-fone" placeholder="WhatsApp (opcional)" type="tel">
-    </div>
-    <button class="bolao-confirm" onclick="confirmarBolaoCamp()">🏆 CONFIRMAR CAMPEÃO</button>
-    ` : jaApostou ? `
-    <div class="bolao-sent-badge">✅ Você apostou em: <strong style="margin-left:4px">${localBets.camp.campeao}</strong> 🏆</div>
-    <button class="bolao-reset" onclick="resetBolao('camp')">🔄 Fazer Novo Palpite</button>
-    ` : `<div class="bolao-encerrado">🔴 Este bolão abre no domingo de manhã.</div>`}
-  </div>`;
-
-  if (jaApostou && localBets.camp) {
-    const s = document.getElementById('camp-pick');
-    if (s) s.value = localBets.camp.campeao;
+  if (jaApostou) {
+    const d = local.camp;
+    el.innerHTML = `
+      <div class="bolao-card">
+        <div style="text-align:center;padding:10px 0 16px;">
+          <div style="font-size:40px;margin-bottom:8px;">🏆</div>
+          <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">✅ Palpite Enviado!</div>
+          <div style="font-size:13px;font-weight:700;">Boa sorte, <strong>${d.nome}</strong>!</div>
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border-gold);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Seu palpite de campeão</div>
+          <div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);">🏐 ${d.campeao}</div>
+        </div>
+        <div style="background:rgba(244,197,66,.08);border:1px solid var(--border-gold);border-radius:12px;padding:12px;font-size:11px;color:var(--muted);line-height:1.7;text-align:center;">
+          🏆 <strong style="color:var(--gold)">Patrocinador: GRUPO COROA</strong><br>
+          Quem acertar o campeão ganha o prêmio!
+        </div>
+      </div>`;
+    return;
   }
+
+  const opcoesHtml = times.length > 0
+    ? times.map(t => `<button class="bolao-opt-btn" onclick="selecionarCampeao('${t}', this)"
+        style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);font-size:13px;font-weight:700;cursor:pointer;color:var(--text);text-align:left;margin-bottom:8px;transition:.15s;">
+        🏐 ${t}
+      </button>`).join('')
+    : '<div style="color:var(--muted);font-size:12px;text-align:center;padding:20px 0;">Aguardando times na tabela...</div>';
+
+  el.innerHTML = `
+    <div class="bolao-card">
+      <div style="background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.15));border:1px solid var(--border-gold);border-radius:14px;padding:14px;margin-bottom:16px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:4px;">🏆</div>
+        <div style="font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);text-transform:uppercase;">Patrocinador Oficial</div>
+        <div style="font-family:'Anton',sans-serif;font-size:20px;color:var(--text);text-transform:uppercase;margin:2px 0;">GRUPO COROA</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">
+          Quem será o <strong style="color:var(--gold)">Campeão</strong> da Supercopa AFC 2026?<br>
+          Acertando, você ganha o prêmio do Grupo Coroa!
+        </div>
+      </div>
+      <div style="background:rgba(255,100,100,.07);border:1px solid rgba(255,100,100,.2);border-radius:12px;padding:11px 14px;margin-bottom:16px;font-size:11px;color:var(--muted);line-height:1.7;">
+        ⚠️ <strong style="color:var(--text)">Atenção:</strong> O vencedor deverá estar <strong style="color:var(--text)">presente na quadra</strong> no momento do anúncio. Ausentes perdem o prêmio automaticamente.
+      </div>
+      <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Escolha o campeão:</div>
+      <div id="campOpcoes">${opcoesHtml}</div>
+      <div id="campSelecionado" style="display:none;background:var(--card2);border:1px solid var(--border-gold);border-radius:12px;padding:12px;margin:12px 0;text-align:center;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Seu palpite:</div>
+        <div id="campSelecionadoNome" style="font-family:'Anton',sans-serif;font-size:18px;color:var(--gold);"></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;">Seu nome *</label>
+        <input class="adm-inp" type="text" id="bolaoCampNome" placeholder="Nome completo...">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;">Seu WhatsApp *</label>
+        <input class="adm-inp" type="tel" id="bolaoCampFone" placeholder="(00) 00000-0000">
+      </div>
+      <button onclick="confirmarBolaoCamp()" style="width:100%;height:50px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:15px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">
+        🏆 ENVIAR PALPITE
+      </button>
+      <div id="bolaoCampStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
+    </div>`;
+
+  window._bolaoCampSelecionado = null;
+}
+
+function selecionarCampeao(nome, btn) {
+  document.querySelectorAll('#campOpcoes .bolao-opt-btn').forEach(b => {
+    b.style.background = 'var(--card)';
+    b.style.borderColor = 'var(--border)';
+    b.style.color = 'var(--text)';
+  });
+  btn.style.background = 'linear-gradient(135deg,rgba(244,197,66,.25),rgba(244,197,66,.1))';
+  btn.style.borderColor = 'var(--gold)';
+  btn.style.color = 'var(--gold)';
+  window._bolaoCampSelecionado = nome;
+  const sel = document.getElementById('campSelecionado');
+  const selNome = document.getElementById('campSelecionadoNome');
+  if (sel) sel.style.display = 'block';
+  if (selNome) selNome.textContent = '🏐 ' + nome;
 }
 
 async function confirmarBolaoCamp() {
-  const nome    = document.getElementById('camp-nome')?.value.trim();
-  const fone    = document.getElementById('camp-fone')?.value.trim();
-  const campeao = document.getElementById('camp-pick')?.value;
-  if (!nome) return showToast('⚠️ Digite seu nome!');
-  if (!campeao) return showToast('⚠️ Selecione um campeão!');
-
-  const btn = document.querySelector('#bolao-camp-content .bolao-confirm');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
-
+  const nome = document.getElementById('bolaoCampNome')?.value.trim();
+  const fone = document.getElementById('bolaoCampFone')?.value.trim();
+  if (!nome) { showToast('⚠️ Digite seu nome!'); return; }
+  if (!fone) { showToast('⚠️ Digite seu WhatsApp!'); return; }
+  if (!window._bolaoCampSelecionado) { showToast('⚠️ Escolha o campeão!'); return; }
+  const dados = { nome, fone, campeao: window._bolaoCampSelecionado, data: new Date().toLocaleString('pt-BR') };
+  saveLocalBet('camp', dados);
   try {
-    const params = new URLSearchParams({
-      tipo: 'camp', nome, contato: fone||'—', palpite: campeao, detalhe: campeao
+    await fetch(BOLAO_SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tipo: 'bolao_campeao', nome, fone,
+        palpite: `Campeão: ${dados.campeao}`,
+        detalhe: JSON.stringify(dados),
+        data: dados.data
+      })
     });
-    await fetch(SHEETS_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
-    saveLocalBet('camp', { nome, fone: fone||'', campeao });
-    showToast(`🏆 Campeão enviado, ${nome}!`);
-    if (navigator.vibrate) navigator.vibrate([8,20,8]);
-    renderBolaoCamp();
-  } catch(e) {
-    if (btn) { btn.disabled = false; btn.textContent = '🏆 CONFIRMAR CAMPEÃO'; }
-    showToast('⚠️ Erro ao enviar. Verifique a conexão.');
-  }
+  } catch(e) {}
+  showToast(`✅ Palpite enviado, ${nome}! Boa sorte!`);
+  if (typeof launchFireworks === 'function') launchFireworks(nome + ' no Bolão! 🏆');
+  renderBolaoCamp();
 }
 
-// ==========================================================
-// RANKING ao vivo (lê do Sheets)
-// ==========================================================
+// ── RANKING ────────────────────────────────────────────────────────────────
 async function renderBolaoRanking() {
   const el = document.getElementById('rankingList');
   if (!el) return;
-  el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">⏳ Carregando ranking...</div>';
-  try {
-    const res  = await fetch(SHEETS_URL + '?action=ranking&t=' + Date.now());
-    const lista = await res.json();
-    const medals = ['🥇','🥈','🥉'];
-    if (!lista.length) {
-      el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">Nenhum palpite ainda 🎯</div>';
-      return;
-    }
-    el.innerHTML = lista.map((r,i) => `
-      <div class="ranking-row">
-        <div class="rank-pos">${medals[i]||i+1}</div>
-        <div class="rank-name">${r.nome}<br><span class="rank-sub">${r.contato||''}</span></div>
-        <div class="rank-pts">
-          <span style="color:var(--green);font-family:'Anton',sans-serif;font-size:20px;">${r.acertos||0}</span>
-          <span class="rank-acertos">acertos</span>
-          <span style="font-size:10px;color:var(--muted);">${r.palpites||0} palpites</span>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">Erro ao carregar. Tente novamente.</div>';
-  }
+  el.innerHTML = `<div style="text-align:center;padding:40px 14px;color:var(--muted);font-size:13px;">
+    <div style="font-size:32px;margin-bottom:10px;">🏅</div>
+    O ranking será divulgado após os jogos!<br>
+    <span style="font-size:11px;">Cada acerto vale ${(100/12).toFixed(2)}% · Maior % ganha</span>
+  </div>`;
 }
 
-// ==========================================================
-// RESET — Apaga palpite local para refazer
-// ==========================================================
-function resetBolao(tipo) {
-  const nomes = { sabado: 'Sábado · Grupos', semi: 'Domingo · Finalistas', camp: 'Domingo · Campeão' };
-  if (!confirm(`Apagar seu palpite do bolão "${nomes[tipo]||tipo}" e fazer um novo?`)) return;
-  const b = getLocalBets();
-  delete b[tipo];
-  localStorage.setItem(BOLAO_LOCAL_KEY, JSON.stringify(b));
-  showToast('🔄 Palpite apagado! Faça o novo.');
-  if (tipo === 'sabado') renderBolaoSabado();
-  if (tipo === 'semi')   renderBolaoSemi();
-  if (tipo === 'camp')   renderBolaoCamp();
-}
-
-// ==========================================================
-// ADMIN — Abrir/Fechar bolões (senha protegida)
-// Funções chamadas pelo painel admin existente
-// ==========================================================
-function adminAbrirBolao(tipo) {
-  setBolaoState(tipo, 'aberto');
-  // Atualiza visualização se o bolão estiver aberto
-  const active = document.querySelector('.bolao-section.active');
-  if (active) {
-    const id = active.id.replace('bsec-','');
-    if (id === 'sabado') renderBolaoSabado();
-    if (id === 'semi')   renderBolaoSemi();
-    if (id === 'camp')   renderBolaoCamp();
-  }
-  showToast(`✅ Bolão "${tipo}" aberto!`);
-}
-function adminFecharBolao(tipo) {
-  setBolaoState(tipo, 'encerrado');
-  const active = document.querySelector('.bolao-section.active');
-  if (active) {
-    const id = active.id.replace('bsec-','');
-    if (id === 'sabado') renderBolaoSabado();
-    if (id === 'semi')   renderBolaoSemi();
-    if (id === 'camp')   renderBolaoCamp();
-  }
-  showToast(`🔴 Bolão "${tipo}" encerrado!`);
-}
-
-// Inicializa o bolão visível
 function renderBolao() { renderBolaoSabado(); }
 
 // ==========================================================
@@ -3596,10 +3552,9 @@ startIndexSheetCycle();
 <section id="bolaoPage" class="page">
   <div class="ptitle">🎯 <span>Bolão</span></div>
 
-  <!-- tabs dos 3 boloes -->
+  <!-- tabs -->
   <div class="bolao-tabs-wrap" id="bolaoTabsWrap">
     <button class="bolao-tab-btn on" onclick="switchBolaoTab('sabado',this)">🗓️ Sábado · Grupos</button>
-    <button class="bolao-tab-btn" onclick="switchBolaoTab('semi',this)">⚡ Domingo · Finalistas</button>
     <button class="bolao-tab-btn" onclick="switchBolaoTab('camp',this)">🏆 Domingo · Campeão</button>
     <button class="bolao-tab-btn" onclick="switchBolaoTab('ranking',this)">🏅 Ranking</button>
   </div>
@@ -3609,17 +3564,12 @@ startIndexSheetCycle();
     <div id="bolao-sabado-content"></div>
   </div>
 
-  <!-- BOLAO FINALISTAS -->
-  <div class="bolao-section" id="bsec-semi">
-    <div id="bolao-semi-content"></div>
-  </div>
-
   <!-- BOLAO CAMPEAO -->
   <div class="bolao-section" id="bsec-camp">
     <div id="bolao-camp-content"></div>
   </div>
 
-  <!-- RANKING GERAL -->
+  <!-- RANKING -->
   <div class="bolao-section" id="bsec-ranking">
     <div class="ranking-wrap" id="rankingList" style="margin:0;"></div>
   </div>
