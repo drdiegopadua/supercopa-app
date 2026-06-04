@@ -835,6 +835,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button class="adm-tab" onclick="admTab('mvp',this)">MVP</button>
       <button class="adm-tab" onclick="admTab('bolao',this)">🎯 Bolão</button>
       <button class="adm-tab" onclick="admTab('quiz',this)">🧠 Quiz</button>
+      <button class="adm-tab" onclick="admTab('resultados',this)">📊 Resultados</button>
     </div>
     <!-- TAB: SCORE -->
     <div id="admScore">
@@ -940,6 +941,24 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
           <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
           <button class="adm-save" onclick="admQuizLiberar()" id="btnLiberarQuiz">🔓 LIBERAR QUIZ</button>
         </div>
+      </div>
+    </div>
+    <!-- TAB: RESULTADOS BOLÃO -->
+    <div id="admResultados" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:32px;margin-bottom:6px;">📊</div>
+          <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Resultados dos Jogos</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Informe o vencedor de cada jogo para calcular o ranking</div>
+        </div>
+        <div id="admResultadosContent">
+          <div style="text-align:center;font-size:12px;color:var(--muted);padding:20px;">Carregando jogos...</div>
+        </div>
+        <div class="adm-actions" style="margin-top:14px;">
+          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
+          <button class="adm-save" onclick="admSalvarResultados()">💾 SALVAR RESULTADOS</button>
+        </div>
+        <div id="admResultadosStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
       </div>
     </div>
     </div><!-- /admPainelPrincipal -->
@@ -2321,6 +2340,116 @@ function admQuizLiberar() {
   document.getElementById('btnLiberarQuiz').style.opacity = '0.5';
 }
 
+
+// ── ADMIN: RESULTADOS DOS JOGOS ─────────────────────────────────────────────
+function admCarregarResultados() {
+  const el = document.getElementById('admResultadosContent');
+  if (!el) return;
+  const jogos = getJogosDaFaseDeGrupos();
+  const salvos = getResultadosLocais();
+
+  if (jogos.length === 0) {
+    el.innerHTML = '<div style="text-align:center;font-size:12px;color:var(--muted);padding:20px;">Nenhum jogo encontrado na tabela de grupos ainda.</div>';
+    return;
+  }
+
+  let html = '';
+  ['A','B','C','D'].forEach(grp => {
+    const gJogos = jogos.filter(j => j.grupo === grp);
+    if (!gJogos.length) return;
+    html += `<div style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Grupo ${grp}</div>`;
+    gJogos.forEach((j) => {
+      const num = jogos.indexOf(j) + 1;
+      const salvo = salvos[`j${num}`] || '';
+      html += `
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:8px;">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:6px;">Jogo ${num}</div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="admSelecionarVencedor(${num},'${j.casa}',this)" id="admRes_${num}_casa"
+            style="flex:1;padding:8px 4px;border-radius:10px;border:1px solid ${salvo===j.casa?'var(--gold)':'var(--border)'};
+            background:${salvo===j.casa?'rgba(244,197,66,.18)':'var(--card)'};
+            font-size:11px;font-weight:700;cursor:pointer;color:${salvo===j.casa?'var(--gold)':'var(--text)'};transition:.15s;">
+            ${j.casa}
+          </button>
+          <button onclick="admSelecionarVencedor(${num},'${j.visit}',this)" id="admRes_${num}_visit"
+            style="flex:1;padding:8px 4px;border-radius:10px;border:1px solid ${salvo===j.visit?'var(--gold)':'var(--border)'};
+            background:${salvo===j.visit?'rgba(244,197,66,.18)':'var(--card)'};
+            font-size:11px;font-weight:700;cursor:pointer;color:${salvo===j.visit?'var(--gold)':'var(--text)'};transition:.15s;">
+            ${j.visit}
+          </button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  const salvosCount = Object.keys(salvos).length;
+  html += `<div style="text-align:center;font-size:11px;color:var(--muted);margin-top:4px;">
+    ${salvosCount}/12 jogos com resultado
+  </div>`;
+
+  el.innerHTML = html;
+  window._admResultados = {...salvos};
+}
+
+function admSelecionarVencedor(num, vencedor, btn) {
+  if (!window._admResultados) window._admResultados = {};
+  window._admResultados[`j${num}`] = vencedor;
+
+  // Reset visual dos dois botões do jogo
+  const casa = document.getElementById(`admRes_${num}_casa`);
+  const visit = document.getElementById(`admRes_${num}_visit`);
+  [casa, visit].forEach(b => {
+    if (!b) return;
+    b.style.borderColor = 'var(--border)';
+    b.style.background = 'var(--card)';
+    b.style.color = 'var(--text)';
+  });
+  // Destacar selecionado
+  btn.style.borderColor = 'var(--gold)';
+  btn.style.background = 'rgba(244,197,66,.18)';
+  btn.style.color = 'var(--gold)';
+
+  // Atualizar contador
+  const count = Object.keys(window._admResultados).length;
+  const statusEl = document.getElementById('admResultadosStatus');
+  if (statusEl) statusEl.textContent = `${count}/12 jogos informados`;
+}
+
+async function admSalvarResultados() {
+  const statusEl = document.getElementById('admResultadosStatus');
+  const res = window._admResultados || {};
+  const jogos = getJogosDaFaseDeGrupos();
+
+  const resultados = jogos.map((j, i) => ({
+    jogo: i+1, grupo: j.grupo, casa: j.casa, visit: j.visit,
+    vencedor: res[`j${i+1}`] || ''
+  })).filter(r => r.vencedor);
+
+  saveResultadosLocais(res);
+
+  if (statusEl) statusEl.textContent = '⏳ Salvando na planilha...';
+
+  try {
+    await fetch(BOLAO_SHEETS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tipo: 'salvar_resultados',
+        resultados,
+        data: new Date().toLocaleString('pt-BR')
+      })
+    });
+    saveResultadosLocais(res);
+    showToast(`✅ ${resultados.length} resultado(s) salvos!`);
+    if (statusEl) statusEl.textContent = `✅ ${resultados.length}/12 jogos salvos na planilha!`;
+  } catch(e) {
+    showToast('⚠️ Erro ao salvar. Resultados guardados localmente.');
+    if (statusEl) statusEl.textContent = '⚠️ Erro de conexão. Tente novamente.';
+  }
+}
+
 function openAdmin(){
   // Resetar para tela de login sempre que abrir
   document.getElementById('admLoginPw').value = '';
@@ -2352,6 +2481,8 @@ function admTab(tab,btn){
   document.getElementById('admBolao').style.display=tab==='bolao'?'block':'none';
   document.getElementById('admQuiz').style.display=tab==='quiz'?'block':'none';
   if(tab==='quiz') admQuizCarregarStatus();
+  document.getElementById('admResultados').style.display=tab==='resultados'?'block':'none';
+  if(tab==='resultados') admCarregarResultados();
 }
 function checkPwBolao(){
   const v=document.getElementById('admPwBolao')?.value;
@@ -2636,7 +2767,9 @@ function clearChat() {
 // ==========================================================
 
 const BOLAO_LOCAL_KEY = 'bolao_local_v2';
-const BOLAO_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzg9nL9j0cqHr9PlyWAa_YMDphe6FD0Ahnhmh6nzpQXrlYZGGLAFmRlMqJey1IEiyEk/exec';
+// URL do Apps Script da planilha PALPITES (13tlftQg...)
+// Substitua pela URL gerada após implantar o apps_script_palpites.js
+const BOLAO_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxbLoQaF0-p9nnl9pNkRKUDZJwkONqY7VEHOrxf7TW7QSZRn2-bTun0C_1HzPsgF_BA/exec';
 
 function getLocalBets() { return JSON.parse(localStorage.getItem(BOLAO_LOCAL_KEY)||'{}'); }
 function saveLocalBet(tipo, data) {
@@ -2977,14 +3110,109 @@ async function confirmarBolaoCamp() {
   renderBolaoCamp();
 }
 
-// ── RANKING ────────────────────────────────────────────────────────────────
+// ── RESULTADOS DOS JOGOS (admin informa, salva local + Sheets) ──────────────
+let _resultadosAdmin = {}; // { j1: 'Time X', j2: 'Time Y', ... }
+const RESULTADOS_KEY = 'bolao_resultados_admin_v1';
+
+function getResultadosLocais() {
+  return JSON.parse(localStorage.getItem(RESULTADOS_KEY) || '{}');
+}
+function saveResultadosLocais(r) {
+  localStorage.setItem(RESULTADOS_KEY, JSON.stringify(r));
+}
+
+// ── RANKING ─────────────────────────────────────────────────────────────────
 async function renderBolaoRanking() {
   const el = document.getElementById('rankingList');
   if (!el) return;
-  el.innerHTML = `<div style="text-align:center;padding:40px 14px;color:var(--muted);font-size:13px;">
-    <div style="font-size:32px;margin-bottom:10px;">🏅</div>
-    O ranking será divulgado após os jogos!<br>
-    <span style="font-size:11px;">Cada acerto vale ${(100/12).toFixed(2)}% · Maior % ganha</span>
+
+  el.innerHTML = `<div style="text-align:center;padding:30px 14px;color:var(--muted);">
+    <div style="font-size:28px;margin-bottom:8px;">⏳</div>
+    <div style="font-size:12px;">Carregando ranking...</div>
+  </div>`;
+
+  try {
+    const url = BOLAO_SHEETS_URL + '?action=ranking_sabado';
+    const res = await fetch(url);
+    const data = await res.json();
+    renderRankingHTML(el, data);
+  } catch(e) {
+    // Fallback: calcular localmente com resultados do admin
+    renderRankingLocal(el);
+  }
+}
+
+function renderRankingHTML(el, data) {
+  const { ranking = [], jogosComResultado = 0, totalJogos = 12 } = data;
+
+  const progressBar = `
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px;margin:0 14px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;">Jogos apurados</div>
+        <div style="font-size:13px;font-weight:800;color:var(--gold)">${jogosComResultado}/${totalJogos}</div>
+      </div>
+      <div style="height:6px;background:var(--border);border-radius:999px;overflow:hidden;">
+        <div style="height:100%;width:${Math.round(jogosComResultado/totalJogos*100)}%;background:linear-gradient(90deg,var(--gold),#e8a010);border-radius:999px;transition:.4s;"></div>
+      </div>
+      ${jogosComResultado === 0 ? '<div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center;">Aguardando início dos jogos</div>' : ''}
+    </div>`;
+
+  if (ranking.length === 0) {
+    el.innerHTML = progressBar + `<div style="text-align:center;padding:30px 14px;color:var(--muted);font-size:12px;">
+      <div style="font-size:32px;margin-bottom:10px;">🏅</div>
+      Nenhum palpite registrado ainda.<br>Seja o primeiro a apostar!
+    </div>`;
+    return;
+  }
+
+  const medalhas = ['🥇','🥈','🥉'];
+  const rows = ranking.map((p, i) => {
+    const pctStr = p.pct !== null ? `${p.pct.toFixed(2)}%` : '—';
+    const isTop = i < 3;
+    const medal = medalhas[i] || `${i+1}º`;
+    return `
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;margin:0 14px 8px;
+      background:${isTop ? 'linear-gradient(135deg,rgba(244,197,66,.1),rgba(14,59,120,.08))' : 'var(--card2)'};
+      border:1px solid ${isTop ? 'var(--border-gold)' : 'var(--border)'};
+      border-radius:14px;">
+      <div style="font-size:${isTop?'22px':'14px'};min-width:28px;text-align:center;font-weight:800;color:var(--muted);">${medal}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.nome}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">${p.acertos} acerto${p.acertos!==1?'s':''} de ${p.total} jogos</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Anton',sans-serif;font-size:18px;color:${p.pct===null?'var(--muted)':p.pct>=80?'#22c55e':p.pct>=50?'var(--gold)':'var(--text)'};">${pctStr}</div>
+        ${jogosComResultado===0 ? '<div style="font-size:9px;color:var(--muted);">aguardando</div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="background:linear-gradient(135deg,rgba(244,197,66,.12),rgba(14,59,120,.15));border:1px solid var(--border-gold);border-radius:14px;padding:12px 14px;margin:0 14px 14px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">Patrocinador Oficial</div>
+      <div style="font-family:'Anton',sans-serif;font-size:18px;color:var(--text);">GRUPO COROA</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">Cada acerto = ${(100/12).toFixed(2)}% · Maior % ganha</div>
+    </div>
+    ${progressBar}
+    <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:0 14px;margin-bottom:10px;">
+      🏅 ${ranking.length} participante${ranking.length!==1?'s':''}
+    </div>
+    ${rows}
+    <div style="text-align:center;padding:14px;margin-bottom:60px;">
+      <button onclick="renderBolaoRanking()" style="padding:10px 24px;border-radius:12px;border:1px solid var(--border-gold);background:transparent;color:var(--gold);font-size:12px;font-weight:800;cursor:pointer;">
+        🔄 Atualizar Ranking
+      </button>
+    </div>`;
+}
+
+function renderRankingLocal(el) {
+  el.innerHTML = `<div style="text-align:center;padding:40px 14px;color:var(--muted);font-size:12px;">
+    <div style="font-size:32px;margin-bottom:10px;">📡</div>
+    Sem conexão com a planilha.<br>Verifique sua internet e tente novamente.
+    <br><br>
+    <button onclick="renderBolaoRanking()" style="padding:10px 24px;border-radius:12px;border:1px solid var(--border-gold);background:transparent;color:var(--gold);font-size:12px;font-weight:800;cursor:pointer;">
+      🔄 Tentar novamente
+    </button>
   </div>`;
 }
 
