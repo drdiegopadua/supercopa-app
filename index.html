@@ -884,15 +884,19 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <!-- TAB: MVP -->
     <div id="admMvp" style="display:none;">
       <div class="adm-section">
-        <h4>Atualizar Melhor da Partida</h4>
-        <input class="adm-inp" id="mvpName" placeholder="Nome do jogador">
-        <input class="adm-inp" id="mvpTeam" placeholder="Time">
-        <input class="adm-inp" id="mvpPts" type="number" placeholder="Pontos marcados">
-        <input class="adm-inp" type="password" placeholder="Senha Admin" id="admPw3">
-        <div class="adm-actions">
-          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
-          <button class="adm-save" onclick="addMvp()">SALVAR</button>
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
+          <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Melhor da Partida</div>
         </div>
+        <div class="adm-lbl">Nome do Jogador</div>
+        <input class="adm-inp" id="mvpName" placeholder="Nome completo do jogador">
+        <div class="adm-lbl">Time</div>
+        <input class="adm-inp" id="mvpTeam" placeholder="Nome do time">
+        <div class="adm-actions" style="margin-top:14px;">
+          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
+          <button class="adm-save" onclick="addMvp()">⭐ SALVAR MVP</button>
+        </div>
+        <div id="admMvpStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
       </div>
     </div>
     <!-- TAB: BOLAO -->
@@ -922,8 +926,6 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
             </div>
           </div>
         </div>
-        <div class="adm-lbl" style="margin-top:12px;">Senha Admin</div>
-        <input class="adm-inp" type="password" placeholder="Senha..." id="admPwBolao">
       </div>
     </div>
     <!-- TAB: QUIZ -->
@@ -1217,6 +1219,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="mais-card" onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')"><div class="mais-card-ic">📋</div><div class="mais-card-lbl">Regulamento</div><div class="mais-card-sub">Regras oficiais</div></div>
     <div class="mais-card" onclick="window.open('https://www.instagram.com/supercopaafc/')"><div class="mais-card-ic">📱</div><div class="mais-card-lbl">Instagram</div><div class="mais-card-sub">@supercopaafc</div></div>
     <div class="mais-card" onclick="window.open('https://wa.link/900kb2')"><div class="mais-card-ic">💬</div><div class="mais-card-lbl">WhatsApp</div><div class="mais-card-sub">Fale conosco</div></div>
+    <div class="mais-card" onclick="openInstallModal()"><div class="mais-card-ic">📲</div><div class="mais-card-lbl">Instalar App</div><div class="mais-card-sub">Adicionar à tela inicial</div></div>
   </div>
   <div class="info-block" style="margin-top:12px;">
     <h4>📍 Evento</h4>
@@ -1648,6 +1651,7 @@ window.addEventListener('load',()=>{
     } else {
 
       setTimeout(showInstallBanner,2000);
+      loadMvps();
 
     }
 
@@ -2451,6 +2455,96 @@ async function admSalvarResultados() {
   }
 }
 
+
+// ── INSTALAR APP ────────────────────────────────────────────
+function openInstallModal() {
+  const modal = document.getElementById('installModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  // Detectar OS automaticamente
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
+    setInstallOS('ios');
+  } else {
+    setInstallOS('android');
+  }
+}
+function closeInstallModal(e) {
+  const modal = document.getElementById('installModal');
+  if (modal) modal.style.display = 'none';
+}
+function setInstallOS(os) {
+  const btnA = document.getElementById('installBtnAndroid');
+  const btnI = document.getElementById('installBtnIos');
+  const guideA = document.getElementById('installGuideAndroid');
+  const guideI = document.getElementById('installGuideIos');
+  if (os === 'android') {
+    btnA.style.borderColor = 'var(--gold)';
+    btnA.style.background = 'rgba(244,197,66,.15)';
+    btnA.style.color = 'var(--gold)';
+    btnI.style.borderColor = 'var(--border)';
+    btnI.style.background = 'var(--card)';
+    btnI.style.color = 'var(--muted)';
+    guideA.style.display = 'block';
+    guideI.style.display = 'none';
+  } else {
+    btnI.style.borderColor = 'var(--gold)';
+    btnI.style.background = 'rgba(244,197,66,.15)';
+    btnI.style.color = 'var(--gold)';
+    btnA.style.borderColor = 'var(--border)';
+    btnA.style.background = 'var(--card)';
+    btnA.style.color = 'var(--muted)';
+    guideI.style.display = 'block';
+    guideA.style.display = 'none';
+  }
+}
+
+// ── MVP SIMPLIFICADO ────────────────────────────────────────
+function addMvp() {
+  const name = document.getElementById('mvpName')?.value.trim();
+  const team = document.getElementById('mvpTeam')?.value.trim();
+  const statusEl = document.getElementById('admMvpStatus');
+  if (!name) { showToast('⚠️ Digite o nome do jogador!'); return; }
+  if (!team) { showToast('⚠️ Digite o time!'); return; }
+
+  // Buscar cards MVP existentes e adicionar novo
+  const strip = document.getElementById('mvpStrip');
+  if (strip) {
+    const count = strip.querySelectorAll('.mvp-card').length + 1;
+    const cls = count === 1 ? 'no1' : count === 2 ? 'no2' : count === 3 ? 'no3' : '';
+    const card = document.createElement('div');
+    card.className = 'mvp-card ' + cls;
+    card.innerHTML = `<div class="mvp-rank">${count}°</div><div class="mvp-av">⭐</div><div class="mvp-nm">${name}</div><div class="mvp-tm">${team}</div>`;
+    strip.appendChild(card);
+  }
+
+  // Salvar localmente
+  const mvps = JSON.parse(localStorage.getItem('mvpList_v1') || '[]');
+  mvps.push({ name, team, ts: Date.now() });
+  localStorage.setItem('mvpList_v1', JSON.stringify(mvps));
+
+  if (statusEl) statusEl.textContent = `✅ ${name} (${team}) adicionado!`;
+  if (document.getElementById('mvpName')) document.getElementById('mvpName').value = '';
+  if (document.getElementById('mvpTeam')) document.getElementById('mvpTeam').value = '';
+  showToast('⭐ MVP adicionado com sucesso!');
+}
+
+// Carregar MVPs salvos ao iniciar
+function loadMvps() {
+  const strip = document.getElementById('mvpStrip');
+  if (!strip) return;
+  const mvps = JSON.parse(localStorage.getItem('mvpList_v1') || '[]');
+  if (!mvps.length) return;
+  strip.innerHTML = '';
+  mvps.forEach((m, i) => {
+    const cls = i === 0 ? 'no1' : i === 1 ? 'no2' : i === 2 ? 'no3' : '';
+    const card = document.createElement('div');
+    card.className = 'mvp-card ' + cls;
+    card.innerHTML = `<div class="mvp-rank">${i+1}°</div><div class="mvp-av">⭐</div><div class="mvp-nm">${m.name}</div><div class="mvp-tm">${m.team}</div>`;
+    strip.appendChild(card);
+  });
+}
+
 function openAdmin(){
   // Resetar para tela de login sempre que abrir
   document.getElementById('admLoginPw').value = '';
@@ -2485,11 +2579,7 @@ function admTab(tab,btn){
   document.getElementById('admResultados').style.display=tab==='resultados'?'block':'none';
   if(tab==='resultados') admCarregarResultados();
 }
-function checkPwBolao(){
-  const v=document.getElementById('admPwBolao')?.value;
-  if(v!==PW){showToast('❌ Senha incorreta');return false;}
-  return true;
-}
+function checkPwBolao(){ return true; } // senha já validada no login do admin
 function checkPw(id){const e=document.getElementById(id);if(e.value!==PW){showToast('❌ Senha incorreta');return false;}return true;}
 
 function saveScore(){
@@ -3980,5 +4070,58 @@ startIndexSheetCycle();
   </div>
 </section>
 
+
+<!-- MODAL INSTALAR APP -->
+<div id="installModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:flex-end;justify-content:center;" onclick="closeInstallModal(event)">
+  <div style="background:var(--bg2);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;" onclick="event.stopPropagation()">
+    <div style="width:40px;height:4px;background:var(--border);border-radius:999px;margin:0 auto 20px;"></div>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:40px;margin-bottom:8px;">📲</div>
+      <div style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;">Instalar Aplicativo</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;">Acesse mais rápido direto da tela inicial!</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <button id="installBtnAndroid" onclick="setInstallOS('android')"
+        style="flex:1;padding:10px;border-radius:12px;border:2px solid var(--gold);background:rgba(244,197,66,.15);color:var(--gold);font-weight:800;font-size:13px;cursor:pointer;">
+        🤖 ANDROID
+      </button>
+      <button id="installBtnIos" onclick="setInstallOS('ios')"
+        style="flex:1;padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-weight:800;font-size:13px;cursor:pointer;">
+        🍎 IPHONE
+      </button>
+    </div>
+    <div id="installGuideAndroid">
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">1</div>
+        <div style="font-size:13px;line-height:1.5;">Toque nos <strong>três pontinhos ⋮</strong> no canto superior direito do Chrome</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">2</div>
+        <div style="font-size:13px;line-height:1.5;">Toque em <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">3</div>
+        <div style="font-size:13px;line-height:1.5;">Confirme em <strong>"Instalar"</strong>. O ícone aparecerá na sua tela! ✅</div>
+      </div>
+    </div>
+    <div id="installGuideIos" style="display:none;">
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">1</div>
+        <div style="font-size:13px;line-height:1.5;">Abra no <strong>Safari</strong> e toque no botão <strong>Compartilhar ⎋</strong> (quadrado com seta)</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">2</div>
+        <div style="font-size:13px;line-height:1.5;">Role para baixo e toque em <strong>"Adicionar à Tela de Início" +</strong></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#050816;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;">3</div>
+        <div style="font-size:13px;line-height:1.5;">Toque em <strong>"Adicionar"</strong> no canto superior. Pronto! ✅</div>
+      </div>
+    </div>
+    <button onclick="closeInstallModal(event)" style="width:100%;margin-top:20px;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--gold),#e8a010);color:#050816;font-weight:800;font-size:15px;cursor:pointer;">
+      ENTENDIDO ✓
+    </button>
+  </div>
+</div>
 </body>
 </html>
