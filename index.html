@@ -2805,9 +2805,11 @@ function switchBolaoTab(tab, btn) {
   btn.classList.add('on');
   document.querySelectorAll('.bolao-section').forEach(s => s.classList.remove('active'));
   document.getElementById('bsec-' + tab).classList.add('active');
+  // Parar timer se sair do ranking
+  if (tab !== 'ranking') pararRankingAutoRefresh();
   if (tab === 'sabado')  renderBolaoSabado();
   if (tab === 'camp')    renderBolaoCamp();
-  if (tab === 'ranking') renderBolaoRanking();
+  if (tab === 'ranking') renderBolaoRanking(true);
 }
 
 // ── BOLÃO SÁBADO — 12 jogos, escolhe o vencedor de cada ────────────────────
@@ -3121,31 +3123,57 @@ function saveResultadosLocais(r) {
   localStorage.setItem(RESULTADOS_KEY, JSON.stringify(r));
 }
 
-// ── Busca vencedores direto da planilha de jogos (col 14) ──────────────────
-async function buscarVencedoresDaPlnilha() {
-  // Grupos: A→rows 10-12, B→22-24, C→34-36, D→46-48, col O=14 (vencedor)
-  const sheetName = 'Jogos e Classificação';
-  const range = 'A1:P60';
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${INDEX_VOLEI_SHEET_ID}/values/${encodeURIComponent("'"+sheetName+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
-  const res = await fetch(url);
+// ── Timer de atualização automática do ranking ──────────────────────────────
+let _rankingTimer = null;
+let _rankingCountdown = 60;
+let _rankingCdTimer = null;
+
+function iniciarRankingAutoRefresh() {
+  pararRankingAutoRefresh();
+  _rankingCountdown = 60;
+  _rankingTimer = setInterval(() => { renderBolaoRanking(false); }, 60000);
+  _rankingCdTimer = setInterval(() => {
+    _rankingCountdown--;
+    if (_rankingCountdown <= 0) _rankingCountdown = 60;
+    const el = document.getElementById('rankingCountdown');
+    if (el) el.textContent = _rankingCountdown + 's';
+  }, 1000);
+}
+
+function pararRankingAutoRefresh() {
+  if (_rankingTimer)   { clearInterval(_rankingTimer);   _rankingTimer = null; }
+  if (_rankingCdTimer) { clearInterval(_rankingCdTimer); _rankingCdTimer = null; }
+}
+
+// ── Busca vencedores direto da planilha de jogos (col 14) ───────────────────
+async function buscarVencedoresDaPlanilha() {
+  const VOLEI_GRUPOS_SHEET = 'Fase de Grupos';
+  const range = encodeURIComponent(`'${VOLEI_GRUPOS_SHEET}'!A1:O49`);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${INDEX_VOLEI_SHEET_ID}/values/${range}?key=${INDEX_GOOGLE_API_KEY}`;
+  const res  = await fetch(url);
   const data = await res.json();
   const rows = data.values || [];
 
-  const _v = (r, col) => (rows[r-1] && rows[r-1][col-1] ? rows[r-1][col-1].toString().trim() : '');
+  // cc: cell content (1-based row e col, como no código de referência)
+  const cc = (r, col) => (rows[r-1] && rows[r-1][col-1] != null) ? rows[r-1][col-1].toString().trim() : '';
 
-  // Monta mapa jogo→vencedor (jogo 1..12)
-  const vencedores = {};
-  const grupoRows = [
-    [10,11,12], // Grupo A → jogos 1,2,3
-    [22,23,24], // Grupo B → jogos 4,5,6
-    [34,35,36], // Grupo C → jogos 7,8,9
-    [46,47,48], // Grupo D → jogos 10,11,12
+  // Grupo A → linhas 10,11,12 → jogos 1,2,3
+  // Grupo B → linhas 22,23,24 → jogos 4,5,6
+  // Grupo C → linhas 34,35,36 → jogos 7,8,9
+  // Grupo D → linhas 46,47,48 → jogos 10,11,12
+  const mapa = [
+    [10,11,12],
+    [22,23,24],
+    [34,35,36],
+    [46,47,48],
   ];
+
+  const vencedores = {};
   let jogoNum = 1;
-  grupoRows.forEach(rows3 => {
-    rows3.forEach(row => {
-      const v = _v(row, 14); // coluna O = vencedor
-      if (v) vencedores[jogoNum] = v;
+  mapa.forEach(linhas => {
+    linhas.forEach(row => {
+      const v = cc(row, 14); // coluna O = vencedor
+      if (v && v !== 'A DEFINIR' && v !== '—') vencedores[jogoNum] = v;
       jogoNum++;
     });
   });
@@ -3153,47 +3181,44 @@ async function buscarVencedoresDaPlnilha() {
 }
 
 // ── RANKING ─────────────────────────────────────────────────────────────────
-async function renderBolaoRanking() {
+async function renderBolaoRanking(mostrarLoader = true) {
   const el = document.getElementById('rankingList');
   if (!el) return;
 
-  el.innerHTML = `<div style="text-align:center;padding:30px 14px;color:var(--muted);">
-    <div style="font-size:28px;margin-bottom:8px;">⏳</div>
-    <div style="font-size:12px;">Carregando ranking...</div>
-  </div>`;
+  if (mostrarLoader) {
+    el.innerHTML = `<div style="text-align:center;padding:30px 14px;color:var(--muted);">
+      <div style="font-size:28px;margin-bottom:8px;">⏳</div>
+      <div style="font-size:12px;">Carregando ranking...</div>
+    </div>`;
+  }
 
   try {
-    // 1. Buscar vencedores da planilha de jogos
-    const vencedores = await buscarVencedoresDaPlnilha();
+    // 1. Buscar vencedores da planilha de jogos (fonte da verdade)
+    const vencedores = await buscarVencedoresDaPlanilha();
     const jogosComResultado = Object.keys(vencedores).length;
 
-    // 2. Buscar palpites da planilha PALPITES via Apps Script
+    // 2. Buscar palpites detalhados via Apps Script
     const urlRanking = BOLAO_SHEETS_URL + '?action=ranking_sabado';
     let ranking = [];
     try {
-      const res = await fetch(urlRanking);
+      const res  = await fetch(urlRanking);
       const data = await res.json();
       ranking = data.ranking || [];
     } catch(e) {}
 
-    // 3. Recalcular % com os vencedores reais da planilha de jogos
+    // 3. Calcular % de cada palpiteiro com vencedores reais
     ranking = ranking.map(p => {
       let palpites = [];
       try { palpites = JSON.parse(p.detalheJSON || '[]'); } catch(e) {}
-      // Se não tem detalheJSON, usar acertos já calculados
-      if (!palpites.length && p.palpiteResumo) {
-        // Tenta reconstruir do resumo
-        return { ...p, pct: jogosComResultado > 0 ? p.pct : null };
-      }
       let acertos = 0;
       palpites.forEach(pal => {
         if (vencedores[pal.jogo] && vencedores[pal.jogo] === pal.vencedor) acertos++;
       });
       const pct = jogosComResultado > 0 ? Math.round(acertos / 12 * 10000) / 100 : null;
-      return { ...p, acertos, pct };
+      return { ...p, acertos, total: 12, pct };
     });
 
-    // Ordenar decrescente
+    // 4. Ordenar decrescente por %
     ranking.sort((a, b) => {
       if (a.pct === null && b.pct === null) return 0;
       if (a.pct === null) return 1;
@@ -3201,22 +3226,21 @@ async function renderBolaoRanking() {
       return b.pct - a.pct;
     });
 
-    // 4. Atualizar % na planilha PALPITES via Apps Script
-    if (jogosComResultado > 0 && ranking.length > 0) {
-      try {
-        fetch(BOLAO_SHEETS_URL, {
-          method: 'POST', mode: 'no-cors',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({
-            tipo: 'atualizar_porcentagens',
-            vencedores,
-            data: new Date().toLocaleString('pt-BR')
-          })
-        });
-      } catch(e) {}
+    // 5. Atualizar % na planilha PALPITES em background
+    if (jogosComResultado > 0) {
+      fetch(BOLAO_SHEETS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          tipo: 'atualizar_porcentagens',
+          vencedores,
+          data: new Date().toLocaleString('pt-BR')
+        })
+      }).catch(() => {});
     }
 
     renderRankingHTML(el, { ranking, jogosComResultado, totalJogos: 12 });
+    iniciarRankingAutoRefresh();
 
   } catch(e) {
     renderRankingLocal(el);
@@ -3280,8 +3304,11 @@ function renderRankingHTML(el, data) {
     </div>
     ${rows}
     <div style="text-align:center;padding:14px;margin-bottom:60px;">
-      <button onclick="renderBolaoRanking()" style="padding:10px 24px;border-radius:12px;border:1px solid var(--border-gold);background:transparent;color:var(--gold);font-size:12px;font-weight:800;cursor:pointer;">
-        🔄 Atualizar Ranking
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">
+        🔄 Atualiza automaticamente em <strong id="rankingCountdown" style="color:var(--gold);">60s</strong>
+      </div>
+      <button onclick="renderBolaoRanking(true)" style="padding:10px 24px;border-radius:12px;border:1px solid var(--border-gold);background:transparent;color:var(--gold);font-size:12px;font-weight:800;cursor:pointer;">
+        🔄 Atualizar Agora
       </button>
     </div>`;
 }
