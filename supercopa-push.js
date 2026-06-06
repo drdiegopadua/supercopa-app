@@ -9,7 +9,7 @@
 // ⚠️  SUBSTITUA pela sua chave pública VAPID
 // Gere com: npx web-push generate-vapid-keys
 // ────────────────────────────────────────────────────────────
-const VAPID_PUBLIC_KEY = 'BGGLy_n_WiVTqP0qWp2li0uP8_f-dZvnzIP4CEhSM-wsNs8wDNQZCc_yLPsbQiZ-IzgKOtecvly7XjOpUx0JFWc';
+const VAPID_PUBLIC_KEY = 'BE8Q4kPI7oGed9q5wuDcu6AvVMR1uRm4jHvXwTZ6QMhZS7J5seT4ZBOdK3V7mw12M-CgEH1WX8Fmfc7ivB8Lwyw';
 
 // URL do seu backend que salva as inscrições
 const PUSH_SUBSCRIBE_URL = 'https://supercopa-push-server.onrender.com/api/push/subscribe';
@@ -86,7 +86,7 @@ async function desativarNotificacoes() {
     const sub = await reg.pushManager.getSubscription();
     if (sub) {
       await sub.unsubscribe();
-      await fetch('https://supercopa-push-server.onrender.com/api/push/unsubscribe', {
+      await fetch('/api/push/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ endpoint: sub.endpoint })
