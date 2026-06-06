@@ -1220,6 +1220,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div class="mais-card" onclick="window.open('https://www.instagram.com/supercopaafc/')"><div class="mais-card-ic">📱</div><div class="mais-card-lbl">Instagram</div><div class="mais-card-sub">@supercopaafc</div></div>
     <div class="mais-card" onclick="window.open('https://wa.link/900kb2')"><div class="mais-card-ic">💬</div><div class="mais-card-lbl">WhatsApp</div><div class="mais-card-sub">Fale conosco</div></div>
     <div class="mais-card" onclick="openInstallModal()"><div class="mais-card-ic">📲</div><div class="mais-card-lbl">Instalar App</div><div class="mais-card-sub">Adicionar à tela inicial</div></div>
+    <div id="btnPushToggle" class="mais-card full" onclick="toggleNotificacoes(this)" style="cursor:pointer;"><div class="mais-card-ic push-ic" style="font-size:36px;">🔕</div><div><div class="mais-card-lbl push-label">Ativar notificações</div><div class="mais-card-sub push-status">Receba alertas de jogos e resultados</div></div></div>
   </div>
   <div class="info-block" style="margin-top:12px;">
     <h4>📍 Evento</h4>
@@ -4123,5 +4124,54 @@ startIndexSheetCycle();
     </button>
   </div>
 </div>
+
+<!-- ============================================================
+  PUSH NOTIFICATIONS — integração Supercopa AFC
+  O arquivo supercopa-push.js deve estar na raiz do site
+============================================================ -->
+<script>
+// ── Botão "Ativar Notificações" na tela Mais ────────────────
+// Adicione este botão onde quiser no HTML da tela "Mais":
+// <button onclick="toggleNotificacoes(this)" id="btnPushToggle">...</button>
+//
+// Esta função é chamada quando o usuário toca no botão
+async function toggleNotificacoes(btn) {
+  const ativas = await window.notificacoesAtivas?.();
+  if (ativas) {
+    await window.desativarNotificacoes?.();
+    atualizarBotaoPush(false);
+  } else {
+    const ok = await window.ativarNotificacoes?.();
+    if (ok) atualizarBotaoPush(true);
+  }
+}
+
+function atualizarBotaoPush(ativas) {
+  const btn = document.getElementById('btnPushToggle');
+  if (!btn) return;
+  if (ativas) {
+    btn.style.borderColor = 'rgba(244,197,66,.6)';
+    btn.querySelector?.('.push-label')  && (btn.querySelector('.push-label').textContent  = 'Notificações ativas');
+    btn.querySelector?.('.push-status') && (btn.querySelector('.push-status').textContent = 'Toque para desativar');
+    btn.querySelector?.('.push-ic')     && (btn.querySelector('.push-ic').textContent     = '🔔');
+  } else {
+    btn.style.borderColor = 'var(--border)';
+    btn.querySelector?.('.push-label')  && (btn.querySelector('.push-label').textContent  = 'Ativar notificações');
+    btn.querySelector?.('.push-status') && (btn.querySelector('.push-status').textContent = 'Receba alertas de jogos');
+    btn.querySelector?.('.push-ic')     && (btn.querySelector('.push-ic').textContent     = '🔕');
+  }
+}
+
+// Atualiza estado do botão ao carregar a tela Mais
+document.addEventListener('DOMContentLoaded', async function() {
+  await new Promise(r => setTimeout(r, 800)); // aguarda SW iniciar
+  const ativas = await window.notificacoesAtivas?.();
+  atualizarBotaoPush(!!ativas);
+});
+</script>
+
+<!-- Script principal de push (deve estar na raiz do site) -->
+<script src="/supercopa-push.js"></script>
+
 </body>
 </html>
