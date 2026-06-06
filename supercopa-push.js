@@ -9,10 +9,10 @@
 // ⚠️  SUBSTITUA pela sua chave pública VAPID
 // Gere com: npx web-push generate-vapid-keys
 // ────────────────────────────────────────────────────────────
-const VAPID_PUBLIC_KEY = 'SUA_CHAVE_PUBLICA_VAPID_AQUI';
+const VAPID_PUBLIC_KEY = 'BGGLy_n_WiVTqP0qWp2li0uP8_f-dZvnzIP4CEhSM-wsNs8wDNQZCc_yLPsbQiZ-IzgKOtecvly7XjOpUx0JFWc';
 
 // URL do seu backend que salva as inscrições
-const PUSH_SUBSCRIBE_URL = '/api/push/subscribe';
+const PUSH_SUBSCRIBE_URL = 'https://supercopa-push-server.onrender.com/api/push/subscribe';
 
 // ────────────────────────────────────────────────────────────
 // Inicializa automaticamente quando o DOM carregar
