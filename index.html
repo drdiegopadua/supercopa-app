@@ -836,6 +836,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button class="adm-tab" onclick="admTab('bolao',this)">🎯 Bolão</button>
       <button class="adm-tab" onclick="admTab('quiz',this)">🧠 Quiz</button>
       <button class="adm-tab" onclick="admTab('resultados',this)">📊 Resultados</button>
+      <button class="adm-tab" onclick="admTab('notif',this)">🔔 Push</button>
     </div>
     <!-- TAB: SCORE -->
     <div id="admScore">
@@ -961,6 +962,35 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
           <button class="adm-save" onclick="admSalvarResultados()">💾 SALVAR RESULTADOS</button>
         </div>
         <div id="admResultadosStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
+      </div>
+    </div>
+    <!-- TAB: NOTIFICAÇÕES PUSH -->
+    <div id="admNotif" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:32px;margin-bottom:6px;">🔔</div>
+          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Enviar Notificação</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Envie alertas para todos os usuários inscritos</div>
+        </div>
+        <div class="adm-lbl">Tipo rápido</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          <button class="adm-cancel" style="font-size:11px;padding:8px;" onclick="admPushRapido('jogo')">🏐 Jogo ao vivo</button>
+          <button class="adm-cancel" style="font-size:11px;padding:8px;" onclick="admPushRapido('resultado')">🏆 Resultado</button>
+          <button class="adm-cancel" style="font-size:11px;padding:8px;" onclick="admPushRapido('tabela')">📊 Tabela</button>
+          <button class="adm-cancel" style="font-size:11px;padding:8px;" onclick="admPushRapido('noticia')">📰 Notícia</button>
+        </div>
+        <div class="adm-lbl">Título</div>
+        <input class="adm-inp" id="pushTitle" placeholder="Ex: 🏐 Jogo ao vivo!" maxlength="60">
+        <div class="adm-lbl">Mensagem</div>
+        <input class="adm-inp" id="pushBody" placeholder="Ex: ES Volei × UVI começou agora!" maxlength="120">
+        <div class="adm-lbl">Link ao clicar (opcional)</div>
+        <input class="adm-inp" id="pushUrl" placeholder="/" value="/">
+        <div id="pushStatus" style="text-align:center;font-size:12px;margin:8px 0;color:var(--muted);"></div>
+        <div id="pushInscritos" style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:10px;"></div>
+        <div class="adm-actions">
+          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
+          <button class="adm-save" onclick="admEnviarPush()">🚀 ENVIAR AGORA</button>
+        </div>
       </div>
     </div>
     </div><!-- /admPainelPrincipal -->
@@ -2457,6 +2487,55 @@ async function admSalvarResultados() {
 }
 
 
+
+// ── PUSH NOTIFICATIONS ADMIN ──────────────────────────────
+async function admPushCarregarStatus() {
+  const el = document.getElementById('pushInscritos');
+  if (el) el.textContent = 'Verificando inscritos...';
+  try {
+    const r = await fetch('https://supercopa-push-server.onrender.com/api/push/status');
+    const d = await r.json();
+    if (el) el.textContent = '👥 ' + d.total + ' usuário(s) inscrito(s)';
+  } catch(e) {
+    if (el) el.textContent = 'Servidor offline — aguarde';
+  }
+}
+
+function admPushRapido(tipo) {
+  const t = document.getElementById('pushTitle');
+  const b = document.getElementById('pushBody');
+  if (tipo==='jogo')      { t.value='🏐 Jogo ao vivo!'; b.value='Um jogo da Supercopa AFC começou agora!'; }
+  if (tipo==='resultado') { t.value='🏆 Resultado final'; b.value='Confira o placar atualizado no app!'; }
+  if (tipo==='tabela')    { t.value='📊 Tabela atualizada'; b.value='A classificação foi atualizada!'; }
+  if (tipo==='noticia')   { t.value='📰 Novidade Supercopa'; b.value='Temos uma novidade importante!'; }
+}
+
+async function admEnviarPush() {
+  const title  = document.getElementById('pushTitle').value.trim();
+  const body   = document.getElementById('pushBody').value.trim();
+  const url    = document.getElementById('pushUrl').value.trim() || '/';
+  const status = document.getElementById('pushStatus');
+  if (!title || !body) { showToast('Preencha o título e a mensagem!'); return; }
+  status.textContent = 'Enviando...';
+  try {
+    const r = await fetch('https://supercopa-push-server.onrender.com/api/push/enviar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body, url })
+    });
+    const d = await r.json();
+    if (d.sucesso > 0) {
+      status.textContent = 'Enviado para ' + d.sucesso + ' usuário(s)!';
+      showToast('Notificação enviada!');
+    } else {
+      status.textContent = 'Nenhum usuário recebeu. Verifique inscrições.';
+    }
+    admPushCarregarStatus();
+  } catch(e) {
+    status.textContent = 'Erro ao enviar. Tente novamente.';
+  }
+}
+
 // ── INSTALAR APP ────────────────────────────────────────────
 function openInstallModal() {
   const modal = document.getElementById('installModal');
@@ -2578,6 +2657,9 @@ function admTab(tab,btn){
   document.getElementById('admQuiz').style.display=tab==='quiz'?'block':'none';
   if(tab==='quiz') admQuizCarregarStatus();
   document.getElementById('admResultados').style.display=tab==='resultados'?'block':'none';
+  if(tab==='resultados') admCarregarResultados();
+  document.getElementById('admNotif').style.display=tab==='notif'?'block':'none';
+  if(tab==='notif') admPushCarregarStatus();
   if(tab==='resultados') admCarregarResultados();
 }
 function checkPwBolao(){ return true; } // senha já validada no login do admin
