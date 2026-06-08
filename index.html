@@ -16,42 +16,41 @@
    VARIABLES
 ============================================================ */
 :root {
-  /* === SUPERCOPA AFC — Light Blue + Gold + White Theme === */
-  --bg:#0a1628; --bg2:#0d1e35; --bg3:#071020;
-  --gold:#F4C542; --gold2:#e8b429; --gold-dim:rgba(244,197,66,0.20);
-  --blue:#1565C0; --blue2:#0D47A1; --blue3:#0a3a8a;
-  --accent:#1976D2; --accent2:#64B5F6;
-  --red:#ff4040; --green:#22c55e;
-  --card:rgba(255,255,255,0.07); --card2:rgba(255,255,255,0.10); --card3:rgba(244,197,66,0.10);
-  --border:rgba(255,255,255,0.14); --border-gold:rgba(244,197,66,0.40); --border-blue:rgba(100,181,246,0.25);
-  --text:#ffffff; --text2:rgba(255,255,255,0.80); --muted:rgba(255,255,255,0.50);
-  --topbar:rgba(13,71,161,0.97); --nav:rgba(10,22,40,0.98);
-  --shadow:0 8px 32px rgba(0,0,0,0.4);
+  /* === SUPERCOPA AFC — LIGHT THEME: Branco + Azul Vivo + Dourado === */
+  --bg:#f0f4ff; --bg2:#e8eeff; --bg3:#dde5ff;
+  --gold:#D4A017; --gold2:#b8880f; --gold-dim:rgba(212,160,23,0.15);
+  --blue:#1565C0; --blue2:#0D47A1; --blue3:#1976D2;
+  --accent:#1976D2; --accent2:#42A5F5;
+  --red:#e53935; --green:#2e7d32;
+  --card:#ffffff; --card2:#f5f7ff; --card3:rgba(21,101,192,0.07);
+  --border:rgba(21,101,192,0.15); --border-gold:rgba(212,160,23,0.40); --border-blue:rgba(21,101,192,0.25);
+  --text:#0a1a3e; --text2:#1a3a6e; --muted:#5a7aaa;
+  --topbar:#1565C0; --nav:#1565C0;
+  --shadow:0 4px 24px rgba(21,101,192,0.15);
   --r:20px; --r-sm:12px; --r-xs:8px;
 }
 body.day {
-  /* Cores baseadas no site oficial supercopaafc.com.br */
-  --bg:#ffffff; --bg2:#f4f6fb; --bg3:#e8edf8;
-  --gold:#F4C542; --gold2:#e8a010; --gold-dim:rgba(244,197,66,0.18);
-  --blue:#1565C0; --blue2:#0D47A1; --blue3:#0a3a8a;
-  --card:#ffffff; --card2:#f4f6fb; --card3:rgba(14,59,120,0.06);
-  --border:rgba(14,59,120,0.13); --border-gold:rgba(244,197,66,0.55); --border-blue:rgba(14,59,120,0.25);
-  --text:#0a1a3e; --text2:#2a3f6e; --muted:#7a8fb0;
-  --topbar:#0E3B78; --nav:#0E3B78;
-  --shadow:0 4px 20px rgba(14,59,120,0.14);
+  --bg:#f0f4ff; --bg2:#e8eeff; --bg3:#dde5ff;
+  --gold:#D4A017; --gold2:#b8880f; --gold-dim:rgba(212,160,23,0.15);
+  --blue:#1565C0; --blue2:#0D47A1; --blue3:#1976D2;
+  --card:#ffffff; --card2:#f5f7ff; --card3:rgba(21,101,192,0.07);
+  --border:rgba(21,101,192,0.15); --border-gold:rgba(212,160,23,0.40); --border-blue:rgba(21,101,192,0.25);
+  --text:#0a1a3e; --text2:#1a3a6e; --muted:#5a7aaa;
+  --topbar:#1565C0; --nav:#1565C0;
+  --shadow:0 4px 24px rgba(21,101,192,0.15);
 }
 
 
 /* Modo DIA - topbar e nav azul marinho com texto branco */
-body.day .topbar { background: #1565C0 !important; border-bottom: 2px solid #F4C542; }
+body.day .topbar { background: #1565C0 !important; border-bottom: 2px solid #D4A017; }
 body.day .topbar-title { color: #ffffff !important; }
 body.day .topbar-sub { color: rgba(255,255,255,0.75) !important; }
 body.day .icon-btn { color: #ffffff !important; }
 body.day .live-dot-wrap { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
 body.day .live-dot { background: #F4C542 !important; }
-body.day .bottom-nav { background: #1565C0 !important; border-top: 2px solid #F4C542; }
-body.day .nav-btn { color: rgba(255,255,255,0.55) !important; }
-body.day .nav-btn.active { color: #F4C542 !important; }
+body.day .bottom-nav { background: #1565C0 !important; border-top: 2px solid #D4A017; }
+body.day .nav-btn { color: rgba(255,255,255,0.65) !important; }
+body.day .nav-btn.active { color: #F4C542 !important; font-weight:700; }
 body.day .nav-btn.active svg, body.day .nav-btn.active .nav-ic { color: #F4C542 !important; }
 body.day .section-title { color: #0a1a3e !important; }
 body.day .card { background: #ffffff !important; border: 1px solid rgba(14,59,120,0.13) !important; }
@@ -65,7 +64,7 @@ body.day .adm-inp { background: #f4f6fb !important; border-color: rgba(14,59,120
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse at 15% 0%,rgba(25,118,210,0.30) 0%,transparent 55%),radial-gradient(ellipse at 85% 100%,rgba(13,71,161,0.22) 0%,transparent 50%),radial-gradient(ellipse at 50% 40%,rgba(244,197,66,0.06) 0%,transparent 65%);
+  background:radial-gradient(ellipse at 10% 0%,rgba(21,101,192,0.08) 0%,transparent 50%),radial-gradient(ellipse at 90% 100%,rgba(212,160,23,0.06) 0%,transparent 50%);
   transition:opacity .35s;}
 body.day::before{opacity:.04;}
 a{text-decoration:none;color:inherit;}
@@ -84,10 +83,10 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    SPLASH
 ============================================================ */
-#splash{position:fixed;inset:0;z-index:9999;background:#030d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,transform .8s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+#splash{position:fixed;inset:0;z-index:9999;background:#1565C0;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,transform .8s cubic-bezier(.4,0,.2,1);overflow:hidden;}
 #splash.out{opacity:0;transform:scale(1.08);pointer-events:none;}
-.splash-bg{position:absolute;inset:0;background-image:url('splash-bg.png');background-size:cover;background-position:center;filter:brightness(0.35) saturate(1.4);z-index:0;}
-.splash-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(3,13,26,0.3) 0%,rgba(3,13,26,0.6) 60%,rgba(3,13,26,0.95) 100%);z-index:1;}
+.splash-bg{position:absolute;inset:0;background-image:url('splash-bg.png');background-size:cover;background-position:center;filter:brightness(0.25) saturate(1.6) hue-rotate(10deg);z-index:0;}
+.splash-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,71,161,0.3) 0%,rgba(13,71,161,0.65) 55%,rgba(10,50,120,0.97) 100%);z-index:1;}
 .splash-rings{position:relative;width:180px;height:180px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;z-index:2;}
 .splash-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(244,197,66,.2);animation:ringPulse 2.5s ease infinite;}
 .splash-ring:nth-child(1){width:180px;height:180px;animation-delay:0s;}
@@ -99,7 +98,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .splash-name{font-family:'Anton',sans-serif;font-size:36px;letter-spacing:2px;color:#fff;animation:fadeUp .5s ease 1.0s both;z-index:2;text-shadow:0 2px 20px rgba(0,0,0,.5);}
 .splash-ed{font-size:12px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;animation:fadeUp .5s ease 1.15s both;margin-top:6px;z-index:2;font-weight:600;}
 .splash-track{width:220px;height:3px;background:rgba(255,255,255,.08);border-radius:999px;margin-top:32px;overflow:hidden;animation:fadeUp .4s ease 1.2s both;z-index:2;}
-.splash-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e8a010);border-radius:999px;animation:fillBar 1.5s cubic-bezier(.4,0,.2,1) 1.1s both;}
+.splash-fill{height:100%;background:linear-gradient(90deg,#F4C542,#D4A017);border-radius:999px;animation:fillBar 1.5s cubic-bezier(.4,0,.2,1) 1.1s both;}
 @keyframes fillBar{from{width:0}to{width:100%}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
@@ -716,7 +715,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </style>
 </head>
-<body>
+<body class="day">
 
 <!-- FIREWORKS -->
 <div id="fireworks"></div>
