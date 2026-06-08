@@ -7,10 +7,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Supercopa AFC">
-<meta name="apple-mobile-web-app-icon" content="supercopa-icon.png">
-<link rel="icon" type="image/png" href="supercopa-icon.png">
-<link rel="apple-touch-icon" href="supercopa-icon.png">
-<link rel="manifest" href="manifest.json">
 <title>Supercopa AFC · 6ª Edição</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -541,24 +537,20 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: linear-gradient(to top, rgba(21,101,192,0.98), rgba(21,101,192,0.95));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(212,160,23,0.3);
-  box-shadow: 0 -4px 20px rgba(21,101,192,0.25);
+  padding: 0 16px;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px);
+  background: transparent;
 }
 
-/* Pill deslizante */
+/* Pill deslizante — relativo ao .bnav-items */
 .bnav-pill {
   position: absolute;
-  bottom: 12px;
-  height: 56px;
+  top: 0; bottom: 0;
+  height: 100%;
   border-radius: 16px;
-  background: linear-gradient(135deg, #D4A017, #e8a010);
-  box-shadow: 0 8px 28px rgba(212,160,23,0.4), 0 2px 8px rgba(212,160,23,0.25);
-  transition: left 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.35s cubic-bezier(0.34,1.2,.64,1);
+  background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
+  box-shadow: 0 4px 20px rgba(21,101,192,0.40), 0 2px 6px rgba(21,101,192,0.25);
+  transition: left 0.40s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.32s cubic-bezier(0.34,1.2,.64,1);
   z-index: 0;
   pointer-events: none;
 }
@@ -579,7 +571,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   max-width: 480px;
   position: relative;
   z-index: 1;
-  height: 52px;
+  height: 56px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(30px) saturate(2);
+  -webkit-backdrop-filter: blur(30px) saturate(2);
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: 0 2px 24px rgba(21,101,192,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.7);
 }
 
 .nav-btn {
@@ -591,15 +590,16 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 6px 2px;
-  color: rgba(255,255,255,0.6);
+  padding: 4px 2px;
+  color: #5a7aaa;
   cursor: pointer;
   position: relative;
   z-index: 2;
-  height: 56px;
-  border-radius: 16px;
+  height: 100%;
+  border-radius: 14px;
   transition: color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
+  min-width: 0;
 }
 
 .nav-btn .ni {
@@ -619,16 +619,15 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 /* Estado ativo */
 .nav-btn.on {
-  color: #050816;
+  color: #ffffff;
 }
 .nav-btn.on .ni {
   transform: translateY(-2px) scale(1.18);
-  filter: drop-shadow(0 2px 8px rgba(212,160,23,0.5));
+  filter: drop-shadow(0 2px 8px rgba(255,255,255,0.5));
 }
 .nav-btn.on small {
   opacity: 1;
   font-weight: 800;
-  color: #050816;
 }
 
 /* Animação de toque */
@@ -1185,55 +1184,129 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <main>
 
 <!-- ==================== HOME ==================== -->
-<section id="homePage" class="page active">
+<section id="homePage" class="page" style="padding-bottom:100px;">
 
-  <div class="ticker">
-    <div class="ticker-inner" id="tickerInner">
-      <span class="ticker-item">⚡ 28 e 29 de Novembro de 2026</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏐 12 Times de Voleibol</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏀 6 Times de Basquete</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏆 R$5.000 em Prêmios</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">✅ Inscrição 100% Gratuita</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">📍 Afonso Cláudio, ES</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">⚡ 28 e 29 de Novembro de 2026</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏐 12 Times de Voleibol</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏀 6 Times de Basquete</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">🏆 R$5.000 em Prêmios</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">✅ Inscrição 100% Gratuita</span><span class="ticker-sep">●</span>
-      <span class="ticker-item">📍 Afonso Cláudio, ES</span><span class="ticker-sep">●</span>
+  <!-- HERO CLEAN -->
+  <div style="background:linear-gradient(160deg,#1565C0 0%,#1976D2 60%,#0D47A1 100%);margin:-0px;padding:28px 20px 32px;position:relative;overflow:hidden;">
+    <!-- Círculos decorativos -->
+    <div style="position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(244,197,66,0.10);pointer-events:none;"></div>
+
+    <!-- Logo + Nome -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+      <img id="heroLogo" src="splash-logo.jpeg" style="width:56px;height:56px;border-radius:14px;object-fit:contain;box-shadow:0 4px 16px rgba(0,0,0,0.25);" alt="">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.7);letter-spacing:3px;text-transform:uppercase;font-weight:700;">6ª Edição · 2026</div>
+        <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;line-height:1.1;">Supercopa AFC</div>
+        <div style="font-size:11px;color:#F4C542;font-weight:600;letter-spacing:1px;">Afonso Cláudio · ES</div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div style="background:rgba(255,255,255,0.12);border-radius:16px;padding:14px 16px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);">
+      <div style="font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;text-align:center;">Começa em</div>
+      <div style="display:flex;justify-content:center;gap:12px;" id="cdRow">
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',sans-serif;font-size:28px;color:#fff;line-height:1;" id="cdD">—</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">Dias</div>
+        </div>
+        <div style="font-family:'Anton',sans-serif;font-size:28px;color:rgba(255,255,255,0.3);line-height:1;padding-top:0px;">:</div>
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',sans-serif;font-size:28px;color:#fff;line-height:1;" id="cdH">—</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">Hrs</div>
+        </div>
+        <div style="font-family:'Anton',sans-serif;font-size:28px;color:rgba(255,255,255,0.3);line-height:1;">:</div>
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',sans-serif;font-size:28px;color:#fff;line-height:1;" id="cdM">—</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">Min</div>
+        </div>
+        <div style="font-family:'Anton',sans-serif;font-size:28px;color:rgba(255,255,255,0.3);line-height:1;">:</div>
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',sans-serif;font-size:28px;color:#F4C542;line-height:1;" id="cdS">—</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">Seg</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status badge -->
+    <div style="text-align:center;margin-top:12px;">
+      <span id="heroStatus" style="display:inline-block;background:rgba(244,197,66,0.2);border:1px solid rgba(244,197,66,0.5);border-radius:20px;padding:4px 14px;font-size:11px;color:#F4C542;font-weight:700;letter-spacing:1px;">● EM BREVE</span>
     </div>
   </div>
 
-  <section class="hero">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-ov"></div>
-    <div class="hero-fade"></div>
-    <div class="hero-body">
-      <div class="hero-badge"><span class="live-dot"></span>SUPERCOPA DE VOLEIBOL · NOV 2026</div>
-      <div class="hero-logorow">
-        <img id="heroLogo" src="splash-logo.jpeg" alt="Supercopa AFC">
-        <div class="hero-logorow-text">
-          <div class="ed">6ª EDIÇÃO · 2026</div>
-          <div class="ht">SUPERCOPA<br>AFC</div>
+  <!-- AÇÕES RÁPIDAS -->
+  <div style="padding:20px 16px 0;">
+    <div style="font-size:11px;color:#5a7aaa;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Acesso rápido</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+      <button onclick="nav('gamesPage',document.querySelector('[onclick*=gamesPage]'))" style="background:#ffffff;border:1px solid rgba(21,101,192,0.15);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(21,101,192,0.08);transition:all .2s;">
+        <div style="font-size:24px;margin-bottom:6px;">🏐</div>
+        <div style="font-size:14px;font-weight:700;color:#0a1a3e;">Jogos</div>
+        <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Ver programação</div>
+      </button>
+
+      <button onclick="nav('tablePage',document.querySelector('[onclick*=tablePage]'))" style="background:#ffffff;border:1px solid rgba(21,101,192,0.15);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(21,101,192,0.08);transition:all .2s;">
+        <div style="font-size:24px;margin-bottom:6px;">📊</div>
+        <div style="font-size:14px;font-weight:700;color:#0a1a3e;">Classificação</div>
+        <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Ver tabela</div>
+      </button>
+
+      <button onclick="nav('bracketPage',document.querySelector('[onclick*=bracketPage]'))" style="background:#ffffff;border:1px solid rgba(21,101,192,0.15);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(21,101,192,0.08);transition:all .2s;">
+        <div style="font-size:24px;margin-bottom:6px;">🏆</div>
+        <div style="font-size:14px;font-weight:700;color:#0a1a3e;">Mata-mata</div>
+        <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Chaveamento</div>
+      </button>
+
+      <button onclick="nav('maisPage',document.querySelector('[onclick*=maisPage]'))" style="background:linear-gradient(135deg,rgba(212,160,23,0.12),rgba(244,197,66,0.08));border:1px solid rgba(212,160,23,0.30);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(212,160,23,0.10);transition:all .2s;">
+        <div style="font-size:24px;margin-bottom:6px;">✨</div>
+        <div style="font-size:14px;font-weight:700;color:#0a1a3e;">Mais</div>
+        <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Quiz, Bolão e mais</div>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- INFO DO EVENTO -->
+  <div style="padding:16px 16px 0;">
+    <div style="background:#ffffff;border:1px solid rgba(21,101,192,0.12);border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(21,101,192,0.06);">
+      <div style="font-size:11px;color:#5a7aaa;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Informações</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">📅</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#0a1a3e;">28 e 29 de Novembro de 2026</div>
+            <div style="font-size:11px;color:#5a7aaa;">Data do evento</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(21,101,192,0.08);"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">📍</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#0a1a3e;">Ginásio Central · Afonso Cláudio, ES</div>
+            <div style="font-size:11px;color:#5a7aaa;">Local do evento</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(21,101,192,0.08);"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">🏅</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#0a1a3e;">R$ 5.000 em Prêmios</div>
+            <div style="font-size:11px;color:#5a7aaa;">Premiação total</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(21,101,192,0.08);"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">🆓</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#0a1a3e;">Inscrição 100% Gratuita</div>
+            <div style="font-size:11px;color:#5a7aaa;">Para todos os participantes</div>
+          </div>
         </div>
       </div>
-      <h2>O MAIOR<br><em>TORNEIO</em><br>DA REGIÃO</h2>
-      <p class="hero-sub">Região das Montanhas · Afonso Cláudio, ES<br>28 e 29 de Novembro de 2026</p>
-      <div class="cdown">
-        <div class="cd"><div class="cd-n" id="cdD">--</div><div class="cd-l">Dias</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd"><div class="cd-n" id="cdH">--</div><div class="cd-l">Hrs</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd"><div class="cd-n" id="cdM">--</div><div class="cd-l">Min</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd"><div class="cd-n" id="cdS">--</div><div class="cd-l">Seg</div></div>
-      </div>
-      <div class="hero-btns">
-        <button class="btn-gold" onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])">VER JOGOS</button>
-        <button class="btn-ghost" onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])">TABELA</button>
-      </div>
     </div>
-  </section>
+  </div>
+
+</section>
 
   <div class="sports-banner">
     <div class="sb-bg" id="sbBg"></div>
@@ -1269,7 +1342,31 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
   </div>
 
+  <div class="sec" style="padding-top:18px;"><span class="sec-title">Times Inscritos</span><span class="sec-link" onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])">VER TODOS →</span></div>
+  <p style="font-size:11px;color:var(--muted);padding:0 16px 9px;">👉 Toque para ver o perfil</p>
+  <div class="hscroll">
+    <div class="team-chip gold" onclick="openTeam('ES Volei','Vitória, ES','🏆',3,3,9)"><div class="tc-av">🏆</div><div><div class="tc-name">ES Volei</div><div class="tc-city">Vitória, ES</div><div class="tc-badge">CAMPEÃO 2025</div></div></div>
+    <div class="team-chip" onclick="openTeam('Equipe UVI','Itaperuna, RJ','🥈',3,2,6)"><div class="tc-av">🥈</div><div><div class="tc-name">Equipe UVI</div><div class="tc-city">Itaperuna, RJ</div><div class="tc-badge">VICE 2025</div></div></div>
+    <div class="team-chip" onclick="openTeam('CT Montanhas','Afonso Cláudio, ES','🏠',3,1,3)"><div class="tc-av">🏠</div><div><div class="tc-name">CT Montanhas</div><div class="tc-city">Afonso Cláudio, ES</div><div class="tc-badge">EQUIPE DA CASA</div></div></div>
+    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, RJ</div><div class="tc-badge">EM BREVE</div></div></div>
+    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, ES</div><div class="tc-badge">EM BREVE</div></div></div>
+  </div>
 
+  <div class="sec" style="padding-top:18px;"><span class="sec-title">🏅 Melhor da Partida</span><span class="sec-link">Destaques por Jogo · 2025</span></div>
+  <div class="mvp-strip" id="mvpStrip">
+    <div class="mvp-card no1"><div class="mvp-rank">1°</div><div class="mvp-av">🏐</div><div class="mvp-nm">João Silva</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">142</div><div class="mvp-pl">destaque</div></div>
+    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">2°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Pedro Costa</div><div class="mvp-tm">Equipe UVI</div><div class="mvp-pts">118</div><div class="mvp-pl">destaque</div></div>
+    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">3°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Carlos Lima</div><div class="mvp-tm">CT Montanhas</div><div class="mvp-pts">97</div><div class="mvp-pl">destaque</div></div>
+    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">4°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Lucas Melo</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">84</div><div class="mvp-pl">destaque</div></div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="sec" style="padding-top:18px;"><span class="sec-title">📰 Notícias</span></div>
+  <div class="news-list" id="newsList">
+    <div class="news-card"><div class="news-ic">🎉</div><div><div class="news-tag">Evento</div><div class="news-title">Inscrições para a 6ª edição abrem em Setembro!</div><div class="news-date">Maio 2026</div></div></div>
+    <div class="news-card"><div class="news-ic">🏆</div><div><div class="news-tag">Histórico</div><div class="news-title">ES Volei conquista o título da 5ª Supercopa AFC</div><div class="news-date">Novembro 2025</div></div></div>
+    <div class="news-card"><div class="news-ic">📍</div><div><div class="news-tag">Estrutura</div><div class="news-title">Ginásio Central passa por reforma para a edição 2026</div><div class="news-date">Março 2026</div></div></div>
+  </div>
 
 </section>
 
@@ -3111,9 +3208,9 @@ function movePill(btn) {
   if (!pill || !items || !btn) return;
   const containerRect = items.getBoundingClientRect();
   const btnRect = btn.getBoundingClientRect();
-  const left = btnRect.left - containerRect.left;
+  const left = btnRect.left - containerRect.left - 4; // ajuste do padding
   const width = btnRect.width;
-  pill.style.left = left + 'px';
+  pill.style.left = Math.max(0, left) + 'px';
   pill.style.width = width + 'px';
 }
 
