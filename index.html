@@ -48,7 +48,7 @@ body.day .topbar-sub { color: rgba(255,255,255,0.75) !important; }
 body.day .icon-btn { color: #ffffff !important; }
 body.day .live-dot-wrap { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
 body.day .live-dot { background: #F4C542 !important; }
-body.day .bottom-nav { background: #1565C0 !important; border-top: 2px solid #D4A017; }
+/* nav liquid glass — sem override no day mode */
 body.day .nav-btn { color: rgba(255,255,255,0.65) !important; }
 body.day .nav-btn.active { color: #F4C542 !important; font-weight:700; }
 body.day .nav-btn.active svg, body.day .nav-btn.active .nav-ic { color: #F4C542 !important; }
@@ -527,16 +527,122 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
 
 /* ============================================================
-   BOTTOM NAV
+   BOTTOM NAV — LIQUID GLASS
 ============================================================ */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;height:78px;display:flex;align-items:center;background:var(--nav);backdrop-filter:blur(28px);border-top:1px solid var(--border);transition:background .35s,border .35s;}
-.nav-btn{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;color:var(--muted);transition:.15s;cursor:pointer;}
-.nav-btn .ni{font-size:19px;}
-.nav-btn small{font-size:9px;font-weight:700;letter-spacing:.3px;}
-.nav-btn.on{color:var(--gold);}
-.nav-btn.on .ni{filter:drop-shadow(0 0 5px rgba(244,197,66,.5));}
-.nav-badge{position:relative;}
-.nav-badge::after{content:'';position:absolute;top:-1px;right:-3px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--nav);}
+.bnav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(40px) saturate(2.2) brightness(1.1);
+  -webkit-backdrop-filter: blur(40px) saturate(2.2) brightness(1.1);
+  border-top: 1px solid rgba(255,255,255,0.75);
+  box-shadow: 0 -2px 30px rgba(21,101,192,0.10), 0 -1px 0 rgba(255,255,255,0.6) inset;
+}
+
+/* Pill deslizante */
+.bnav-pill {
+  position: absolute;
+  bottom: 16px;
+  height: 52px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #1565C0, #1976D2);
+  box-shadow: 0 6px 24px rgba(21,101,192,0.35), 0 2px 8px rgba(21,101,192,0.2);
+  transition: left 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.35s cubic-bezier(0.34,1.2,.64,1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Brilho interno do pill */
+.bnav-pill::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 17px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, transparent 60%);
+}
+
+.bnav-items {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
+  height: 52px;
+}
+
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 2px;
+  color: #5a7aaa;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  height: 52px;
+  border-radius: 18px;
+  transition: color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-btn .ni {
+  font-size: 20px;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,.64,1), filter 0.25s;
+  display: block;
+  line-height: 1;
+}
+
+.nav-btn small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: opacity 0.25s, transform 0.25s;
+  opacity: 0.85;
+}
+
+/* Estado ativo */
+.nav-btn.on {
+  color: #ffffff;
+}
+.nav-btn.on .ni {
+  transform: translateY(-2px) scale(1.18);
+  filter: drop-shadow(0 2px 8px rgba(255,255,255,0.5));
+}
+.nav-btn.on small {
+  opacity: 1;
+  font-weight: 800;
+}
+
+/* Animação de toque */
+.nav-btn:active .ni {
+  transform: scale(0.88);
+}
+
+/* Badge de notificação */
+.nav-badge { position: relative; }
+.nav-badge::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -4px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #e53935;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(229,57,53,0.4);
+}
 
 /* ============================================================
    TOAST
@@ -1765,13 +1871,26 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </main>
 
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="nav-btn on" onclick="nav('homePage',this)"><span class="ni">🏠</span><small>Início</small></button>
-  <button class="nav-btn" onclick="nav('gamesPage',this)"><span class="ni">📅</span><small>Jogos</small></button>
-  <button class="nav-btn" onclick="nav('tablePage',this)"><span class="ni">📊</span><small>Tabela</small></button>
-  <button class="nav-btn" onclick="nav('bracketPage',this)"><span class="ni">🏆</span><small>Mata-mata</small></button>
-  <button class="nav-btn" onclick="nav('maisPage',this)"><span class="ni">⋯</span><small>Mais</small></button>
+<!-- BOTTOM NAV LIQUID GLASS -->
+<nav class="bnav" id="mainNav">
+  <div class="bnav-pill" id="bnavPill"></div>
+  <div class="bnav-items" id="bnavItems">
+    <button class="nav-btn on" onclick="nav('homePage',this)" data-idx="0">
+      <span class="ni">🏠</span><small>Início</small>
+    </button>
+    <button class="nav-btn" onclick="nav('gamesPage',this)" data-idx="1">
+      <span class="ni">🏐</span><small>Jogos</small>
+    </button>
+    <button class="nav-btn" onclick="nav('tablePage',this)" data-idx="2">
+      <span class="ni">📊</span><small>Tabela</small>
+    </button>
+    <button class="nav-btn" onclick="nav('bracketPage',this)" data-idx="3">
+      <span class="ni">🏆</span><small>Mata-mata</small>
+    </button>
+    <button class="nav-btn" onclick="nav('maisPage',this)" data-idx="4">
+      <span class="ni">⋯</span><small>Mais</small>
+    </button>
+  </div>
 </nav>
 
 <script>
@@ -1908,6 +2027,11 @@ function nav(pid,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pid).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  // Move liquid glass pill
+  requestAnimationFrame(() => {
+    const activeBtn = document.querySelector('.nav-btn.on');
+    if (activeBtn) movePill(activeBtn);
+  });
   if(btn)btn.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(navigator.vibrate)navigator.vibrate(6);
@@ -2997,6 +3121,34 @@ async function admEnviarPush() {
     status.textContent = 'Erro ao enviar. Tente novamente.';
   }
 }
+
+
+// ── LIQUID GLASS NAV PILL ──────────────────────────────────────────────────
+function movePill(btn) {
+  const pill = document.getElementById('bnavPill');
+  const items = document.getElementById('bnavItems');
+  if (!pill || !items || !btn) return;
+  const containerRect = items.getBoundingClientRect();
+  const btnRect = btn.getBoundingClientRect();
+  const left = btnRect.left - containerRect.left;
+  const width = btnRect.width;
+  pill.style.left = left + 'px';
+  pill.style.width = width + 'px';
+}
+
+// Inicializa pill na posição do botão ativo
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const active = document.querySelector('.nav-btn.on');
+    if (active) movePill(active);
+  }, 100);
+});
+
+// Atualiza pill ao redimensionar
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.nav-btn.on');
+  if (active) movePill(active);
+});
 
 // ── INSTALAR APP ────────────────────────────────────────────
 function openInstallModal() {
