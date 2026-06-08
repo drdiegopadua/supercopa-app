@@ -2620,7 +2620,7 @@ async function admSalvarResultados() {
 
 // Planilha do basquete (mesma API key, nova sheet ID)
 // ⚠️  Substitua BASQ_SHEET_ID pelo ID da planilha do basquete quando criar
-const BASQ_SHEET_ID = 'COLE_AQUI_O_ID_DA_PLANILHA_DO_BASQUETE';
+const BASQ_SHEET_ID = '1S3rUVU18W64c4okkxGOYnSLtW-aSyo47l3tos7u-8j0';
 
 let tableDataBasq = { grupoA: [], grupoB: [] };
 let curGrpBasq = 'grupoA';
@@ -2630,12 +2630,21 @@ let curSportBracket = 'volei';
 
 // Times do basquete
 const BASQ_TIMES = {
-  'CT das Montanhas'      : { ic:'🏔️', city:'Afonso Cláudio' },
-  'São Pedro Basquete'    : { ic:'⛪', city:'São Pedro' },
-  'Crossover Basquete'    : { ic:'🔀', city:'ES' },
-  'Aracruz Basquete'      : { ic:'🌊', city:'Aracruz' },
-  'Marlins'               : { ic:'🐟', city:'ES' },
-  'Central Serrano Basquete': { ic:'⛰️', city:'Serra' }
+  // Grupo A (nomes exatos da planilha)
+  'CT DAS MONTANHAS'        : { ic:'🏔️', city:'Afonso Cláudio' },
+  'MARLINS'                 : { ic:'🐟', city:'ES' },
+  'CROSSOVER'               : { ic:'🔀', city:'ES' },
+  // Grupo B (nomes exatos da planilha)
+  'CENTRAL SERRANO'         : { ic:'⛰️', city:'Serrano' },
+  'ARACRUZ'                 : { ic:'🌊', city:'Aracruz' },
+  'SAO PEDRO'               : { ic:'⛪', city:'São Pedro' },
+  // Variantes com nomes completos
+  'CT das Montanhas'        : { ic:'🏔️', city:'Afonso Cláudio' },
+  'Marlins'                 : { ic:'🐟', city:'ES' },
+  'Crossover Basquete'      : { ic:'🔀', city:'ES' },
+  'Central Serrano Basquete': { ic:'⛰️', city:'Serrano' },
+  'Aracruz Basquete'        : { ic:'🌊', city:'Aracruz' },
+  'São Pedro Basquete'      : { ic:'⛪', city:'São Pedro' },
 };
 
 // ── Seletor de modalidade ─────────────────────────────────────────────────
@@ -2666,94 +2675,82 @@ function setSport(sport, page) {
 
 // ── Carrega dados do basquete da planilha ─────────────────────────────────
 async function loadBasqData() {
-  if (BASQ_SHEET_ID === 'COLE_AQUI_O_ID_DA_PLANILHA_DO_BASQUETE') {
-    renderGamesBasqOffline();
-    renderTableBasq('grupoA');
-    return;
-  }
   const makeUrl = (sheet, range) =>
     `https://sheets.googleapis.com/v4/spreadsheets/${BASQ_SHEET_ID}/values/${encodeURIComponent("'"+sheet+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
   try {
-    const [resClass, resJogos, resMata] = await Promise.all([
-      fetch(makeUrl('Classificação','A1:K15')),
-      fetch(makeUrl('Fase de Grupos','A1:Q30')),
-      fetch(makeUrl('Mata-Mata','A1:Q10'))
+    const [resJogos, resMata] = await Promise.all([
+      fetch(makeUrl('Fase de Grupos','A1:P15')),
+      fetch(makeUrl('Mata-Mata','A1:N10'))
     ]);
-    const [dataClass, dataJogos, dataMata] = await Promise.all([
-      resClass.json(), resJogos.json(), resMata.json()
+    const [dataJogos, dataMata] = await Promise.all([
+      resJogos.json(), resMata.json()
     ]);
-    const rowsC = dataClass.values || [];
     const rowsJ = dataJogos.values || [];
     const rowsM = dataMata.values  || [];
 
-    // Classificação: Grupo A → rows 3-5 | Grupo B → rows 9-11
-    const grpMapB = { grupoA:[3,4,5], grupoB:[9,10,11] };
-    Object.keys(grpMapB).forEach(g => {
-      tableDataBasq[g] = grpMapB[g].map(r => ({
-        pos : _cc(rowsC,r,0)||'—',
-        name: _cc(rowsC,r,1)||'—',
-        city: _cc(rowsC,r,5)||'',
-        pj  : _cc(rowsC,r,6)||'0',
-        v   : _cc(rowsC,r,3)||'0',
-        d   : _cc(rowsC,r,4)||'0',
-        sp  : _cc(rowsC,r,7)||'0',
-        pts : _cc(rowsC,r,2)||'0'
-      })).filter(r=>r.name&&r.name!=='—');
-    });
+    // ── Classificação inline (lida da Fase de Grupos rows 10-13) ─────────
+    // Grupo A: cols A-G (0-6) | Grupo B: cols H-N (7-13)
+    // POS=0, EQUIPE=1, J=2, V=3, D=4, PTS=5, SD=6
+    // Classificação: rows 12,13,14 (0-indexed)
+    // Grupo A: A(0)=pos,B(1)=equipe,C(2)=J,D(3)=V,E(4)=D,F(5)=PTS,G(6)=SD
+    tableDataBasq.grupoA = [11,12,13].map(r => ({
+      pos : _cc(rowsJ,r,0)||'—',
+      name: _cc(rowsJ,r,1)||'—',
+      city: '',
+      pj  : _cc(rowsJ,r,2)||'0',
+      v   : _cc(rowsJ,r,3)||'0',
+      d   : _cc(rowsJ,r,4)||'0',
+      sp  : _cc(rowsJ,r,6)||'0',
+      pts : _cc(rowsJ,r,5)||'0'
+    })).filter(r=>r.name&&r.name!=='—');
+
+    // Grupo B: I(8)=pos,J(9)=equipe,K(10)=J,L(11)=V,M(12)=D,N(13)=PTS,O(14)=SD
+    tableDataBasq.grupoB = [11,12,13].map(r => ({
+      pos : _cc(rowsJ,r,8)||'—',
+      name: _cc(rowsJ,r,9)||'—',
+      city: '',
+      pj  : _cc(rowsJ,r,10)||'0',
+      v   : _cc(rowsJ,r,11)||'0',
+      d   : _cc(rowsJ,r,12)||'0',
+      sp  : _cc(rowsJ,r,14)||'0',
+      pts : _cc(rowsJ,r,13)||'0'
+    })).filter(r=>r.name&&r.name!=='—');
+
     renderTableBasq(curGrpBasq);
 
-    // Jogos
+    // ── Jogos ─────────────────────────────────────────────────────────────
+    // Grupo A: rows 4-6 cols B(1),C(2),E(4),F(5),G(6)
+    // Grupo B: rows 4-6 cols H(7),I(8),K(10),L(11),M(12)
     const gl = document.getElementById('gamesListBasq');
     if (gl) {
-      const grupos = [
-        { label:'FASE DE GRUPOS · GRUPO A', rows:[3,4,5], grp:'A' },
-        { label:'FASE DE GRUPOS · GRUPO B', rows:[9,10,11], grp:'B' }
-      ];
-      let html = '';
-      grupos.forEach(({ label, rows, grp }) => {
-        html += `<div class="grp-lbl" data-phase="grupos">${label}</div>`;
-        rows.forEach((row, idx) => {
-          const casa     = _cc(rowsJ,row,1);
-          const visit    = _cc(rowsJ,row,11);
-          if (!casa && !visit) return;
-          const ptC      = _cc(rowsJ,row,12)||'';
-          const ptV      = _cc(rowsJ,row,13)||'';
-          const vencedor = _cc(rowsJ,row,14)||'';
-          const hora     = _cc(rowsJ,row,15)||'';
-          const gid      = `bg${grp}${idx+1}`;
-          const done     = !!vencedor;
-          const liveClass= done ? ' done' : '';
-          html += `<div class="gc${liveClass}" data-phase="grupos">
-            <div class="gc-meta">Grupo ${grp} · Quadra Basquete${hora ? ' · ' + hora : ''} 🏀</div>
-            <div class="gc-row">
-              <div class="gc-team">
-                <div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div>
-                <div class="gc-nm">${casa||'—'}</div>
-              </div>
-              <div class="gc-score">
-                <span class="${ptC&&ptV?(parseInt(ptC)>parseInt(ptV)?'sc-w':'sc'):'sc-empty'}">${ptC||'—'}</span>
-                <span class="sc-sep">×</span>
-                <span class="${ptC&&ptV?(parseInt(ptV)>parseInt(ptC)?'sc-w':'sc'):'sc-empty'}">${ptV||'—'}</span>
-              </div>
-              <div class="gc-team gc-team-r">
-                <div class="gc-nm">${visit||'—'}</div>
-                <div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div>
-              </div>
-            </div>
-            ${done?`<div class="gc-result">🏆 ${vencedor}</div>`:''}
-          </div>`;
-        });
+      let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
+      // Grupo A: cols B(1)=eq1, C(2)=pts1, E(4)=pts2, F(5)=eq2, G(6)=resultado
+      [4,5,6].forEach((row,idx) => {
+        const casa = _cc(rowsJ,row,1), visit = _cc(rowsJ,row,5);
+        if (!casa && !visit) return;
+        const ptC = _cc(rowsJ,row,2)||'', ptV = _cc(rowsJ,row,4)||'';
+        const res = _cc(rowsJ,row,6)||'';
+        html += basqGameCard(casa, visit, ptC, ptV, res, 'A', idx+1, 'grupos');
       });
 
-      // Mata-mata da planilha
-      if (rowsM.length > 3) {
+      html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
+      // Grupo B: cols I(8)=eq1, K(10)=pts1, M(12)=pts2, N(13)=eq2, O(14)=resultado
+      [4,5,6].forEach((row,idx) => {
+        const casa = _cc(rowsJ,row,8), visit = _cc(rowsJ,row,13);
+        if (!casa && !visit) return;
+        const ptC = _cc(rowsJ,row,10)||'', ptV = _cc(rowsJ,row,12)||'';
+        const res = _cc(rowsJ,row,14)||'';
+        html += basqGameCard(casa, visit, ptC, ptV, res, 'B', idx+1, 'grupos');
+      });
+
+      if (rowsM.length > 2) {
         html += buildBasqMataHtml(rowsM);
       }
+
       gl.innerHTML = html || '<div style="text-align:center;padding:30px;color:var(--muted);">Nenhum jogo encontrado</div>';
       filterGamesBasq('todos', document.querySelector('#gamesBasquete .tab.on'));
     }
 
-    // Mata-mata bracket
     updateBasqBracket(rowsM);
 
   } catch(e) {
@@ -2762,45 +2759,40 @@ async function loadBasqData() {
   }
 }
 
-function buildBasqMataHtml(rowsM) {
-  let html = '<div class="grp-lbl" data-phase="semi">SEMIFINAL 🏀</div>';
-  [[3,'SF1'],[4,'SF2']].forEach(([r,lbl]) => {
-    const c = _cc(rowsM,r,1), v = _cc(rowsM,r,11);
-    if (!c && !v) return;
-    const pc = _cc(rowsM,r,12), pv = _cc(rowsM,r,13), vc = _cc(rowsM,r,14);
-    const done = !!vc;
-    html += `<div class="gc${done?' done':''}" data-phase="semi">
-      <div class="gc-meta">${lbl} · Quadra Basquete 🏀</div>
-      <div class="gc-row">
-        <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c||'—'}</div></div>
-        <div class="gc-score">
-          <span class="${pc&&pv?(parseInt(pc)>parseInt(pv)?'sc-w':'sc'):'sc-empty'}">${pc||'—'}</span>
-          <span class="sc-sep">×</span>
-          <span class="${pc&&pv?(parseInt(pv)>parseInt(pc)?'sc-w':'sc'):'sc-empty'}">${pv||'—'}</span>
-        </div>
-        <div class="gc-team gc-team-r"><div class="gc-nm">${v||'—'}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+function basqGameCard(casa, visit, ptC, ptV, res, grp, idx, phase) {
+  const done = !!(ptC && ptV && (parseInt(ptC) !== 0 || parseInt(ptV) !== 0));
+  const casaW  = done && parseInt(ptC) > parseInt(ptV);
+  const visitW = done && parseInt(ptV) > parseInt(ptC);
+  return `<div class="gc${done?' done':''}" data-phase="${phase}">
+    <div class="gc-meta">Grupo ${grp} · Jogo ${idx} 🏀</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div><div class="gc-nm">${casa||'—'}</div></div>
+      <div class="gc-score">
+        <span class="${ptC?(casaW?'sc-w':'sc'):'sc-empty'}">${ptC||'—'}</span>
+        <span class="sc-sep">×</span>
+        <span class="${ptV?(visitW?'sc-w':'sc'):'sc-empty'}">${ptV||'—'}</span>
       </div>
-      ${done?`<div class="gc-result">🏆 ${vc}</div>`:''}
-    </div>`;
+      <div class="gc-team gc-team-r"><div class="gc-nm">${visit||'—'}</div><div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div></div>
+    </div>
+    ${res&&res!=='Empate'?`<div class="gc-result">🏆 ${res}</div>`:''}
+  </div>`;
+}
+
+function buildBasqMataHtml(rowsM) {
+  // Mata-Mata sheet: SF1=row3, SF2=row5, Final=row7
+  // cols: EQUIPE1=1, PTS1=2, PTS2=4, EQUIPE2=5, RESULTADO=6
+  let html = '<div class="grp-lbl" data-phase="semi">SEMIFINAL 🏀</div>';
+  [[3,'SF1'],[5,'SF2']].forEach(([r,lbl]) => {
+    const c = _cc(rowsM,r,1), v = _cc(rowsM,r,5);
+    if (!c && !v) return;
+    const pc = _cc(rowsM,r,2)||'', pv = _cc(rowsM,r,4)||'', vc = _cc(rowsM,r,6)||'';
+    html += basqGameCard(c, v, pc, pv, vc, lbl, '', 'semi');
   });
   html += '<div class="grp-lbl" data-phase="final">FINAL 🏀</div>';
-  const fc = _cc(rowsM,7,1), fv = _cc(rowsM,7,11);
+  const fc = _cc(rowsM,7,1), fv = _cc(rowsM,7,5);
   if (fc || fv) {
-    const pc = _cc(rowsM,7,12), pv = _cc(rowsM,7,13), vc = _cc(rowsM,7,14);
-    const done = !!vc;
-    html += `<div class="gc${done?' done':''}" data-phase="final">
-      <div class="gc-meta">FINAL · Quadra Basquete 🏀</div>
-      <div class="gc-row">
-        <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[fc]?.ic||'🏀'}</div><div class="gc-nm">${fc||'—'}</div></div>
-        <div class="gc-score">
-          <span class="${pc&&pv?(parseInt(pc)>parseInt(pv)?'sc-w':'sc'):'sc-empty'}">${pc||'—'}</span>
-          <span class="sc-sep">×</span>
-          <span class="${pc&&pv?(parseInt(pv)>parseInt(pc)?'sc-w':'sc'):'sc-empty'}">${pv||'—'}</span>
-        </div>
-        <div class="gc-team gc-team-r"><div class="gc-nm">${fv||'—'}</div><div class="gc-ic">${BASQ_TIMES[fv]?.ic||'🏀'}</div></div>
-      </div>
-      ${done?`<div class="gc-result">🏆 ${vc}</div>`:''}
-    </div>`;
+    const pc = _cc(rowsM,7,2)||'', pv = _cc(rowsM,7,4)||'', vc = _cc(rowsM,7,6)||'';
+    html += basqGameCard(fc, fv, pc, pv, vc, 'FINAL', '', 'final');
   }
   return html;
 }
