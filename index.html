@@ -837,6 +837,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button class="adm-tab" onclick="admTab('quiz',this)">🧠 Quiz</button>
       <button class="adm-tab" onclick="admTab('resultados',this)">📊 Resultados</button>
       <button class="adm-tab" onclick="admTab('notif',this)">🔔 Push</button>
+      <button class="adm-tab" onclick="admTab('basq',this)">🏀 Basquete</button>
     </div>
     <!-- TAB: SCORE -->
     <div id="admScore">
@@ -993,6 +994,57 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         </div>
       </div>
     </div>
+    <!-- TAB: ADMIN BASQUETE -->
+    <div id="admBasq" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:32px;margin-bottom:6px;">🏀</div>
+          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Painel Basquete</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Atualizar placares e resultados do basquete</div>
+        </div>
+        <div class="adm-lbl">Jogo</div>
+        <select class="adm-select" id="admGameBasq">
+          <option value="">Selecionar...</option>
+          <optgroup label="Grupo A">
+            <option value="bga1">Grupo A J1 · CT Montanhas vs São Pedro</option>
+            <option value="bga2">Grupo A J2 · CT Montanhas vs Crossover</option>
+            <option value="bga3">Grupo A J3 · São Pedro vs Crossover</option>
+          </optgroup>
+          <optgroup label="Grupo B">
+            <option value="bgb1">Grupo B J1 · Aracruz vs Marlins</option>
+            <option value="bgb2">Grupo B J2 · Aracruz vs Central Serrano</option>
+            <option value="bgb3">Grupo B J3 · Marlins vs Central Serrano</option>
+          </optgroup>
+          <optgroup label="Mata-Mata">
+            <option value="bsf1">Semifinal 1</option>
+            <option value="bsf2">Semifinal 2</option>
+            <option value="bfin">Final</option>
+          </optgroup>
+        </select>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:12px;">
+          <div>
+            <div class="adm-lbl">Placar Casa</div>
+            <input class="adm-inp" type="number" id="admBasqPC" placeholder="0" min="0" style="text-align:center;font-size:22px;">
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--muted);padding-top:20px;">×</div>
+          <div>
+            <div class="adm-lbl">Placar Visit.</div>
+            <input class="adm-inp" type="number" id="admBasqPV" placeholder="0" min="0" style="text-align:center;font-size:22px;">
+          </div>
+        </div>
+        <div class="adm-lbl">Status</div>
+        <select class="adm-select" id="admBasqStatus">
+          <option value="">Em breve</option>
+          <option value="ao_vivo">🔴 Ao vivo</option>
+          <option value="encerrado">✅ Encerrado</option>
+        </select>
+        <div id="admBasqFeedback" style="text-align:center;font-size:12px;color:var(--muted);margin:8px 0;"></div>
+        <div class="adm-actions">
+          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
+          <button class="adm-save" onclick="admSalvarBasq()">💾 SALVAR</button>
+        </div>
+      </div>
+    </div>
     </div><!-- /admPainelPrincipal -->
   </div>
 </div>
@@ -1134,17 +1186,37 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <section id="gamesPage" class="page">
   <div class="ptitle">📅 <span>Jogos</span></div>
   <div class="pull-bar" id="pullBar"><div class="pull-spin"></div>Atualizando...</div>
-  <div class="tabs">
-    <button class="tab on" onclick="filterGames('todos',this)">Todos</button>
-    <button class="tab" onclick="filterGames('grupos',this)">Grupos</button>
-    <button class="tab" onclick="filterGames('quartas',this)">Quartas</button>
-    <button class="tab" onclick="filterGames('semi',this)">Semifinal</button>
-    <button class="tab" onclick="filterGames('final',this)">Final</button>
+  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:2px;">
+    <button id="sportBtnVoleiGames" class="sport-btn sport-btn-on" onclick="setSport('volei','games')">🏐 Vôlei</button>
+    <button id="sportBtnBasqGames" class="sport-btn" onclick="setSport('basquete','games')">🏀 Basquete</button>
   </div>
-  <div class="cards" id="gamesList">
-    <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
-      <div style="font-size:28px;margin-bottom:8px">⏳</div>
-      Carregando jogos da planilha...
+  <div id="gamesVolei">
+    <div class="tabs">
+      <button class="tab on" onclick="filterGames('todos',this)">Todos</button>
+      <button class="tab" onclick="filterGames('grupos',this)">Grupos</button>
+      <button class="tab" onclick="filterGames('quartas',this)">Quartas</button>
+      <button class="tab" onclick="filterGames('semi',this)">Semifinal</button>
+      <button class="tab" onclick="filterGames('final',this)">Final</button>
+    </div>
+    <div class="cards" id="gamesList">
+      <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
+        <div style="font-size:28px;margin-bottom:8px">⏳</div>
+        Carregando jogos da planilha...
+      </div>
+    </div>
+  </div>
+  <div id="gamesBasquete" style="display:none;">
+    <div class="tabs">
+      <button class="tab on" onclick="filterGamesBasq('todos',this)">Todos</button>
+      <button class="tab" onclick="filterGamesBasq('grupos',this)">Grupos</button>
+      <button class="tab" onclick="filterGamesBasq('semi',this)">Semifinal</button>
+      <button class="tab" onclick="filterGamesBasq('final',this)">Final</button>
+    </div>
+    <div class="cards" id="gamesListBasq">
+      <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
+        <div style="font-size:28px;margin-bottom:8px">🏀</div>
+        Carregando jogos de basquete...
+      </div>
     </div>
   </div>
 </section>
@@ -1152,30 +1224,59 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== TABELA ==================== -->
 <section id="tablePage" class="page">
   <div class="ptitle">📊 <span>Classificação</span></div>
-  <div class="search-wrap"><span class="search-ic">🔍</span><input class="search-inp" type="text" placeholder="Buscar equipe..." oninput="searchTeam(this.value)"></div>
-  <div class="tabs">
-    <button class="tab on" onclick="filterTable('grupoA',this)">Grupo A</button>
-    <button class="tab" onclick="filterTable('grupoB',this)">Grupo B</button>
-    <button class="tab" onclick="filterTable('grupoC',this)">Grupo C</button>
-    <button class="tab" onclick="filterTable('grupoD',this)">Grupo D</button>
+  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:8px;">
+    <button id="sportBtnVoleiTable" class="sport-btn sport-btn-on" onclick="setSport('volei','table')">🏐 Vôlei</button>
+    <button id="sportBtnBasqTable" class="sport-btn" onclick="setSport('basquete','table')">🏀 Basquete</button>
   </div>
-  <div class="tbl-wrap">
-    <div class="tbl-head"><div class="th">#</div><div class="th" style="text-align:left">Equipe</div><div class="th">PJ</div><div class="th">V</div><div class="th">D</div><div class="th">SP</div><div class="th" style="color:var(--gold)">PTS</div></div>
-    <div id="tableBody"></div>
+  <div id="tableVolei">
+    <div class="search-wrap"><span class="search-ic">🔍</span><input class="search-inp" type="text" placeholder="Buscar equipe..." oninput="searchTeam(this.value)"></div>
+    <div class="tabs">
+      <button class="tab on" onclick="filterTable('grupoA',this)">Grupo A</button>
+      <button class="tab" onclick="filterTable('grupoB',this)">Grupo B</button>
+      <button class="tab" onclick="filterTable('grupoC',this)">Grupo C</button>
+      <button class="tab" onclick="filterTable('grupoD',this)">Grupo D</button>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-head"><div class="th">#</div><div class="th" style="text-align:left">Equipe</div><div class="th">PJ</div><div class="th">V</div><div class="th">D</div><div class="th">SP</div><div class="th" style="color:var(--gold)">PTS</div></div>
+      <div id="tableBody"></div>
+    </div>
+    <div style="margin:10px 14px;font-size:10px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;">
+      <span>PJ=Jogos</span><span>V=Vitórias</span><span>D=Derrotas</span><span>SP=Saldo</span><span style="color:var(--gold)">PTS=Pontos</span>
+    </div>
+    <div style="margin:0 14px 12px;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;transition:background .35s,border .35s;">
+      ✅ <strong style="color:var(--text)">1º e 2º de cada grupo</strong> avançam para as quartas.<br>
+      🔄 Confrontos cruzados entre grupos adversários.<br>
+      🏆 Campeão: premiação + troféu + medalhas.
+    </div>
   </div>
-  <div style="margin:10px 14px;font-size:10px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;">
-    <span>PJ=Jogos</span><span>V=Vitórias</span><span>D=Derrotas</span><span>SP=Saldo</span><span style="color:var(--gold)">PTS=Pontos</span>
-  </div>
-  <div style="margin:0 14px 12px;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;transition:background .35s,border .35s;">
-    ✅ <strong style="color:var(--text)">1º e 2º de cada grupo</strong> avançam para as quartas.<br>
-    🔄 Confrontos cruzados entre grupos adversários.<br>
-    🏆 Campeão: premiação + troféu + medalhas.
+  <div id="tableBasquete" style="display:none;">
+    <div class="tabs">
+      <button class="tab on" onclick="filterTableBasq('grupoA',this)">Grupo A</button>
+      <button class="tab" onclick="filterTableBasq('grupoB',this)">Grupo B</button>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-head"><div class="th">#</div><div class="th" style="text-align:left">Equipe</div><div class="th">PJ</div><div class="th">V</div><div class="th">D</div><div class="th">SP</div><div class="th" style="color:var(--gold)">PTS</div></div>
+      <div id="tableBodyBasq"></div>
+    </div>
+    <div style="margin:10px 14px;font-size:10px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;">
+      <span>PJ=Jogos</span><span>V=Vitórias</span><span>D=Derrotas</span><span>SP=Saldo</span><span style="color:var(--gold)">PTS=Pontos</span>
+    </div>
+    <div style="margin:0 14px 12px;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;transition:background .35s,border .35s;">
+      ✅ <strong style="color:var(--text)">1º de cada grupo</strong> avança direto para a Semifinal.<br>
+      🔄 2º de cada grupo se enfrentam na repescagem.<br>
+      🏆 Campeão: premiação + troféu + medalhas.
+    </div>
   </div>
 </section>
 
 <!-- ==================== MATA-MATA ==================== -->
 <section id="bracketPage" class="page">
   <div class="ptitle">🏆 <span>Mata-Mata</span></div>
+  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:8px;">
+    <button id="sportBtnVoleiBracket" class="sport-btn sport-btn-on" onclick="setSport('volei','bracket')">🏐 Vôlei</button>
+    <button id="sportBtnBasqBracket" class="sport-btn" onclick="setSport('basquete','bracket')">🏀 Basquete</button>
+  </div>
+  <div id="bracketVolei">
   <div style="padding:0 14px 10px;"><div class="auto-badge">⚡ Chaveamento automático ativado</div></div>
   <div class="bracket-scroll">
     <div class="bracket-inner">
@@ -1203,6 +1304,30 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       </div>
     </div>
   </div>
+  </div><!-- /bracketVolei -->
+
+  <!-- BASQUETE BRACKET -->
+  <div id="bracketBasquete" style="display:none;">
+    <div style="padding:0 14px 10px;"><div class="auto-badge">⚡ Chaveamento automático ativado</div></div>
+    <div class="bracket-scroll">
+      <div class="bracket-inner">
+        <div class="b-col">
+          <h3>Semifinal</h3>
+          <div class="match-card"><div class="m-meta">SF1 · 29/11</div><div class="mt"><div class="mt-ic">🏀</div><div class="mt-nm" id="bsf1t1nmB">1º Grupo A</div><div class="mt-sc empty" id="bsf1t1B">—</div></div><div class="mt"><div class="mt-ic">🏀</div><div class="mt-nm" id="bsf1t2nmB">2º Grupo B</div><div class="mt-sc empty" id="bsf1t2B">—</div></div></div>
+          <div class="match-card" style="margin-top:20px;"><div class="m-meta">SF2 · 29/11</div><div class="mt"><div class="mt-ic">🏀</div><div class="mt-nm" id="bsf2t1nmB">1º Grupo B</div><div class="mt-sc empty" id="bsf2t1B">—</div></div><div class="mt"><div class="mt-ic">🏀</div><div class="mt-nm" id="bsf2t2nmB">2º Grupo A</div><div class="mt-sc empty" id="bsf2t2B">—</div></div></div>
+        </div>
+        <div class="b-col">
+          <h3>🏆 Grande Final</h3>
+          <div class="match-card final"><div class="m-meta" style="color:var(--gold)">FINAL · 29/11</div><div class="mt"><div class="mt-ic">🔥</div><div class="mt-nm" id="bfint1nmB">Venc. SF1</div><div class="mt-sc empty" id="bfint1B">—</div></div><div class="mt"><div class="mt-ic">🔥</div><div class="mt-nm" id="bfint2nmB">Venc. SF2</div><div class="mt-sc empty" id="bfint2B">—</div></div></div>
+          <div class="champ-card" id="champCardBasq">
+            <div class="champ-ic">🏀</div>
+            <div class="champ-nm" id="champNameBasq">Aguardando</div>
+            <div class="champ-lbl">Campeão Basquete 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /bracketBasquete -->
 </section>
 
 <!-- ==================== AGENDA ==================== -->
@@ -2488,7 +2613,339 @@ async function admSalvarResultados() {
 
 
 
+
+// ══════════════════════════════════════════════════════════════════════════
+// BASQUETE — Dados e funções
+// ══════════════════════════════════════════════════════════════════════════
+
+// Planilha do basquete (mesma API key, nova sheet ID)
+// ⚠️  Substitua BASQ_SHEET_ID pelo ID da planilha do basquete quando criar
+const BASQ_SHEET_ID = 'COLE_AQUI_O_ID_DA_PLANILHA_DO_BASQUETE';
+
+let tableDataBasq = { grupoA: [], grupoB: [] };
+let curGrpBasq = 'grupoA';
+let curSportGames = 'volei';
+let curSportTable = 'volei';
+let curSportBracket = 'volei';
+
+// Times do basquete
+const BASQ_TIMES = {
+  'CT das Montanhas'      : { ic:'🏔️', city:'Afonso Cláudio' },
+  'São Pedro Basquete'    : { ic:'⛪', city:'São Pedro' },
+  'Crossover Basquete'    : { ic:'🔀', city:'ES' },
+  'Aracruz Basquete'      : { ic:'🌊', city:'Aracruz' },
+  'Marlins'               : { ic:'🐟', city:'ES' },
+  'Central Serrano Basquete': { ic:'⛰️', city:'Serra' }
+};
+
+// ── Seletor de modalidade ─────────────────────────────────────────────────
+function setSport(sport, page) {
+  if (page === 'games') {
+    curSportGames = sport;
+    document.getElementById('gamesVolei').style.display    = sport==='volei'    ? 'block' : 'none';
+    document.getElementById('gamesBasquete').style.display = sport==='basquete' ? 'block' : 'none';
+    document.getElementById('sportBtnVoleiGames').className = 'sport-btn' + (sport==='volei'    ? ' sport-btn-on' : '');
+    document.getElementById('sportBtnBasqGames').className  = 'sport-btn' + (sport==='basquete' ? ' sport-btn-on' : '');
+    if (sport==='basquete') loadBasqData();
+  } else if (page === 'table') {
+    curSportTable = sport;
+    document.getElementById('tableVolei').style.display    = sport==='volei'    ? 'block' : 'none';
+    document.getElementById('tableBasquete').style.display = sport==='basquete' ? 'block' : 'none';
+    document.getElementById('sportBtnVoleiTable').className = 'sport-btn' + (sport==='volei'    ? ' sport-btn-on' : '');
+    document.getElementById('sportBtnBasqTable').className  = 'sport-btn' + (sport==='basquete' ? ' sport-btn-on' : '');
+    if (sport==='basquete') { loadBasqData(); renderTableBasq('grupoA'); }
+  } else if (page === 'bracket') {
+    curSportBracket = sport;
+    document.getElementById('bracketVolei').style.display    = sport==='volei'    ? 'block' : 'none';
+    document.getElementById('bracketBasquete').style.display = sport==='basquete' ? 'block' : 'none';
+    document.getElementById('sportBtnVoleiBracket').className = 'sport-btn' + (sport==='volei'    ? ' sport-btn-on' : '');
+    document.getElementById('sportBtnBasqBracket').className  = 'sport-btn' + (sport==='basquete' ? ' sport-btn-on' : '');
+    if (sport==='basquete') loadBasqData();
+  }
+}
+
+// ── Carrega dados do basquete da planilha ─────────────────────────────────
+async function loadBasqData() {
+  if (BASQ_SHEET_ID === 'COLE_AQUI_O_ID_DA_PLANILHA_DO_BASQUETE') {
+    renderGamesBasqOffline();
+    renderTableBasq('grupoA');
+    return;
+  }
+  const makeUrl = (sheet, range) =>
+    `https://sheets.googleapis.com/v4/spreadsheets/${BASQ_SHEET_ID}/values/${encodeURIComponent("'"+sheet+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
+  try {
+    const [resClass, resJogos, resMata] = await Promise.all([
+      fetch(makeUrl('Classificação','A1:K15')),
+      fetch(makeUrl('Fase de Grupos','A1:Q30')),
+      fetch(makeUrl('Mata-Mata','A1:Q10'))
+    ]);
+    const [dataClass, dataJogos, dataMata] = await Promise.all([
+      resClass.json(), resJogos.json(), resMata.json()
+    ]);
+    const rowsC = dataClass.values || [];
+    const rowsJ = dataJogos.values || [];
+    const rowsM = dataMata.values  || [];
+
+    // Classificação: Grupo A → rows 3-5 | Grupo B → rows 9-11
+    const grpMapB = { grupoA:[3,4,5], grupoB:[9,10,11] };
+    Object.keys(grpMapB).forEach(g => {
+      tableDataBasq[g] = grpMapB[g].map(r => ({
+        pos : _cc(rowsC,r,0)||'—',
+        name: _cc(rowsC,r,1)||'—',
+        city: _cc(rowsC,r,5)||'',
+        pj  : _cc(rowsC,r,6)||'0',
+        v   : _cc(rowsC,r,3)||'0',
+        d   : _cc(rowsC,r,4)||'0',
+        sp  : _cc(rowsC,r,7)||'0',
+        pts : _cc(rowsC,r,2)||'0'
+      })).filter(r=>r.name&&r.name!=='—');
+    });
+    renderTableBasq(curGrpBasq);
+
+    // Jogos
+    const gl = document.getElementById('gamesListBasq');
+    if (gl) {
+      const grupos = [
+        { label:'FASE DE GRUPOS · GRUPO A', rows:[3,4,5], grp:'A' },
+        { label:'FASE DE GRUPOS · GRUPO B', rows:[9,10,11], grp:'B' }
+      ];
+      let html = '';
+      grupos.forEach(({ label, rows, grp }) => {
+        html += `<div class="grp-lbl" data-phase="grupos">${label}</div>`;
+        rows.forEach((row, idx) => {
+          const casa     = _cc(rowsJ,row,1);
+          const visit    = _cc(rowsJ,row,11);
+          if (!casa && !visit) return;
+          const ptC      = _cc(rowsJ,row,12)||'';
+          const ptV      = _cc(rowsJ,row,13)||'';
+          const vencedor = _cc(rowsJ,row,14)||'';
+          const hora     = _cc(rowsJ,row,15)||'';
+          const gid      = `bg${grp}${idx+1}`;
+          const done     = !!vencedor;
+          const liveClass= done ? ' done' : '';
+          html += `<div class="gc${liveClass}" data-phase="grupos">
+            <div class="gc-meta">Grupo ${grp} · Quadra Basquete${hora ? ' · ' + hora : ''} 🏀</div>
+            <div class="gc-row">
+              <div class="gc-team">
+                <div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div>
+                <div class="gc-nm">${casa||'—'}</div>
+              </div>
+              <div class="gc-score">
+                <span class="${ptC&&ptV?(parseInt(ptC)>parseInt(ptV)?'sc-w':'sc'):'sc-empty'}">${ptC||'—'}</span>
+                <span class="sc-sep">×</span>
+                <span class="${ptC&&ptV?(parseInt(ptV)>parseInt(ptC)?'sc-w':'sc'):'sc-empty'}">${ptV||'—'}</span>
+              </div>
+              <div class="gc-team gc-team-r">
+                <div class="gc-nm">${visit||'—'}</div>
+                <div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div>
+              </div>
+            </div>
+            ${done?`<div class="gc-result">🏆 ${vencedor}</div>`:''}
+          </div>`;
+        });
+      });
+
+      // Mata-mata da planilha
+      if (rowsM.length > 3) {
+        html += buildBasqMataHtml(rowsM);
+      }
+      gl.innerHTML = html || '<div style="text-align:center;padding:30px;color:var(--muted);">Nenhum jogo encontrado</div>';
+      filterGamesBasq('todos', document.querySelector('#gamesBasquete .tab.on'));
+    }
+
+    // Mata-mata bracket
+    updateBasqBracket(rowsM);
+
+  } catch(e) {
+    console.error('[Basquete] Erro ao carregar planilha:', e);
+    renderGamesBasqOffline();
+  }
+}
+
+function buildBasqMataHtml(rowsM) {
+  let html = '<div class="grp-lbl" data-phase="semi">SEMIFINAL 🏀</div>';
+  [[3,'SF1'],[4,'SF2']].forEach(([r,lbl]) => {
+    const c = _cc(rowsM,r,1), v = _cc(rowsM,r,11);
+    if (!c && !v) return;
+    const pc = _cc(rowsM,r,12), pv = _cc(rowsM,r,13), vc = _cc(rowsM,r,14);
+    const done = !!vc;
+    html += `<div class="gc${done?' done':''}" data-phase="semi">
+      <div class="gc-meta">${lbl} · Quadra Basquete 🏀</div>
+      <div class="gc-row">
+        <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c||'—'}</div></div>
+        <div class="gc-score">
+          <span class="${pc&&pv?(parseInt(pc)>parseInt(pv)?'sc-w':'sc'):'sc-empty'}">${pc||'—'}</span>
+          <span class="sc-sep">×</span>
+          <span class="${pc&&pv?(parseInt(pv)>parseInt(pc)?'sc-w':'sc'):'sc-empty'}">${pv||'—'}</span>
+        </div>
+        <div class="gc-team gc-team-r"><div class="gc-nm">${v||'—'}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+      </div>
+      ${done?`<div class="gc-result">🏆 ${vc}</div>`:''}
+    </div>`;
+  });
+  html += '<div class="grp-lbl" data-phase="final">FINAL 🏀</div>';
+  const fc = _cc(rowsM,7,1), fv = _cc(rowsM,7,11);
+  if (fc || fv) {
+    const pc = _cc(rowsM,7,12), pv = _cc(rowsM,7,13), vc = _cc(rowsM,7,14);
+    const done = !!vc;
+    html += `<div class="gc${done?' done':''}" data-phase="final">
+      <div class="gc-meta">FINAL · Quadra Basquete 🏀</div>
+      <div class="gc-row">
+        <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[fc]?.ic||'🏀'}</div><div class="gc-nm">${fc||'—'}</div></div>
+        <div class="gc-score">
+          <span class="${pc&&pv?(parseInt(pc)>parseInt(pv)?'sc-w':'sc'):'sc-empty'}">${pc||'—'}</span>
+          <span class="sc-sep">×</span>
+          <span class="${pc&&pv?(parseInt(pv)>parseInt(pc)?'sc-w':'sc'):'sc-empty'}">${pv||'—'}</span>
+        </div>
+        <div class="gc-team gc-team-r"><div class="gc-nm">${fv||'—'}</div><div class="gc-ic">${BASQ_TIMES[fv]?.ic||'🏀'}</div></div>
+      </div>
+      ${done?`<div class="gc-result">🏆 ${vc}</div>`:''}
+    </div>`;
+  }
+  return html;
+}
+
+function updateBasqBracket(rowsM) {
+  const setEl = (id, val) => { const e=document.getElementById(id); if(e){e.textContent=val||'—';e.className=val?'mt-sc':'mt-sc empty';} };
+  const setNm = (id, val) => { const e=document.getElementById(id); if(e) e.textContent=val||e.textContent; };
+  if (rowsM.length > 4) {
+    setNm('bsf1t1nmB', _cc(rowsM,3,1));
+    setNm('bsf1t2nmB', _cc(rowsM,3,11));
+    setEl('bsf1t1B', _cc(rowsM,3,12));
+    setEl('bsf1t2B', _cc(rowsM,3,13));
+    setNm('bsf2t1nmB', _cc(rowsM,4,1));
+    setNm('bsf2t2nmB', _cc(rowsM,4,11));
+    setEl('bsf2t1B', _cc(rowsM,4,12));
+    setEl('bsf2t2B', _cc(rowsM,4,13));
+  }
+  if (rowsM.length > 7) {
+    setNm('bfint1nmB', _cc(rowsM,7,1));
+    setNm('bfint2nmB', _cc(rowsM,7,11));
+    setEl('bfint1B', _cc(rowsM,7,12));
+    setEl('bfint2B', _cc(rowsM,7,13));
+    const champ = _cc(rowsM,7,14);
+    if (champ) {
+      const cn = document.getElementById('champNameBasq');
+      if (cn) cn.textContent = champ;
+    }
+  }
+}
+
+// ── Modo offline (sem planilha configurada) ───────────────────────────────
+function renderGamesBasqOffline() {
+  const gl = document.getElementById('gamesListBasq');
+  if (!gl) return;
+  const timesA = ['CT das Montanhas','São Pedro Basquete','Crossover Basquete'];
+  const timesB = ['Aracruz Basquete','Marlins','Central Serrano Basquete'];
+  let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
+  const jogosA = [[timesA[0],timesA[1]],[timesA[0],timesA[2]],[timesA[1],timesA[2]]];
+  const jogosB = [[timesB[0],timesB[1]],[timesB[0],timesB[2]],[timesB[1],timesB[2]]];
+  jogosA.forEach(([c,v],i) => {
+    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo A · Jogo ${i+1} 🏀</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
+      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
+      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+    </div></div>`;
+  });
+  html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
+  jogosB.forEach(([c,v],i) => {
+    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo B · Jogo ${i+1} 🏀</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
+      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
+      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+    </div></div>`;
+  });
+  gl.innerHTML = html;
+
+  // Tabela offline
+  tableDataBasq.grupoA = timesA.map((n,i)=>({pos:i+1,name:n,city:BASQ_TIMES[n]?.city||'',pj:'0',v:'0',d:'0',sp:'0',pts:'0'}));
+  tableDataBasq.grupoB = timesB.map((n,i)=>({pos:i+1,name:n,city:BASQ_TIMES[n]?.city||'',pj:'0',v:'0',d:'0',sp:'0',pts:'0'}));
+  renderTableBasq('grupoA');
+}
+
+// ── Render tabela basquete ────────────────────────────────────────────────
+function renderTableBasq(grp) {
+  curGrpBasq = grp;
+  const tbody = document.getElementById('tableBodyBasq');
+  if (!tbody) return;
+  const rows = tableDataBasq[grp] || [];
+  if (!rows.length) { tbody.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>'; return; }
+  tbody.innerHTML = rows.map((r,i) => {
+    const isTop = i === 0;
+    return `<div class="tr${isTop?' top-row':''}">
+      <div class="td pos">${r.pos}</div>
+      <div class="td team-nm">${BASQ_TIMES[r.name]?.ic||'🏀'} ${r.name}</div>
+      <div class="td">${r.pj}</div>
+      <div class="td">${r.v}</div>
+      <div class="td">${r.d}</div>
+      <div class="td">${r.sp}</div>
+      <div class="td pts">${r.pts}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterTableBasq(grp, btn) {
+  renderTableBasq(grp);
+  document.querySelectorAll('#tableBasquete .tab').forEach(b=>b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+}
+
+// ── Filtro de jogos basquete ──────────────────────────────────────────────
+function filterGamesBasq(phase, btn) {
+  document.querySelectorAll('#gamesListBasq [data-phase]').forEach(el => {
+    el.style.display = (phase==='todos' || el.dataset.phase===phase) ? '' : 'none';
+  });
+  document.querySelectorAll('#gamesBasquete .tab').forEach(b=>b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+}
+
+// ── Admin: aba Basquete ───────────────────────────────────────────────────
+// (integrada no admTab existente)
+
 // ── PUSH NOTIFICATIONS ADMIN ──────────────────────────────
+
+async function admSalvarBasq() {
+  const jogo   = document.getElementById('admGameBasq').value;
+  const pc     = document.getElementById('admBasqPC').value;
+  const pv     = document.getElementById('admBasqPV').value;
+  const status = document.getElementById('admBasqStatus').value;
+  const fb     = document.getElementById('admBasqFeedback');
+  if (!jogo) { showToast('Selecione um jogo!'); return; }
+  fb.textContent = 'Salvando...';
+  try {
+    await fetch(BOLAO_SHEETS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo: 'salvar_basquete', jogo, pc, pv, status, data: new Date().toLocaleString('pt-BR') })
+    });
+    fb.textContent = '✅ Salvo com sucesso!';
+    showToast('✅ Placar de basquete atualizado!');
+    // Notificação push automática se jogo ao vivo ou encerrado
+    if (status === 'ao_vivo') {
+      const sel = document.getElementById('admGameBasq');
+      const nm  = sel.options[sel.selectedIndex].text;
+      admEnviarPushBasq('🏀 Jogo ao vivo!', nm.replace(/.*·\s*/,'') + ' — começou agora!');
+    } else if (status === 'encerrado' && pc && pv) {
+      admEnviarPushBasq('🏀 Resultado final', `Placar: ${pc} × ${pv}`);
+    }
+    setTimeout(() => { loadBasqData(); }, 1500);
+  } catch(e) {
+    fb.textContent = '⚠️ Erro ao salvar.';
+  }
+}
+
+async function admEnviarPushBasq(title, body) {
+  try {
+    await fetch('https://supercopa-push-server.onrender.com/api/push/enviar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body, category: 'jogo', url: '/?tab=basquete' })
+    });
+  } catch(e) {}
+}
+
 async function admPushCarregarStatus() {
   const el = document.getElementById('pushInscritos');
   if (el) el.textContent = 'Verificando inscritos...';
@@ -2660,6 +3117,7 @@ function admTab(tab,btn){
   if(tab==='resultados') admCarregarResultados();
   document.getElementById('admNotif').style.display=tab==='notif'?'block':'none';
   if(tab==='notif') admPushCarregarStatus();
+  document.getElementById('admBasq') && (document.getElementById('admBasq').style.display=tab==='basq'?'block':'none');
   if(tab==='resultados') admCarregarResultados();
 }
 function checkPwBolao(){ return true; } // senha já validada no login do admin
