@@ -1186,7 +1186,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <section id="gamesPage" class="page">
   <div class="ptitle">📅 <span>Jogos</span></div>
   <div class="pull-bar" id="pullBar"><div class="pull-spin"></div>Atualizando...</div>
-  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:2px;">
+  <div class="sport-selector">
     <button id="sportBtnVoleiGames" class="sport-btn sport-btn-on" onclick="setSport('volei','games')">🏐 Vôlei</button>
     <button id="sportBtnBasqGames" class="sport-btn" onclick="setSport('basquete','games')">🏀 Basquete</button>
   </div>
@@ -1224,7 +1224,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== TABELA ==================== -->
 <section id="tablePage" class="page">
   <div class="ptitle">📊 <span>Classificação</span></div>
-  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:8px;">
+  <div class="sport-selector">
     <button id="sportBtnVoleiTable" class="sport-btn sport-btn-on" onclick="setSport('volei','table')">🏐 Vôlei</button>
     <button id="sportBtnBasqTable" class="sport-btn" onclick="setSport('basquete','table')">🏀 Basquete</button>
   </div>
@@ -1272,7 +1272,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== MATA-MATA ==================== -->
 <section id="bracketPage" class="page">
   <div class="ptitle">🏆 <span>Mata-Mata</span></div>
-  <div style="display:flex;gap:8px;padding:0 14px 0;margin-bottom:8px;">
+  <div class="sport-selector">
     <button id="sportBtnVoleiBracket" class="sport-btn sport-btn-on" onclick="setSport('volei','bracket')">🏐 Vôlei</button>
     <button id="sportBtnBasqBracket" class="sport-btn" onclick="setSport('basquete','bracket')">🏀 Basquete</button>
   </div>
@@ -2679,7 +2679,7 @@ async function loadBasqData() {
     `https://sheets.googleapis.com/v4/spreadsheets/${BASQ_SHEET_ID}/values/${encodeURIComponent("'"+sheet+"'!"+range)}?key=${INDEX_GOOGLE_API_KEY}`;
   try {
     const [resJogos, resMata] = await Promise.all([
-      fetch(makeUrl('Fase de Grupos','A1:P15')),
+      fetch(makeUrl('Fase de Grupos','A1:S15')),
       fetch(makeUrl('Mata-Mata','A1:N10'))
     ]);
     const [dataJogos, dataMata] = await Promise.all([
@@ -2691,8 +2691,8 @@ async function loadBasqData() {
     // ── Classificação inline (lida da Fase de Grupos rows 10-13) ─────────
     // Grupo A: cols A-G (0-6) | Grupo B: cols H-N (7-13)
     // POS=0, EQUIPE=1, J=2, V=3, D=4, PTS=5, SD=6
-    // Classificação: rows 12,13,14 (0-indexed)
-    // Grupo A: A(0)=pos,B(1)=equipe,C(2)=J,D(3)=V,E(4)=D,F(5)=PTS,G(6)=SD
+    // Classificação: rows 11,12,13 (0-indexed) = times 1,2,3
+    // Grupo A: A(0)=pos, B(1)=equipe, C(2)=J, D(3)=V, E(4)=D, F(5)=PTS, G(6)=SD, H(7)=PM
     tableDataBasq.grupoA = [11,12,13].map(r => ({
       pos : _cc(rowsJ,r,0)||'—',
       name: _cc(rowsJ,r,1)||'—',
@@ -2702,9 +2702,9 @@ async function loadBasqData() {
       d   : _cc(rowsJ,r,4)||'0',
       sp  : _cc(rowsJ,r,6)||'0',
       pts : _cc(rowsJ,r,5)||'0'
-    })).filter(r=>r.name&&r.name!=='—');
+    })).filter(r=>r.name&&r.name!=='—'&&r.name!=='EQUIPE');
 
-    // Grupo B: I(8)=pos,J(9)=equipe,K(10)=J,L(11)=V,M(12)=D,N(13)=PTS,O(14)=SD
+    // Grupo B: cols deslocadas — POS(8),EQUIPE(9),J(10),V(11),D(12),PTS(13),SD(14),PM(15)
     tableDataBasq.grupoB = [11,12,13].map(r => ({
       pos : _cc(rowsJ,r,8)||'—',
       name: _cc(rowsJ,r,9)||'—',
@@ -2714,7 +2714,7 @@ async function loadBasqData() {
       d   : _cc(rowsJ,r,12)||'0',
       sp  : _cc(rowsJ,r,14)||'0',
       pts : _cc(rowsJ,r,13)||'0'
-    })).filter(r=>r.name&&r.name!=='—');
+    })).filter(r=>r.name&&r.name!=='—'&&r.name!=='EQUIPE');
 
     renderTableBasq(curGrpBasq);
 
@@ -2863,12 +2863,17 @@ function renderTableBasq(grp) {
   const tbody = document.getElementById('tableBodyBasq');
   if (!tbody) return;
   const rows = tableDataBasq[grp] || [];
-  if (!rows.length) { tbody.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>'; return; }
+  if (!rows.length) {
+    tbody.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>';
+    return;
+  }
   tbody.innerHTML = rows.map((r,i) => {
-    const isTop = i === 0;
-    return `<div class="tr${isTop?' top-row':''}">
-      <div class="td pos">${r.pos}</div>
-      <div class="td team-nm">${BASQ_TIMES[r.name]?.ic||'🏀'} ${r.name}</div>
+    const ic = BASQ_TIMES[r.name]?.ic || '🏀';
+    const posClean = String(r.pos).replace(/[ºo°]/g,'').trim();
+    const highlight = posClean === '1' ? ' top-row' : '';
+    return `<div class="tr${highlight}">
+      <div class="td pos">${posClean}º</div>
+      <div class="td team-nm" style="font-size:11px;">${ic} ${r.name}</div>
       <div class="td">${r.pj}</div>
       <div class="td">${r.v}</div>
       <div class="td">${r.d}</div>
