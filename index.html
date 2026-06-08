@@ -8,6 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Supercopa AFC">
 <title>Supercopa AFC · 6ª Edição</title>
+<link rel="icon" type="image/png" href="pwa-icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="msapplication-TileImage" content="pwa-icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -823,6 +828,70 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .mais-admin-card{grid-column:span 2;background:rgba(255,64,64,.06);border:1px solid rgba(255,64,64,.2);border-radius:15px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.18s;}
 .mais-admin-card:active{transform:scale(.98);}
 
+
+
+/* ============================================================
+   CLEAN REDESIGN - MENU SHEET + PWA FIX
+============================================================ */
+body{background:#fff !important;color:#32343a !important;}
+body::before{display:none !important;}
+main{padding-bottom:104px !important;}
+.topbar{background:#4b4b4e !important;border:0 !important;border-radius:0 0 26px 26px !important;min-height:128px !important;padding:calc(env(safe-area-inset-top,0px) + 18px) 28px 24px !important;box-shadow:none !important;}
+.brand{gap:16px !important;}
+.brand-logo{width:36px !important;height:36px !important;border-radius:10px !important;filter:none !important;}
+.brand-text small{color:rgba(255,255,255,.68) !important;letter-spacing:2.8px !important;font-size:10px !important;}
+.brand-text h1{font-family:'DM Sans',sans-serif !important;font-size:20px !important;font-weight:900 !important;color:#fff !important;text-transform:none !important;letter-spacing:0 !important;}
+.topbar-right{gap:12px !important;}
+.live-pill{background:rgba(229,57,53,.12) !important;border:1px solid rgba(229,57,53,.32) !important;color:#ff8a8a !important;border-radius:999px !important;padding:8px 14px !important;}
+.icon-btn{background:transparent !important;border:0 !important;color:#fff !important;border-radius:999px !important;font-size:22px !important;}
+#homePage{padding-bottom:38px !important;}
+#homePage > div:first-of-type{margin:18px 16px 0 !important;padding:20px 18px !important;border-radius:22px !important;background:#f5f5f6 !important;box-shadow:none !important;border:0 !important;min-height:auto !important;color:#333 !important;}
+#homePage > div:first-of-type::before,#homePage > div:first-of-type::after,#homePage > div:first-of-type > div[style*="position:absolute"]{display:none !important;}
+#homePage > div:first-of-type img{box-shadow:none !important;background:#fff !important;}
+#homePage > div:first-of-type *{color:#333 !important;}
+#homePage > div:first-of-type [id="heroStatus"],#homePage > div:first-of-type [style*="F4C542"]{color:#1565C0 !important;border-color:rgba(21,101,192,.18) !important;background:rgba(21,101,192,.08) !important;}
+#homePage > div:nth-of-type(2){padding:28px 22px 0 !important;}
+#homePage > div:nth-of-type(2) > div:first-child{font-size:0 !important;color:#333 !important;text-transform:none !important;letter-spacing:0 !important;font-weight:900 !important;margin-bottom:18px !important;}
+#homePage > div:nth-of-type(2) > div:first-child::before{content:'Cuide do campeonato';display:block;font-size:27px;color:#333;font-weight:900;}
+#homePage > div:nth-of-type(2) button{background:#f6f6f7 !important;border:0 !important;border-radius:16px !important;box-shadow:none !important;padding:18px 14px !important;min-height:92px !important;display:flex !important;align-items:center !important;gap:12px !important;}
+#homePage > div:nth-of-type(2) button > div:first-child{font-size:24px !important;margin:0 !important;color:#1565C0 !important;}
+#homePage > div:nth-of-type(2) button > div:nth-child(2){font-size:17px !important;color:#333 !important;font-weight:900 !important;}
+#homePage > div:nth-of-type(2) button > div:nth-child(3){display:none !important;}
+#homePage > div:nth-of-type(3){padding:22px 22px 0 !important;}
+#homePage > div:nth-of-type(3) > div{background:#fff !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding:0 !important;}
+#homePage > div:nth-of-type(3) > div > div:first-child{font-size:0 !important;letter-spacing:0 !important;text-transform:none !important;color:#333 !important;font-weight:900 !important;}
+#homePage > div:nth-of-type(3) > div > div:first-child::before{content:'Importante';display:block;font-size:24px;color:#333;font-weight:900;}
+.sec{padding-left:22px !important;padding-right:22px !important;}
+.sec-title,.ptitle{font-family:'DM Sans',sans-serif !important;color:#222b3a !important;font-size:22px !important;font-weight:900 !important;letter-spacing:0 !important;text-transform:none !important;}
+.card,.team-card,.news-card,.mvp-card,.stat,.game-card,.info-block,.faq-item{background:#f8f8f9 !important;border:1px solid rgba(20,28,44,.08) !important;box-shadow:none !important;border-radius:18px !important;}
+.bnav{height:86px !important;padding:0 !important;background:#fff !important;border-top:1px solid rgba(20,28,44,.08) !important;box-shadow:0 -12px 28px rgba(20,28,44,.06) !important;backdrop-filter:blur(18px) !important;-webkit-backdrop-filter:blur(18px) !important;}
+.bnav-items{height:74px !important;max-width:560px !important;background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding:4px 8px !important;}
+.bnav-pill{display:none !important;}
+.nav-btn{color:#6f737b !important;border-radius:14px !important;gap:5px !important;}
+.nav-btn .ni{font-size:22px !important;transform:none !important;filter:none !important;}
+.nav-btn small{font-size:11px !important;font-weight:700 !important;letter-spacing:0 !important;}
+.nav-btn.on{color:#1565C0 !important;}
+.nav-btn.on small{font-weight:900 !important;}
+body.clean-menu-open{overflow:hidden !important;}
+.more-backdrop{position:fixed;inset:0;z-index:850;background:rgba(0,0,0,.34);opacity:0;pointer-events:none;transition:opacity .22s ease;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}
+.more-backdrop.show{opacity:1;pointer-events:auto;}
+.more-sheet{position:fixed !important;left:12px !important;right:12px !important;bottom:98px !important;z-index:900 !important;max-width:560px !important;margin:0 auto !important;background:#fff !important;color:#333 !important;border:1px solid rgba(20,28,44,.08) !important;border-radius:24px !important;box-shadow:0 22px 70px rgba(20,28,44,.24) !important;transform:translateY(calc(100% + 120px));opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .2s ease;overflow:hidden;display:block !important;}
+.more-sheet.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.more-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px;}
+.more-sheet-kicker{font-size:11px;color:#8a8e96;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;}
+.more-sheet-title{font-size:22px;font-weight:900;color:#333;line-height:1.1;}
+.more-sheet-close{width:38px;height:38px;border:0;border-radius:50%;background:#f3f3f4;color:#50545c;font-size:20px;font-weight:900;}
+.more-sheet-body{max-height:min(68vh,560px);overflow:auto;padding:0 14px 16px;}
+.more-sheet .ptitle{display:none !important;}
+.more-sheet .mais-grid{padding:0 !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;}
+.more-sheet .mais-card,.more-sheet .mais-admin-card{background:#f7f7f8 !important;border:0 !important;border-radius:16px !important;box-shadow:none !important;min-height:88px !important;padding:12px 8px !important;color:#333 !important;text-align:center !important;justify-content:center !important;}
+.more-sheet .mais-card.full,.more-sheet .mais-admin-card,#btnPushToggle{grid-column:span 3 !important;min-height:74px !important;flex-direction:row !important;text-align:left !important;justify-content:flex-start !important;padding:13px 14px !important;background:#f4f4f5 !important;}
+.more-sheet .mais-card-ic{font-size:24px !important;line-height:1;}
+.more-sheet .mais-card-lbl{font-size:12px !important;color:#333 !important;font-weight:900 !important;}
+.more-sheet .mais-card-sub{font-size:10px !important;color:#7b7f88 !important;line-height:1.25 !important;}
+.more-sheet .info-block,.more-sheet .faq-wrap,.more-sheet .cta-block{margin:12px 0 0 !important;}
+@media (max-width:380px){.more-sheet .mais-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}.more-sheet .mais-card.full,.more-sheet .mais-admin-card,#btnPushToggle{grid-column:span 2 !important;}}
+
 </style>
 </head>
 <body class="day">
@@ -1257,7 +1326,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Chaveamento</div>
       </button>
 
-      <button onclick="nav('maisPage',document.querySelector('[onclick*=maisPage]'))" style="background:linear-gradient(135deg,rgba(212,160,23,0.12),rgba(244,197,66,0.08));border:1px solid rgba(212,160,23,0.30);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(212,160,23,0.10);transition:all .2s;">
+      <button onclick="toggleMoreMenu(document.querySelector('[data-more-btn]'))" style="background:linear-gradient(135deg,rgba(212,160,23,0.12),rgba(244,197,66,0.08));border:1px solid rgba(212,160,23,0.30);border-radius:16px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(212,160,23,0.10);transition:all .2s;">
         <div style="font-size:24px;margin-bottom:6px;">✨</div>
         <div style="font-size:14px;font-weight:700;color:#0a1a3e;">Mais</div>
         <div style="font-size:11px;color:#5a7aaa;margin-top:2px;">Quiz, Bolão e mais</div>
@@ -1542,7 +1611,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 </section>
 
 <!-- ==================== MAIS ==================== -->
-<section id="maisPage" class="page">
+<section id="maisPage" class="page more-sheet" aria-hidden="true"><div class="more-sheet-head"><div><div class="more-sheet-kicker">Menu</div><div class="more-sheet-title">Mais recursos</div></div><button class="more-sheet-close" onclick="closeMoreMenu()" aria-label="Fechar">?</button></div><div class="more-sheet-body">
   <div class="ptitle">⚙️ <span>Mais</span></div>
   <div class="mais-grid">
     <div class="mais-admin-card" onclick="openAdmin()">
@@ -1591,12 +1660,12 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     SUPERCOPA · 6ª Edição · 2026<br>Campeonato Multiesporte de Afonso Cláudio<br>
     <span style="color:var(--gold)">supercopaafc.com.br</span>
   </div>
-</section>
+</div></section>
 
 <!-- ==================== HISTÓRIA ==================== -->
 <section id="historyPage" class="page">
   <div style="display:flex;align-items:center;gap:10px;padding:16px 16px 14px;">
-    <button class="icon-btn" onclick="nav('maisPage',document.querySelectorAll('.nav-btn')[4])">←</button>
+    <button class="icon-btn" onclick="toggleMoreMenu(document.querySelector('[data-more-btn]'))">←</button>
     <div class="ptitle" style="padding:0;">🏅 <span>História</span></div>
   </div>
   <div style="padding:0 16px 14px;font-size:13px;color:var(--text2);line-height:1.6;">
@@ -1740,7 +1809,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== MAPA ==================== -->
 <section id="mapPage" class="page">
   <div style="display:flex;align-items:center;gap:10px;padding:16px 16px 14px;">
-    <button class="icon-btn" onclick="nav('maisPage',document.querySelectorAll('.nav-btn')[4])">←</button>
+    <button class="icon-btn" onclick="toggleMoreMenu(document.querySelector('[data-more-btn]'))">←</button>
     <div class="ptitle" style="padding:0;">🗺️ <span>Mapa do Ginásio</span></div>
   </div>
   <div style="padding:0 14px 10px;font-size:12px;color:var(--muted);">Afonso Cláudio, ES · Duas quadras de Voleibol</div>
@@ -1949,6 +2018,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </main>
 
+<div class="more-backdrop" id="moreBackdrop" onclick="closeMoreMenu()"></div>
+
 <!-- BOTTOM NAV LIQUID GLASS -->
 <nav class="bnav" id="mainNav">
   <div class="bnav-pill" id="bnavPill"></div>
@@ -1965,7 +2036,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <button class="nav-btn" onclick="nav('bracketPage',this)" data-idx="3">
       <span class="ni">🏆</span><small>Mata-mata</small>
     </button>
-    <button class="nav-btn" onclick="nav('maisPage',this)" data-idx="4">
+    <button class="nav-btn" onclick="toggleMoreMenu(this)" data-idx="4" data-more-btn="true">
       <span class="ni">⋯</span><small>Mais</small>
     </button>
   </div>
@@ -2102,23 +2173,67 @@ function dismissInstall(){document.getElementById('installBanner').classList.rem
 
 // ==================== NAVIGATION ====================
 function nav(pid,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(pid).classList.add('active');
+  if(pid==='maisPage'){
+    toggleMoreMenu(btn || document.querySelector('[data-more-btn]'));
+    return;
+  }
+  closeMoreMenu(false);
+  document.querySelectorAll('.page:not(#maisPage)').forEach(p=>p.classList.remove('active'));
+  const page=document.getElementById(pid);
+  if(page)page.classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
-  // Move liquid glass pill
+  const navBtn = btn || document.querySelector('.nav-btn[onclick*="'+pid+'"]');
+  if(navBtn)navBtn.classList.add('on');
   requestAnimationFrame(() => {
     const activeBtn = document.querySelector('.nav-btn.on');
     if (activeBtn) movePill(activeBtn);
   });
-  if(btn)btn.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(navigator.vibrate)navigator.vibrate(6);
-  // Integração Google Sheets: carrega e inicia ciclo nas abas de jogos/tabela
   if(pid==='gamesPage'||pid==='tablePage'||pid==='bracketPage'){
     loadVoleiDataIndex();
     startIndexSheetCycle();
   } else {
     stopIndexSheetCycle();
+  }
+}
+
+function toggleMoreMenu(btn){
+  const sheet=document.getElementById('maisPage');
+  if(!sheet)return;
+  if(sheet.classList.contains('show')) closeMoreMenu();
+  else openMoreMenu(btn);
+}
+
+function openMoreMenu(btn){
+  const sheet=document.getElementById('maisPage');
+  const backdrop=document.getElementById('moreBackdrop');
+  if(!sheet)return;
+  sheet.classList.add('show','active');
+  sheet.setAttribute('aria-hidden','false');
+  backdrop?.classList.add('show');
+  document.body.classList.add('clean-menu-open');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  const moreBtn=btn || document.querySelector('[data-more-btn]');
+  moreBtn?.classList.add('on');
+  requestAnimationFrame(()=>movePill(moreBtn));
+  if(navigator.vibrate)navigator.vibrate(6);
+}
+
+function closeMoreMenu(restoreActive=true){
+  const sheet=document.getElementById('maisPage');
+  const backdrop=document.getElementById('moreBackdrop');
+  sheet?.classList.remove('show');
+  sheet?.classList.remove('active');
+  sheet?.setAttribute('aria-hidden','true');
+  backdrop?.classList.remove('show');
+  document.body.classList.remove('clean-menu-open');
+  if(restoreActive){
+    const current=document.querySelector('.page.active:not(#maisPage)');
+    const currentBtn=current ? document.querySelector('.nav-btn[onclick*="'+current.id+'"]') : document.querySelector('.nav-btn[onclick*="homePage"]');
+    document.querySelector('[data-more-btn]')?.classList.remove('on');
+    currentBtn?.classList.add('on');
+    requestAnimationFrame(()=>movePill(currentBtn));
   }
 }
 
