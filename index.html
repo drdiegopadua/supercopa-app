@@ -7,6 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Supercopa AFC">
+<meta name="apple-mobile-web-app-icon" content="supercopa-icon.png">
+<link rel="icon" type="image/png" href="supercopa-icon.png">
+<link rel="apple-touch-icon" href="supercopa-icon.png">
+<link rel="manifest" href="manifest.json">
 <title>Supercopa AFC · 6ª Edição</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -533,27 +537,27 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 200;
-  height: 84px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 12px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(40px) saturate(2.2) brightness(1.1);
-  -webkit-backdrop-filter: blur(40px) saturate(2.2) brightness(1.1);
-  border-top: 1px solid rgba(255,255,255,0.75);
-  box-shadow: 0 -2px 30px rgba(21,101,192,0.10), 0 -1px 0 rgba(255,255,255,0.6) inset;
+  background: linear-gradient(to top, rgba(21,101,192,0.98), rgba(21,101,192,0.95));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(212,160,23,0.3);
+  box-shadow: 0 -4px 20px rgba(21,101,192,0.25);
 }
 
 /* Pill deslizante */
 .bnav-pill {
   position: absolute;
-  bottom: 16px;
-  height: 52px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #1565C0, #1976D2);
-  box-shadow: 0 6px 24px rgba(21,101,192,0.35), 0 2px 8px rgba(21,101,192,0.2);
+  bottom: 12px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #D4A017, #e8a010);
+  box-shadow: 0 8px 28px rgba(212,160,23,0.4), 0 2px 8px rgba(212,160,23,0.25);
   transition: left 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.35s cubic-bezier(0.34,1.2,.64,1);
   z-index: 0;
   pointer-events: none;
@@ -588,12 +592,12 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   justify-content: center;
   gap: 2px;
   padding: 6px 2px;
-  color: #5a7aaa;
+  color: rgba(255,255,255,0.6);
   cursor: pointer;
   position: relative;
   z-index: 2;
-  height: 52px;
-  border-radius: 18px;
+  height: 56px;
+  border-radius: 16px;
   transition: color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
 }
@@ -615,15 +619,16 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 /* Estado ativo */
 .nav-btn.on {
-  color: #ffffff;
+  color: #050816;
 }
 .nav-btn.on .ni {
   transform: translateY(-2px) scale(1.18);
-  filter: drop-shadow(0 2px 8px rgba(255,255,255,0.5));
+  filter: drop-shadow(0 2px 8px rgba(212,160,23,0.5));
 }
 .nav-btn.on small {
   opacity: 1;
   font-weight: 800;
+  color: #050816;
 }
 
 /* Animação de toque */
@@ -1264,31 +1269,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
   </div>
 
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">Times Inscritos</span><span class="sec-link" onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])">VER TODOS →</span></div>
-  <p style="font-size:11px;color:var(--muted);padding:0 16px 9px;">👉 Toque para ver o perfil</p>
-  <div class="hscroll">
-    <div class="team-chip gold" onclick="openTeam('ES Volei','Vitória, ES','🏆',3,3,9)"><div class="tc-av">🏆</div><div><div class="tc-name">ES Volei</div><div class="tc-city">Vitória, ES</div><div class="tc-badge">CAMPEÃO 2025</div></div></div>
-    <div class="team-chip" onclick="openTeam('Equipe UVI','Itaperuna, RJ','🥈',3,2,6)"><div class="tc-av">🥈</div><div><div class="tc-name">Equipe UVI</div><div class="tc-city">Itaperuna, RJ</div><div class="tc-badge">VICE 2025</div></div></div>
-    <div class="team-chip" onclick="openTeam('CT Montanhas','Afonso Cláudio, ES','🏠',3,1,3)"><div class="tc-av">🏠</div><div><div class="tc-name">CT Montanhas</div><div class="tc-city">Afonso Cláudio, ES</div><div class="tc-badge">EQUIPE DA CASA</div></div></div>
-    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, RJ</div><div class="tc-badge">EM BREVE</div></div></div>
-    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, ES</div><div class="tc-badge">EM BREVE</div></div></div>
-  </div>
 
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">🏅 Melhor da Partida</span><span class="sec-link">Destaques por Jogo · 2025</span></div>
-  <div class="mvp-strip" id="mvpStrip">
-    <div class="mvp-card no1"><div class="mvp-rank">1°</div><div class="mvp-av">🏐</div><div class="mvp-nm">João Silva</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">142</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">2°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Pedro Costa</div><div class="mvp-tm">Equipe UVI</div><div class="mvp-pts">118</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">3°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Carlos Lima</div><div class="mvp-tm">CT Montanhas</div><div class="mvp-pts">97</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">4°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Lucas Melo</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">84</div><div class="mvp-pl">destaque</div></div>
-  </div>
-
-  <!-- NEWS -->
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">📰 Notícias</span></div>
-  <div class="news-list" id="newsList">
-    <div class="news-card"><div class="news-ic">🎉</div><div><div class="news-tag">Evento</div><div class="news-title">Inscrições para a 6ª edição abrem em Setembro!</div><div class="news-date">Maio 2026</div></div></div>
-    <div class="news-card"><div class="news-ic">🏆</div><div><div class="news-tag">Histórico</div><div class="news-title">ES Volei conquista o título da 5ª Supercopa AFC</div><div class="news-date">Novembro 2025</div></div></div>
-    <div class="news-card"><div class="news-ic">📍</div><div><div class="news-tag">Estrutura</div><div class="news-title">Ginásio Central passa por reforma para a edição 2026</div><div class="news-date">Março 2026</div></div></div>
-  </div>
 
 </section>
 
