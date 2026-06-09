@@ -154,6 +154,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    TOPBAR
 ============================================================ */
+.home-active .topbar{display:none!important;}
 .topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),12px);padding-bottom:12px;background:var(--topbar);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .35s;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-logo{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(244,197,66,.35));}
@@ -555,15 +556,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   background: transparent;
 }
 
-/* Pill deslizante — relativo ao .bnav-items */
+/* Pill deslizante — dentro do .bnav-items */
 .bnav-pill {
   position: absolute;
-  top: 0; bottom: 0;
-  height: 100%;
-  border-radius: 16px;
+  top: 4px; bottom: 4px;
+  border-radius: 14px;
   background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
-  box-shadow: 0 4px 20px rgba(21,101,192,0.40), 0 2px 6px rgba(21,101,192,0.25);
-  transition: left 0.40s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.32s cubic-bezier(0.34,1.2,.64,1);
+  box-shadow: 0 4px 16px rgba(21,101,192,0.35);
+  transition: left 0.38s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.30s cubic-bezier(0.34,1.2,.64,1);
   z-index: 0;
   pointer-events: none;
 }
@@ -608,7 +608,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   cursor: pointer;
   position: relative;
   z-index: 2;
-  height: 100%;
+  height: calc(100% - 8px);
+  margin: 4px 0;
   border-radius: 14px;
   transition: color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
@@ -839,7 +840,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </style>
 </head>
-<body class="day">
+<body class="day home-active">
 
 <!-- FIREWORKS -->
 <div id="fireworks"></div>
@@ -1179,7 +1180,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <div id="toast"></div>
 
 <!-- TOPBAR -->
-<header class="topbar">
+<header class="topbar" id="mainTopbar">
   <div class="brand">
     <img class="brand-logo" id="topLogo" src="splash-logo.jpeg" alt="Supercopa AFC">
     <div class="brand-text">
@@ -1201,18 +1202,9 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <section id="homePage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
 
   <!-- HERO -->
-  <div style="background:linear-gradient(145deg,#1565C0 0%,#1976D2 100%);padding:22px 20px 24px;position:relative;overflow:hidden;">
+  <div style="background:linear-gradient(145deg,#1565C0 0%,#1976D2 100%);padding:16px 16px 20px;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07);pointer-events:none;"></div>
     <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(200,150,12,0.12);pointer-events:none;"></div>
-
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative;z-index:1;">
-      <img id="heroLogo" src="splash-logo.jpeg" style="width:50px;height:50px;border-radius:13px;object-fit:contain;background:rgba(255,255,255,0.15);padding:4px;" alt="">
-      <div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;font-weight:600;">6ª Edição · 2026</div>
-        <div style="font-family:'Anton',sans-serif;font-size:20px;color:#fff;text-transform:uppercase;line-height:1.1;">Supercopa AFC</div>
-        <div style="font-size:11px;color:#F4C542;font-weight:600;">Afonso Cláudio · ES</div>
-      </div>
-    </div>
 
     <!-- Countdown -->
     <div style="display:flex;gap:8px;position:relative;z-index:1;">
@@ -2074,8 +2066,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 <!-- BOTTOM NAV LIQUID GLASS -->
 <nav class="bnav" id="mainNav">
-  <div class="bnav-pill" id="bnavPill"></div>
   <div class="bnav-items" id="bnavItems">
+    <div class="bnav-pill" id="bnavPill"></div>
     <button class="nav-btn on" onclick="nav('homePage',this)" data-idx="0">
       <span class="ni">🏠</span><small>Início</small>
     </button>
@@ -3363,11 +3355,11 @@ function movePill(btn) {
   const pill = document.getElementById('bnavPill');
   const items = document.getElementById('bnavItems');
   if (!pill || !items || !btn) return;
-  const containerRect = items.getBoundingClientRect();
-  const btnRect = btn.getBoundingClientRect();
-  const left = btnRect.left - containerRect.left - 4; // ajuste do padding
+  const itemsRect = items.getBoundingClientRect();
+  const btnRect   = btn.getBoundingClientRect();
+  const left  = btnRect.left - itemsRect.left;
   const width = btnRect.width;
-  pill.style.left = Math.max(2, left) + 'px';
+  pill.style.left  = Math.max(0, left) + 'px';
   pill.style.width = width + 'px';
 }
 
