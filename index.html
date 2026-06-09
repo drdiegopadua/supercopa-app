@@ -623,11 +623,12 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 }
 
 .nav-btn small {
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: opacity 0.25s, transform 0.25s;
   opacity: 0.85;
+  white-space: nowrap;
 }
 
 /* Estado ativo */
@@ -1199,132 +1200,160 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== HOME ==================== -->
 <section id="homePage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
 
-  <!-- HERO CARD — azul com logo -->
-  <div style="margin:12px 16px 0;background:linear-gradient(145deg,#1565C0 0%,#1976D2 100%);border-radius:24px;padding:24px 20px 22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(21,101,192,0.30);">
-    <div style="position:absolute;top:-24px;right:-24px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-30px;right:20px;width:90px;height:90px;border-radius:50%;background:rgba(200,150,12,0.15);pointer-events:none;"></div>
+  <!-- HERO -->
+  <div style="background:linear-gradient(145deg,#1565C0 0%,#1976D2 100%);padding:22px 20px 24px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(200,150,12,0.12);pointer-events:none;"></div>
 
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative;z-index:1;">
-      <img id="heroLogo" src="splash-logo.jpeg" style="width:52px;height:52px;border-radius:13px;object-fit:contain;background:rgba(255,255,255,0.15);padding:4px;" alt="">
+      <img id="heroLogo" src="splash-logo.jpeg" style="width:50px;height:50px;border-radius:13px;object-fit:contain;background:rgba(255,255,255,0.15);padding:4px;" alt="">
       <div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.65);letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:2px;">6ª Edição · 2026</div>
-        <div style="font-family:'Anton',sans-serif;font-size:21px;color:#fff;text-transform:uppercase;line-height:1;">Supercopa AFC</div>
-        <div style="font-size:11px;color:#F4C542;font-weight:600;margin-top:1px;">Afonso Cláudio · Espírito Santo</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;font-weight:600;">6ª Edição · 2026</div>
+        <div style="font-family:'Anton',sans-serif;font-size:20px;color:#fff;text-transform:uppercase;line-height:1.1;">Supercopa AFC</div>
+        <div style="font-size:11px;color:#F4C542;font-weight:600;">Afonso Cláudio · ES</div>
       </div>
     </div>
 
     <!-- Countdown -->
-    <div style="position:relative;z-index:1;">
-      <div style="font-size:10px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Contagem regressiva</div>
-      <div style="display:flex;gap:8px;">
-        <div style="flex:1;background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 4px;text-align:center;backdrop-filter:blur(8px);">
-          <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdD">—</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Dias</div>
-        </div>
-        <div style="flex:1;background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 4px;text-align:center;backdrop-filter:blur(8px);">
-          <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdH">—</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Horas</div>
-        </div>
-        <div style="flex:1;background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 4px;text-align:center;backdrop-filter:blur(8px);">
-          <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdM">—</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Min</div>
-        </div>
-        <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 4px;text-align:center;backdrop-filter:blur(8px);border:1px solid rgba(244,197,66,0.3);">
-          <div style="font-family:'Anton',sans-serif;font-size:26px;color:#F4C542;line-height:1;" id="cdS">—</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Seg</div>
-        </div>
+    <div style="display:flex;gap:8px;position:relative;z-index:1;">
+      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
+        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdD">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Dias</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
+        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdH">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Horas</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
+        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdM">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Min</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.16);border-radius:12px;padding:10px 4px;text-align:center;border:1px solid rgba(244,197,66,0.35);">
+        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#F4C542;line-height:1;" id="cdS">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Seg</div>
       </div>
     </div>
   </div>
 
-  <!-- ACESSO RÁPIDO -->
+  <!-- GUIA DA SUPERCOPA -->
   <div style="padding:22px 16px 0;">
-    <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;">Acesso rápido</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Guia da Supercopa</div>
+    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Tudo sobre o torneio</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+      <button onclick="nav('timesPage',null);loadTimes()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">👥</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Times</div>
+</button>
+<button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏐</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Jogos</div>
+</button>
+<button onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📊</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Tabela</div>
+</button>
+<button onclick="nav('bracketPage',document.querySelectorAll('.nav-btn')[3])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏆</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Mata-mata</div>
+</button>
+<button onclick="nav('chatPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#F0FDF4;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🤖</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Chat IA</div>
+</button>
+<button onclick="nav('galleryPage',null);renderGallery('2025')" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#FFF0F0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📸</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Galeria</div>
+</button>
+<button onclick="nav('historyPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#F5F0FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏅</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">História</div>
+</button>
+<button onclick="nav('mapPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🗺️</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Mapa</div>
+</button>
+<button onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#F8F8F8;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📋</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Regulamento</div>
+</button>
+<button onclick="toggleNotificacoes(document.getElementById('btnPushToggle'))" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🔔</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Notificações</div>
+</button>
+    </div>
+  </div>
 
-      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])" style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;" onactive="this.style.transform='scale(.97)'">
-        <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;">🏐</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:2px;">Jogos</div>
-        <div style="font-size:11px;color:#9CA3AF;">Ver programação</div>
-      </button>
-
-      <button onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])" style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;">
-        <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;">📊</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:2px;">Classificação</div>
-        <div style="font-size:11px;color:#9CA3AF;">Ver tabela</div>
-      </button>
-
-      <button onclick="nav('bracketPage',document.querySelectorAll('.nav-btn')[3])" style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;">
-        <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;">🏆</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:2px;">Mata-mata</div>
-        <div style="font-size:11px;color:#9CA3AF;">Chaveamento</div>
-      </button>
-
-      <button onclick="nav('maisPage',document.querySelectorAll('.nav-btn')[4])" style="background:linear-gradient(145deg,#FFF8E6,#FFF3D0);border:1px solid rgba(200,150,12,0.20);border-radius:18px;padding:18px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;">
-        <div style="width:40px;height:40px;background:rgba(200,150,12,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;">✨</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:2px;">Mais</div>
-        <div style="font-size:11px;color:#9CA3AF;">Quiz, Bolão e mais</div>
-      </button>
-
+  <!-- SOCIAL -->
+  <div style="padding:22px 16px 0;">
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Social</div>
+    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Interaja com o evento</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+      <button onclick="nav('transmissaoPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#FFF0F0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📡</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Transmissão</div>
+</button>
+<button onclick="nav('atletaPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">⭐</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Atleta Destaque</div>
+</button>
+<button onclick="nav('bolaoPage',null);renderBolao()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🎯</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Bolão</div>
+</button>
+<button onclick="nav('quizPage',null);initQuiz()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🧠</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Quiz</div>
+</button>
+<button onclick="nav('cardgenPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🖼️</div>
+  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Card Social</div>
+</button>
     </div>
   </div>
 
   <!-- INFO DO EVENTO -->
-  <div style="padding:18px 16px 0;">
-    <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;">O evento</div>
-    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);">
-      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #F3F4F6;">
+  <div style="padding:22px 16px 0;">
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">O Evento</div>
+    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Informações gerais</div>
+    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
         <div style="width:36px;height:36px;background:#EEF4FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">📅</div>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:#111827;">28 e 29 de Novembro de 2026</div>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:1px;">Data do evento</div>
-        </div>
+        <div><div style="font-size:13px;font-weight:600;color:#111827;">28 e 29 de Novembro de 2026</div><div style="font-size:11px;color:#9CA3AF;">Data do evento</div></div>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #F3F4F6;">
+      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
         <div style="width:36px;height:36px;background:#EEF4FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">📍</div>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:#111827;">Ginásio Central · Afonso Cláudio</div>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:1px;">Espírito Santo · Brasil</div>
-        </div>
+        <div><div style="font-size:13px;font-weight:600;color:#111827;">Ginásio Central · Afonso Cláudio, ES</div><div style="font-size:11px;color:#9CA3AF;">Local do evento</div></div>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #F3F4F6;">
+      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
         <div style="width:36px;height:36px;background:#FFF8E6;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🏅</div>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:#111827;">R$ 5.000 em premiação</div>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:1px;">Troféus e medalhas incluídos</div>
-        </div>
+        <div><div style="font-size:13px;font-weight:600;color:#111827;">R$ 5.000 em premiação</div><div style="font-size:11px;color:#9CA3AF;">Troféus e medalhas incluídos</div></div>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;">
+      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;">
         <div style="width:36px;height:36px;background:#F0FDF4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🆓</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#111827;">Inscrição gratuita</div>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:1px;">R$ 0,00 para todas as equipes</div>
-        </div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#111827;">Inscrição gratuita</div><div style="font-size:11px;color:#9CA3AF;">Para todas as equipes</div></div>
         <a href="https://www.supercopaafc.com.br/inscricao.html" target="_blank" style="background:#1565C0;color:#fff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">Inscrever</a>
       </div>
     </div>
   </div>
 
   <!-- MODALIDADES -->
-  <div style="padding:18px 16px 0;">
-    <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;">Modalidades</div>
+  <div style="padding:22px 16px 24px;">
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Modalidades</div>
+    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">2 esportes · 1 arena</div>
     <div style="display:flex;gap:10px;">
-      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:16px;box-shadow:var(--shadow);text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">🏐</div>
-        <div style="font-size:14px;font-weight:700;color:#111827;">Vôlei</div>
-        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">12 times</div>
-        <div style="font-size:10px;color:#9CA3AF;">4 grupos</div>
+      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;margin-bottom:8px;">🏐</div>
+        <div style="font-size:15px;font-weight:700;color:#111827;">Vôlei</div>
+        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">12 times · 4 grupos</div>
       </div>
-      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:16px;box-shadow:var(--shadow);text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">🏀</div>
-        <div style="font-size:14px;font-weight:700;color:#111827;">Basquete</div>
-        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">6 times</div>
-        <div style="font-size:10px;color:#9CA3AF;">2 grupos</div>
+      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;margin-bottom:8px;">🏀</div>
+        <div style="font-size:15px;font-weight:700;color:#111827;">Basquete</div>
+        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">6 times · 2 grupos</div>
       </div>
     </div>
   </div>
 
-  <div style="height:24px;"></div>
 </section>
 
   <div class="sports-banner">
@@ -3205,6 +3234,40 @@ function filterGamesBasq(phase, btn) {
 // ── Admin: aba Basquete ───────────────────────────────────────────────────
 // (integrada no admTab existente)
 
+
+// ── PÁGINA TIMES ────────────────────────────────────────────────────────────
+function loadTimes() {
+  // Carrega times da tabela do vôlei já carregada
+  const grpMap = {
+    grupoA: 'timesGrupoA', grupoB: 'timesGrupoB',
+    grupoC: 'timesGrupoC', grupoD: 'timesGrupoD'
+  };
+  Object.keys(grpMap).forEach(grp => {
+    const el = document.getElementById(grpMap[grp]);
+    if (!el) return;
+    const rows = tableData[grp] || [];
+    if (!rows.length) {
+      el.innerHTML = '<div style="font-size:13px;color:#9CA3AF;text-align:center;padding:12px;">Carregando...</div>';
+      return;
+    }
+    el.innerHTML = rows.map(r => `
+      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+        <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${r.ic||'🏐'}</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#111827;">${r.name||r.nm||'—'}</div>
+          <div style="font-size:11px;color:#9CA3AF;">${r.city||grp.replace('grupo','Grupo ')}</div>
+        </div>
+      </div>`).join('');
+  });
+}
+
+function showTimesTab(tab) {
+  document.getElementById('timesVolei').style.display    = tab==='volei'    ? 'block' : 'none';
+  document.getElementById('timesBasquete').style.display = tab==='basquete' ? 'block' : 'none';
+  document.getElementById('timesBtnV').className = 'sport-btn' + (tab==='volei' ? ' sport-btn-on' : '');
+  document.getElementById('timesBtnB').className = 'sport-btn' + (tab==='basquete' ? ' sport-btn-on' : '');
+}
+
 // ── PUSH NOTIFICATIONS ADMIN ──────────────────────────────
 
 async function admSalvarBasq() {
@@ -3304,7 +3367,7 @@ function movePill(btn) {
   const btnRect = btn.getBoundingClientRect();
   const left = btnRect.left - containerRect.left - 4; // ajuste do padding
   const width = btnRect.width;
-  pill.style.left = Math.max(0, left) + 'px';
+  pill.style.left = Math.max(2, left) + 'px';
   pill.style.width = width + 'px';
 }
 
@@ -4846,6 +4909,84 @@ startIndexSheetCycle();
 </section>
 
 <!-- ==================== BOLAO ==================== -->
+
+<section id="timesPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
+  <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
+    <button onclick="history.back();nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Times Inscritos</div>
+  </div>
+
+  <div style="padding:16px;">
+    <!-- Selector Volei/Basquete -->
+    <div style="display:flex;gap:8px;margin-bottom:18px;">
+      <button id="timesBtnV" class="sport-btn sport-btn-on" onclick="showTimesTab('volei')">🏐 Vôlei</button>
+      <button id="timesBtnB" class="sport-btn" onclick="showTimesTab('basquete')">🏀 Basquete</button>
+    </div>
+
+    <!-- VOLEI -->
+    <div id="timesVolei">
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo A</div>
+      <div id="timesGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo B</div>
+      <div id="timesGrupoB" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo C</div>
+      <div id="timesGrupoC" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo D</div>
+      <div id="timesGrupoD" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- BASQUETE -->
+    <div id="timesBasquete" style="display:none;">
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo A</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+        ${['CT DAS MONTANHAS','MARLINS','CROSSOVER'].map(t=>`
+        <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+          <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${BASQ_TIMES[t]?.ic||'🏀'}</div>
+          <div><div style="font-size:14px;font-weight:700;color:#111827;">${t}</div><div style="font-size:11px;color:#9CA3AF;">Grupo A</div></div>
+        </div>`).join('')}
+      </div>
+      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo B</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${['CENTRAL SERRANO','ARACRUZ','SAO PEDRO'].map(t=>`
+        <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+          <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${BASQ_TIMES[t]?.ic||'🏀'}</div>
+          <div><div style="font-size:14px;font-weight:700;color:#111827;">${t}</div><div style="font-size:11px;color:#9CA3AF;">Grupo B</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="transmissaoPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
+  <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
+    <button onclick="nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Transmissão</div>
+  </div>
+  <div style="padding:24px 16px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:16px;">📡</div>
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:8px;">Transmissão ao Vivo</div>
+    <div style="font-size:14px;color:#9CA3AF;margin-bottom:24px;">Acompanhe os jogos em tempo real</div>
+    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+      <div style="font-size:13px;color:#9CA3AF;">Link de transmissão será disponibilizado durante o evento.</div>
+    </div>
+  </div>
+</section>
+
+<section id="atletaPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
+  <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
+    <button onclick="nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Atleta Destaque</div>
+  </div>
+  <div style="padding:24px 16px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:16px;">⭐</div>
+    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:8px;">Atleta em Destaque</div>
+    <div style="font-size:14px;color:#9CA3AF;margin-bottom:24px;">Os melhores jogadores do torneio</div>
+    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+      <div style="font-size:13px;color:#9CA3AF;">Os atletas em destaque serão revelados durante o evento.</div>
+    </div>
+  </div>
+</section>
+
 <section id="bolaoPage" class="page">
   <div style="font-size:26px;font-weight:800;color:#111827;padding:20px 16px 4px;">Bolão</div>
 
