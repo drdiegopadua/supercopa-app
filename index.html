@@ -794,7 +794,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .cd-mini-n{font-family:'Anton',sans-serif;font-size:20px;color:#fff;line-height:1;}
 .cd-mini-l{font-size:7.5px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:3px;font-weight:700;}
 
-/* Sport selector (Vôlei / Basquete segmented control) */
+/* Gold spark animation */
+.gold-spark{position:absolute;width:4px;height:4px;border-radius:50%;background:#F4C542;box-shadow:0 0 6px #F4C542,0 0 12px rgba(244,197,66,.5);animation:goldFloat 3s ease-in-out infinite;pointer-events:none;}
+@keyframes goldFloat{0%,100%{transform:translateY(0) scale(1);opacity:.8;}50%{transform:translateY(-12px) scale(1.4);opacity:.3;}}
+
+/* Time info modal sheet */
+.ti-sheet.open{transform:translateY(0) !important;}
+
+
 .sport-selector{display:flex;gap:8px;margin:12px 14px 14px;padding:5px;background:#EEF2F9;border:1px solid #E2E8F2;border-radius:16px;}
 .sport-btn{flex:1;height:44px;border:none;border-radius:12px;background:transparent;color:#64748B;font-size:14px;font-weight:800;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s ease;-webkit-tap-highlight-color:transparent;}
 .sport-btn:active{transform:scale(.97);}
@@ -894,6 +901,38 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   </div>
 </div>
 
+<!-- MODAL INFO DO TIME -->
+<div id="timeInfoModal" style="display:none;position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;" onclick="if(event.target===this)closeTimeInfo()">
+  <div class="ti-sheet" style="background:#fff;border-radius:26px 26px 0 0;padding:24px 20px 44px;width:100%;max-width:480px;transform:translateY(100%);transition:transform .32s cubic-bezier(.34,1.2,.64,1);">
+    <div style="width:38px;height:4px;background:#E2E8F0;border-radius:999px;margin:0 auto 20px;"></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+      <div style="width:54px;height:54px;background:linear-gradient(135deg,#1565C0,#1976D2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 14px rgba(21,101,192,.3);">🏐</div>
+      <div>
+        <div id="tiNome" style="font-family:'Anton',sans-serif;font-size:20px;color:#111827;text-transform:uppercase;line-height:1.1;"></div>
+        <div id="tiCidade" style="font-size:12px;color:#9CA3AF;margin-top:3px;display:flex;align-items:center;gap:4px;">📍</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:#F8FAFC;border:1px solid #E8ECF4;border-radius:13px;padding:12px 14px;">
+        <div style="font-size:9px;color:#9CA3AF;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Responsável</div>
+        <div id="tiResp" style="font-size:13px;font-weight:800;color:#111827;margin-top:4px;">—</div>
+      </div>
+      <div style="background:#F8FAFC;border:1px solid #E8ECF4;border-radius:13px;padding:12px 14px;">
+        <div style="font-size:9px;color:#9CA3AF;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Capitão</div>
+        <div id="tiCap" style="font-size:13px;font-weight:800;color:#111827;margin-top:4px;">—</div>
+      </div>
+    </div>
+    <a id="tiInsta" href="#" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(193,53,132,.07),rgba(131,58,180,.07));border:1px solid rgba(193,53,132,.25);border-radius:13px;text-decoration:none;margin-bottom:16px;">
+      <span style="font-size:20px;">📸</span>
+      <div>
+        <div style="font-size:9px;color:#c13584;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Instagram</div>
+        <div id="tiInsta" style="font-size:13px;font-weight:800;color:#c13584;margin-top:2px;">—</div>
+      </div>
+    </a>
+    <button onclick="closeTimeInfo()" style="width:100%;height:48px;border-radius:14px;border:none;background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;font-weight:800;font-size:14px;cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
 <!-- ADMIN MODAL -->
 <div id="adminModal">
   <div class="adm-sheet">
@@ -933,6 +972,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button class="adm-tab" onclick="admTab('resultados',this)">📊 Resultados</button>
       <button class="adm-tab" onclick="admTab('notif',this)">🔔 Push</button>
       <button class="adm-tab" onclick="admTab('basq',this)">🏀 Basquete</button>
+      <button class="adm-tab" onclick="admTab('atleta',this)">⭐ Atleta</button>
+      <button class="adm-tab" onclick="admTab('noticias',this)">📰 Notícias</button>
     </div>
     <!-- TAB: SCORE -->
     <div id="admScore">
@@ -1140,6 +1181,55 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         </div>
       </div>
     </div>
+    <!-- TAB: ATLETA DESTAQUE -->
+    <div id="admAtleta" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
+          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Atleta Destaque</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Defina o atleta destaque por jogo</div>
+        </div>
+        <div class="adm-lbl">Modalidade</div>
+        <select class="adm-select" id="admAtletaSport">
+          <option value="volei">🏐 Vôlei</option>
+          <option value="basquete">🏀 Basquete</option>
+        </select>
+        <div class="adm-lbl">Nº do Jogo</div>
+        <input class="adm-inp" type="number" id="admAtletaJogo" placeholder="Ex: 1, 2, 3..." min="1" max="18">
+        <div class="adm-lbl">Nome do Atleta</div>
+        <input class="adm-inp" id="admAtletaNome" placeholder="Nome completo...">
+        <div class="adm-lbl">Time</div>
+        <input class="adm-inp" id="admAtletaTime" placeholder="Nome do time...">
+        <div id="admAtletaStatus" style="text-align:center;font-size:12px;color:var(--muted);margin:8px 0;"></div>
+        <div class="adm-actions">
+          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
+          <button class="adm-save" onclick="admSalvarAtleta()">⭐ SALVAR</button>
+        </div>
+      </div>
+    </div>
+    <!-- TAB: NOTÍCIAS -->
+    <div id="admNoticias" style="display:none;">
+      <div class="adm-section">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:32px;margin-bottom:6px;">📰</div>
+          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Gerenciar Notícias</div>
+        </div>
+        <div class="adm-lbl">Emoji / Ícone</div>
+        <input class="adm-inp" id="admNewsIc" placeholder="Ex: 🏆 ou 🎉" maxlength="4">
+        <div class="adm-lbl">Categoria</div>
+        <input class="adm-inp" id="admNewsCat" placeholder="Ex: Evento, Histórico..." maxlength="20">
+        <div class="adm-lbl">Título *</div>
+        <input class="adm-inp" id="admNewsTitulo" placeholder="Título da notícia...">
+        <div class="adm-lbl">Data</div>
+        <input class="adm-inp" id="admNewsData" placeholder="Ex: Junho 2026">
+        <div class="adm-actions">
+          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
+          <button class="adm-save" onclick="admAdicionarNoticia()">➕ ADICIONAR</button>
+        </div>
+        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;">Notícias cadastradas</div>
+        <div id="admNewsList"></div>
+      </div>
+    </div>
     </div><!-- /admPainelPrincipal -->
   </div>
 </div>
@@ -1150,8 +1240,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   <div class="brand">
     <img class="brand-logo" id="topLogo" src="splash-logo.png" alt="Supercopa AFC">
     <div class="brand-text">
-      <small>A MAIOR DA REGIÃO DAS MONTANHAS</small>
       <h1>SUPERCOPA AFC</h1>
+      <small style="color:#F4C542;font-size:7.5px;letter-spacing:.5px;font-weight:700;text-transform:uppercase;">A MAIOR DA REGIÃO DAS MONTANHAS</small>
     </div>
   </div>
   <div class="topbar-right">
@@ -1175,46 +1265,56 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;position:relative;z-index:1;">
       <img id="heroLogo" src="splash-logo.png" style="width:54px;height:54px;border-radius:14px;object-fit:contain;background:rgba(255,255,255,.18);padding:5px;box-shadow:0 4px 12px rgba(0,0,0,.18);" alt="">
       <div style="flex:1;">
-        <div style="font-size:10px;color:rgba(255,255,255,.7);letter-spacing:3px;text-transform:uppercase;font-weight:700;">6ª Edição · 2026</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);letter-spacing:3px;text-transform:uppercase;font-weight:700;">Edição 2026</div>
         <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;line-height:1.05;letter-spacing:.5px;">Supercopa AFC</div>
         <div style="font-size:11px;color:#F4C542;font-weight:700;margin-top:2px;">📍 Afonso Cláudio · ES</div>
       </div>
     </div>
 
-    <!-- Countdowns (Vôlei + Basquete) -->
-    <div style="display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;">
+    <!-- Countdowns (Vôlei + Basquete) + animação dourada -->
+    <div style="display:flex;flex-direction:column;gap:8px;position:relative;z-index:1;">
+
+      <!-- Partículas douradas animadas -->
+      <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:16px;">
+        <div class="gold-spark" style="left:8%;top:20%;animation-delay:0s;"></div>
+        <div class="gold-spark" style="left:25%;top:60%;animation-delay:.7s;"></div>
+        <div class="gold-spark" style="left:55%;top:15%;animation-delay:1.3s;"></div>
+        <div class="gold-spark" style="left:75%;top:50%;animation-delay:.4s;"></div>
+        <div class="gold-spark" style="left:90%;top:75%;animation-delay:1.8s;"></div>
+        <div class="gold-spark" style="left:40%;top:85%;animation-delay:.9s;"></div>
+      </div>
 
       <!-- VÔLEI countdown -->
-      <div style="background:rgba(255,255,255,.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:10px 12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:14px;">🏐</span>
-            <span style="font-size:11px;font-weight:800;color:#fff;letter-spacing:.5px;">VÔLEI</span>
+      <div style="background:rgba(255,255,255,.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:8px 10px;position:relative;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:12px;">🏐</span>
+            <span style="font-size:10px;font-weight:800;color:#fff;letter-spacing:.5px;">VÔLEI</span>
           </div>
-          <span style="font-size:9px;color:#F4C542;font-weight:700;">28 · 29 NOV 2026</span>
+          <span style="font-size:8.5px;color:#F4C542;font-weight:700;">28 · 29 NOV 2026</span>
         </div>
-        <div style="display:flex;gap:6px;">
-          <div class="cd-mini"><div class="cd-mini-n" id="cdD">—</div><div class="cd-mini-l">Dias</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdH">—</div><div class="cd-mini-l">Horas</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdM">—</div><div class="cd-mini-l">Min</div></div>
-          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdS" style="color:#F4C542;">—</div><div class="cd-mini-l">Seg</div></div>
+        <div style="display:flex;gap:5px;">
+          <div class="cd-mini"><div class="cd-mini-n" id="cdD" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Dias</div></div>
+          <div class="cd-mini"><div class="cd-mini-n" id="cdH" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Horas</div></div>
+          <div class="cd-mini"><div class="cd-mini-n" id="cdM" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Min</div></div>
+          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdS" style="color:#F4C542;font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Seg</div></div>
         </div>
       </div>
 
       <!-- BASQUETE countdown -->
-      <div style="background:rgba(244,197,66,.12);backdrop-filter:blur(8px);border:1px solid rgba(244,197,66,.32);border-radius:16px;padding:10px 12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:14px;">🏀</span>
-            <span style="font-size:11px;font-weight:800;color:#fff;letter-spacing:.5px;">BASQUETE</span>
+      <div style="background:rgba(244,197,66,.12);backdrop-filter:blur(8px);border:1px solid rgba(244,197,66,.32);border-radius:16px;padding:8px 10px;position:relative;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:12px;">🏀</span>
+            <span style="font-size:10px;font-weight:800;color:#fff;letter-spacing:.5px;">BASQUETE</span>
           </div>
-          <span style="font-size:9px;color:#F4C542;font-weight:700;">25 · 26 JUL 2026</span>
+          <span style="font-size:8.5px;color:#F4C542;font-weight:700;">25 · 26 JUL 2026</span>
         </div>
-        <div style="display:flex;gap:6px;">
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBD">—</div><div class="cd-mini-l">Dias</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBH">—</div><div class="cd-mini-l">Horas</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBM">—</div><div class="cd-mini-l">Min</div></div>
-          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdBS" style="color:#F4C542;">—</div><div class="cd-mini-l">Seg</div></div>
+        <div style="display:flex;gap:5px;">
+          <div class="cd-mini"><div class="cd-mini-n" id="cdBD" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Dias</div></div>
+          <div class="cd-mini"><div class="cd-mini-n" id="cdBH" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Horas</div></div>
+          <div class="cd-mini"><div class="cd-mini-n" id="cdBM" style="font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Min</div></div>
+          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdBS" style="color:#F4C542;font-size:16px;">—</div><div class="cd-mini-l" style="font-size:6.5px;">Seg</div></div>
         </div>
       </div>
 
@@ -1252,23 +1352,33 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
       <button onclick="nav('timesPage',null);loadTimes()" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);">👥</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#1565C0,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <div class="home-lbl">Times</div>
       </button>
       <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">🏐</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#1565C0,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
         <div class="home-lbl">Jogos</div>
       </button>
       <button onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">📊</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#1565C0,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </div>
         <div class="home-lbl">Tabela</div>
       </button>
       <button onclick="nav('bracketPage',document.querySelectorAll('.nav-btn')[3])" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FFE4E6,#FECDD3);">🏆</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#C8960C,#F4C542);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+        </div>
         <div class="home-lbl">Mata-mata</div>
       </button>
       <button onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#F3E8FF,#E9D5FF);">📋</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#1565C0,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
         <div class="home-lbl">Regras</div>
       </button>
     </div>
@@ -1283,34 +1393,30 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       </div>
       <div style="font-size:10px;font-weight:700;color:#C8960C;background:#FEF6E0;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;">Engaje-se</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
       <button onclick="nav('transmissaoPage',null)" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FFE4E6,#FECDD3);">📡</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#C8960C,#F4C542);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        </div>
         <div class="home-lbl">Live</div>
       </button>
       <button onclick="nav('atletaPage',null)" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">⭐</div>
-        <div class="home-lbl">Atleta</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#C8960C,#F4C542);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="home-lbl">Atleta Destaque</div>
       </button>
       <button onclick="nav('bolaoPage',null);renderBolao()" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FEF6E0,#F4C542);">🎯</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#C8960C,#F4C542);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
         <div class="home-lbl">Bolão</div>
       </button>
       <button onclick="nav('quizPage',null);initQuiz()" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);">🧠</div>
+        <div class="home-ic" style="background:linear-gradient(135deg,#1565C0,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
         <div class="home-lbl">Quiz</div>
-      </button>
-      <button onclick="nav('chatPage',null)" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">🤖</div>
-        <div class="home-lbl">Chat IA</div>
-      </button>
-      <button onclick="nav('timesPage',null);loadTimes()" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#E0F2FE,#BAE6FD);">👥</div>
-        <div class="home-lbl">Times Inscritos</div>
-      </button>
-      <button onclick="nav('atletaPage',null)" class="home-card">
-        <div class="home-ic" style="background:linear-gradient(135deg,#FFF7CC,#FFE066);">🏅</div>
-        <div class="home-lbl">Melhor da Partida</div>
       </button>
     </div>
   </div>
@@ -1341,7 +1447,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
   </div>
 
-  <!-- ============ NOTÍCIAS ============ -->
+  <!-- ============ NOTÍCIAS CARROSSEL ============ -->
   <div style="padding:24px 16px 8px;">
     <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
       <div>
@@ -1349,31 +1455,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Últimas atualizações</div>
       </div>
     </div>
-    <div id="newsList" style="display:flex;flex-direction:column;gap:10px;">
-      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🎉</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;color:#1565C0;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Evento</div>
-          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">Inscrições para a 6ª edição abrem em Setembro!</div>
-          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Maio 2026</div>
-        </div>
-      </div>
-      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#DBEAFE,#BFDBFE);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏆</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;color:#C8960C;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Histórico</div>
-          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">ES Volei conquista o título da 5ª Supercopa AFC</div>
-          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Novembro 2025</div>
-        </div>
-      </div>
-      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#DCFCE7,#BBF7D0);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📍</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;color:#16A34A;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Estrutura</div>
-          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">Ginásio Central passa por reforma para a edição 2026</div>
-          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Março 2026</div>
-        </div>
-      </div>
+    <!-- CARROSSEL -->
+    <div style="position:relative;overflow:hidden;">
+      <div id="newsCarousel" style="display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform;"></div>
+      <!-- Dots nav -->
+      <div id="newsDots" style="display:flex;justify-content:center;gap:6px;margin-top:12px;"></div>
+      <!-- Setas -->
+      <button id="newsLeft" onclick="newsSlide(-1)" style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:none;background:rgba(21,101,192,.12);color:#1565C0;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">‹</button>
+      <button id="newsRight" onclick="newsSlide(1)" style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:none;background:rgba(21,101,192,.12);color:#1565C0;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">›</button>
     </div>
   </div>
 
@@ -3213,7 +3302,7 @@ function filterGamesBasq(phase, btn) {
 
 // ── PÁGINA TIMES ────────────────────────────────────────────────────────────
 function loadTimes() {
-  // Carrega times da tabela do vôlei já carregada
+  // Carrega times da tabela do vôlei já carregada com clique abrindo modal
   const grpMap = {
     grupoA: 'timesGrupoA', grupoB: 'timesGrupoB',
     grupoC: 'timesGrupoC', grupoD: 'timesGrupoD'
@@ -3227,15 +3316,201 @@ function loadTimes() {
       return;
     }
     el.innerHTML = rows.map(r => `
-      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
-        <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${r.ic||'🏐'}</div>
-        <div>
+      <div onclick="openTimeInfo('${(r.name||r.nm||'').replace(/'/g,"\\'")}','${(r.city||'').replace(/'/g,"\\'")}','','','','')" style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s;">
+        <div style="width:40px;height:40px;background:linear-gradient(135deg,#DBEAFE,#BFDBFE);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏐</div>
+        <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;color:#111827;">${r.name||r.nm||'—'}</div>
-          <div style="font-size:11px;color:#9CA3AF;">${r.city||grp.replace('grupo','Grupo ')}</div>
+          <div style="font-size:11px;color:#9CA3AF;">📍 ${r.city||grp.replace('grupo','Grupo ')}</div>
         </div>
+        <div style="font-size:18px;color:#CBD5E1;">›</div>
       </div>`).join('');
   });
 }
+
+// ── MODAL INFO TIME ──────────────────────────────────────────
+function openTimeInfo(nome, cidade, instagram, responsavel, capitao, extra) {
+  const modal = document.getElementById('timeInfoModal');
+  if (!modal) return;
+  document.getElementById('tiNome').textContent = nome || '—';
+  document.getElementById('tiCidade').textContent = cidade || '—';
+  document.getElementById('tiInsta').textContent = instagram || 'Não informado';
+  document.getElementById('tiInsta').href = instagram ? 'https://instagram.com/'+instagram.replace('@','') : '#';
+  document.getElementById('tiResp').textContent = responsavel || 'A informar';
+  document.getElementById('tiCap').textContent = capitao || 'A informar';
+  modal.style.display = 'flex';
+  setTimeout(() => modal.querySelector('.ti-sheet').classList.add('open'), 10);
+}
+function closeTimeInfo() {
+  const modal = document.getElementById('timeInfoModal');
+  if (!modal) return;
+  modal.querySelector('.ti-sheet').classList.remove('open');
+  setTimeout(() => { modal.style.display = 'none'; }, 320);
+}
+
+// ── ATLETA DESTAQUE ──────────────────────────────────────────
+const ATLETA_KEY = 'atletaDestaque_v1';
+const VOLEI_JOGOS = 18;
+const BASQ_JOGOS  = 8;
+
+function atletaTab(sport, btn) {
+  document.getElementById('atletaTabVoleiBtn').style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
+  document.getElementById('atletaTabBasqBtn').style.cssText  = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
+  btn.style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,' + (sport==='volei'?'#1565C0,#1976D2':'#C8960C,#a87b09') + ');color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.32);';
+  document.getElementById('atletaVoleiSection').style.display = sport==='volei'?'block':'none';
+  document.getElementById('atletaBasqSection').style.display  = sport==='basquete'?'block':'none';
+}
+
+function renderAtletas() {
+  const data = JSON.parse(localStorage.getItem(ATLETA_KEY) || '{}');
+  // Vôlei
+  const vl = document.getElementById('atletaVoleiList');
+  if (vl) {
+    let html = '';
+    for (let i = 1; i <= VOLEI_JOGOS; i++) {
+      const a = data['v'+i];
+      html += `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+        <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'#EEF4FF'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · Vôlei</div>
+          <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
+          ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
+        </div>
+        ${a ? '<div style="font-size:18px;">🏐</div>' : ''}
+      </div>`;
+    }
+    vl.innerHTML = html;
+  }
+  // Basquete
+  const bl = document.getElementById('atletaBasqList');
+  if (bl) {
+    let html = '';
+    for (let i = 1; i <= BASQ_JOGOS; i++) {
+      const a = data['b'+i];
+      html += `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+        <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'linear-gradient(135deg,#FEF3C7,#FDE68A)'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · Basquete</div>
+          <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
+          ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
+        </div>
+        ${a ? '<div style="font-size:18px;">🏀</div>' : ''}
+      </div>`;
+    }
+    bl.innerHTML = html;
+  }
+}
+
+function admSalvarAtleta() {
+  const sport = document.getElementById('admAtletaSport').value;
+  const jogo  = parseInt(document.getElementById('admAtletaJogo').value);
+  const nome  = document.getElementById('admAtletaNome').value.trim();
+  const time  = document.getElementById('admAtletaTime').value.trim();
+  if (!jogo || !nome) { showToast('⚠️ Preencha jogo e nome!'); return; }
+  const data = JSON.parse(localStorage.getItem(ATLETA_KEY) || '{}');
+  data[(sport==='volei'?'v':'b')+jogo] = { nome, time };
+  localStorage.setItem(ATLETA_KEY, JSON.stringify(data));
+  renderAtletas();
+  document.getElementById('admAtletaNome').value = '';
+  document.getElementById('admAtletaTime').value = '';
+  showToast('⭐ Atleta Destaque salvo!');
+  document.getElementById('admAtletaStatus').textContent = `✅ Jogo ${jogo} (${sport}) → ${nome} (${time})`;
+}
+
+// ── CARROSSEL DE NOTÍCIAS ──────────────────────────────────────
+const NEWS_KEY = 'supercopaNoticias_v1';
+const DEFAULT_NEWS = [
+  { ic:'🎉', cat:'Evento', catColor:'#1565C0', titulo:'Inscrições para a edição 2026 abrem em Setembro!', data:'Maio 2026' },
+  { ic:'🏆', cat:'Histórico', catColor:'#C8960C', titulo:'ES Volei conquista o título da 5ª Supercopa AFC', data:'Novembro 2025' },
+  { ic:'📍', cat:'Estrutura', catColor:'#16A34A', titulo:'Ginásio Central passa por reforma para a edição 2026', data:'Março 2026' },
+];
+let newsIdx = 0;
+let newsTimer = null;
+
+function getNews() {
+  const saved = localStorage.getItem(NEWS_KEY);
+  return saved ? JSON.parse(saved) : DEFAULT_NEWS;
+}
+function saveNews(arr) {
+  localStorage.setItem(NEWS_KEY, JSON.stringify(arr));
+}
+
+function renderNewsCarousel() {
+  const news = getNews();
+  const container = document.getElementById('newsCarousel');
+  const dots = document.getElementById('newsDots');
+  if (!container || !dots) return;
+  container.innerHTML = news.map((n, i) => `
+    <div style="min-width:100%;box-sizing:border-box;padding:0 2px;">
+      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 10px rgba(0,0,0,.06);">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${n.ic||'📰'}</div>
+        <div style="flex:1;">
+          <div style="font-size:10px;color:${n.catColor||'#1565C0'};font-weight:800;text-transform:uppercase;letter-spacing:.6px;">${n.cat||'Notícia'}</div>
+          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.35;margin-top:3px;">${n.titulo}</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:5px;">${n.data||''}</div>
+        </div>
+      </div>
+    </div>`).join('');
+  dots.innerHTML = news.map((_, i) => `<div onclick="newsGoTo(${i})" style="width:${i===newsIdx?'18':'7'}px;height:7px;border-radius:999px;background:${i===newsIdx?'#1565C0':'#CBD5E1'};cursor:pointer;transition:all .3s;"></div>`).join('');
+  container.style.transform = `translateX(-${newsIdx*100}%)`;
+}
+
+function newsGoTo(i) {
+  const news = getNews();
+  newsIdx = Math.max(0, Math.min(i, news.length-1));
+  renderNewsCarousel();
+  resetNewsTimer();
+}
+function newsSlide(dir) { newsGoTo(newsIdx + dir); }
+function resetNewsTimer() {
+  if (newsTimer) clearInterval(newsTimer);
+  newsTimer = setInterval(() => { newsGoTo((newsIdx+1) % getNews().length); }, 5000);
+}
+
+function admAdicionarNoticia() {
+  const ic    = document.getElementById('admNewsIc').value.trim() || '📰';
+  const cat   = document.getElementById('admNewsCat').value.trim() || 'Notícia';
+  const titulo = document.getElementById('admNewsTitulo').value.trim();
+  const data  = document.getElementById('admNewsData').value.trim() || new Date().toLocaleDateString('pt-BR', {month:'long',year:'numeric'});
+  if (!titulo) { showToast('⚠️ Digite o título da notícia!'); return; }
+  const news = getNews();
+  news.unshift({ ic, cat, catColor: '#1565C0', titulo, data });
+  saveNews(news);
+  renderNewsCarousel();
+  document.getElementById('admNewsIc').value = '';
+  document.getElementById('admNewsCat').value = '';
+  document.getElementById('admNewsTitulo').value = '';
+  document.getElementById('admNewsData').value = '';
+  admRenderNewsList();
+  showToast('✅ Notícia adicionada!');
+}
+
+function admRenderNewsList() {
+  const el = document.getElementById('admNewsList');
+  if (!el) return;
+  const news = getNews();
+  el.innerHTML = news.map((n, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;">
+      <span style="font-size:18px;flex-shrink:0;">${n.ic||'📰'}</span>
+      <div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.titulo}</div><div style="font-size:10px;color:var(--muted);">${n.data}</div></div>
+      <button onclick="admDeletarNoticia(${i})" style="background:rgba(255,64,64,.15);border:none;border-radius:8px;width:28px;height:28px;color:#ff6b6b;font-size:14px;cursor:pointer;flex-shrink:0;">🗑</button>
+    </div>`).join('') || '<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px;">Nenhuma notícia</div>';
+}
+
+function admDeletarNoticia(i) {
+  const news = getNews();
+  news.splice(i, 1);
+  saveNews(news);
+  renderNewsCarousel();
+  admRenderNewsList();
+  showToast('🗑 Notícia removida');
+}
+
+// Init após DOM
+document.addEventListener('DOMContentLoaded', () => {
+  renderNewsCarousel();
+  renderAtletas();
+  resetNewsTimer();
+});
 
 function showTimesTab(tab) {
   document.getElementById('timesVolei').style.display    = tab==='volei'    ? 'block' : 'none';
@@ -3486,6 +3761,9 @@ function admTab(tab,btn){
   document.getElementById('admNotif').style.display=tab==='notif'?'block':'none';
   if(tab==='notif') admPushCarregarStatus();
   document.getElementById('admBasq') && (document.getElementById('admBasq').style.display=tab==='basq'?'block':'none');
+  document.getElementById('admAtleta') && (document.getElementById('admAtleta').style.display=tab==='atleta'?'block':'none');
+  document.getElementById('admNoticias') && (document.getElementById('admNoticias').style.display=tab==='noticias'?'block':'none');
+  if(tab==='noticias') admRenderNewsList();
   if(tab==='resultados') admCarregarResultados();
 }
 function checkPwBolao(){ return true; } // senha já validada no login do admin
@@ -4962,17 +5240,34 @@ startIndexSheetCycle();
   </div>
 </section>
 
-<section id="atletaPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
-  <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
-    <button onclick="nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-    <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Atleta Destaque</div>
+<section id="atletaPage" class="page" style="background:#f8f9fc;padding-bottom:120px;min-height:100vh;">
+  <div style="background:linear-gradient(145deg,#1565C0,#1976D2);padding:20px 16px 20px;display:flex;align-items:center;gap:12px;">
+    <button onclick="nav('homePage',document.querySelectorAll('.nav-btn')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Atleta Destaque</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;">Melhores jogadores por jogo</div>
+    </div>
   </div>
-  <div style="padding:24px 16px;text-align:center;">
-    <div style="font-size:48px;margin-bottom:16px;">⭐</div>
-    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:8px;">Atleta em Destaque</div>
-    <div style="font-size:14px;color:#9CA3AF;margin-bottom:24px;">Os melhores jogadores do torneio</div>
-    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-      <div style="font-size:13px;color:#9CA3AF;">Os atletas em destaque serão revelados durante o evento.</div>
+
+  <!-- Seletor de modalidade -->
+  <div style="display:flex;gap:8px;margin:14px 16px;padding:5px;background:#EEF2F9;border:1px solid #E2E8F2;border-radius:16px;">
+    <button id="atletaTabVoleiBtn" onclick="atletaTab('volei',this)" style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#1565C0,#1976D2);color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.32);">🏐 Vôlei</button>
+    <button id="atletaTabBasqBtn" onclick="atletaTab('basquete',this)" style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;">🏀 Basquete</button>
+  </div>
+
+  <!-- VÔLEI: 18 jogos -->
+  <div id="atletaVoleiSection">
+    <div style="padding:0 16px 8px;">
+      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">18 Jogos · Vôlei</div>
+      <div id="atletaVoleiList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px;"></div>
+    </div>
+  </div>
+
+  <!-- BASQUETE: 8 jogos -->
+  <div id="atletaBasqSection" style="display:none;">
+    <div style="padding:0 16px 8px;">
+      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">8 Jogos · Basquete</div>
+      <div id="atletaBasqList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px;"></div>
     </div>
   </div>
 </section>
