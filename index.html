@@ -540,114 +540,54 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
 
 /* ============================================================
-   BOTTOM NAV — LIQUID GLASS
+   BOTTOM NAV — MODERN FLOATING
 ============================================================ */
-.bnav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 200;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px);
-  background: transparent;
+.bnav{
+  position:fixed;left:0;right:0;bottom:0;z-index:200;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0 12px 10px;
+  padding-bottom:max(env(safe-area-inset-bottom,0px), 10px);
+  background:linear-gradient(to top, rgba(246,248,252,.96) 60%, rgba(246,248,252,0));
+  pointer-events:none;
 }
-
-/* Pill deslizante — relativo ao .bnav-items */
-.bnav-pill {
-  position: absolute;
-  top: 0; bottom: 0;
-  height: 100%;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
-  box-shadow: 0 4px 20px rgba(21,101,192,0.40), 0 2px 6px rgba(21,101,192,0.25);
-  transition: left 0.40s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.32s cubic-bezier(0.34,1.2,.64,1);
-  z-index: 0;
-  pointer-events: none;
+.bnav-items{
+  pointer-events:auto;
+  display:flex;align-items:center;justify-content:space-around;
+  width:100%;max-width:460px;height:64px;
+  background:#ffffff;
+  border:1px solid #E8ECF4;
+  border-radius:22px;
+  box-shadow:0 10px 30px rgba(13,71,161,.12), 0 2px 6px rgba(13,71,161,.06);
+  padding:6px;
+  position:relative;
 }
-
-/* Brilho interno do pill */
-.bnav-pill::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  border-radius: 17px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, transparent 60%);
+.bnav-pill{ display:none; }
+.nav-btn{
+  flex:1;background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:6px 4px;height:100%;min-width:0;
+  color:#94A3B8;border-radius:14px;
+  transition:color .2s ease, background .2s ease, transform .2s ease;
+  -webkit-tap-highlight-color:transparent;position:relative;
 }
-
-.bnav-items {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 480px;
-  position: relative;
-  z-index: 1;
-  height: 56px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(30px) saturate(2);
-  -webkit-backdrop-filter: blur(30px) saturate(2);
-  border-radius: 20px;
-  padding: 4px;
-  box-shadow: 0 2px 24px rgba(21,101,192,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
-  border: 1px solid rgba(255,255,255,0.7);
+.nav-btn .ni{
+  font-size:20px;line-height:1;display:block;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
 }
-
-.nav-btn {
-  flex: 1;
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 4px 2px;
-  color: #5a7aaa;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  border-radius: 14px;
-  transition: color 0.25s ease;
-  -webkit-tap-highlight-color: transparent;
-  min-width: 0;
+.nav-btn small{
+  font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;opacity:.9;
 }
-
-.nav-btn .ni {
-  font-size: 20px;
-  transition: transform 0.35s cubic-bezier(0.34,1.56,.64,1), filter 0.25s;
-  display: block;
-  line-height: 1;
+.nav-btn.on{
+  color:#1565C0;
+  background:linear-gradient(180deg,#EAF2FB,#DCE9F8);
 }
-
-.nav-btn small {
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  transition: opacity 0.25s, transform 0.25s;
-  opacity: 0.85;
-  white-space: nowrap;
+.nav-btn.on .ni{ transform:translateY(-1px) scale(1.12); }
+.nav-btn.on small{ font-weight:800; }
+.nav-btn.on::after{
+  content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:18px;height:3px;border-radius:3px;background:#1565C0;
 }
-
-/* Estado ativo */
-.nav-btn.on {
-  color: #ffffff;
-}
-.nav-btn.on .ni {
-  transform: translateY(-2px) scale(1.18);
-  filter: drop-shadow(0 2px 8px rgba(255,255,255,0.5));
-}
-.nav-btn.on small {
-  opacity: 1;
-  font-weight: 800;
-}
-
-/* Animação de toque */
-.nav-btn:active .ni {
-  transform: scale(0.88);
-}
+.nav-btn:active{ transform:scale(.94); }
 
 /* Badge de notificação */
 .nav-badge { position: relative; }
@@ -1240,6 +1180,26 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <div style="font-size:9px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:700;">Seg</div>
       </div>
     </div>
+
+    <!-- INFO MODALIDADES (Vôlei + Basquete) -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;position:relative;z-index:1;">
+      <div style="background:rgba(255,255,255,.10);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:16px;">🏐</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;letter-spacing:.5px;">VÔLEI</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.85);margin-top:4px;font-weight:600;">12 times · 4 grupos</div>
+        <div style="font-size:10px;color:#F4C542;margin-top:2px;font-weight:700;">Sáb 28 · Dom 29 Nov</div>
+      </div>
+      <div style="background:rgba(244,197,66,.14);backdrop-filter:blur(10px);border:1px solid rgba(244,197,66,.35);border-radius:14px;padding:10px 12px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:16px;">🏀</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;letter-spacing:.5px;">BASQUETE</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.85);margin-top:4px;font-weight:600;">6 times · 2 grupos</div>
+        <div style="font-size:10px;color:#F4C542;margin-top:2px;font-weight:700;">Sáb 28 · Dom 29 Nov</div>
+      </div>
+    </div>
   </div>
 
   <!-- ============ GUIA DA SUPERCOPA ============ -->
@@ -1304,6 +1264,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button onclick="nav('chatPage',null)" class="home-card">
         <div class="home-ic" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">🤖</div>
         <div class="home-lbl">Chat IA</div>
+      </button>
+      <button onclick="nav('timesPage',null);loadTimes()" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#E0F2FE,#BAE6FD);">👥</div>
+        <div class="home-lbl">Times Inscritos</div>
+      </button>
+      <button onclick="nav('atletaPage',null)" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FFF7CC,#FFE066);">🏅</div>
+        <div class="home-lbl">Melhor da Partida</div>
       </button>
     </div>
   </div>
@@ -1372,67 +1340,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </section>
 
-<div class="sports-banner">
-    <div class="sb-bg" id="sbBg"></div>
-    <div class="sb-ov"></div>
-    <div class="sb-body">
-      <div>
-        <div class="sb-tag">Multiesporte</div>
-        <div class="sb-title">VOLEIBOL<br>& BASQUETE</div>
-        <div class="sb-sub">Dois esportes · Uma arena · Uma festa</div>
-        <div class="sb-icons"><div class="sb-ic">🏐</div><div class="sb-ic">🏀</div></div>
-      </div>
-      <div class="sb-bolt">⚡</div>
-    </div>
-  </div>
 
-  <div class="stats-grid">
-    <div class="stat"><div class="stat-n">12</div><div class="stat-l">Times Vôlei</div></div>
-    <div class="stat"><div class="stat-n">6</div><div class="stat-l">Times Basket</div></div>
-    <div class="stat"><div class="stat-n" style="font-size:16px">R$0</div><div class="stat-l">Inscrição</div></div>
-    <div class="stat"><div class="stat-n">6ª</div><div class="stat-l">Edição</div></div>
-  </div>
-
-  <!-- TRANSMISSÃO AO VIVO -->
-  <div class="sec"><span class="sec-title">📺 Transmissão</span></div>
-  <div class="live-video-card">
-    <div class="lv-header">
-      <strong>Ao Vivo · 29 Nov</strong>
-      <div class="live-pill"><span class="live-dot"></span>EM BREVE</div>
-    </div>
-    <div class="lv-placeholder" onclick="showToast('📺 Transmissão disponível durante o evento!')">
-      <div class="lv-play">▶</div>
-      <div class="lv-sub">Clique para assistir ao vivo no evento</div>
-    </div>
-  </div>
-
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">Times Inscritos</span><span class="sec-link" onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])">VER TODOS →</span></div>
-  <p style="font-size:11px;color:var(--muted);padding:0 16px 9px;">👉 Toque para ver o perfil</p>
-  <div class="hscroll">
-    <div class="team-chip gold" onclick="openTeam('ES Volei','Vitória, ES','🏆',3,3,9)"><div class="tc-av">🏆</div><div><div class="tc-name">ES Volei</div><div class="tc-city">Vitória, ES</div><div class="tc-badge">CAMPEÃO 2025</div></div></div>
-    <div class="team-chip" onclick="openTeam('Equipe UVI','Itaperuna, RJ','🥈',3,2,6)"><div class="tc-av">🥈</div><div><div class="tc-name">Equipe UVI</div><div class="tc-city">Itaperuna, RJ</div><div class="tc-badge">VICE 2025</div></div></div>
-    <div class="team-chip" onclick="openTeam('CT Montanhas','Afonso Cláudio, ES','🏠',3,1,3)"><div class="tc-av">🏠</div><div><div class="tc-name">CT Montanhas</div><div class="tc-city">Afonso Cláudio, ES</div><div class="tc-badge">EQUIPE DA CASA</div></div></div>
-    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, RJ</div><div class="tc-badge">EM BREVE</div></div></div>
-    <div class="team-chip" style="border-style:dashed;opacity:.5;"><div class="tc-av">❓</div><div><div class="tc-name">Equipe X</div><div class="tc-city">Cidade, ES</div><div class="tc-badge">EM BREVE</div></div></div>
-  </div>
-
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">🏅 Melhor da Partida</span><span class="sec-link">Destaques por Jogo · 2025</span></div>
-  <div class="mvp-strip" id="mvpStrip">
-    <div class="mvp-card no1"><div class="mvp-rank">1°</div><div class="mvp-av">🏐</div><div class="mvp-nm">João Silva</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">142</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">2°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Pedro Costa</div><div class="mvp-tm">Equipe UVI</div><div class="mvp-pts">118</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">3°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Carlos Lima</div><div class="mvp-tm">CT Montanhas</div><div class="mvp-pts">97</div><div class="mvp-pl">destaque</div></div>
-    <div class="mvp-card"><div class="mvp-rank" style="color:var(--muted)">4°</div><div class="mvp-av">🏐</div><div class="mvp-nm">Lucas Melo</div><div class="mvp-tm">ES Volei</div><div class="mvp-pts">84</div><div class="mvp-pl">destaque</div></div>
-  </div>
-
-  <!-- NEWS -->
-  <div class="sec" style="padding-top:18px;"><span class="sec-title">📰 Notícias</span></div>
-  <div class="news-list" id="newsList">
-    <div class="news-card"><div class="news-ic">🎉</div><div><div class="news-tag">Evento</div><div class="news-title">Inscrições para a 6ª edição abrem em Setembro!</div><div class="news-date">Maio 2026</div></div></div>
-    <div class="news-card"><div class="news-ic">🏆</div><div><div class="news-tag">Histórico</div><div class="news-title">ES Volei conquista o título da 5ª Supercopa AFC</div><div class="news-date">Novembro 2025</div></div></div>
-    <div class="news-card"><div class="news-ic">📍</div><div><div class="news-tag">Estrutura</div><div class="news-title">Ginásio Central passa por reforma para a edição 2026</div><div class="news-date">Março 2026</div></div></div>
-  </div>
-
-</section>
 
 <!-- ==================== JOGOS ==================== -->
 <section id="gamesPage" class="page">
