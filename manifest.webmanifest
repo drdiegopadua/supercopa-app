@@ -2,7 +2,7 @@
   "name": "Supercopa AFC",
   "short_name": "Supercopa AFC",
   "description": "Aplicativo oficial da Supercopa AFC",
-  "start_url": "./index (58).html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f0f4ff",
