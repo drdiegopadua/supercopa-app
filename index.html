@@ -154,7 +154,6 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    TOPBAR
 ============================================================ */
-.home-active .topbar{display:none!important;}
 .topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),12px);padding-bottom:12px;background:var(--topbar);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .35s;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-logo{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(244,197,66,.35));}
@@ -556,14 +555,15 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   background: transparent;
 }
 
-/* Pill deslizante — dentro do .bnav-items */
+/* Pill deslizante — relativo ao .bnav-items */
 .bnav-pill {
   position: absolute;
-  top: 4px; bottom: 4px;
-  border-radius: 14px;
+  top: 0; bottom: 0;
+  height: 100%;
+  border-radius: 16px;
   background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
-  box-shadow: 0 4px 16px rgba(21,101,192,0.35);
-  transition: left 0.38s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.30s cubic-bezier(0.34,1.2,.64,1);
+  box-shadow: 0 4px 20px rgba(21,101,192,0.40), 0 2px 6px rgba(21,101,192,0.25);
+  transition: left 0.40s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.32s cubic-bezier(0.34,1.2,.64,1);
   z-index: 0;
   pointer-events: none;
 }
@@ -608,8 +608,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   cursor: pointer;
   position: relative;
   z-index: 2;
-  height: calc(100% - 8px);
-  margin: 4px 0;
+  height: 100%;
   border-radius: 14px;
   transition: color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
@@ -838,9 +837,16 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .mais-admin-card{grid-column:span 2;background:rgba(255,64,64,.06);border:1px solid rgba(255,64,64,.2);border-radius:15px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.18s;}
 .mais-admin-card:active{transform:scale(.98);}
 
+
+/* Home redesign helpers */
+.home-card{background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;transition:transform .12s ease, box-shadow .15s;}
+.home-card:active{transform:scale(.96);box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.home-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);}
+.home-lbl{font-size:11.5px;font-weight:700;color:#0F172A;text-align:center;line-height:1.15;}
+
 </style>
 </head>
-<body class="day home-active">
+<body class="day">
 
 <!-- FIREWORKS -->
 <div id="fireworks"></div>
@@ -1180,7 +1186,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <div id="toast"></div>
 
 <!-- TOPBAR -->
-<header class="topbar" id="mainTopbar">
+<header class="topbar">
   <div class="brand">
     <img class="brand-logo" id="topLogo" src="splash-logo.jpeg" alt="Supercopa AFC">
     <div class="brand-text">
@@ -1199,156 +1205,174 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <main>
 
 <!-- ==================== HOME ==================== -->
-<section id="homePage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
+<section id="homePage" class="page" style="background:#f6f8fc;padding-bottom:110px;min-height:100vh;">
 
   <!-- HERO -->
-  <div style="background:linear-gradient(145deg,#1565C0 0%,#1976D2 100%);padding:16px 16px 20px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(200,150,12,0.12);pointer-events:none;"></div>
+  <div style="background:linear-gradient(160deg,#0D47A1 0%,#1565C0 55%,#1976D2 100%);padding:26px 20px 30px;position:relative;overflow:hidden;border-radius:0 0 28px 28px;box-shadow:0 8px 28px rgba(13,71,161,.25);">
+    <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-30px;left:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(244,197,66,.22),transparent 70%);pointer-events:none;"></div>
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;position:relative;z-index:1;">
+      <img id="heroLogo" src="splash-logo.jpeg" style="width:54px;height:54px;border-radius:14px;object-fit:contain;background:rgba(255,255,255,.18);padding:5px;box-shadow:0 4px 12px rgba(0,0,0,.18);" alt="">
+      <div style="flex:1;">
+        <div style="font-size:10px;color:rgba(255,255,255,.7);letter-spacing:3px;text-transform:uppercase;font-weight:700;">6ª Edição · 2026</div>
+        <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;line-height:1.05;letter-spacing:.5px;">Supercopa AFC</div>
+        <div style="font-size:11px;color:#F4C542;font-weight:700;margin-top:2px;">📍 Afonso Cláudio · ES</div>
+      </div>
+    </div>
 
     <!-- Countdown -->
     <div style="display:flex;gap:8px;position:relative;z-index:1;">
-      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
-        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdD">—</div>
-        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Dias</div>
+      <div style="flex:1;background:rgba(255,255,255,.13);backdrop-filter:blur(8px);border-radius:14px;padding:12px 4px;text-align:center;border:1px solid rgba(255,255,255,.1);">
+        <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdD">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:600;">Dias</div>
       </div>
-      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
-        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdH">—</div>
-        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Horas</div>
+      <div style="flex:1;background:rgba(255,255,255,.13);backdrop-filter:blur(8px);border-radius:14px;padding:12px 4px;text-align:center;border:1px solid rgba(255,255,255,.1);">
+        <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdH">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:600;">Horas</div>
       </div>
-      <div style="flex:1;background:rgba(255,255,255,0.13);border-radius:12px;padding:10px 4px;text-align:center;">
-        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#fff;line-height:1;" id="cdM">—</div>
-        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Min</div>
+      <div style="flex:1;background:rgba(255,255,255,.13);backdrop-filter:blur(8px);border-radius:14px;padding:12px 4px;text-align:center;border:1px solid rgba(255,255,255,.1);">
+        <div style="font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;" id="cdM">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:600;">Min</div>
       </div>
-      <div style="flex:1;background:rgba(255,255,255,0.16);border-radius:12px;padding:10px 4px;text-align:center;border:1px solid rgba(244,197,66,0.35);">
-        <div style="font-family:'Anton',sans-serif;font-size:24px;color:#F4C542;line-height:1;" id="cdS">—</div>
-        <div style="font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Seg</div>
+      <div style="flex:1;background:rgba(244,197,66,.22);border-radius:14px;padding:12px 4px;text-align:center;border:1px solid rgba(244,197,66,.45);box-shadow:0 0 16px rgba(244,197,66,.18);">
+        <div style="font-family:'Anton',sans-serif;font-size:26px;color:#F4C542;line-height:1;" id="cdS">—</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:700;">Seg</div>
       </div>
     </div>
   </div>
 
-  <!-- GUIA DA SUPERCOPA -->
-  <div style="padding:22px 16px 0;">
-    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Guia da Supercopa</div>
-    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Tudo sobre o torneio</div>
+  <!-- ============ GUIA DA SUPERCOPA ============ -->
+  <div style="padding:24px 16px 0;">
+    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Guia da Supercopa</div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Tudo sobre o torneio</div>
+      </div>
+      <div style="font-size:10px;font-weight:700;color:#1565C0;background:#E6EEF8;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;">5 atalhos</div>
+    </div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
-      <button onclick="nav('timesPage',null);loadTimes()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">👥</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Times</div>
-</button>
-<button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏐</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Jogos</div>
-</button>
-<button onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📊</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Tabela</div>
-</button>
-<button onclick="nav('bracketPage',document.querySelectorAll('.nav-btn')[3])" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏆</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Mata-mata</div>
-</button>
-<button onclick="nav('chatPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#F0FDF4;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🤖</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Chat IA</div>
-</button>
-<button onclick="nav('galleryPage',null);renderGallery('2025')" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#FFF0F0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📸</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Galeria</div>
-</button>
-<button onclick="nav('historyPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#F5F0FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏅</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">História</div>
-</button>
-<button onclick="nav('mapPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🗺️</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Mapa</div>
-</button>
-<button onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#F8F8F8;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📋</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Regulamento</div>
-</button>
-<button onclick="toggleNotificacoes(document.getElementById('btnPushToggle'))" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🔔</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Notificações</div>
-</button>
+      <button onclick="nav('timesPage',null);loadTimes()" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);">👥</div>
+        <div class="home-lbl">Times</div>
+      </button>
+      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1])" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">🏐</div>
+        <div class="home-lbl">Jogos</div>
+      </button>
+      <button onclick="nav('tablePage',document.querySelectorAll('.nav-btn')[2])" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">📊</div>
+        <div class="home-lbl">Tabela</div>
+      </button>
+      <button onclick="nav('bracketPage',document.querySelectorAll('.nav-btn')[3])" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FFE4E6,#FECDD3);">🏆</div>
+        <div class="home-lbl">Mata-mata</div>
+      </button>
+      <button onclick="window.open('https://www.supercopaafc.com.br/regulamento.html')" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#F3E8FF,#E9D5FF);">📋</div>
+        <div class="home-lbl">Regras</div>
+      </button>
     </div>
   </div>
 
-  <!-- SOCIAL -->
-  <div style="padding:22px 16px 0;">
-    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Social</div>
-    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Interaja com o evento</div>
+  <!-- ============ SOCIAL ============ -->
+  <div style="padding:24px 16px 0;">
+    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Social</div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Interaja com o evento</div>
+      </div>
+      <div style="font-size:10px;font-weight:700;color:#C8960C;background:#FEF6E0;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;">Engaje-se</div>
+    </div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
-      <button onclick="nav('transmissaoPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#FFF0F0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">📡</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Transmissão</div>
-</button>
-<button onclick="nav('atletaPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">⭐</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Atleta Destaque</div>
-</button>
-<button onclick="nav('bolaoPage',null);renderBolao()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#FFF8E6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🎯</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Bolão</div>
-</button>
-<button onclick="nav('quizPage',null);initQuiz()" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🧠</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Quiz</div>
-</button>
-<button onclick="nav('cardgenPage',null)" style="background:#fff;border:1.5px solid #E8ECF4;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-  <div style="width:44px;height:44px;background:#EEF4FF;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">🖼️</div>
-  <div style="font-size:12px;font-weight:700;color:#111827;text-align:center;line-height:1.2;">Card Social</div>
-</button>
+      <button onclick="nav('transmissaoPage',null)" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FFE4E6,#FECDD3);">📡</div>
+        <div class="home-lbl">Live</div>
+      </button>
+      <button onclick="nav('atletaPage',null)" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">⭐</div>
+        <div class="home-lbl">Atleta</div>
+      </button>
+      <button onclick="nav('bolaoPage',null);renderBolao()" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#FEF6E0,#F4C542);">🎯</div>
+        <div class="home-lbl">Bolão</div>
+      </button>
+      <button onclick="nav('quizPage',null);initQuiz()" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);">🧠</div>
+        <div class="home-lbl">Quiz</div>
+      </button>
+      <button onclick="nav('chatPage',null)" class="home-card">
+        <div class="home-ic" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">🤖</div>
+        <div class="home-lbl">Chat IA</div>
+      </button>
     </div>
   </div>
 
-  <!-- INFO DO EVENTO -->
-  <div style="padding:22px 16px 0;">
-    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">O Evento</div>
-    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">Informações gerais</div>
-    <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
-        <div style="width:36px;height:36px;background:#EEF4FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">📅</div>
-        <div><div style="font-size:13px;font-weight:600;color:#111827;">28 e 29 de Novembro de 2026</div><div style="font-size:11px;color:#9CA3AF;">Data do evento</div></div>
+  <!-- ============ MODALIDADES ============ -->
+  <div style="padding:24px 16px 0;">
+    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Modalidades</div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:2px;">2 esportes · 1 arena</div>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
-        <div style="width:36px;height:36px;background:#EEF4FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">📍</div>
-        <div><div style="font-size:13px;font-weight:600;color:#111827;">Ginásio Central · Afonso Cláudio, ES</div><div style="font-size:11px;color:#9CA3AF;">Local do evento</div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #F3F4F6;">
-        <div style="width:36px;height:36px;background:#FFF8E6;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🏅</div>
-        <div><div style="font-size:13px;font-weight:600;color:#111827;">R$ 5.000 em premiação</div><div style="font-size:11px;color:#9CA3AF;">Troféus e medalhas incluídos</div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;">
-        <div style="width:36px;height:36px;background:#F0FDF4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🆓</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#111827;">Inscrição gratuita</div><div style="font-size:11px;color:#9CA3AF;">Para todas as equipes</div></div>
-        <a href="https://www.supercopaafc.com.br/inscricao.html" target="_blank" style="background:#1565C0;color:#fff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">Inscrever</a>
-      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('volei','games')" style="background:linear-gradient(145deg,#1565C0,#1976D2);border:none;border-radius:20px;padding:20px 16px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(21,101,192,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
+        <div style="position:absolute;top:-10px;right:-10px;font-size:78px;opacity:.18;">🏐</div>
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:700;">Modalidade</div>
+        <div style="font-family:'Anton',sans-serif;font-size:28px;line-height:1;margin-top:6px;">VÔLEI</div>
+        <div style="font-size:11px;opacity:.9;margin-top:8px;font-weight:600;">12 times · 4 grupos</div>
+        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.18);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
+      </button>
+      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('basquete','games')" style="background:linear-gradient(145deg,#C8960C,#a87b09);border:none;border-radius:20px;padding:20px 16px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(200,150,12,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
+        <div style="position:absolute;top:-10px;right:-10px;font-size:78px;opacity:.18;">🏀</div>
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:700;">Modalidade</div>
+        <div style="font-family:'Anton',sans-serif;font-size:28px;line-height:1;margin-top:6px;">BASQUETE</div>
+        <div style="font-size:11px;opacity:.9;margin-top:8px;font-weight:600;">6 times · 2 grupos</div>
+        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
+      </button>
     </div>
   </div>
 
-  <!-- MODALIDADES -->
-  <div style="padding:22px 16px 24px;">
-    <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:4px;">Modalidades</div>
-    <div style="font-size:13px;color:#9CA3AF;margin-bottom:16px;">2 esportes · 1 arena</div>
-    <div style="display:flex;gap:10px;">
-      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-        <div style="font-size:32px;margin-bottom:8px;">🏐</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;">Vôlei</div>
-        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">12 times · 4 grupos</div>
+  <!-- ============ NOTÍCIAS ============ -->
+  <div style="padding:24px 16px 8px;">
+    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">📰 Notícias</div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Últimas atualizações</div>
       </div>
-      <div style="flex:1;background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:18px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-        <div style="font-size:32px;margin-bottom:8px;">🏀</div>
-        <div style="font-size:15px;font-weight:700;color:#111827;">Basquete</div>
-        <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">6 times · 2 grupos</div>
+    </div>
+    <div id="newsList" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🎉</div>
+        <div style="flex:1;">
+          <div style="font-size:10px;color:#1565C0;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Evento</div>
+          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">Inscrições para a 6ª edição abrem em Setembro!</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Maio 2026</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#DBEAFE,#BFDBFE);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏆</div>
+        <div style="flex:1;">
+          <div style="font-size:10px;color:#C8960C;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Histórico</div>
+          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">ES Volei conquista o título da 5ª Supercopa AFC</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Novembro 2025</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#DCFCE7,#BBF7D0);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📍</div>
+        <div style="flex:1;">
+          <div style="font-size:10px;color:#16A34A;font-weight:800;text-transform:uppercase;letter-spacing:.6px;">Estrutura</div>
+          <div style="font-size:13px;font-weight:700;color:#0F172A;line-height:1.3;margin-top:2px;">Ginásio Central passa por reforma para a edição 2026</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Março 2026</div>
+        </div>
       </div>
     </div>
   </div>
 
 </section>
 
-  <div class="sports-banner">
+<div class="sports-banner">
     <div class="sb-bg" id="sbBg"></div>
     <div class="sb-ov"></div>
     <div class="sb-body">
@@ -2066,8 +2090,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 <!-- BOTTOM NAV LIQUID GLASS -->
 <nav class="bnav" id="mainNav">
+  <div class="bnav-pill" id="bnavPill"></div>
   <div class="bnav-items" id="bnavItems">
-    <div class="bnav-pill" id="bnavPill"></div>
     <button class="nav-btn on" onclick="nav('homePage',this)" data-idx="0">
       <span class="ni">🏠</span><small>Início</small>
     </button>
@@ -3005,7 +3029,7 @@ async function loadBasqData() {
   try {
     const [resJogos, resMata] = await Promise.all([
       fetch(makeUrl('Fase de Grupos','A1:S15')),
-      fetch(makeUrl('Mata-Mata','A1:N10'))
+      fetch(makeUrl('Mata-Mata','A1:O22'))
     ]);
     const [dataJogos, dataMata] = await Promise.all([
       resJogos.json(), resMata.json()
@@ -3013,11 +3037,9 @@ async function loadBasqData() {
     const rowsJ = dataJogos.values || [];
     const rowsM = dataMata.values  || [];
 
-    // ── Classificação inline (lida da Fase de Grupos rows 10-13) ─────────
-    // Grupo A: cols A-G (0-6) | Grupo B: cols H-N (7-13)
-    // POS=0, EQUIPE=1, J=2, V=3, D=4, PTS=5, SD=6
-    // Classificação: rows 11,12,13 (0-indexed) = times 1,2,3
-    // Grupo A: A(0)=pos, B(1)=equipe, C(2)=J, D(3)=V, E(4)=D, F(5)=PTS, G(6)=SD, H(7)=PM
+    // ── Classificação (rows 11-13 da Fase de Grupos) ─────────────────────
+    // Grupo A: POS=0, EQUIPE=1, J=2, V=3, D=4, PTS=5, SD=6, PM=7
+    // Grupo B: POS=10,EQUIPE=11,J=12,V=13,D=14,PTS=15,SD=16,PM=17
     tableDataBasq.grupoA = [11,12,13].map(r => ({
       pos : _cc(rowsJ,r,0)||'—',
       name: _cc(rowsJ,r,1)||'—',
@@ -3027,44 +3049,41 @@ async function loadBasqData() {
       d   : _cc(rowsJ,r,4)||'0',
       sp  : _cc(rowsJ,r,6)||'0',
       pts : _cc(rowsJ,r,5)||'0'
-    })).filter(r=>r.name&&r.name!=='—'&&r.name!=='EQUIPE');
+    })).filter(r=>r.name&&r.name!=='—'&&r.name.toUpperCase()!=='EQUIPE');
 
-    // Grupo B: cols deslocadas — POS(8),EQUIPE(9),J(10),V(11),D(12),PTS(13),SD(14),PM(15)
     tableDataBasq.grupoB = [11,12,13].map(r => ({
-      pos : _cc(rowsJ,r,8)||'—',
-      name: _cc(rowsJ,r,9)||'—',
+      pos : _cc(rowsJ,r,10)||'—',
+      name: _cc(rowsJ,r,11)||'—',
       city: '',
-      pj  : _cc(rowsJ,r,10)||'0',
-      v   : _cc(rowsJ,r,11)||'0',
-      d   : _cc(rowsJ,r,12)||'0',
-      sp  : _cc(rowsJ,r,14)||'0',
-      pts : _cc(rowsJ,r,13)||'0'
-    })).filter(r=>r.name&&r.name!=='—'&&r.name!=='EQUIPE');
+      pj  : _cc(rowsJ,r,12)||'0',
+      v   : _cc(rowsJ,r,13)||'0',
+      d   : _cc(rowsJ,r,14)||'0',
+      sp  : _cc(rowsJ,r,16)||'0',
+      pts : _cc(rowsJ,r,15)||'0'
+    })).filter(r=>r.name&&r.name!=='—'&&r.name.toUpperCase()!=='EQUIPE');
 
     renderTableBasq(curGrpBasq);
 
-    // ── Jogos ─────────────────────────────────────────────────────────────
-    // Grupo A: rows 4-6 cols B(1),C(2),E(4),F(5),G(6)
-    // Grupo B: rows 4-6 cols H(7),I(8),K(10),L(11),M(12)
+    // ── Jogos (rows 4-6) ─────────────────────────────────────────────────
+    // Grupo A: JOGO=0, EQ1=1, PTS1=3, X=4, PTS2=5, EQ2=6, RESULTADO=8
+    // Grupo B: JOGO=10,EQ1=11,PTS1=13,X=14,PTS2=15,EQ2=16,RESULTADO=18
     const gl = document.getElementById('gamesListBasq');
     if (gl) {
       let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
-      // Grupo A: cols B(1)=eq1, C(2)=pts1, E(4)=pts2, F(5)=eq2, G(6)=resultado
       [4,5,6].forEach((row,idx) => {
-        const casa = _cc(rowsJ,row,1), visit = _cc(rowsJ,row,5);
+        const casa = _cc(rowsJ,row,1), visit = _cc(rowsJ,row,6);
         if (!casa && !visit) return;
-        const ptC = _cc(rowsJ,row,2)||'', ptV = _cc(rowsJ,row,4)||'';
-        const res = _cc(rowsJ,row,6)||'';
+        const ptC = _cc(rowsJ,row,3)||'', ptV = _cc(rowsJ,row,5)||'';
+        const res = _cc(rowsJ,row,8)||'';
         html += basqGameCard(casa, visit, ptC, ptV, res, 'A', idx+1, 'grupos');
       });
 
       html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
-      // Grupo B: cols H(7)=jogo, I(8)=eq1, K(10)=pts1, L(11)=x, M(12)=pts2, N(13)=eq2, O(14)=resultado
       [4,5,6].forEach((row,idx) => {
-        const casa = _cc(rowsJ,row,8), visit = _cc(rowsJ,row,13);
+        const casa = _cc(rowsJ,row,11), visit = _cc(rowsJ,row,16);
         if (!casa && !visit) return;
-        const ptC = _cc(rowsJ,row,10)||'', ptV = _cc(rowsJ,row,12)||'';
-        const res = _cc(rowsJ,row,14)||'';
+        const ptC = _cc(rowsJ,row,13)||'', ptV = _cc(rowsJ,row,15)||'';
+        const res = _cc(rowsJ,row,18)||'';
         html += basqGameCard(casa, visit, ptC, ptV, res, 'B', idx+1, 'grupos');
       });
 
@@ -3088,8 +3107,9 @@ function basqGameCard(casa, visit, ptC, ptV, res, grp, idx, phase) {
   const done = !!(ptC && ptV && (parseInt(ptC) !== 0 || parseInt(ptV) !== 0));
   const casaW  = done && parseInt(ptC) > parseInt(ptV);
   const visitW = done && parseInt(ptV) > parseInt(ptC);
+  const lbl = idx ? `Grupo ${grp} · Jogo ${idx} 🏀` : `${grp} 🏀`;
   return `<div class="gc${done?' done':''}" data-phase="${phase}">
-    <div class="gc-meta">Grupo ${grp} · Jogo ${idx} 🏀</div>
+    <div class="gc-meta">${lbl}</div>
     <div class="gc-row">
       <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div><div class="gc-nm">${casa||'—'}</div></div>
       <div class="gc-score">
@@ -3099,24 +3119,27 @@ function basqGameCard(casa, visit, ptC, ptV, res, grp, idx, phase) {
       </div>
       <div class="gc-team gc-team-r"><div class="gc-nm">${visit||'—'}</div><div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div></div>
     </div>
-    ${res&&res!=='Empate'?`<div class="gc-result">🏆 ${res}</div>`:''}
+    ${res&&res!=='Empate'&&!/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res}</div>`:''}
+    ${/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res.replace(/^CLASSIF:\s*/i,'')}</div>`:''}
   </div>`;
 }
 
 function buildBasqMataHtml(rowsM) {
-  // Mata-Mata sheet: SF1=row3, SF2=row5, Final=row7
-  // cols: EQUIPE1=1, PTS1=2, PTS2=4, EQUIPE2=5, RESULTADO=6
+  // Mata-Mata: SF1=rows 3+4, SF2=rows 8+9, FINAL=rows 14+15
+  // cols: TEAM1=1, TEAM2=7, CLASSIF=12  (pts em row+1 col 1 e col 7)
   let html = '<div class="grp-lbl" data-phase="semi">SEMIFINAL 🏀</div>';
-  [[3,'SF1'],[5,'SF2']].forEach(([r,lbl]) => {
-    const c = _cc(rowsM,r,1), v = _cc(rowsM,r,5);
+  [[3,'SF1'],[8,'SF2']].forEach(([r,lbl]) => {
+    const c = _cc(rowsM,r,1), v = _cc(rowsM,r,7);
     if (!c && !v) return;
-    const pc = _cc(rowsM,r,2)||'', pv = _cc(rowsM,r,4)||'', vc = _cc(rowsM,r,6)||'';
+    const pc = _cc(rowsM,r+1,1)||'', pv = _cc(rowsM,r+1,7)||'';
+    const vc = _cc(rowsM,r,12)||'';
     html += basqGameCard(c, v, pc, pv, vc, lbl, '', 'semi');
   });
   html += '<div class="grp-lbl" data-phase="final">FINAL 🏀</div>';
-  const fc = _cc(rowsM,7,1), fv = _cc(rowsM,7,5);
+  const fc = _cc(rowsM,14,1), fv = _cc(rowsM,14,7);
   if (fc || fv) {
-    const pc = _cc(rowsM,7,2)||'', pv = _cc(rowsM,7,4)||'', vc = _cc(rowsM,7,6)||'';
+    const pc = _cc(rowsM,15,1)||'', pv = _cc(rowsM,15,7)||'';
+    const vc = _cc(rowsM,14,12)||'';
     html += basqGameCard(fc, fv, pc, pv, vc, 'FINAL', '', 'final');
   }
   return html;
@@ -3124,27 +3147,35 @@ function buildBasqMataHtml(rowsM) {
 
 function updateBasqBracket(rowsM) {
   const setEl = (id, val) => { const e=document.getElementById(id); if(e){e.textContent=val||'—';e.className=val?'mt-sc':'mt-sc empty';} };
-  const setNm = (id, val) => { const e=document.getElementById(id); if(e) e.textContent=val||e.textContent; };
-  if (rowsM.length > 4) {
-    setNm('bsf1t1nmB', _cc(rowsM,3,1));
-    setNm('bsf1t2nmB', _cc(rowsM,3,11));
-    setEl('bsf1t1B', _cc(rowsM,3,12));
-    setEl('bsf1t2B', _cc(rowsM,3,13));
-    setNm('bsf2t1nmB', _cc(rowsM,4,1));
-    setNm('bsf2t2nmB', _cc(rowsM,4,11));
-    setEl('bsf2t1B', _cc(rowsM,4,12));
-    setEl('bsf2t2B', _cc(rowsM,4,13));
+  const setNm = (id, val) => { const e=document.getElementById(id); if(e && val) e.textContent=val; };
+  // SF1 (row 3 names, row 4 scores)
+  setNm('bsf1t1nmB', _cc(rowsM,3,1));
+  setNm('bsf1t2nmB', _cc(rowsM,3,7));
+  setEl('bsf1t1B',   _cc(rowsM,4,1));
+  setEl('bsf1t2B',   _cc(rowsM,4,7));
+  // SF2 (row 8 / row 9)
+  setNm('bsf2t1nmB', _cc(rowsM,8,1));
+  setNm('bsf2t2nmB', _cc(rowsM,8,7));
+  setEl('bsf2t1B',   _cc(rowsM,9,1));
+  setEl('bsf2t2B',   _cc(rowsM,9,7));
+  // FINAL (row 14 / row 15)
+  setNm('bfint1nmB', _cc(rowsM,14,1));
+  setNm('bfint2nmB', _cc(rowsM,14,7));
+  setEl('bfint1B',   _cc(rowsM,15,1));
+  setEl('bfint2B',   _cc(rowsM,15,7));
+  // Campeão: tenta row 14 col 12 "CLASSIF: X" ou row 20 col 0 "CAMPEAO: X"
+  let champ = '';
+  const classif = _cc(rowsM,14,12) || '';
+  const m1 = classif.match(/CLASSIF[:\s]+(.+)/i);
+  if (m1) champ = m1[1].trim();
+  if (!champ) {
+    const camp = _cc(rowsM,20,0) || '';
+    const m2 = camp.match(/CAMPE[ÃA]O[:\s]+(.+)/i);
+    if (m2) champ = m2[1].trim();
   }
-  if (rowsM.length > 7) {
-    setNm('bfint1nmB', _cc(rowsM,7,1));
-    setNm('bfint2nmB', _cc(rowsM,7,11));
-    setEl('bfint1B', _cc(rowsM,7,12));
-    setEl('bfint2B', _cc(rowsM,7,13));
-    const champ = _cc(rowsM,7,14);
-    if (champ) {
-      const cn = document.getElementById('champNameBasq');
-      if (cn) cn.textContent = champ;
-    }
+  if (champ) {
+    const cn = document.getElementById('champNameBasq');
+    if (cn) cn.textContent = champ;
   }
 }
 
@@ -3355,11 +3386,11 @@ function movePill(btn) {
   const pill = document.getElementById('bnavPill');
   const items = document.getElementById('bnavItems');
   if (!pill || !items || !btn) return;
-  const itemsRect = items.getBoundingClientRect();
-  const btnRect   = btn.getBoundingClientRect();
-  const left  = btnRect.left - itemsRect.left;
+  const containerRect = items.getBoundingClientRect();
+  const btnRect = btn.getBoundingClientRect();
+  const left = btnRect.left - containerRect.left - 4; // ajuste do padding
   const width = btnRect.width;
-  pill.style.left  = Math.max(0, left) + 'px';
+  pill.style.left = Math.max(2, left) + 'px';
   pill.style.width = width + 'px';
 }
 
