@@ -45,30 +45,25 @@ body.day {
 }
 
 
-/* Modo DIA - topbar e nav azul marinho com texto branco */
+/* Modo DIA - topbar azul, nav azul */
 body.day .topbar {
-  background: #ffffff !important;
-  border-bottom: 1px solid #E8ECF4 !important;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06) !important;
+  background: #1565C0 !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
 }
-body.day .topbar * { color: #111827 !important; }
-body.day .topbar .brand-name { color: #1565C0 !important; font-weight:800; }
-body.day .topbar .ed-badge { color: #9CA3AF !important; }
+body.day .topbar * { color: #ffffff !important; }
 body.day .topbar-title { color: #ffffff !important; }
-body.day .topbar-sub { color: rgba(255,255,255,0.75) !important; }
-body.day .icon-btn { color: #ffffff !important; }
-body.day .live-dot-wrap { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
-body.day .live-dot { background: #F4C542 !important; }
+body.day .topbar-sub { color: #F4C542 !important; }
 body.day .bnav-items {
-  background: rgba(255,255,255,0.92) !important;
-  border: 1px solid #E8ECF4 !important;
-  box-shadow: 0 -2px 20px rgba(0,0,0,0.06), 0 2px 24px rgba(0,0,0,0.05) !important;
+  background: #1565C0 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
-body.day .nav-btn { color: #9CA3AF !important; }
-body.day .nav-btn.on { color: #ffffff !important; }
 body.day .nav-btn { color: rgba(255,255,255,0.65) !important; }
-body.day .nav-btn.active { color: #F4C542 !important; font-weight:700; }
-body.day .nav-btn.active svg, body.day .nav-btn.active .nav-ic { color: #F4C542 !important; }
+body.day .nav-btn small { color: rgba(255,255,255,0.65) !important; }
+body.day .nav-btn.on { color: #ffffff !important; background: rgba(255,255,255,0.18) !important; }
+body.day .nav-btn.on small { color: #ffffff !important; }
+body.day .nav-btn.on::after { background: #F4C542 !important; }
 body.day .section-title { color: #0a1a3e !important; }
 body.day .card { background: #ffffff !important; border: 1px solid rgba(14,59,120,0.13) !important; }
 body.day .adm-sheet { background: #ffffff !important; }
@@ -158,7 +153,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    TOPBAR
 ============================================================ */
-.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),12px);padding-bottom:12px;background:var(--topbar);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .35s;}
+.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),12px);padding-bottom:12px;background:#1565C0;border-bottom:none;transition:background .35s;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-logo{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(244,197,66,.35));}
 .brand-text small{display:block;font-size:8.5px;color:var(--gold);font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.2;}
@@ -549,20 +544,34 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .bnav{
   position:fixed;left:0;right:0;bottom:0;z-index:200;
   display:flex;align-items:flex-end;justify-content:center;
-  padding:0 12px 10px;
-  padding-bottom:max(env(safe-area-inset-bottom,0px), 10px);
-  background:linear-gradient(to top, rgba(246,248,252,.96) 60%, rgba(246,248,252,0));
+  pointer-events:none;
+  background:transparent;
+  padding:0;
+}
+/* Ondulação SVG no topo da nav */
+.bnav::before{
+  content:'';
+  position:absolute;
+  left:0;right:0;
+  bottom:100%;
+  height:28px;
+  background:transparent;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 28' preserveAspectRatio='none'%3E%3Cpath d='M0 28 Q45 0 97.5 14 Q150 28 195 14 Q240 0 292.5 14 Q345 28 390 14 L390 28 Z' fill='%231565C0'/%3E%3C/svg%3E");
+  background-size:100% 100%;
+  background-repeat:no-repeat;
   pointer-events:none;
 }
 .bnav-items{
   pointer-events:auto;
   display:flex;align-items:center;justify-content:space-around;
-  width:100%;max-width:460px;height:64px;
-  background:#ffffff;
-  border:1px solid #E8ECF4;
-  border-radius:22px;
-  box-shadow:0 10px 30px rgba(13,71,161,.12), 0 2px 6px rgba(13,71,161,.06);
-  padding:6px;
+  width:100%;max-width:100%;
+  height:64px;
+  background:#1565C0;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+  padding:4px 8px;
+  padding-bottom:max(env(safe-area-inset-bottom,0px), 8px);
   position:relative;
 }
 .bnav-pill{ display:none; }
@@ -570,7 +579,7 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   flex:1;background:none;border:none;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:3px;padding:6px 4px;height:100%;min-width:0;
-  color:#94A3B8;border-radius:14px;
+  color:rgba(255,255,255,0.65);border-radius:14px;
   transition:color .2s ease, background .2s ease, transform .2s ease;
   -webkit-tap-highlight-color:transparent;position:relative;
 }
@@ -580,16 +589,17 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 }
 .nav-btn small{
   font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;opacity:.9;
+  color:rgba(255,255,255,0.65);
 }
 .nav-btn.on{
-  color:#1565C0;
-  background:linear-gradient(180deg,#EAF2FB,#DCE9F8);
+  color:#ffffff;
+  background:rgba(255,255,255,0.18);
 }
+.nav-btn.on small{ color:#ffffff; font-weight:800; }
 .nav-btn.on .ni{ transform:translateY(-1px) scale(1.12); }
-.nav-btn.on small{ font-weight:800; }
 .nav-btn.on::after{
   content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
-  width:18px;height:3px;border-radius:3px;background:#1565C0;
+  width:18px;height:3px;border-radius:3px;background:#F4C542;
 }
 .nav-btn:active{ transform:scale(.94); }
 
@@ -1247,68 +1257,17 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <!-- ==================== HOME ==================== -->
 <section id="homePage" class="page active" style="background:#f6f8fc;padding-bottom:110px;min-height:100vh;">
 
-  <!-- HERO -->
-  <div style="background:linear-gradient(160deg,#0D47A1 0%,#1565C0 55%,#1976D2 100%);padding:26px 20px 24px;position:relative;overflow:hidden;border-radius:0 0 28px 28px;box-shadow:0 8px 28px rgba(13,71,161,.25);">
-    <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-30px;left:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(244,197,66,.22),transparent 70%);pointer-events:none;"></div>
-
-    <!-- Partículas douradas animadas -->
-    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
-      <div class="gold-spark" style="left:8%;top:20%;animation-delay:0s;"></div>
-      <div class="gold-spark" style="left:25%;top:60%;animation-delay:.7s;"></div>
-      <div class="gold-spark" style="left:55%;top:15%;animation-delay:1.3s;"></div>
-      <div class="gold-spark" style="left:75%;top:50%;animation-delay:.4s;"></div>
-      <div class="gold-spark" style="left:90%;top:75%;animation-delay:1.8s;"></div>
-    </div>
-
-    <!-- Título central -->
-    <div style="text-align:center;position:relative;z-index:1;margin-bottom:20px;">
-      <div style="font-family:'Anton',sans-serif;font-size:38px;color:#ffffff;text-transform:uppercase;line-height:1;letter-spacing:1px;">SUPERCOPA</div>
-      <div style="font-size:11px;color:#F4C542;font-weight:700;margin-top:6px;letter-spacing:.5px;">O Maior Campeonato da Região das Montanhas</div>
-    </div>
-
-    <!-- Countdown compacto — Vôlei e Basquete em linha única -->
-    <div style="display:flex;gap:8px;position:relative;z-index:1;">
-      <!-- VÔLEI countdown -->
-      <div style="flex:1;background:rgba(255,255,255,.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:7px 8px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-          <div style="display:flex;align-items:center;gap:4px;">
-            <span style="font-size:11px;">🏐</span>
-            <span style="font-size:9px;font-weight:800;color:#fff;letter-spacing:.5px;">VÔLEI</span>
-          </div>
-          <span style="font-size:7.5px;color:#F4C542;font-weight:700;">28·29 NOV</span>
-        </div>
-        <div style="display:flex;gap:4px;">
-          <div class="cd-mini"><div class="cd-mini-n" id="cdD" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">D</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdH" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">H</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdM" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">M</div></div>
-          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdS" style="color:#F4C542;font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">S</div></div>
-        </div>
-      </div>
-      <!-- BASQUETE countdown -->
-      <div style="flex:1;background:rgba(244,197,66,.12);backdrop-filter:blur(8px);border:1px solid rgba(244,197,66,.32);border-radius:14px;padding:7px 8px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-          <div style="display:flex;align-items:center;gap:4px;">
-            <span style="font-size:11px;">🏀</span>
-            <span style="font-size:9px;font-weight:800;color:#fff;letter-spacing:.5px;">BASQUETE</span>
-          </div>
-          <span style="font-size:7.5px;color:#F4C542;font-weight:700;">25·26 JUL</span>
-        </div>
-        <div style="display:flex;gap:4px;">
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBD" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">D</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBH" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">H</div></div>
-          <div class="cd-mini"><div class="cd-mini-n" id="cdBM" style="font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">M</div></div>
-          <div class="cd-mini cd-mini-gold"><div class="cd-mini-n" id="cdBS" style="color:#F4C542;font-size:14px;">—</div><div class="cd-mini-l" style="font-size:6px;">S</div></div>
-        </div>
-      </div>
-    </div>
+  <!-- HERO AZUL: fundido com topbar, só título -->
+  <div style="background:linear-gradient(180deg,#1565C0 0%,#1976D2 100%);padding:14px 18px 22px;position:relative;overflow:hidden;border-radius:0 0 28px 28px;box-shadow:0 6px 20px rgba(13,71,161,.18);">
+    <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(244,197,66,.15),transparent 70%);pointer-events:none;"></div>
   </div>
 
   <!-- ============ GUIA DA SUPERCOPA ============ -->
-  <div style="padding:24px 16px 0;">
-    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+  <div style="padding:22px 16px 0;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;">
       <div>
-        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Guia da Supercopa</div>
+        <div style="font-size:20px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Guia da Supercopa</div>
         <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Tudo sobre o torneio</div>
       </div>
       <div style="font-size:10px;font-weight:700;color:#1565C0;background:#E6EEF8;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;">5 atalhos</div>
@@ -1348,10 +1307,10 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   </div>
 
   <!-- ============ SOCIAL ============ -->
-  <div style="padding:24px 16px 0;">
-    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+  <div style="padding:22px 16px 0;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;">
       <div>
-        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Social</div>
+        <div style="font-size:20px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Social</div>
         <div style="font-size:12px;color:#94A3B8;margin-top:2px;">Interaja com o evento</div>
       </div>
       <div style="font-size:10px;font-weight:700;color:#C8960C;background:#FEF6E0;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;">Engaje-se</div>
@@ -1385,27 +1344,47 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   </div>
 
   <!-- ============ MODALIDADES ============ -->
-  <div style="padding:24px 16px 0;">
-    <div style="display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;">
+  <div style="padding:22px 16px 0;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;">
       <div>
-        <div style="font-size:21px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Modalidades</div>
+        <div style="font-size:20px;font-weight:800;color:#0F172A;letter-spacing:-.3px;">Modalidades</div>
         <div style="font-size:12px;color:#94A3B8;margin-top:2px;">2 esportes · 1 arena</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('volei','games')" style="background:linear-gradient(145deg,#1565C0,#1976D2);border:none;border-radius:20px;padding:20px 16px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(21,101,192,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
+      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('volei','games')" style="background:linear-gradient(145deg,#1565C0,#1976D2);border:none;border-radius:20px;padding:18px 16px 14px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(21,101,192,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
         <div style="position:absolute;top:-10px;right:-10px;font-size:78px;opacity:.18;">🏐</div>
         <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:700;">Modalidade</div>
-        <div style="font-family:'Anton',sans-serif;font-size:28px;line-height:1;margin-top:6px;">VÔLEI</div>
-        <div style="font-size:11px;opacity:.9;margin-top:8px;font-weight:600;">12 times · 4 grupos</div>
-        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.18);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
+        <div style="font-family:'Anton',sans-serif;font-size:26px;line-height:1;margin-top:5px;">VÔLEI</div>
+        <div style="font-size:11px;opacity:.9;margin-top:6px;font-weight:600;">12 times · 4 grupos</div>
+        <!-- Countdown Vôlei -->
+        <div style="margin-top:10px;background:rgba(255,255,255,.14);border-radius:10px;padding:6px 8px;">
+          <div style="font-size:7.5px;color:rgba(255,255,255,.75);font-weight:700;letter-spacing:.5px;margin-bottom:5px;">⏱ 28·29 NOV 2026</div>
+          <div style="display:flex;gap:3px;">
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdD">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">D</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdH">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">H</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdM">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">M</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#F4C542;line-height:1;" id="cdS">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">S</div></div>
+          </div>
+        </div>
+        <div style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.18);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
       </button>
-      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('basquete','games')" style="background:linear-gradient(145deg,#C8960C,#a87b09);border:none;border-radius:20px;padding:20px 16px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(200,150,12,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
+      <button onclick="nav('gamesPage',document.querySelectorAll('.nav-btn')[1]);setSport('basquete','games')" style="background:linear-gradient(145deg,#C8960C,#a87b09);border:none;border-radius:20px;padding:18px 16px 14px;text-align:left;cursor:pointer;color:#fff;box-shadow:0 6px 18px rgba(200,150,12,.28);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;">
         <div style="position:absolute;top:-10px;right:-10px;font-size:78px;opacity:.18;">🏀</div>
         <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:700;">Modalidade</div>
-        <div style="font-family:'Anton',sans-serif;font-size:28px;line-height:1;margin-top:6px;">BASQUETE</div>
-        <div style="font-size:11px;opacity:.9;margin-top:8px;font-weight:600;">6 times · 2 grupos</div>
-        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
+        <div style="font-family:'Anton',sans-serif;font-size:26px;line-height:1;margin-top:5px;">BASQUETE</div>
+        <div style="font-size:11px;opacity:.9;margin-top:6px;font-weight:600;">6 times · 2 grupos</div>
+        <!-- Countdown Basquete -->
+        <div style="margin-top:10px;background:rgba(255,255,255,.14);border-radius:10px;padding:6px 8px;">
+          <div style="font-size:7.5px;color:rgba(255,255,255,.75);font-weight:700;letter-spacing:.5px;margin-bottom:5px;">⏱ 25·26 JUL 2026</div>
+          <div style="display:flex;gap:3px;">
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdBD">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">D</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdBH">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">H</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#fff;line-height:1;" id="cdBM">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">M</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-family:'Anton',sans-serif;font-size:15px;color:#F4C542;line-height:1;" id="cdBS">—</div><div style="font-size:6px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;margin-top:1px;">S</div></div>
+          </div>
+        </div>
+        <div style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:6px 11px;border-radius:999px;">Ver jogos <span>→</span></div>
       </button>
     </div>
   </div>
