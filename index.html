@@ -659,11 +659,11 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   position:relative;
 }
 .nav-btn svg{
-  width:22px;height:22px;
+  width:26px;height:26px;
   transition:transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s;
 }
 .nav-btn small{
-  font-size:9.5px;font-weight:600;letter-spacing:.15px;white-space:nowrap;
+  font-size:10px;font-weight:600;letter-spacing:.15px;white-space:nowrap;
   color:rgba(255,255,255,0.45);
   transition:color .2s;
   position:relative;
@@ -3083,22 +3083,35 @@ async function loadBasqData() {
 
 function basqGameCard(casa, visit, ptC, ptV, res, grp, idx, phase) {
   const done = !!(ptC && ptV && (parseInt(ptC) !== 0 || parseInt(ptV) !== 0));
-  const casaW  = done && parseInt(ptC) > parseInt(ptV);
-  const visitW = done && parseInt(ptV) > parseInt(ptC);
-  const lbl = idx ? `Grupo ${grp} · Jogo ${idx} 🏀` : `${grp} 🏀`;
-  return `<div class="gc${done?' done':''}" data-phase="${phase}">
-    <div class="gc-meta">${lbl}</div>
-    <div class="gc-row">
-      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div><div class="gc-nm">${casa||'—'}</div></div>
-      <div class="gc-score">
-        <span class="${ptC?(casaW?'sc-w':'sc'):'sc-empty'}">${ptC||'—'}</span>
-        <span class="sc-sep">×</span>
-        <span class="${ptV?(visitW?'sc-w':'sc'):'sc-empty'}">${ptV||'—'}</span>
-      </div>
-      <div class="gc-team gc-team-r"><div class="gc-nm">${visit||'—'}</div><div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div></div>
+  const lbl = idx ? `Grupo ${grp} · Jogo ${idx}` : String(grp);
+  const vencedor = res && res !== 'Empate' ? (/^CLASSIF/i.test(res) ? res.replace(/^CLASSIF:\s*/i,'') : res) : '';
+  const liveClass = (done && !vencedor) ? ' live-card' : '';
+  let scoreHtml;
+  if (done) {
+    scoreHtml = `<div class="gc-sc-num">${ptC} \u00d7 ${ptV}</div>`;
+  } else {
+    scoreHtml = `<div class="gc-vs">VS</div><div class="gc-sc-sets">Em breve</div>`;
+  }
+  return `<div class="gc${liveClass}" data-phase="${phase}">
+    <div class="gc-top">
+      <span class="gc-phase">${lbl}</span>
+      <span class="gc-dt">\uD83C\uDFC0 Basquete</span>
     </div>
-    ${res&&res!=='Empate'&&!/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res}</div>`:''}
-    ${/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res.replace(/^CLASSIF:\s*/i,'')}</div>`:''}
+    <div class="gc-mid">
+      <div class="gc-t">
+        <div class="gc-t-ic">${BASQ_TIMES[casa]?.ic||'\uD83C\uDFC0'}</div>
+        <div class="gc-t-nm">${casa||'—'}</div>
+      </div>
+      <div class="gc-sc">${scoreHtml}</div>
+      <div class="gc-t">
+        <div class="gc-t-ic">${BASQ_TIMES[visit]?.ic||'\uD83C\uDFC0'}</div>
+        <div class="gc-t-nm">${visit||'—'}</div>
+      </div>
+    </div>
+    <div class="gc-bot">
+      <span class="gc-loc">\uD83D\uDCCD Quadra</span>
+      <div class="gc-actions">${vencedor ? `<span style="font-size:11px;color:var(--green);font-weight:700;">\u2705 ${vencedor}</span>` : ''}</div>
+    </div>
   </div>`;
 }
 
@@ -3163,26 +3176,12 @@ function renderGamesBasqOffline() {
   if (!gl) return;
   const timesA = ['CT das Montanhas','São Pedro Basquete','Crossover Basquete'];
   const timesB = ['Aracruz Basquete','Marlins','Central Serrano Basquete'];
-  let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
+  let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A</div>';
   const jogosA = [[timesA[0],timesA[1]],[timesA[0],timesA[2]],[timesA[1],timesA[2]]];
   const jogosB = [[timesB[0],timesB[1]],[timesB[0],timesB[2]],[timesB[1],timesB[2]]];
-  jogosA.forEach(([c,v],i) => {
-    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo A · Jogo ${i+1} 🏀</div>
-    <div class="gc-row">
-      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
-      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
-      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
-    </div></div>`;
-  });
-  html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
-  jogosB.forEach(([c,v],i) => {
-    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo B · Jogo ${i+1} 🏀</div>
-    <div class="gc-row">
-      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
-      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
-      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
-    </div></div>`;
-  });
+  jogosA.forEach(([c,v],i) => { html += basqGameCard(c, v, '', '', '', 'A', i+1, 'grupos'); });
+  html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B</div>';
+  jogosB.forEach(([c,v],i) => { html += basqGameCard(c, v, '', '', '', 'B', i+1, 'grupos'); });
   gl.innerHTML = html;
 
   // Tabela offline
@@ -3388,14 +3387,29 @@ const APP_SHEET_ID     = '1nC7pAvf9dhXNLtzyXxWo_plrNJjvtLFVssbARBTaxAA';
 const APP_API_KEY      = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
 const APP_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzsedixY6fR2ht5C8clm70obzvtjiBail0UeINtO_L1cVgKj-PtoTikRFZAhmtTDsWqUg/exec';
 
-// ── Lê dados de uma aba via gviz (leitura pública) ────────────
+// ── Lê dados de uma aba via Sheets API v4 (mesma API já usada pelo vôlei) ──
 async function sheetRead(abaName) {
-  const url = `https://docs.google.com/spreadsheets/d/${APP_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(abaName)}&key=${APP_API_KEY}`;
-  const res  = await fetch(url);
-  const text = await res.text();
-  const json = JSON.parse(text.replace(/^[^(]+\(|\);?$/g,''));
-  const rows = json.table?.rows || [];
-  return rows.map(r => r.c.map(c => c?.v ?? c?.f ?? ''));
+  // Tenta primeiro pela API v4 (mais confiável, sem problema de CORS)
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${APP_SHEET_ID}/values/${encodeURIComponent("'"+abaName+"'!A1:Z200")}?key=${APP_API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const rows = data.values || [];
+    return rows; // já retorna array de arrays de strings
+  } catch(e1) {
+    // Fallback: gviz (funciona apenas se planilha for pública)
+    try {
+      const url2 = `https://docs.google.com/spreadsheets/d/${APP_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(abaName)}&key=${APP_API_KEY}`;
+      const res2 = await fetch(url2);
+      const text = await res2.text();
+      const json = JSON.parse(text.replace(/^[^(]+\(|\);?$/g,''));
+      const rows = json.table?.rows || [];
+      return rows.map(r => r.c.map(c => c?.v ?? c?.f ?? ''));
+    } catch(e2) {
+      throw new Error('Falha na conexão com a planilha: ' + e1.message);
+    }
+  }
 }
 
 // ── Escreve via Apps Script ────────────────────────────────────
@@ -3573,9 +3587,15 @@ async function getAtletas() {
       map[key] = { nome, time };
     });
     _atletaCache = map;
+    // Limpa mensagem de erro se existir
+    const stEl = document.getElementById('admAtletaStatus');
+    if (stEl && stEl.textContent.includes('Erro')) stEl.textContent = '';
   } catch(e) {
     // fallback localStorage
     _atletaCache = JSON.parse(localStorage.getItem(ATLETA_KEY)||'{}');
+    // Mostra erro no painel admin
+    const stEl = document.getElementById('admAtletaStatus');
+    if (stEl) stEl.innerHTML = '<span style="color:#ff6b6b;">⚠️ Erro de conexão com a planilha Atleta. Verifique se a planilha está compartilhada corretamente e a aba "Atleta" existe.</span>';
   }
   return _atletaCache;
 }
