@@ -3372,68 +3372,13 @@ function closeTimeInfo() {
   setTimeout(() => { modal.style.display = 'none'; }, 340);
 }
 
-// ── ATLETA DESTAQUE ──────────────────────────────────────────
-const ATLETA_KEY = 'atletaDestaque_v1';
-// Vôlei: 12 grupos + 4 quartas + 3 semi = 19
-// Basquete: 6 grupos + 2 semi = 8
-const VOLEI_FASES = [
-  { label:'Classificação', jogos:[1,2,3,4,5,6,7,8,9,10,11,12] },
-  { label:'Quartas de Final', jogos:[13,14,15,16] },
-  { label:'Semifinal', jogos:[17,18,19] },
-];
-const BASQ_FASES = [
-  { label:'Classificação', jogos:[1,2,3,4,5,6] },
-  { label:'Semifinal', jogos:[7,8] },
-];
-
+// ── ATLETA DESTAQUE — tab switcher ───────────────────────────
 function atletaTab(sport, btn) {
   document.getElementById('atletaTabVoleiBtn').style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
   document.getElementById('atletaTabBasqBtn').style.cssText  = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
   btn.style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,' + (sport==='volei'?'#1565C0,#1976D2':'#C8960C,#a87b09') + ');color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.32);';
   document.getElementById('atletaVoleiSection').style.display = sport==='volei'?'block':'none';
   document.getElementById('atletaBasqSection').style.display  = sport==='basquete'?'block':'none';
-}
-
-function _atletaCard(i, prefix, a, sport) {
-  return `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-    <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'#EEF4FF'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
-    <div style="flex:1;">
-      <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · ${sport==='basquete'?'Basquete':'Vôlei'}</div>
-      <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
-      ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
-    </div>
-    ${a ? `<div style="font-size:18px;">${sport==='basquete'?'🏀':'🏐'}</div>` : ''}
-  </div>`;
-}
-
-function renderAtletas() {
-  const data = JSON.parse(localStorage.getItem(ATLETA_KEY) || '{}');
-
-  // Vôlei — por fases
-  const vl = document.getElementById('atletaVoleiList');
-  if (vl) {
-    let html = '';
-    VOLEI_FASES.forEach(fase => {
-      html += `<div style="font-size:10px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
-      fase.jogos.forEach(i => {
-        html += _atletaCard(i, 'v', data['v'+i], 'volei');
-      });
-    });
-    vl.innerHTML = html;
-  }
-
-  // Basquete — por fases
-  const bl = document.getElementById('atletaBasqList');
-  if (bl) {
-    let html = '';
-    BASQ_FASES.forEach(fase => {
-      html += `<div style="font-size:10px;font-weight:800;color:#C8960C;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
-      fase.jogos.forEach(i => {
-        html += _atletaCard(i, 'b', data['b'+i], 'basquete');
-      });
-    });
-    bl.innerHTML = html;
-  }
 }
 
 // ══════════════════════════════════════════════════════════════
