@@ -3721,6 +3721,17 @@ async function admSalvarAtleta() {
 
 // Init após DOM
 document.addEventListener('DOMContentLoaded', () => {
+  // ── FECHAR SPLASH ──────────────────────────────────────────
+  const splash = document.getElementById('splash');
+  function hideSplash() {
+    if (!splash) return;
+    splash.classList.add('out');
+    setTimeout(() => { splash.style.display = 'none'; }, 900);
+  }
+  // Fecha após 2.5s (barra de loading termina em ~2.6s)
+  setTimeout(hideSplash, 2500);
+
+  // ── INIT ──────────────────────────────────────────────────
   renderNewsCarousel();
   renderAtletas();
   resetNewsTimer();
