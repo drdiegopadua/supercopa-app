@@ -3436,46 +3436,69 @@ function renderAtletas() {
   }
 }
 
-function admSalvarAtleta() {
-  const sport = document.getElementById('admAtletaSport').value;
-  const jogo  = parseInt(document.getElementById('admAtletaJogo').value);
-  const nome  = document.getElementById('admAtletaNome').value.trim();
-  const time  = document.getElementById('admAtletaTime').value.trim();
-  if (!jogo || !nome) { showToast('⚠️ Preencha jogo e nome!'); return; }
-  const data = JSON.parse(localStorage.getItem(ATLETA_KEY) || '{}');
-  data[(sport==='volei'?'v':'b')+jogo] = { nome, time };
-  localStorage.setItem(ATLETA_KEY, JSON.stringify(data));
-  renderAtletas();
-  document.getElementById('admAtletaNome').value = '';
-  document.getElementById('admAtletaTime').value = '';
-  showToast('⭐ Atleta Destaque salvo!');
-  document.getElementById('admAtletaStatus').textContent = `✅ Jogo ${jogo} (${sport}) → ${nome} (${time})`;
+// ══════════════════════════════════════════════════════════════
+// CONFIGURAÇÃO — PLANILHA COMPARTILHADA (Notícias + Atleta)
+// ══════════════════════════════════════════════════════════════
+const APP_SHEET_ID     = '1nC7pAvf9dhXNLtzyXxWo_plrNJjvtLFVssbARBTaxAA';
+const APP_API_KEY      = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
+const APP_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzsedixY6fR2ht5C8clm70obzvtjiBail0UeINtO_L1cVgKj-PtoTikRFZAhmtTDsWqUg/exec';
+
+// ── Lê dados de uma aba via gviz (leitura pública) ────────────
+async function sheetRead(abaName) {
+  const url = `https://docs.google.com/spreadsheets/d/${APP_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(abaName)}&key=${APP_API_KEY}`;
+  const res  = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.replace(/^[^(]+\(|\);?$/g,''));
+  const rows = json.table?.rows || [];
+  return rows.map(r => r.c.map(c => c?.v ?? c?.f ?? ''));
 }
 
-// ── CARROSSEL DE NOTÍCIAS ──────────────────────────────────────
-const NEWS_KEY = 'supercopaNoticias_v1';
+// ── Escreve via Apps Script ────────────────────────────────────
+async function sheetWrite(body) {
+  const res  = await fetch(APP_SCRIPT_URL, {
+    method:'POST',
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+// ══════════════════════════════════════════════════════════════
+// NOTÍCIAS — Google Sheets
+// ══════════════════════════════════════════════════════════════
 const DEFAULT_NEWS = [
-  { ic:'🎉', cat:'Evento', catColor:'#1565C0', titulo:'Inscrições para a edição 2026 abrem em Setembro!', data:'Maio 2026' },
+  { ic:'🎉', cat:'Evento',    catColor:'#1565C0', titulo:'Inscrições para a edição 2026 abertas!',          data:'Maio 2026' },
   { ic:'🏆', cat:'Histórico', catColor:'#C8960C', titulo:'ES Volei conquista o título da 5ª Supercopa AFC', data:'Novembro 2025' },
-  { ic:'📍', cat:'Estrutura', catColor:'#16A34A', titulo:'Ginásio Central passa por reforma para a edição 2026', data:'Março 2026' },
+  { ic:'📍', cat:'Estrutura', catColor:'#16A34A', titulo:'Ginásio Central passa por reforma para 2026',      data:'Março 2026' },
 ];
-let newsIdx = 0;
+let newsIdx   = 0;
 let newsTimer = null;
+let _newsCache = null;
 
-function getNews() {
-  const saved = localStorage.getItem(NEWS_KEY);
-  return saved ? JSON.parse(saved) : DEFAULT_NEWS;
-}
-function saveNews(arr) {
-  localStorage.setItem(NEWS_KEY, JSON.stringify(arr));
+async function getNews() {
+  try {
+    const rows = await sheetRead('Noticias');
+    // linha 0 = cabeçalho (Emoji, Categoria, Titulo, Data)
+    const data = rows.slice(1).filter(r => r[2]).map(r => ({
+      ic:       r[0] || '📰',
+      cat:      r[1] || 'Notícia',
+      catColor: '#1565C0',
+      titulo:   r[2] || '',
+      data:     r[3] || '',
+    }));
+    _newsCache = data.length ? data : DEFAULT_NEWS;
+  } catch(e) {
+    _newsCache = DEFAULT_NEWS;
+  }
+  return _newsCache;
 }
 
-function renderNewsCarousel() {
-  const news = getNews();
+async function renderNewsCarousel() {
+  const news      = await getNews();
   const container = document.getElementById('newsCarousel');
-  const dots = document.getElementById('newsDots');
+  const dots      = document.getElementById('newsDots');
   if (!container || !dots) return;
-  container.innerHTML = news.map((n, i) => `
+  newsIdx = Math.max(0, Math.min(newsIdx, news.length-1));
+  container.innerHTML = news.map((n) => `
     <div style="min-width:100%;box-sizing:border-box;padding:0 2px;">
       <div style="background:#fff;border:1px solid #E8ECF4;border-radius:18px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 10px rgba(0,0,0,.06);">
         <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${n.ic||'📰'}</div>
@@ -3486,59 +3509,214 @@ function renderNewsCarousel() {
         </div>
       </div>
     </div>`).join('');
-  dots.innerHTML = news.map((_, i) => `<div onclick="newsGoTo(${i})" style="width:${i===newsIdx?'18':'7'}px;height:7px;border-radius:999px;background:${i===newsIdx?'#1565C0':'#CBD5E1'};cursor:pointer;transition:all .3s;"></div>`).join('');
+  dots.innerHTML = news.map((_,i) => `<div onclick="newsGoTo(${i})" style="width:${i===newsIdx?'18':'7'}px;height:7px;border-radius:999px;background:${i===newsIdx?'#1565C0':'#CBD5E1'};cursor:pointer;transition:all .3s;"></div>`).join('');
   container.style.transform = `translateX(-${newsIdx*100}%)`;
 }
 
-function newsGoTo(i) {
-  const news = getNews();
+async function newsGoTo(i) {
+  const news = _newsCache || await getNews();
   newsIdx = Math.max(0, Math.min(i, news.length-1));
   renderNewsCarousel();
   resetNewsTimer();
 }
-function newsSlide(dir) { newsGoTo(newsIdx + dir); }
+function newsSlide(dir) { newsGoTo(newsIdx + (dir||1)); }
 function resetNewsTimer() {
   if (newsTimer) clearInterval(newsTimer);
-  newsTimer = setInterval(() => { newsGoTo((newsIdx+1) % getNews().length); }, 5000);
+  newsTimer = setInterval(async () => {
+    const news = _newsCache || await getNews();
+    newsGoTo((newsIdx+1) % news.length);
+  }, 5000);
 }
 
-function admAdicionarNoticia() {
-  const ic    = document.getElementById('admNewsIc').value.trim() || '📰';
-  const cat   = document.getElementById('admNewsCat').value.trim() || 'Notícia';
+// Admin — Adicionar notícia na planilha
+async function admAdicionarNoticia() {
+  const ic     = document.getElementById('admNewsIc').value.trim()     || '📰';
+  const cat    = document.getElementById('admNewsCat').value.trim()    || 'Notícia';
   const titulo = document.getElementById('admNewsTitulo').value.trim();
-  const data  = document.getElementById('admNewsData').value.trim() || new Date().toLocaleDateString('pt-BR', {month:'long',year:'numeric'});
+  const data   = document.getElementById('admNewsData').value.trim()   || new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
   if (!titulo) { showToast('⚠️ Digite o título da notícia!'); return; }
-  const news = getNews();
-  news.unshift({ ic, cat, catColor: '#1565C0', titulo, data });
-  saveNews(news);
-  renderNewsCarousel();
-  document.getElementById('admNewsIc').value = '';
-  document.getElementById('admNewsCat').value = '';
-  document.getElementById('admNewsTitulo').value = '';
-  document.getElementById('admNewsData').value = '';
-  admRenderNewsList();
-  showToast('✅ Notícia adicionada!');
+
+  const btn = document.querySelector('#admNoticias .adm-save');
+  if (btn) { btn.textContent = '⏳ Salvando...'; btn.disabled = true; }
+
+  try {
+    const res = await sheetWrite({ aba:'Noticias', acao:'adicionar', linha:[ic, cat, titulo, data] });
+    if (res.ok) {
+      showToast('✅ Notícia publicada para todos!');
+      document.getElementById('admNewsIc').value    = '';
+      document.getElementById('admNewsCat').value   = '';
+      document.getElementById('admNewsTitulo').value = '';
+      document.getElementById('admNewsData').value  = '';
+      _newsCache = null; // força reload
+      await admRenderNewsList();
+      await renderNewsCarousel();
+    } else {
+      showToast('❌ Erro: ' + (res.erro||'desconhecido'));
+    }
+  } catch(e) {
+    showToast('❌ Falha na conexão');
+  } finally {
+    if (btn) { btn.textContent = '➕ ADICIONAR'; btn.disabled = false; }
+  }
 }
 
-function admRenderNewsList() {
+// Admin — Lista notícias da planilha
+async function admRenderNewsList() {
   const el = document.getElementById('admNewsList');
   if (!el) return;
-  const news = getNews();
-  el.innerHTML = news.map((n, i) => `
-    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;">
-      <span style="font-size:18px;flex-shrink:0;">${n.ic||'📰'}</span>
-      <div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.titulo}</div><div style="font-size:10px;color:var(--muted);">${n.data}</div></div>
-      <button onclick="admDeletarNoticia(${i})" style="background:rgba(255,64,64,.15);border:none;border-radius:8px;width:28px;height:28px;color:#ff6b6b;font-size:14px;cursor:pointer;flex-shrink:0;">🗑</button>
-    </div>`).join('') || '<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px;">Nenhuma notícia</div>';
+  el.innerHTML = '<div style="text-align:center;font-size:12px;color:var(--muted);padding:12px;">⏳ Carregando...</div>';
+  try {
+    const rows = await sheetRead('Noticias');
+    const data = rows.slice(1).filter(r => r[2]);
+    if (!data.length) { el.innerHTML = '<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px;">Nenhuma notícia</div>'; return; }
+    el.innerHTML = data.map((r,i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;">
+        <span style="font-size:18px;flex-shrink:0;">${r[0]||'📰'}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r[2]}</div>
+          <div style="font-size:10px;color:var(--muted);">${r[3]||''}</div>
+        </div>
+        <button onclick="admDeletarNoticia(${JSON.stringify(r[2])})" style="background:rgba(255,64,64,.15);border:none;border-radius:8px;width:28px;height:28px;color:#ff6b6b;font-size:14px;cursor:pointer;flex-shrink:0;">🗑</button>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="font-size:12px;color:#ff6b6b;text-align:center;padding:12px;">Erro ao carregar</div>';
+  }
 }
 
-function admDeletarNoticia(i) {
-  const news = getNews();
-  news.splice(i, 1);
-  saveNews(news);
-  renderNewsCarousel();
-  admRenderNewsList();
-  showToast('🗑 Notícia removida');
+// Admin — Deletar notícia pelo título (coluna 2, índice 2)
+async function admDeletarNoticia(titulo) {
+  if (!confirm('Remover esta notícia para todos?')) return;
+  try {
+    const res = await sheetWrite({ aba:'Noticias', acao:'deletar', coluna:2, valor:titulo });
+    if (res.ok) {
+      showToast('🗑 Notícia removida');
+      _newsCache = null;
+      await admRenderNewsList();
+      await renderNewsCarousel();
+    } else { showToast('❌ Erro ao remover'); }
+  } catch(e) { showToast('❌ Falha na conexão'); }
+}
+
+// ══════════════════════════════════════════════════════════════
+// ATLETA DESTAQUE — Google Sheets
+// ══════════════════════════════════════════════════════════════
+const ATLETA_KEY = 'atletaDestaque_v1'; // mantido p/ fallback
+const VOLEI_FASES = [
+  { label:'Classificação',   jogos:[1,2,3,4,5,6,7,8,9,10,11,12] },
+  { label:'Quartas de Final', jogos:[13,14,15,16] },
+  { label:'Semifinal',        jogos:[17,18,19] },
+];
+const BASQ_FASES = [
+  { label:'Classificação', jogos:[1,2,3,4,5,6] },
+  { label:'Semifinal',     jogos:[7,8] },
+];
+
+let _atletaCache = null;
+
+async function getAtletas() {
+  try {
+    const rows = await sheetRead('Atleta');
+    // cabeçalho: Modalidade | Jogo | Nome | Time
+    const map = {};
+    rows.slice(1).forEach(r => {
+      const sport = (r[0]||'').toLowerCase().trim();
+      const jogo  = parseInt(r[1]);
+      const nome  = (r[2]||'').trim();
+      const time  = (r[3]||'').trim();
+      if (!jogo || !nome) return;
+      const key = (sport==='basquete'?'b':'v') + jogo;
+      map[key] = { nome, time };
+    });
+    _atletaCache = map;
+  } catch(e) {
+    // fallback localStorage
+    _atletaCache = JSON.parse(localStorage.getItem(ATLETA_KEY)||'{}');
+  }
+  return _atletaCache;
+}
+
+function atletaTab(sport, btn) {
+  document.getElementById('atletaTabVoleiBtn').style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
+  document.getElementById('atletaTabBasqBtn').style.cssText  = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
+  btn.style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,'+(sport==='volei'?'#1565C0,#1976D2':'#C8960C,#a87b09')+');color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.32);';
+  document.getElementById('atletaVoleiSection').style.display = sport==='volei'?'block':'none';
+  document.getElementById('atletaBasqSection').style.display  = sport==='basquete'?'block':'none';
+}
+
+function _atletaCard(i, a, sport) {
+  return `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+    <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'#EEF4FF'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
+    <div style="flex:1;">
+      <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · ${sport==='basquete'?'Basquete':'Vôlei'}</div>
+      <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a?'⭐ '+a.nome:'Aguardando...'}</div>
+      ${a?`<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>`:''}
+    </div>
+    ${a?`<div style="font-size:18px;">${sport==='basquete'?'🏀':'🏐'}</div>`:''}
+  </div>`;
+}
+
+async function renderAtletas() {
+  const data = await getAtletas();
+
+  const vl = document.getElementById('atletaVoleiList');
+  if (vl) {
+    let html = '';
+    VOLEI_FASES.forEach(fase => {
+      html += `<div style="font-size:10px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
+      fase.jogos.forEach(i => { html += _atletaCard(i, data['v'+i], 'volei'); });
+    });
+    vl.innerHTML = html;
+  }
+
+  const bl = document.getElementById('atletaBasqList');
+  if (bl) {
+    let html = '';
+    BASQ_FASES.forEach(fase => {
+      html += `<div style="font-size:10px;font-weight:800;color:#C8960C;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
+      fase.jogos.forEach(i => { html += _atletaCard(i, data['b'+i], 'basquete'); });
+    });
+    bl.innerHTML = html;
+  }
+}
+
+// Admin — Salvar atleta na planilha
+async function admSalvarAtleta() {
+  const sport = document.getElementById('admAtletaSport').value;
+  const jogo  = parseInt(document.getElementById('admAtletaJogo').value);
+  const nome  = document.getElementById('admAtletaNome').value.trim();
+  const time  = document.getElementById('admAtletaTime').value.trim();
+  const stEl  = document.getElementById('admAtletaStatus');
+  if (!jogo || !nome) { showToast('⚠️ Preencha jogo e nome!'); return; }
+
+  if (stEl) stEl.textContent = '⏳ Salvando...';
+  const btn = document.querySelector('#admAtleta .adm-save');
+  if (btn) { btn.textContent = '⏳...'; btn.disabled = true; }
+
+  try {
+    // "substituir" atualiza a linha se já existir (mesma modalidade+jogo), senão insere
+    const res = await sheetWrite({
+      aba:'Atleta', acao:'substituir',
+      coluna:0, chave:sport,   // col A = modalidade
+      colunaB:1, chaveB:String(jogo), // col B = jogo
+      linha:[sport, jogo, nome, time]
+    });
+    if (res.ok) {
+      showToast('⭐ Atleta salvo para todos!');
+      if (stEl) stEl.textContent = `✅ Jogo ${jogo} (${sport}) → ${nome}`;
+      document.getElementById('admAtletaNome').value = '';
+      document.getElementById('admAtletaTime').value = '';
+      _atletaCache = null; // força reload
+      await renderAtletas();
+    } else {
+      showToast('❌ Erro: '+(res.erro||'desconhecido'));
+      if (stEl) stEl.textContent = '❌ Erro ao salvar';
+    }
+  } catch(e) {
+    showToast('❌ Falha na conexão');
+    if (stEl) stEl.textContent = '❌ Sem conexão';
+  } finally {
+    if (btn) { btn.textContent = '⭐ SALVAR'; btn.disabled = false; }
+  }
 }
 
 // Init após DOM
@@ -3547,13 +3725,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAtletas();
   resetNewsTimer();
 });
-
-function showTimesTab(tab) {
-  document.getElementById('timesVolei').style.display    = tab==='volei'    ? 'block' : 'none';
-  document.getElementById('timesBasquete').style.display = tab==='basquete' ? 'block' : 'none';
-  document.getElementById('timesBtnV').className = 'sport-btn' + (tab==='volei' ? ' sport-btn-on' : '');
-  document.getElementById('timesBtnB').className = 'sport-btn' + (tab==='basquete' ? ' sport-btn-on' : '');
-}
 
 // ── PUSH NOTIFICATIONS ADMIN ──────────────────────────────
 
