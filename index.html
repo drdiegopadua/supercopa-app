@@ -59,11 +59,11 @@ body.day .bnav-items {
   border: none !important;
   box-shadow: none !important;
 }
-body.day .nav-btn { color: rgba(255,255,255,0.65) !important; }
-body.day .nav-btn small { color: rgba(255,255,255,0.65) !important; }
-body.day .nav-btn.on { color: #ffffff !important; background: rgba(255,255,255,0.18) !important; }
+body.day .nav-btn { color: rgba(255,255,255,0.45) !important; }
+body.day .nav-btn small { color: rgba(255,255,255,0.45) !important; }
+body.day .nav-btn.on { color: #ffffff !important; }
 body.day .nav-btn.on small { color: #ffffff !important; }
-body.day .nav-btn.on::after { background: #F4C542 !important; }
+body.day .nav-btn.on small::after { background: #F4C542 !important; }
 body.day .section-title { color: #0a1a3e !important; }
 body.day .card { background: #ffffff !important; border: 1px solid rgba(14,59,120,0.13) !important; }
 body.day .adm-sheet { background: #ffffff !important; }
@@ -153,7 +153,82 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    TOPBAR
 ============================================================ */
-.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),12px);padding-bottom:12px;background:#1565C0;border-bottom:none;transition:background .35s;}
+.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),48px);padding-bottom:14px;background:#1565C0;border-bottom:none;transition:background .35s;}
+
+/* ---- Topbar particles ---- */
+.topbar-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.tp{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  animation:tpFloat linear infinite;
+}
+.tp1{width:4px;height:4px;left:8%;top:60%;animation-duration:4.2s;animation-delay:0s;}
+.tp2{width:3px;height:3px;left:20%;top:30%;animation-duration:5.1s;animation-delay:.8s;background:rgba(244,197,66,.5);}
+.tp3{width:5px;height:5px;left:45%;top:70%;animation-duration:3.8s;animation-delay:1.4s;}
+.tp4{width:2px;height:2px;left:65%;top:25%;animation-duration:6s;animation-delay:.3s;background:rgba(244,197,66,.4);}
+.tp5{width:4px;height:4px;left:80%;top:55%;animation-duration:4.6s;animation-delay:1.9s;}
+.tp6{width:3px;height:3px;left:92%;top:40%;animation-duration:5.4s;animation-delay:.6s;background:rgba(244,197,66,.35);}
+@keyframes tpFloat{
+  0%  {transform:translateY(0) scale(1);opacity:0;}
+  15% {opacity:1;}
+  85% {opacity:.8;}
+  100%{transform:translateY(-60px) scale(.4);opacity:0;}
+}
+
+/* ---- Shimmer title ---- */
+.topbar-title-wrap{position:relative;z-index:1;}
+.topbar-main-title{
+  font-family:'Anton',sans-serif;
+  font-size:30px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-align:center;
+  line-height:1;
+  background:linear-gradient(100deg,#fff 0%,#fff 35%,#F4C542 50%,#fff 65%,#fff 100%);
+  background-size:250% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmerTitle 3.5s linear infinite;
+}
+@keyframes shimmerTitle{
+  0%  {background-position:150% center;}
+  100%{background-position:-150% center;}
+}
+
+/* ---- Subtitle with animated lines ---- */
+.topbar-sub-wrap{
+  position:relative;z-index:1;
+  display:flex;align-items:center;gap:7px;
+  margin-top:6px;
+}
+.topbar-sub-line{
+  height:1px;
+  background:linear-gradient(90deg,transparent,#F4C542,transparent);
+  flex:1;
+  min-width:18px;
+  animation:subLinePulse 2.4s ease-in-out infinite;
+}
+.topbar-sub-line:last-child{
+  animation-delay:1.2s;
+}
+@keyframes subLinePulse{
+  0%,100%{opacity:.3;transform:scaleX(.7);}
+  50%{opacity:1;transform:scaleX(1);}
+}
+.topbar-sub-text{
+  font-size:8.5px;
+  color:#F4C542;
+  font-weight:700;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  animation:subTextGlow 2.4s ease-in-out infinite;
+}
+@keyframes subTextGlow{
+  0%,100%{opacity:.75;text-shadow:none;}
+  50%{opacity:1;text-shadow:0 0 8px rgba(244,197,66,.5);}
+}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-logo{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(244,197,66,.35));}
 .brand-text small{display:block;font-size:8.5px;color:var(--gold);font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.2;}
@@ -554,9 +629,8 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   position:absolute;
   left:0;right:0;
   bottom:100%;
-  height:28px;
-  background:transparent;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 28' preserveAspectRatio='none'%3E%3Cpath d='M0 28 Q45 0 97.5 14 Q150 28 195 14 Q240 0 292.5 14 Q345 28 390 14 L390 28 Z' fill='%231565C0'/%3E%3C/svg%3E");
+  height:32px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 32' preserveAspectRatio='none'%3E%3Cpath d='M0 32 C80 32 80 0 195 0 C310 0 310 32 390 32 Z' fill='%231565C0'/%3E%3C/svg%3E");
   background-size:100% 100%;
   background-repeat:no-repeat;
   pointer-events:none;
@@ -564,44 +638,66 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .bnav-items{
   pointer-events:auto;
   display:flex;align-items:center;justify-content:space-around;
-  width:100%;max-width:100%;
-  height:64px;
+  width:100%;
+  height:68px;
   background:#1565C0;
   border:none;
   border-radius:0;
   box-shadow:none;
-  padding:4px 8px;
-  padding-bottom:max(env(safe-area-inset-bottom,0px), 8px);
+  padding:0 4px;
+  padding-bottom:max(env(safe-area-inset-bottom,0px), 10px);
   position:relative;
 }
 .bnav-pill{ display:none; }
 .nav-btn{
   flex:1;background:none;border:none;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;padding:6px 4px;height:100%;min-width:0;
-  color:rgba(255,255,255,0.65);border-radius:14px;
-  transition:color .2s ease, background .2s ease, transform .2s ease;
-  -webkit-tap-highlight-color:transparent;position:relative;
+  gap:5px;padding:6px 2px 4px;height:100%;min-width:0;
+  color:rgba(255,255,255,0.45);
+  transition:color .2s ease, transform .15s ease;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
 }
-.nav-btn .ni{
-  font-size:20px;line-height:1;display:block;
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+.nav-btn svg{
+  width:22px;height:22px;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s;
 }
 .nav-btn small{
-  font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;opacity:.9;
-  color:rgba(255,255,255,0.65);
+  font-size:9.5px;font-weight:600;letter-spacing:.15px;white-space:nowrap;
+  color:rgba(255,255,255,0.45);
+  transition:color .2s;
+  position:relative;
 }
+/* Traço dourado abaixo do texto — estado ativo */
 .nav-btn.on{
   color:#ffffff;
-  background:rgba(255,255,255,0.18);
 }
-.nav-btn.on small{ color:#ffffff; font-weight:800; }
-.nav-btn.on .ni{ transform:translateY(-1px) scale(1.12); }
-.nav-btn.on::after{
-  content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
-  width:18px;height:3px;border-radius:3px;background:#F4C542;
+.nav-btn.on small{
+  color:#ffffff;
+  font-weight:800;
 }
-.nav-btn:active{ transform:scale(.94); }
+.nav-btn.on small::after{
+  content:'';
+  display:block;
+  position:absolute;
+  bottom:-3px;
+  left:50%;
+  transform:translateX(-50%);
+  width:80%;
+  height:2.5px;
+  border-radius:2px;
+  background:#F4C542;
+  animation:slideIn .25s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes slideIn{
+  from{width:0;opacity:0}
+  to{width:80%;opacity:1}
+}
+.nav-btn.on svg{
+  transform:translateY(-1px) scale(1.1);
+  opacity:1;
+}
+.nav-btn:active{ transform:scale(.88); }
 
 /* Badge de notificação */
 .nav-badge { position: relative; }
@@ -1244,9 +1340,30 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <div id="toast"></div>
 
 <!-- TOPBAR -->
-<header class="topbar" style="background:#1565C0 !important;border-bottom:none !important;box-shadow:none !important;justify-content:center !important;flex-direction:column;align-items:center;padding-top:max(env(safe-area-inset-top,0px),44px);padding-bottom:14px;padding-left:16px;padding-right:16px;">
-  <div style="font-family:'Anton',sans-serif;font-size:28px;color:#ffffff;letter-spacing:1.5px;text-transform:uppercase;line-height:1;text-align:center;">SUPERCOPA</div>
-  <div style="font-size:10px;color:#F4C542;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:5px;text-align:center;">O Maior Campeonato da Região das Montanhas</div>
+<header class="topbar" style="background:#1565C0 !important;border-bottom:none !important;box-shadow:none !important;justify-content:center !important;flex-direction:column;align-items:center;padding-top:max(env(safe-area-inset-top,0px),44px);padding-bottom:14px;padding-left:16px;padding-right:16px;overflow:hidden;">
+
+  <!-- Partículas flutuantes de fundo -->
+  <div class="topbar-particles" aria-hidden="true">
+    <span class="tp tp1"></span>
+    <span class="tp tp2"></span>
+    <span class="tp tp3"></span>
+    <span class="tp tp4"></span>
+    <span class="tp tp5"></span>
+    <span class="tp tp6"></span>
+  </div>
+
+  <!-- Título com efeito shimmer -->
+  <div class="topbar-title-wrap">
+    <div class="topbar-main-title">SUPERCOPA</div>
+  </div>
+
+  <!-- Subtítulo com traço dourado animado -->
+  <div class="topbar-sub-wrap">
+    <div class="topbar-sub-line"></div>
+    <div class="topbar-sub-text">O MAIOR CAMPEONATO DA REGIÃO DAS MONTANHAS</div>
+    <div class="topbar-sub-line"></div>
+  </div>
+
   <div id="installTopBtn" onclick="triggerInstall()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:10px;border:1px solid rgba(244,197,66,.4);background:rgba(255,255,255,.12);color:#F4C542;font-size:11px;font-weight:800;cursor:pointer;" title="Instalar App">
     <span style="font-size:14px;">📲</span> Instalar
   </div>
@@ -1480,7 +1597,6 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
     </div>
   </div>
   <div id="tableBasquete" style="display:none;">
-    <div class="search-wrap"><span class="search-ic">🔍</span><input class="search-inp" type="text" placeholder="Buscar equipe..." oninput="searchTeamBasq(this.value)"></div>
     <div class="tabs">
       <button class="tab on" onclick="filterTableBasq('grupoA',this)">Grupo A</button>
       <button class="tab" onclick="filterTableBasq('grupoB',this)">Grupo B</button>
@@ -2072,19 +2188,24 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
   <div class="bnav-pill" id="bnavPill"></div>
   <div class="bnav-items" id="bnavItems">
     <button class="nav-btn on" onclick="nav('homePage',this)" data-idx="0">
-      <span class="ni">🏠</span><small>Início</small>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="currentColor"/></svg>
+      <small>Início</small>
     </button>
     <button class="nav-btn" onclick="nav('gamesPage',this)" data-idx="1">
-      <span class="ni">🏐</span><small>Jogos</small>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3C12 3 9 7 9 12C9 17 12 21 12 21" stroke="currentColor" stroke-width="2"/><path d="M12 3C12 3 15 7 15 12C15 17 12 21 12 21" stroke="currentColor" stroke-width="2"/><path d="M3 12H21" stroke="currentColor" stroke-width="2"/></svg>
+      <small>Jogos</small>
     </button>
     <button class="nav-btn" onclick="nav('tablePage',this)" data-idx="2">
-      <span class="ni">📊</span><small>Tabela</small>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/><line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="2"/><line x1="3" y1="15" x2="21" y2="15" stroke="currentColor" stroke-width="2"/><line x1="9" y1="9" x2="9" y2="21" stroke="currentColor" stroke-width="2"/></svg>
+      <small>Tabela</small>
     </button>
     <button class="nav-btn" onclick="nav('bracketPage',this)" data-idx="3">
-      <span class="ni">🏆</span><small>Mata-mata</small>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L14.5 8.5H20.5L15.5 12L17.5 18L12 14.5L6.5 18L8.5 12L3.5 8.5H9.5L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      <small>Mata-mata</small>
     </button>
     <button class="nav-btn" onclick="nav('maisPage',this)" data-idx="4">
-      <span class="ni">⋯</span><small>Mais</small>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+      <small>Mais</small>
     </button>
   </div>
 </nav>
@@ -3059,7 +3180,7 @@ async function loadBasqData() {
         if (!casa && !visit) return;
         const ptC = _cc(rowsJ,row,3)||'', ptV = _cc(rowsJ,row,5)||'';
         const res = _cc(rowsJ,row,8)||'';
-        html += basqGameCard(`Grupo A · Jogo ${idx+1}`, 'grupos', '25/07', casa, visit, ptC, ptV, res, `bga${idx+1}`, 'Quadra Basquete');
+        html += basqGameCard(casa, visit, ptC, ptV, res, 'A', idx+1, 'grupos');
       });
 
       html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
@@ -3068,7 +3189,7 @@ async function loadBasqData() {
         if (!casa && !visit) return;
         const ptC = _cc(rowsJ,row,13)||'', ptV = _cc(rowsJ,row,15)||'';
         const res = _cc(rowsJ,row,18)||'';
-        html += basqGameCard(`Grupo B · Jogo ${idx+1}`, 'grupos', '25/07', casa, visit, ptC, ptV, res, `bgb${idx+1}`, 'Quadra Basquete');
+        html += basqGameCard(casa, visit, ptC, ptV, res, 'B', idx+1, 'grupos');
       });
 
       if (rowsM.length > 2) {
@@ -3087,44 +3208,24 @@ async function loadBasqData() {
   }
 }
 
-// Card de jogo do basquete — mesma estrutura visual do vôlei (_makeGameCard)
-function basqGameCard(phase, dataPhase, meta, casa, visit, ptC, ptV, vencedor, gid, loc) {
-  const finalizadoRaw = (vencedor||'').trim();
-  const isClassif = /^CLASSIF/i.test(finalizadoRaw);
-  const venc = isClassif ? finalizadoRaw.replace(/^CLASSIF:\s*/i,'') : finalizadoRaw;
-  const finalizado = venc && venc !== 'A DEFINIR' && venc !== '—' && venc !== 'Empate';
-  const temPlacar  = ptC || ptV || finalizado;
-
-  let scoreHtml;
-  if (temPlacar) {
-    scoreHtml = `<div class="gc-sc-num">${ptC||'0'} × ${ptV||'0'}</div>
-                 <div class="gc-sc-sets">Pontos</div>`;
-  } else {
-    scoreHtml = `<div class="gc-vs">VS</div><div class="gc-sc-sets">Em breve</div>`;
-  }
-
-  const watchId    = gid ? `id="w-${gid}"` : '';
-  const watchClick = gid ? `onclick="toggleWatch('${gid}')"` : '';
-  const watchLabel = (gid && typeof watched !== 'undefined' && watched.has && watched.has(gid)) ? '✅ Acompanhando' : '🔔 Acompanhar';
-  const watchClass = (gid && typeof watched !== 'undefined' && watched.has && watched.has(gid)) ? 'btn-watch on' : 'btn-watch';
-
-  const liveClass = (temPlacar && !finalizado) ? ' live-card' : '';
-  const icCasa  = BASQ_TIMES[casa]?.ic  || '🏀';
-  const icVisit = BASQ_TIMES[visit]?.ic || '🏀';
-
-  return `<div class="gc${liveClass}" data-phase="${dataPhase}"${gid?` data-gid="${gid}"`:''}>
-    <div class="gc-top">
-      <span class="gc-phase">${phase}</span>
-      <span class="gc-dt">${meta||''}</span>
+function basqGameCard(casa, visit, ptC, ptV, res, grp, idx, phase) {
+  const done = !!(ptC && ptV && (parseInt(ptC) !== 0 || parseInt(ptV) !== 0));
+  const casaW  = done && parseInt(ptC) > parseInt(ptV);
+  const visitW = done && parseInt(ptV) > parseInt(ptC);
+  const lbl = idx ? `Grupo ${grp} · Jogo ${idx} 🏀` : `${grp} 🏀`;
+  return `<div class="gc${done?' done':''}" data-phase="${phase}">
+    <div class="gc-meta">${lbl}</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[casa]?.ic||'🏀'}</div><div class="gc-nm">${casa||'—'}</div></div>
+      <div class="gc-score">
+        <span class="${ptC?(casaW?'sc-w':'sc'):'sc-empty'}">${ptC||'—'}</span>
+        <span class="sc-sep">×</span>
+        <span class="${ptV?(visitW?'sc-w':'sc'):'sc-empty'}">${ptV||'—'}</span>
+      </div>
+      <div class="gc-team gc-team-r"><div class="gc-nm">${visit||'—'}</div><div class="gc-ic">${BASQ_TIMES[visit]?.ic||'🏀'}</div></div>
     </div>
-    <div class="gc-mid">
-      <div class="gc-t"><div class="gc-t-ic">${icCasa}</div><div class="gc-t-nm">${casa||'—'}</div></div>
-      <div class="gc-sc">${scoreHtml}</div>
-      <div class="gc-t"><div class="gc-t-ic">${icVisit}</div><div class="gc-t-nm">${visit||'—'}</div></div>
-    </div>
-    ${finalizado
-      ? `<div class="gc-bot"><span class="gc-loc">📍 ${loc||'Quadra Basquete'}</span><div class="gc-actions"><span style="font-size:11px;color:var(--green);font-weight:700;">✅ ${venc}</span><button class="${watchClass}" ${watchId} ${watchClick}>${watchLabel}</button></div></div>`
-      : `<div class="gc-bot"><span class="gc-loc">📍 ${loc||'Quadra Basquete'}</span><div class="gc-actions"><button class="${watchClass}" ${watchId} ${watchClick}>${watchLabel}</button></div></div>`}
+    ${res&&res!=='Empate'&&!/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res}</div>`:''}
+    ${/^CLASSIF/i.test(res)?`<div class="gc-result">🏆 ${res.replace(/^CLASSIF:\s*/i,'')}</div>`:''}
   </div>`;
 }
 
@@ -3132,19 +3233,19 @@ function buildBasqMataHtml(rowsM) {
   // Mata-Mata: SF1=rows 3+4, SF2=rows 8+9, FINAL=rows 14+15
   // cols: TEAM1=1, TEAM2=7, CLASSIF=12  (pts em row+1 col 1 e col 7)
   let html = '<div class="grp-lbl" data-phase="semi">SEMIFINAL 🏀</div>';
-  [[3,'SF1','25/07 · 14:00h'],[8,'SF2','25/07 · 15:30h']].forEach(([r,lbl,meta]) => {
+  [[3,'SF1'],[8,'SF2']].forEach(([r,lbl]) => {
     const c = _cc(rowsM,r,1), v = _cc(rowsM,r,7);
     if (!c && !v) return;
     const pc = _cc(rowsM,r+1,1)||'', pv = _cc(rowsM,r+1,7)||'';
     const vc = _cc(rowsM,r,12)||'';
-    html += basqGameCard(lbl, 'semi', meta, c, v, pc, pv, vc, `b${lbl.toLowerCase()}`, 'Quadra Basquete');
+    html += basqGameCard(c, v, pc, pv, vc, lbl, '', 'semi');
   });
-  html += '<div class="grp-lbl" data-phase="final" style="color:var(--gold)">🏆 GRANDE FINAL 🏀</div>';
+  html += '<div class="grp-lbl" data-phase="final">FINAL 🏀</div>';
   const fc = _cc(rowsM,14,1), fv = _cc(rowsM,14,7);
   if (fc || fv) {
     const pc = _cc(rowsM,15,1)||'', pv = _cc(rowsM,15,7)||'';
     const vc = _cc(rowsM,14,12)||'';
-    html += basqGameCard('FINAL', 'final', '26/07 · 17:30h', fc, fv, pc, pv, vc, 'bfinal', 'Quadra Basquete');
+    html += basqGameCard(fc, fv, pc, pv, vc, 'FINAL', '', 'final');
   }
   return html;
 }
@@ -3152,18 +3253,22 @@ function buildBasqMataHtml(rowsM) {
 function updateBasqBracket(rowsM) {
   const setEl = (id, val) => { const e=document.getElementById(id); if(e){e.textContent=val||'—';e.className=val?'mt-sc':'mt-sc empty';} };
   const setNm = (id, val) => { const e=document.getElementById(id); if(e && val) e.textContent=val; };
+  // SF1 (row 3 names, row 4 scores)
   setNm('bsf1t1nmB', _cc(rowsM,3,1));
   setNm('bsf1t2nmB', _cc(rowsM,3,7));
   setEl('bsf1t1B',   _cc(rowsM,4,1));
   setEl('bsf1t2B',   _cc(rowsM,4,7));
+  // SF2 (row 8 / row 9)
   setNm('bsf2t1nmB', _cc(rowsM,8,1));
   setNm('bsf2t2nmB', _cc(rowsM,8,7));
   setEl('bsf2t1B',   _cc(rowsM,9,1));
   setEl('bsf2t2B',   _cc(rowsM,9,7));
+  // FINAL (row 14 / row 15)
   setNm('bfint1nmB', _cc(rowsM,14,1));
   setNm('bfint2nmB', _cc(rowsM,14,7));
   setEl('bfint1B',   _cc(rowsM,15,1));
   setEl('bfint2B',   _cc(rowsM,15,7));
+  // Campeão: tenta row 14 col 12 "CLASSIF: X" ou row 20 col 0 "CAMPEAO: X"
   let champ = '';
   const classif = _cc(rowsM,14,12) || '';
   const m1 = classif.match(/CLASSIF[:\s]+(.+)/i);
@@ -3185,16 +3290,25 @@ function renderGamesBasqOffline() {
   if (!gl) return;
   const timesA = ['CT das Montanhas','São Pedro Basquete','Crossover Basquete'];
   const timesB = ['Aracruz Basquete','Marlins','Central Serrano Basquete'];
+  let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
   const jogosA = [[timesA[0],timesA[1]],[timesA[0],timesA[2]],[timesA[1],timesA[2]]];
   const jogosB = [[timesB[0],timesB[1]],[timesB[0],timesB[2]],[timesB[1],timesB[2]]];
-
-  let html = '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO A 🏀</div>';
   jogosA.forEach(([c,v],i) => {
-    html += basqGameCard(`Grupo A · Jogo ${i+1}`, 'grupos', '25/07', c, v, '', '', '', `bga${i+1}`, 'Quadra Basquete');
+    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo A · Jogo ${i+1} 🏀</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
+      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
+      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+    </div></div>`;
   });
   html += '<div class="grp-lbl" data-phase="grupos">FASE DE GRUPOS · GRUPO B 🏀</div>';
   jogosB.forEach(([c,v],i) => {
-    html += basqGameCard(`Grupo B · Jogo ${i+1}`, 'grupos', '25/07', c, v, '', '', '', `bgb${i+1}`, 'Quadra Basquete');
+    html += `<div class="gc" data-phase="grupos"><div class="gc-meta">Grupo B · Jogo ${i+1} 🏀</div>
+    <div class="gc-row">
+      <div class="gc-team"><div class="gc-ic">${BASQ_TIMES[c]?.ic||'🏀'}</div><div class="gc-nm">${c}</div></div>
+      <div class="gc-score"><span class="sc-empty">—</span><span class="sc-sep">×</span><span class="sc-empty">—</span></div>
+      <div class="gc-team gc-team-r"><div class="gc-nm">${v}</div><div class="gc-ic">${BASQ_TIMES[v]?.ic||'🏀'}</div></div>
+    </div></div>`;
   });
   gl.innerHTML = html;
 
@@ -3205,11 +3319,11 @@ function renderGamesBasqOffline() {
 }
 
 // ── Render tabela basquete ────────────────────────────────────────────────
-function renderTableBasq(grp, filter='') {
+function renderTableBasq(grp) {
   curGrpBasq = grp;
   const tbody = document.getElementById('tableBodyBasq');
   if (!tbody) return;
-  const rows = (tableDataBasq[grp] || []).filter(r => !filter || (r.name||'').toLowerCase().includes(filter.toLowerCase()));
+  const rows = tableDataBasq[grp] || [];
   if (!rows.length) {
     tbody.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>';
     return;
@@ -3236,8 +3350,6 @@ function filterTableBasq(grp, btn) {
   document.querySelectorAll('#tableBasquete .tab').forEach(b=>b.classList.remove('on'));
   if (btn) btn.classList.add('on');
 }
-
-function searchTeamBasq(v) { renderTableBasq(curGrpBasq, v); }
 
 // ── Filtro de jogos basquete ──────────────────────────────────────────────
 function filterGamesBasq(phase, btn) {
