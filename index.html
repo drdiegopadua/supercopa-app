@@ -1068,81 +1068,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
       <button class="modal-close" style="position:static;" onclick="closeAdmin()">✕</button>
     </div>
     <div class="adm-tabs">
-      <button class="adm-tab on" onclick="admTab('score',this)">Placar</button>
-      <button class="adm-tab" onclick="admTab('teams',this)">Times</button>
-      <button class="adm-tab" onclick="admTab('mvp',this)">MVP</button>
-      <button class="adm-tab" onclick="admTab('bolao',this)">🎯 Bolão</button>
+      <button class="adm-tab on" onclick="admTab('bolao',this)">🎯 Bolão</button>
       <button class="adm-tab" onclick="admTab('quiz',this)">🧠 Quiz</button>
-      <button class="adm-tab" onclick="admTab('resultados',this)">📊 Resultados</button>
-      <button class="adm-tab" onclick="admTab('notif',this)">🔔 Push</button>
-      <button class="adm-tab" onclick="admTab('basq',this)">🏀 Basquete</button>
       <button class="adm-tab" onclick="admTab('atleta',this)">⭐ Atleta</button>
+      <button class="adm-tab" onclick="admTab('notif',this)">🔔 Push</button>
       <button class="adm-tab" onclick="admTab('noticias',this)">📰 Notícias</button>
     </div>
-    <!-- TAB: SCORE -->
-    <div id="admScore">
-      <div class="adm-lbl">Jogo</div>
-      <select class="adm-select" id="admGame">
-        <option value="">Selecionar...</option>
-        <option value="g1">Grupo A R1 · ES Volei vs Equipe X</option>
-        <option value="g2">Grupo A R2 · ES Volei vs Equipe Y</option>
-        <option value="g3">Grupo B R1 · Equipe UVI vs Equipe X</option>
-        <option value="g4">Grupo C R1 · CT Montanhas vs Equipe X</option>
-      </select>
-      <div class="adm-lbl">Placar (sets)</div>
-      <div class="adm-score-row">
-        <span id="admT1">Time A</span>
-        <input class="adm-sc-inp" type="number" min="0" max="3" id="admS1" placeholder="0">
-        <div class="adm-sep">×</div>
-        <input class="adm-sc-inp" type="number" min="0" max="3" id="admS2" placeholder="0">
-        <span id="admT2" style="text-align:right">Time B</span>
-      </div>
-      <div class="adm-lbl">Estatísticas do Jogo</div>
-      <div class="adm-set-row"><div class="adm-set-lbl">Aces T1</div><input class="adm-inp" style="margin:0;flex:1" type="number" min="0" id="admAce1" placeholder="0"><div class="adm-set-lbl" style="text-align:center">T2</div><input class="adm-inp" style="margin:0;flex:1" type="number" min="0" id="admAce2" placeholder="0"></div>
-      <div class="adm-set-row"><div class="adm-set-lbl">Bloq T1</div><input class="adm-inp" style="margin:0;flex:1" type="number" min="0" id="admBlk1" placeholder="0"><div class="adm-set-lbl" style="text-align:center">T2</div><input class="adm-inp" style="margin:0;flex:1" type="number" min="0" id="admBlk2" placeholder="0"></div>
-      <div class="adm-lbl">Senha Admin</div>
-      <input class="adm-inp" type="password" placeholder="Senha..." id="admPw">
-      <div class="adm-actions">
-        <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
-        <button class="adm-save" onclick="saveScore()">SALVAR</button>
-      </div>
-    </div>
-    <!-- TAB: TEAMS -->
-    <div id="admTeams" style="display:none;">
-      <div class="adm-section">
-        <h4>Adicionar Time</h4>
-        <div class="adm-team-row">
-          <input class="adm-inp" id="newTeamName" placeholder="Nome do time">
-          <input class="adm-inp" id="newTeamCity" placeholder="Cidade, UF" style="max-width:130px;">
-        </div>
-        <select class="adm-select" id="newTeamGroup"><option value="grupoA">Grupo A</option><option value="grupoB">Grupo B</option><option value="grupoC">Grupo C</option><option value="grupoD">Grupo D</option></select>
-        <input class="adm-inp" type="password" placeholder="Senha Admin" id="admPw2">
-        <div class="adm-actions">
-          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
-          <button class="adm-save" onclick="addTeam()">ADICIONAR</button>
-        </div>
-      </div>
-    </div>
-    <!-- TAB: MVP -->
-    <div id="admMvp" style="display:none;">
-      <div class="adm-section">
-        <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
-          <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Melhor da Partida</div>
-        </div>
-        <div class="adm-lbl">Nome do Jogador</div>
-        <input class="adm-inp" id="mvpName" placeholder="Nome completo do jogador">
-        <div class="adm-lbl">Time</div>
-        <input class="adm-inp" id="mvpTeam" placeholder="Nome do time">
-        <div class="adm-actions" style="margin-top:14px;">
-          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
-          <button class="adm-save" onclick="addMvp()">⭐ SALVAR MVP</button>
-        </div>
-        <div id="admMvpStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
-      </div>
-    </div>
     <!-- TAB: BOLAO -->
-    <div id="admBolao" style="display:none;">
+    <div id="admBolao">
       <div class="adm-section">
         <h4 style="margin-bottom:12px;font-size:13px;color:var(--gold);">🎯 Controle dos Bolões</h4>
         <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1167,6 +1100,14 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
               <button style="flex:1;padding:9px;border-radius:9px;border:none;background:rgba(255,64,64,.15);color:#ff6b6b;font-weight:800;font-size:12px;cursor:pointer;" onclick="if(checkPwBolao())adminFecharBolao('camp')">🔴 Fechar</button>
             </div>
           </div>
+          <!-- REINICIAR PALPITE -->
+          <div style="background:var(--card);border:1px solid rgba(244,197,66,.3);border-radius:12px;padding:12px;">
+            <div style="font-size:11px;font-weight:800;margin-bottom:4px;color:var(--gold);">🔄 Reiniciar Palpite</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Apaga o palpite salvo e permite que o usuário refaça</div>
+            <input class="adm-inp" id="admBolaoReiniciarNick" placeholder="Nickname do participante..." style="margin-bottom:8px;">
+            <button style="width:100%;padding:10px;border-radius:9px;border:none;background:rgba(244,197,66,.2);color:var(--gold);font-weight:800;font-size:12px;cursor:pointer;" onclick="admReiniciarPalpite()">🔄 REINICIAR PALPITE</button>
+            <div id="admBolaoReiniciarStatus" style="text-align:center;font-size:11px;color:var(--muted);margin-top:6px;"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1176,33 +1117,42 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <div style="text-align:center;margin-bottom:18px;">
           <div style="font-size:36px;margin-bottom:8px;">🧠</div>
           <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Gerenciar Quiz</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5;">Libere o quiz de um participante<br>para que ele possa responder novamente</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5;">Libere o quiz ou reinicie para todos</div>
         </div>
-        <div id="admQuizStatus" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--muted);text-align:center;">
-          Carregando...
-        </div>
-        <div class="adm-actions" style="margin-top:12px;">
+        <div id="admQuizStatus" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--muted);text-align:center;">Carregando...</div>
+        <div class="adm-actions" style="margin-top:12px;flex-direction:column;gap:8px;">
+          <button class="adm-save" onclick="admQuizLiberar()" id="btnLiberarQuiz">🔓 LIBERAR QUIZ (usuário)</button>
+          <button style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(244,197,66,.3);background:rgba(244,197,66,.12);color:var(--gold);font-weight:800;font-size:13px;cursor:pointer;" onclick="admReiniciarQuizGlobal()">🔄 REINICIAR QUIZ (todos)</button>
           <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
-          <button class="adm-save" onclick="admQuizLiberar()" id="btnLiberarQuiz">🔓 LIBERAR QUIZ</button>
         </div>
+        <div id="admQuizReiniciarStatus" style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;"></div>
       </div>
     </div>
-    <!-- TAB: RESULTADOS BOLÃO -->
-    <div id="admResultados" style="display:none;">
+    <!-- TAB: ATLETA DESTAQUE -->
+    <div id="admAtleta" style="display:none;">
       <div class="adm-section">
-        <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-size:32px;margin-bottom:6px;">📊</div>
-          <div style="font-family:'Anton',sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Resultados dos Jogos</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Informe o vencedor de cada jogo para calcular o ranking</div>
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
+          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Atleta Destaque</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Defina o atleta destaque por jogo</div>
         </div>
-        <div id="admResultadosContent">
-          <div style="text-align:center;font-size:12px;color:var(--muted);padding:20px;">Carregando jogos...</div>
+        <div class="adm-lbl">Modalidade</div>
+        <select class="adm-select" id="admAtletaSport" onchange="updateAtletaJogoMax()">
+          <option value="volei">🏐 Vôlei</option>
+          <option value="basquete">🏀 Basquete</option>
+        </select>
+        <div class="adm-lbl">Nº do Jogo</div>
+        <input class="adm-inp" type="number" id="admAtletaJogo" placeholder="Ex: 1, 2, 3..." min="1" max="18">
+        <div id="admAtletaJogoInfo" style="font-size:10px;color:var(--muted);margin-top:-8px;margin-bottom:10px;">Vôlei: 1-12 grupos · 13-16 quartas · 17-19 semi</div>
+        <div class="adm-lbl">Nome do Atleta</div>
+        <input class="adm-inp" id="admAtletaNome" placeholder="Nome completo...">
+        <div class="adm-lbl">Time</div>
+        <input class="adm-inp" id="admAtletaTime" placeholder="Nome do time...">
+        <div id="admAtletaStatus" style="text-align:center;font-size:12px;color:var(--muted);margin:8px 0;"></div>
+        <div class="adm-actions">
+          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
+          <button class="adm-save" onclick="admSalvarAtleta()">⭐ SALVAR</button>
         </div>
-        <div class="adm-actions" style="margin-top:14px;">
-          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
-          <button class="adm-save" onclick="admSalvarResultados()">💾 SALVAR RESULTADOS</button>
-        </div>
-        <div id="admResultadosStatus" style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted);"></div>
       </div>
     </div>
     <!-- TAB: NOTIFICAÇÕES PUSH -->
@@ -1231,83 +1181,6 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
         <div class="adm-actions">
           <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
           <button class="adm-save" onclick="admEnviarPush()">🚀 ENVIAR AGORA</button>
-        </div>
-      </div>
-    </div>
-    <!-- TAB: ADMIN BASQUETE -->
-    <div id="admBasq" style="display:none;">
-      <div class="adm-section">
-        <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-size:32px;margin-bottom:6px;">🏀</div>
-          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Painel Basquete</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Atualizar placares e resultados do basquete</div>
-        </div>
-        <div class="adm-lbl">Jogo</div>
-        <select class="adm-select" id="admGameBasq">
-          <option value="">Selecionar...</option>
-          <optgroup label="Grupo A">
-            <option value="bga1">Grupo A J1 · CT Montanhas vs São Pedro</option>
-            <option value="bga2">Grupo A J2 · CT Montanhas vs Crossover</option>
-            <option value="bga3">Grupo A J3 · São Pedro vs Crossover</option>
-          </optgroup>
-          <optgroup label="Grupo B">
-            <option value="bgb1">Grupo B J1 · Aracruz vs Marlins</option>
-            <option value="bgb2">Grupo B J2 · Aracruz vs Central Serrano</option>
-            <option value="bgb3">Grupo B J3 · Marlins vs Central Serrano</option>
-          </optgroup>
-          <optgroup label="Mata-Mata">
-            <option value="bsf1">Semifinal 1</option>
-            <option value="bsf2">Semifinal 2</option>
-            <option value="bfin">Final</option>
-          </optgroup>
-        </select>
-        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:12px;">
-          <div>
-            <div class="adm-lbl">Placar Casa</div>
-            <input class="adm-inp" type="number" id="admBasqPC" placeholder="0" min="0" style="text-align:center;font-size:22px;">
-          </div>
-          <div style="text-align:center;font-size:18px;color:var(--muted);padding-top:20px;">×</div>
-          <div>
-            <div class="adm-lbl">Placar Visit.</div>
-            <input class="adm-inp" type="number" id="admBasqPV" placeholder="0" min="0" style="text-align:center;font-size:22px;">
-          </div>
-        </div>
-        <div class="adm-lbl">Status</div>
-        <select class="adm-select" id="admBasqStatus">
-          <option value="">Em breve</option>
-          <option value="ao_vivo">🔴 Ao vivo</option>
-          <option value="encerrado">✅ Encerrado</option>
-        </select>
-        <div id="admBasqFeedback" style="text-align:center;font-size:12px;color:var(--muted);margin:8px 0;"></div>
-        <div class="adm-actions">
-          <button class="adm-cancel" onclick="closeAdmin()">Fechar</button>
-          <button class="adm-save" onclick="admSalvarBasq()">💾 SALVAR</button>
-        </div>
-      </div>
-    </div>
-    <!-- TAB: ATLETA DESTAQUE -->
-    <div id="admAtleta" style="display:none;">
-      <div class="adm-section">
-        <div style="text-align:center;margin-bottom:14px;">
-          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
-          <div style="font-family:Anton,sans-serif;font-size:16px;color:var(--gold);text-transform:uppercase;">Atleta Destaque</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Defina o atleta destaque por jogo</div>
-        </div>
-        <div class="adm-lbl">Modalidade</div>
-        <select class="adm-select" id="admAtletaSport">
-          <option value="volei">🏐 Vôlei</option>
-          <option value="basquete">🏀 Basquete</option>
-        </select>
-        <div class="adm-lbl">Nº do Jogo</div>
-        <input class="adm-inp" type="number" id="admAtletaJogo" placeholder="Ex: 1, 2, 3..." min="1" max="18">
-        <div class="adm-lbl">Nome do Atleta</div>
-        <input class="adm-inp" id="admAtletaNome" placeholder="Nome completo...">
-        <div class="adm-lbl">Time</div>
-        <input class="adm-inp" id="admAtletaTime" placeholder="Nome do time...">
-        <div id="admAtletaStatus" style="text-align:center;font-size:12px;color:var(--muted);margin:8px 0;"></div>
-        <div class="adm-actions">
-          <button class="adm-cancel" onclick="closeAdmin()">Cancelar</button>
-          <button class="adm-save" onclick="admSalvarAtleta()">⭐ SALVAR</button>
         </div>
       </div>
     </div>
@@ -3364,57 +3237,154 @@ function filterGamesBasq(phase, btn) {
 // (integrada no admTab existente)
 
 
-// ── PÁGINA TIMES ────────────────────────────────────────────────────────────
+// ── DADOS ESTÁTICOS DOS TIMES ────────────────────────────────────────────────
+// VÔLEI — edite aqui quando receber os dados dos times
+const TIMES_VOLEI = {
+  grupoA: [
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+  ],
+  grupoB: [
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+  ],
+  grupoC: [
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+  ],
+  grupoD: [
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+    { nome:'A definir', insta:'', resp:'A informar', escudo:'' },
+  ],
+};
+
+// BASQUETE — edite aqui quando receber os dados dos times
+const TIMES_BASQUETE = {
+  grupoA: [
+    { nome:'CT das Montanhas', insta:'@ctdasmontanhas',   resp:'A informar', escudo:'' },
+    { nome:'Marlins',          insta:'@marlinsbasquete',   resp:'A informar', escudo:'' },
+    { nome:'Crossover',        insta:'@crossoverbasquete', resp:'A informar', escudo:'' },
+  ],
+  grupoB: [
+    { nome:'Central Serrano',  insta:'@centralserrano',   resp:'A informar', escudo:'' },
+    { nome:'Aracruz',          insta:'@aracruzbasquete',   resp:'A informar', escudo:'' },
+    { nome:'São Pedro',        insta:'@saopedrobasquete',  resp:'A informar', escudo:'' },
+  ],
+};
+
+// ── PÁGINA TIMES ──────────────────────────────────────────────────────────────
 function loadTimes() {
-  // Carrega times da tabela do vôlei já carregada com clique abrindo modal
-  const grpMap = {
-    grupoA: 'timesGrupoA', grupoB: 'timesGrupoB',
-    grupoC: 'timesGrupoC', grupoD: 'timesGrupoD'
-  };
-  Object.keys(grpMap).forEach(grp => {
-    const el = document.getElementById(grpMap[grp]);
+  renderTimesVolei();
+  renderTimesBasq();
+}
+
+function _timeCard(t, grpLabel, sport) {
+  const ic = sport === 'basquete' ? (BASQ_TIMES[t.nome]?.ic || '🏀') : '🏐';
+  return `<div onclick='openTimeInfo(${JSON.stringify(t.nome)},${JSON.stringify(grpLabel)},${JSON.stringify(t.insta||"")},${JSON.stringify(t.resp||"")},${JSON.stringify(t.escudo||"")},${JSON.stringify(sport)})'
+    style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;-webkit-tap-highlight-color:transparent;">
+    <div style="width:44px;height:44px;border-radius:12px;background:#EEF4FF;border:1px solid #DBEAFE;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;">${ic}</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:14px;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.nome}</div>
+      <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">${grpLabel}${t.insta ? ' · ' + t.insta : ''}</div>
+    </div>
+    <div style="color:#CBD5E1;font-size:18px;">›</div>
+  </div>`;
+}
+
+function renderTimesVolei() {
+  const grps = { grupoA:'Grupo A', grupoB:'Grupo B', grupoC:'Grupo C', grupoD:'Grupo D' };
+  Object.entries(grps).forEach(([key, label]) => {
+    const suffix = key.slice(5).toUpperCase();
+    const el = document.getElementById('timesGrupo' + suffix);
     if (!el) return;
-    const rows = tableData[grp] || [];
-    if (!rows.length) {
-      el.innerHTML = '<div style="font-size:13px;color:#9CA3AF;text-align:center;padding:12px;">Carregando...</div>';
-      return;
-    }
-    el.innerHTML = rows.map(r => `
-      <div onclick="openTimeInfo('${(r.name||r.nm||'').replace(/'/g,"\\'")}','${(r.city||'').replace(/'/g,"\\'")}','','','','')" style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s;">
-        <div style="width:40px;height:40px;background:linear-gradient(135deg,#DBEAFE,#BFDBFE);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏐</div>
-        <div style="flex:1;">
-          <div style="font-size:14px;font-weight:700;color:#111827;">${r.name||r.nm||'—'}</div>
-          <div style="font-size:11px;color:#9CA3AF;">📍 ${r.city||grp.replace('grupo','Grupo ')}</div>
-        </div>
-        <div style="font-size:18px;color:#CBD5E1;">›</div>
-      </div>`).join('');
+    el.innerHTML = (TIMES_VOLEI[key] || []).map(t => _timeCard(t, label, 'volei')).join('');
   });
 }
 
-// ── MODAL INFO TIME ──────────────────────────────────────────
-function openTimeInfo(nome, cidade, instagram, responsavel, capitao, extra) {
+function renderTimesBasq() {
+  const grps = { grupoA:'Grupo A', grupoB:'Grupo B' };
+  Object.entries(grps).forEach(([key, label]) => {
+    const suffix = key[0].toUpperCase() + key.slice(1);
+    const el = document.getElementById('timesBasq' + suffix);
+    if (!el) return;
+    el.innerHTML = (TIMES_BASQUETE[key] || []).map(t => _timeCard(t, label, 'basquete')).join('');
+  });
+}
+
+function showTimesTab(tab) {
+  document.getElementById('timesVolei').style.display    = tab === 'volei'    ? 'block' : 'none';
+  document.getElementById('timesBasquete').style.display = tab === 'basquete' ? 'block' : 'none';
+  document.getElementById('timesBtnV').className = 'sport-btn' + (tab === 'volei'    ? ' sport-btn-on' : '');
+  document.getElementById('timesBtnB').className = 'sport-btn' + (tab === 'basquete' ? ' sport-btn-on' : '');
+}
+
+// ── MODAL INFO TIME ───────────────────────────────────────────────────────────
+function openTimeInfo(nome, grupo, insta, resp, escudo, sport) {
   const modal = document.getElementById('timeInfoModal');
   if (!modal) return;
-  document.getElementById('tiNome').textContent = nome || '—';
-  document.getElementById('tiCidade').textContent = cidade || '—';
-  document.getElementById('tiInsta').textContent = instagram || 'Não informado';
-  document.getElementById('tiInsta').href = instagram ? 'https://instagram.com/'+instagram.replace('@','') : '#';
-  document.getElementById('tiResp').textContent = responsavel || 'A informar';
-  document.getElementById('tiCap').textContent = capitao || 'A informar';
+
+  document.getElementById('tiNome').textContent  = nome  || '—';
+  document.getElementById('tiGrupo').textContent = grupo || '';
+  document.getElementById('tiResp').textContent  = resp  || 'A informar';
+
+  // Escudo
+  const imgEl      = document.getElementById('tiEscudo');
+  const fallbackEl = document.getElementById('tiEscudoFallback');
+  if (escudo) {
+    imgEl.src = escudo; imgEl.style.display = 'block';
+    fallbackEl.style.display = 'none';
+  } else {
+    imgEl.style.display = 'none';
+    fallbackEl.style.display = 'flex';
+    fallbackEl.textContent = sport === 'basquete' ? '🏀' : '🏐';
+  }
+
+  // Instagram
+  const instaEl     = document.getElementById('tiInsta');
+  const instaTextEl = document.getElementById('tiInstaText');
+  if (insta) {
+    const handle = insta.startsWith('@') ? insta : '@' + insta;
+    instaTextEl.textContent = handle;
+    instaEl.href = 'https://instagram.com/' + handle.replace('@', '');
+    instaEl.style.opacity = '1';
+    instaEl.style.pointerEvents = 'auto';
+  } else {
+    instaTextEl.textContent = 'Não informado';
+    instaEl.href = '#';
+    instaEl.style.opacity = '.5';
+    instaEl.style.pointerEvents = 'none';
+  }
+
   modal.style.display = 'flex';
-  setTimeout(() => modal.querySelector('.ti-sheet').classList.add('open'), 10);
+  requestAnimationFrame(() => {
+    modal.querySelector('.ti-sheet').style.transform = 'translateY(0)';
+  });
 }
+
 function closeTimeInfo() {
   const modal = document.getElementById('timeInfoModal');
   if (!modal) return;
-  modal.querySelector('.ti-sheet').classList.remove('open');
-  setTimeout(() => { modal.style.display = 'none'; }, 320);
+  modal.querySelector('.ti-sheet').style.transform = 'translateY(100%)';
+  setTimeout(() => { modal.style.display = 'none'; }, 340);
 }
 
 // ── ATLETA DESTAQUE ──────────────────────────────────────────
 const ATLETA_KEY = 'atletaDestaque_v1';
-const VOLEI_JOGOS = 18;
-const BASQ_JOGOS  = 8;
+// Vôlei: 12 grupos + 4 quartas + 3 semi = 19
+// Basquete: 6 grupos + 2 semi = 8
+const VOLEI_FASES = [
+  { label:'Classificação', jogos:[1,2,3,4,5,6,7,8,9,10,11,12] },
+  { label:'Quartas de Final', jogos:[13,14,15,16] },
+  { label:'Semifinal', jogos:[17,18,19] },
+];
+const BASQ_FASES = [
+  { label:'Classificação', jogos:[1,2,3,4,5,6] },
+  { label:'Semifinal', jogos:[7,8] },
+];
 
 function atletaTab(sport, btn) {
   document.getElementById('atletaTabVoleiBtn').style.cssText = 'flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;';
@@ -3424,42 +3394,44 @@ function atletaTab(sport, btn) {
   document.getElementById('atletaBasqSection').style.display  = sport==='basquete'?'block':'none';
 }
 
+function _atletaCard(i, prefix, a, sport) {
+  return `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+    <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'#EEF4FF'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
+    <div style="flex:1;">
+      <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · ${sport==='basquete'?'Basquete':'Vôlei'}</div>
+      <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
+      ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
+    </div>
+    ${a ? `<div style="font-size:18px;">${sport==='basquete'?'🏀':'🏐'}</div>` : ''}
+  </div>`;
+}
+
 function renderAtletas() {
   const data = JSON.parse(localStorage.getItem(ATLETA_KEY) || '{}');
-  // Vôlei
+
+  // Vôlei — por fases
   const vl = document.getElementById('atletaVoleiList');
   if (vl) {
     let html = '';
-    for (let i = 1; i <= VOLEI_JOGOS; i++) {
-      const a = data['v'+i];
-      html += `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-        <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'#EEF4FF'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · Vôlei</div>
-          <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
-          ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
-        </div>
-        ${a ? '<div style="font-size:18px;">🏐</div>' : ''}
-      </div>`;
-    }
+    VOLEI_FASES.forEach(fase => {
+      html += `<div style="font-size:10px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
+      fase.jogos.forEach(i => {
+        html += _atletaCard(i, 'v', data['v'+i], 'volei');
+      });
+    });
     vl.innerHTML = html;
   }
-  // Basquete
+
+  // Basquete — por fases
   const bl = document.getElementById('atletaBasqList');
   if (bl) {
     let html = '';
-    for (let i = 1; i <= BASQ_JOGOS; i++) {
-      const a = data['b'+i];
-      html += `<div style="background:#fff;border:1px solid ${a?'rgba(200,150,12,.35)':'#E8ECF4'};border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
-        <div style="width:36px;height:36px;background:${a?'linear-gradient(135deg,#C8960C,#F4C542)':'linear-gradient(135deg,#FEF3C7,#FDE68A)'};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${a?'#fff':'#9CA3AF'};">${i}</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;color:#9CA3AF;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Jogo ${i} · Basquete</div>
-          <div style="font-size:13px;font-weight:800;color:#111827;margin-top:2px;">${a ? '⭐ '+a.nome : 'Aguardando...'}</div>
-          ${a ? `<div style="font-size:11px;color:#9CA3AF;margin-top:1px;">${a.time||''}</div>` : ''}
-        </div>
-        ${a ? '<div style="font-size:18px;">🏀</div>' : ''}
-      </div>`;
-    }
+    BASQ_FASES.forEach(fase => {
+      html += `<div style="font-size:10px;font-weight:800;color:#C8960C;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">${fase.label}</div>`;
+      fase.jogos.forEach(i => {
+        html += _atletaCard(i, 'b', data['b'+i], 'basquete');
+      });
+    });
     bl.innerHTML = html;
   }
 }
@@ -3813,25 +3785,88 @@ function admLogin(){
 function closeAdmin(){document.getElementById('adminModal').classList.remove('on');}
 document.getElementById('adminModal').addEventListener('click',e=>{if(e.target===document.getElementById('adminModal'))closeAdmin();});
 function admTab(tab,btn){
-  document.querySelectorAll('.adm-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  document.getElementById('admScore').style.display=tab==='score'?'block':'none';
-  document.getElementById('admTeams').style.display=tab==='teams'?'block':'none';
-  document.getElementById('admMvp').style.display=tab==='mvp'?'block':'none';
-  document.getElementById('admBolao').style.display=tab==='bolao'?'block':'none';
-  document.getElementById('admQuiz').style.display=tab==='quiz'?'block':'none';
+  document.querySelectorAll('.adm-tab').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  // Show/hide panels
+  const panels = {
+    bolao:'admBolao', quiz:'admQuiz', atleta:'admAtleta',
+    notif:'admNotif', noticias:'admNoticias'
+  };
+  Object.entries(panels).forEach(([key,id]) => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = tab===key ? 'block' : 'none';
+  });
   if(tab==='quiz') admQuizCarregarStatus();
-  document.getElementById('admResultados').style.display=tab==='resultados'?'block':'none';
-  if(tab==='resultados') admCarregarResultados();
-  document.getElementById('admNotif').style.display=tab==='notif'?'block':'none';
   if(tab==='notif') admPushCarregarStatus();
-  document.getElementById('admBasq') && (document.getElementById('admBasq').style.display=tab==='basq'?'block':'none');
-  document.getElementById('admAtleta') && (document.getElementById('admAtleta').style.display=tab==='atleta'?'block':'none');
-  document.getElementById('admNoticias') && (document.getElementById('admNoticias').style.display=tab==='noticias'?'block':'none');
   if(tab==='noticias') admRenderNewsList();
-  if(tab==='resultados') admCarregarResultados();
+}
+
+// ── Reiniciar palpite de um participante (admin) ──────────────────────────
+function admReiniciarPalpite() {
+  const nick = (document.getElementById('admBolaoReiniciarNick')?.value||'').trim();
+  const statusEl = document.getElementById('admBolaoReiniciarStatus');
+  if(!nick){ if(statusEl) statusEl.textContent='⚠️ Informe o nickname'; return; }
+  // Remove todas as chaves do bolão para esse nick
+  const prefixes = [`bolao_sabado_${nick}`,`bolao_semi_${nick}`,`bolao_camp_${nick}`];
+  let removed = 0;
+  prefixes.forEach(k => { if(localStorage.getItem(k)!==null){ localStorage.removeItem(k); removed++; } });
+  if(statusEl) statusEl.textContent = removed > 0 ? `✅ Palpite de "${nick}" reiniciado` : `⚠️ Nenhum palpite encontrado para "${nick}"`;
+  setTimeout(()=>{ if(statusEl) statusEl.textContent=''; }, 3000);
+}
+
+// ── Reiniciar quiz para todos (admin) ─────────────────────────────────────
+function admReiniciarQuizGlobal() {
+  if(!confirm('Tem certeza? Isso vai apagar o progresso de todos no quiz.')) return;
+  const statusEl = document.getElementById('admQuizReiniciarStatus');
+  let count = 0;
+  Object.keys(localStorage).forEach(k => {
+    if(k.startsWith('quiz_done') || k.startsWith('quiz_progress') || k.startsWith('quizDone') || k==='quizState') {
+      localStorage.removeItem(k);
+      count++;
+    }
+  });
+  if(statusEl) statusEl.textContent = `✅ Quiz reiniciado (${count} registros apagados)`;
+  setTimeout(()=>{ if(statusEl) statusEl.textContent=''; }, 3000);
+  showToast('🔄 Quiz reiniciado para todos!');
+}
+
+// ── Atualiza info de número de jogos no admin atleta ──────────────────────
+function updateAtletaJogoMax() {
+  const sport = document.getElementById('admAtletaSport')?.value;
+  const info = document.getElementById('admAtletaJogoInfo');
+  const input = document.getElementById('admAtletaJogo');
+  if(sport==='basquete') {
+    if(info) info.textContent = 'Basquete: 1-6 grupos · 7-8 semi';
+    if(input) input.max = 8;
+  } else {
+    if(info) info.textContent = 'Vôlei: 1-12 grupos · 13-16 quartas · 17-19 semi';
+    if(input) input.max = 19;
+  }
+}
+
+// ── Reiniciar quiz (botão na quizPage) ────────────────────────────────────
+function reiniciarQuiz() {
+  if(!confirm('Reiniciar o quiz? Seu progresso será perdido.')) return;
+  Object.keys(localStorage).forEach(k => {
+    if(k==='quizState'||k.startsWith('quiz_')) localStorage.removeItem(k);
+  });
+  initQuiz();
+  showToast('🔄 Quiz reiniciado!');
 }
 function checkPwBolao(){ return true; } // senha já validada no login do admin
-function checkPw(id){const e=document.getElementById(id);if(e.value!==PW){showToast('❌ Senha incorreta');return false;}return true;}
+function checkPw(id){const e=document.getElementById(id);if(e&&e.value!==PW){showToast('❌ Senha incorreta');return false;}return true;}
+
+// ── Controle do Bolão (admin) ─────────────────────────────────────────────
+function adminAbrirBolao(tipo) {
+  localStorage.setItem('bolao_status_'+tipo, 'aberto');
+  showToast('🟢 Bolão '+tipo+' aberto!');
+  if (typeof renderBolao === 'function') renderBolao();
+}
+function adminFecharBolao(tipo) {
+  localStorage.setItem('bolao_status_'+tipo, 'fechado');
+  showToast('🔴 Bolão '+tipo+' fechado!');
+  if (typeof renderBolao === 'function') renderBolao();
+}
 
 function saveScore(){
   if(!checkPw('admPw'))return;
@@ -5244,11 +5279,11 @@ startIndexSheetCycle();
 
 <section id="timesPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
   <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
-    <button onclick="history.back();nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <button onclick="nav('homePage',document.querySelectorAll('.nav-btn')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
     <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Times Inscritos</div>
   </div>
 
-  <div style="padding:16px;">
+  <div style="padding:16px 16px 100px;">
     <!-- Selector Volei/Basquete -->
     <div style="display:flex;gap:8px;margin-bottom:18px;">
       <button id="timesBtnV" class="sport-btn sport-btn-on" onclick="showTimesTab('volei')">🏐 Vôlei</button>
@@ -5257,33 +5292,58 @@ startIndexSheetCycle();
 
     <!-- VOLEI -->
     <div id="timesVolei">
-      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo A</div>
-      <div id="timesGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo B</div>
-      <div id="timesGrupoB" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo C</div>
-      <div id="timesGrupoC" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-      <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo D</div>
-      <div id="timesGrupoD" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div id="timesGrupoA_wrap"><div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo A</div><div id="timesGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div></div>
+      <div id="timesGrupoB_wrap"><div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo B</div><div id="timesGrupoB" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div></div>
+      <div id="timesGrupoC_wrap"><div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo C</div><div id="timesGrupoC" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div></div>
+      <div id="timesGrupoD_wrap"><div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo D</div><div id="timesGrupoD" style="display:flex;flex-direction:column;gap:8px;"></div></div>
     </div>
 
     <!-- BASQUETE -->
     <div id="timesBasquete" style="display:none;">
       <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo A</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
-        ${['CT DAS MONTANHAS','MARLINS','CROSSOVER'].map(t=>`
-        <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
-          <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${BASQ_TIMES[t]?.ic||'🏀'}</div>
-          <div><div style="font-size:14px;font-weight:700;color:#111827;">${t}</div><div style="font-size:11px;color:#9CA3AF;">Grupo A</div></div>
-        </div>`).join('')}
-      </div>
+      <div id="timesBasqGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
       <div style="font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Grupo B</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        ${['CENTRAL SERRANO','ARACRUZ','SAO PEDRO'].map(t=>`
-        <div style="background:#fff;border:1px solid #E8ECF4;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
-          <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">${BASQ_TIMES[t]?.ic||'🏀'}</div>
-          <div><div style="font-size:14px;font-weight:700;color:#111827;">${t}</div><div style="font-size:11px;color:#9CA3AF;">Grupo B</div></div>
-        </div>`).join('')}
+      <div id="timesBasqGrupoB" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
+
+  <!-- Modal Time Info -->
+  <div id="timeInfoModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);" onclick="if(event.target===this)closeTimeInfo()">
+    <div class="ti-sheet" style="background:var(--card,#fff);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:0 0 max(env(safe-area-inset-bottom),20px);box-shadow:0 -8px 40px rgba(0,0,0,.18);transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.2,.64,1);">
+      <!-- Header azul com escudo -->
+      <div style="background:linear-gradient(145deg,#1565C0,#1976D2);border-radius:24px 24px 0 0;padding:20px 20px 28px;text-align:center;position:relative;">
+        <button onclick="closeTimeInfo()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);border:none;border-radius:10px;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
+        <!-- Escudo do time -->
+        <div id="tiEscudoWrap" style="width:80px;height:80px;border-radius:20px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          <img id="tiEscudo" src="" alt="" style="width:100%;height:100%;object-fit:contain;display:none;">
+          <span id="tiEscudoFallback" style="font-size:36px;">🏐</span>
+        </div>
+        <div id="tiNome" style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.5px;line-height:1.1;"></div>
+        <div id="tiGrupo" style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;"></div>
+      </div>
+      <!-- Infos -->
+      <div style="padding:20px 20px 8px;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a id="tiInsta" href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;background:#f8f9fc;border:1px solid #E8ECF4;border-radius:14px;padding:13px 16px;text-decoration:none;-webkit-tap-highlight-color:transparent;">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:10px;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Instagram</div>
+              <div id="tiInstaText" style="font-size:14px;font-weight:700;color:#1565C0;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <div style="display:flex;align-items:center;gap:12px;background:#f8f9fc;border:1px solid #E8ECF4;border-radius:14px;padding:13px 16px;">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#1565C0,#1976D2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Responsável</div>
+              <div id="tiResp" style="font-size:14px;font-weight:700;color:#111827;margin-top:1px;"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -5291,7 +5351,7 @@ startIndexSheetCycle();
 
 <section id="transmissaoPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh;">
   <div style="background:#1565C0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px;">
-    <button onclick="nav('homePage',document.querySelectorAll(\'.nav-btn\')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+    <button onclick="nav('homePage',document.querySelectorAll('.nav-btn')[0])" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
     <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;text-transform:uppercase;">Transmissão</div>
   </div>
   <div style="padding:24px 16px;text-align:center;">
@@ -5319,18 +5379,20 @@ startIndexSheetCycle();
     <button id="atletaTabBasqBtn" onclick="atletaTab('basquete',this)" style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;">🏀 Basquete</button>
   </div>
 
-  <!-- VÔLEI: 18 jogos -->
+  <!-- VÔLEI: 12 grupos + 4 quartas + 3 semi -->
   <div id="atletaVoleiSection">
     <div style="padding:0 16px 8px;">
-      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">18 Jogos · Vôlei</div>
+      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">🏐 Vôlei</div>
+      <div style="font-size:10px;color:#94A3B8;margin-bottom:12px;">12 jogos de grupos · 4 quartas de final · 3 semifinais</div>
       <div id="atletaVoleiList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px;"></div>
     </div>
   </div>
 
-  <!-- BASQUETE: 8 jogos -->
+  <!-- BASQUETE: 6 grupos + 2 semi -->
   <div id="atletaBasqSection" style="display:none;">
     <div style="padding:0 16px 8px;">
-      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">8 Jogos · Basquete</div>
+      <div style="font-size:12px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">🏀 Basquete</div>
+      <div style="font-size:10px;color:#94A3B8;margin-bottom:12px;">6 jogos de grupos · 2 semifinais</div>
       <div id="atletaBasqList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px;"></div>
     </div>
   </div>
@@ -5364,7 +5426,10 @@ startIndexSheetCycle();
 
 <!-- ==================== QUIZ ==================== -->
 <section id="quizPage" class="page">
-  <div style="font-size:26px;font-weight:800;color:#111827;padding:20px 16px 4px;">Quiz</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 16px 4px;">
+    <div style="font-size:26px;font-weight:800;color:#111827;">Quiz</div>
+    <button onclick="reiniciarQuiz()" style="background:rgba(21,101,192,.08);border:1px solid rgba(21,101,192,.2);color:#1565C0;font-size:11px;font-weight:700;padding:7px 13px;border-radius:10px;cursor:pointer;">🔄 Reiniciar</button>
+  </div>
   <div class="quiz-strip">
     <div class="quiz-sc"><div class="quiz-sc-n" id="qAcertos">0</div><div class="quiz-sc-l">Acertos</div></div>
     <div class="quiz-sc"><div class="quiz-sc-n" id="qErros">0</div><div class="quiz-sc-l">Erros</div></div>
