@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="splash-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* ============================================================
@@ -54,16 +55,11 @@ body.day .topbar {
 body.day .topbar * { color: #ffffff !important; }
 body.day .topbar-title { color: #ffffff !important; }
 body.day .topbar-sub { color: #F4C542 !important; }
-body.day .bnav-items {
+body.day .menu-open-button, body.day .menu-item {
   background: #1565C0 !important;
-  border: none !important;
-  box-shadow: none !important;
 }
-body.day .nav-btn { color: rgba(255,255,255,0.45) !important; }
-body.day .nav-btn small { color: rgba(255,255,255,0.45) !important; }
-body.day .nav-btn.on { color: #ffffff !important; }
-body.day .nav-btn.on small { color: #ffffff !important; }
-body.day .nav-btn.on small::after { background: #F4C542 !important; }
+body.day .menu-item { color: rgba(255,255,255,0.7) !important; }
+body.day .menu-item.on { color: #ffffff !important; background: #0D47A1 !important; }
 body.day .section-title { color: #0a1a3e !important; }
 body.day .card { background: #ffffff !important; border: 1px solid rgba(14,59,120,0.13) !important; }
 body.day .adm-sheet { background: #ffffff !important; }
@@ -725,82 +721,87 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
 
 /* ============================================================
-   BOTTOM NAV — MODERN FLOATING
+   GOOEY MENU
 ============================================================ */
-.bnav{
-  position:fixed;left:0;right:0;bottom:0;z-index:200;
-  display:flex;align-items:flex-end;justify-content:center;
-  pointer-events:none;
-  background:transparent;
-  padding:0;
+.menu-open { display: none; }
+.menu-item, .menu-open-button {
+  background: #1565C0;
+  border-radius: 100%;
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  color: white;
+  text-align: center;
+  line-height: 56px;
+  transform: translate3d(0, 0, 0);
+  transition: transform ease-out 200ms, background 0.3s, color 0.3s;
+  z-index: 201;
 }
-/* Ondulação SVG no topo da nav */
-.bnav::before{
-  content:'';
-  position:absolute;
-  left:0;right:0;
-  bottom:100%;
-  height:32px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 32' preserveAspectRatio='none'%3E%3Cpath d='M0 32 C80 32 80 0 195 0 C310 0 310 32 390 32 Z' fill='%231565C0'/%3E%3C/svg%3E");
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-  pointer-events:none;
+.menu {
+  filter: url('#shadowed-goo');
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-left: -190px;
+  width: 380px;
+  height: 200px;
+  box-sizing: border-box;
+  z-index: 200;
+  pointer-events: none;
 }
-.bnav-items{
-  pointer-events:auto;
-  display:flex;align-items:center;justify-content:space-around;
-  width:100%;
-  height:76px;
-  background:#1565C0;
-  border:none;
-  border-radius:0;
-  box-shadow:none;
-  padding:0 4px;
-  padding-bottom:max(env(safe-area-inset-bottom,0px), 12px);
-  position:relative;
+.menu-item, .menu-open-button {
+  pointer-events: auto;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }
-.bnav-pill{ display:none; }
-.nav-btn{
-  flex:1;background:none;border:none;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;padding:6px 2px 2px;height:100%;min-width:0;
-  color:rgba(255,255,255,0.45);
-  transition:color .2s ease, transform .15s ease;
-  -webkit-tap-highlight-color:transparent;
-  position:relative;
+.hamburger {
+  width: 20px;
+  height: 3px;
+  background: white;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -1.5px;
+  transition: transform 200ms;
 }
-.nav-btn svg{
-  width:28px;height:28px;flex-shrink:0;
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+.hamburger-1 { transform: translate3d(0, -7px, 0); }
+.hamburger-2 { transform: translate3d(0, 0, 0); }
+.hamburger-3 { transform: translate3d(0, 7px, 0); }
+.menu-open:checked + .menu-open-button .hamburger-1 { transform: translate3d(0, 0, 0) rotate(45deg); }
+.menu-open:checked + .menu-open-button .hamburger-2 { transform: translate3d(0, 0, 0) scale(0.1, 1); }
+.menu-open:checked + .menu-open-button .hamburger-3 { transform: translate3d(0, 0, 0) rotate(-45deg); }
+
+.menu-item:hover { background: white; color: #1565C0; }
+.menu-item.on { background: #F4C542; color: #050816; box-shadow: 0 0 15px rgba(244,197,66,0.5); }
+.menu-item i { font-size: 20px; vertical-align: middle; }
+
+.menu-open-button {
+  z-index: 202;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition-duration: 400ms;
+  transform: scale(1.1, 1.1) translate3d(0, 0, 0);
 }
-.nav-btn small{
-  font-size:10px;font-weight:600;letter-spacing:.15px;white-space:nowrap;
-  color:rgba(255,255,255,0.45);
-  transition:color .2s;
-  position:relative;
-  line-height:1;
+.menu-open-button:hover { transform: scale(1.2, 1.2) translate3d(0, 0, 0); }
+.menu-open:checked + .menu-open-button {
+  transition-timing-function: linear;
+  transition-duration: 200ms;
+  transform: scale(0.8, 0.8) translate3d(0, 0, 0);
 }
-/* Traço dourado abaixo do texto — estado ativo */
-.nav-btn.on{
-  color:#ffffff;
+
+.menu-open:checked ~ .menu-item {
+  transition-timing-function: cubic-bezier(0.935, 0, 0.34, 1.33);
 }
-.nav-btn.on small{
-  color:#ffffff;
-  font-weight:800;
-}
-.nav-btn.on small::after{
-  content:'';
-  display:block;
-  position:absolute;
-  bottom:-3px;
-  left:50%;
-  transform:translateX(-50%);
-  width:80%;
-  height:2.5px;
-  border-radius:2px;
-  background:#F4C542;
-  animation:slideIn .25s cubic-bezier(.34,1.56,.64,1) both;
-}
+.menu-open:checked ~ .menu-item:nth-child(3) { transition-duration: 160ms; transform: translate3d(-110px, -40px, 0); }
+.menu-open:checked ~ .menu-item:nth-child(4) { transition-duration: 240ms; transform: translate3d(-60px, -100px, 0); }
+.menu-open:checked ~ .menu-item:nth-child(5) { transition-duration: 320ms; transform: translate3d(0px, -120px, 0); }
+.menu-open:checked ~ .menu-item:nth-child(6) { transition-duration: 400ms; transform: translate3d(60px, -100px, 0); }
+.menu-open:checked ~ .menu-item:nth-child(7) { transition-duration: 480ms; transform: translate3d(110px, -40px, 0); }
 @keyframes slideIn{
   from{width:0;opacity:0}
   to{width:80%;opacity:1}
@@ -2183,32 +2184,41 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 
 </main>
 
-<!-- BOTTOM NAV LIQUID GLASS -->
-<nav class="bnav" id="mainNav">
-  <div class="bnav-pill" id="bnavPill"></div>
-  <div class="bnav-items" id="bnavItems">
-    <button class="nav-btn on" onclick="nav('homePage',this)" data-idx="0">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="currentColor"/></svg>
-      <small>Início</small>
-    </button>
-    <button class="nav-btn" onclick="nav('gamesPage',this)" data-idx="1">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/><path d="M12 3C12 3 9 7 9 12C9 17 12 21 12 21" stroke="currentColor" stroke-width="2.2"/><path d="M12 3C12 3 15 7 15 12C15 17 12 21 12 21" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 12H20.5" stroke="currentColor" stroke-width="2.2"/></svg>
-      <small>Jogos</small>
-    </button>
-    <button class="nav-btn" onclick="nav('tablePage',this)" data-idx="2">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.2"/><line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="2.2"/><line x1="3" y1="15" x2="21" y2="15" stroke="currentColor" stroke-width="2.2"/><line x1="9" y1="9" x2="9" y2="21" stroke="currentColor" stroke-width="2.2"/></svg>
-      <small>Tabela</small>
-    </button>
-    <button class="nav-btn" onclick="nav('bracketPage',this)" data-idx="3">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L14.9 8.6H22L16.1 12.9L18.5 19.8L12 15.7L5.5 19.8L7.9 12.9L2 8.6H9.1L12 2Z" fill="currentColor"/></svg>
-      <small>Mata-mata</small>
-    </button>
-    <button class="nav-btn" onclick="nav('maisPage',this)" data-idx="4">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg>
-      <small>Mais</small>
-    </button>
-  </div>
+<!-- GOOEY MENU -->
+<nav class="menu" id="mainNav">
+  <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+  <label class="menu-open-button" for="menu-open">
+    <span class="hamburger hamburger-1"></span>
+    <span class="hamburger hamburger-2"></span>
+    <span class="hamburger hamburger-3"></span>
+  </label>
+  
+  <button class="menu-item nav-btn on" onclick="nav('homePage',this); closeGooeyMenu()" title="Início"> <i class="fa fa-home"></i> </button>
+  <button class="menu-item nav-btn" onclick="nav('gamesPage',this); closeGooeyMenu()" title="Jogos"> <i class="fa fa-calendar"></i> </button>
+  <button class="menu-item nav-btn" onclick="nav('tablePage',this); closeGooeyMenu()" title="Tabela"> <i class="fa fa-table"></i> </button>
+  <button class="menu-item nav-btn" onclick="nav('bracketPage',this); closeGooeyMenu()" title="Mata-mata"> <i class="fa fa-trophy"></i> </button>
+  <button class="menu-item nav-btn" onclick="nav('maisPage',this); closeGooeyMenu()" title="Mais"> <i class="fa fa-ellipsis-h"></i> </button>
 </nav>
+
+<!-- filters -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
+    <defs>
+      <filter id="shadowed-goo">
+          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+          <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow" />
+          <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+          <feBlend in2="shadow" in="goo" result="goo" />
+          <feBlend in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+      <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          <feBlend in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+    </defs>
+</svg>
 
 <script>
 // ==================== IMAGES ====================
@@ -2344,11 +2354,6 @@ function nav(pid,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pid).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
-  // Move liquid glass pill
-  requestAnimationFrame(() => {
-    const activeBtn = document.querySelector('.nav-btn.on');
-    if (activeBtn) movePill(activeBtn);
-  });
   if(btn)btn.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(navigator.vibrate)navigator.vibrate(6);
@@ -3919,32 +3924,10 @@ async function admEnviarPush() {
 }
 
 
-// ── LIQUID GLASS NAV PILL ──────────────────────────────────────────────────
-function movePill(btn) {
-  const pill = document.getElementById('bnavPill');
-  const items = document.getElementById('bnavItems');
-  if (!pill || !items || !btn) return;
-  const containerRect = items.getBoundingClientRect();
-  const btnRect = btn.getBoundingClientRect();
-  const left = btnRect.left - containerRect.left - 4; // ajuste do padding
-  const width = btnRect.width;
-  pill.style.left = Math.max(2, left) + 'px';
-  pill.style.width = width + 'px';
+function closeGooeyMenu() {
+  const checkbox = document.getElementById('menu-open');
+  if (checkbox) checkbox.checked = false;
 }
-
-// Inicializa pill na posição do botão ativo
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    const active = document.querySelector('.nav-btn.on');
-    if (active) movePill(active);
-  }, 100);
-});
-
-// Atualiza pill ao redimensionar
-window.addEventListener('resize', () => {
-  const active = document.querySelector('.nav-btn.on');
-  if (active) movePill(active);
-});
 
 // ── INSTALAR APP ────────────────────────────────────────────
 function openInstallModal() {
