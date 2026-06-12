@@ -47,7 +47,7 @@ body.day {
 
 /* Modo DIA - topbar azul, nav azul */
 body.day .topbar {
-  background: #1565C0 !important;
+  background: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
 }
@@ -153,7 +153,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ============================================================
    TOPBAR
 ============================================================ */
-.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),48px);padding-bottom:14px;background:#1565C0;border-bottom:none;transition:background .35s;}
+.topbar{position:sticky;top:0;z-index:200;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-left:16px;padding-right:16px;padding-top:max(env(safe-area-inset-top,0px),48px);padding-bottom:30px;background:transparent;border-bottom:none;transition:background .35s;}
 
 /* ---- Topbar particles ---- */
 .topbar-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
@@ -301,15 +301,41 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   0%,100%{opacity:.25;transform:scaleX(.6);}
   50%{opacity:1;transform:scaleX(1);}
 }
-.topbar-sub-text{
-  font-size:8px;
-  color:#F4C542;
-  font-weight:700;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  white-space:nowrap;
-  animation:subTextGlow 2.8s ease-in-out infinite;
-}
+  .topbar-sub-text{
+    font-size:8px;
+    color:#F4C542;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    white-space:nowrap;
+    animation:subTextGlow 2.8s ease-in-out infinite;
+  }
+  .svg-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    height: 100%;
+    min-height: 120px;
+  }
+  svg.svg-curve {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  svg.svg-curve path {
+    transition: d 0.1s ease-out;
+  }
+  .topbar:hover svg.svg-curve path {
+    d: path("M 800 300 Q 400 250 0 300 L 0 0 L 800 0 L 800 300 Z");
+  }
+  .topbar {
+    position: relative !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
 @keyframes subTextGlow{
   0%,100%{opacity:.6;text-shadow:none;}
   50%{opacity:1;text-shadow:0 0 10px rgba(244,197,66,.6),0 0 20px rgba(244,197,66,.2);}
@@ -1299,7 +1325,12 @@ body.day .cta-block{background:linear-gradient(135deg,rgba(14,59,120,.16),rgba(1
 <div id="toast"></div>
 
 <!-- TOPBAR -->
-<header class="topbar" style="background:#1565C0 !important;border-bottom:none !important;box-shadow:none !important;justify-content:center !important;flex-direction:column;align-items:center;padding-top:max(env(safe-area-inset-top,0px),44px);padding-bottom:14px;padding-left:16px;padding-right:16px;overflow:hidden;">
+<header class="topbar" style="border-bottom:none !important;box-shadow:none !important;justify-content:center !important;flex-direction:column;align-items:center;padding-top:max(env(safe-area-inset-top,0px),44px);padding-bottom:14px;padding-left:16px;padding-right:16px;position:relative;">
+  <div class="svg-container">
+    <svg viewBox="0 0 800 400" class="svg-curve" preserveAspectRatio="none">
+      <path id="curve" fill="#1565C0" d="M 800 300 Q 400 350 0 300 L 0 0 L 800 0 L 800 300 Z"></path>
+    </svg>
+  </div>
 
   <!-- Partículas flutuantes de fundo -->
   <div class="topbar-particles" aria-hidden="true">
@@ -5795,6 +5826,38 @@ startIndexSheetCycle();
   O arquivo supercopa-push.js deve estar na raiz do site
 ============================================================ -->
 <script>
+(function() {
+  var $curve = document.getElementById("curve");
+  var last_known_scroll_position = 0;
+  var defaultCurveValue = 350;
+  var curveRate = 3;
+  var ticking = false;
+  var curveValue;
+
+  function scrollEvent(scrollPos) {
+    if (scrollPos >= 0 && scrollPos < defaultCurveValue) {
+      curveValue = defaultCurveValue - parseFloat(scrollPos / curveRate);
+      if ($curve) {
+        $curve.setAttribute(
+          "d",
+          "M 800 300 Q 400 " + curveValue + " 0 300 L 0 0 L 800 0 L 800 300 Z"
+        );
+      }
+    }
+  }
+
+  window.addEventListener("scroll", function(e) {
+    last_known_scroll_position = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        scrollEvent(last_known_scroll_position);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
 // ── Botão "Ativar Notificações" na tela Mais ────────────────
 // Adicione este botão onde quiser no HTML da tela "Mais":
 // <button onclick="toggleNotificacoes(this)" id="btnPushToggle">...</button>
