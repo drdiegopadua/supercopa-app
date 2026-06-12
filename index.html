@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-title" content="Supercopa AFC">
 <title>Supercopa AFC · A Maior da Região das Montanhas</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="splash-logo.png">
-<link rel="apple-touch-icon" href="splash-logo.png">
-<link rel="apple-touch-icon" sizes="180x180" href="splash-logo.png">
+<link rel="icon" type="image/png" href="pwa-icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -5891,5 +5891,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 <!-- Script principal de push (deve estar na raiz do site) -->
 <script src="supercopa-push.js"></script>
 
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then((reg) => {
+      console.log('Service worker registered.', reg);
+    });
+  });
+}
+</script>
 </body>
 </html>
