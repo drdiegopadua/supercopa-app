@@ -5723,7 +5723,12 @@ startIndexSheetCycle();
     <canvas id="scCanvas"></canvas>
   </div>
   <div class="sc-controls">
-    <div class="sc-row">
+    
+    <div style="margin-bottom:12px; display:flex; gap:8px;">
+      <button class="sport-btn" id="btnCardVolei" onclick="setCardSport('volei')" style="flex:1; margin:0;">🏐 Vôlei</button>
+      <button class="sport-btn" id="btnCardBasq" onclick="setCardSport('basquete')" style="flex:1; margin:0;">🏀 Basquete</button>
+    </div>
+<div class="sc-row">
       <input class="sc-inp" id="scT1" placeholder="Time 1" value="ES Volei" oninput="updateCard()">
       <input class="sc-inp" id="scT2" placeholder="Time 2" value="Equipe UVI" oninput="updateCard()">
     </div>
