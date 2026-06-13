@@ -5322,6 +5322,17 @@ const _arteImg = new Image();
 _arteImg.src = _ARTE_SRC;
 _arteImg.onload = () => desenharCard();
 
+function setCardSport(sport) {
+  const btnV = document.getElementById('btnCardVolei');
+  const btnB = document.getElementById('btnCardBasq');
+
+  if (btnV) btnV.classList.toggle('sport-btn-on', sport === 'volei');
+  if (btnB) btnB.classList.toggle('sport-btn-on', sport === 'basquete');
+
+  _arteImg.src = _ARTE_SRC;
+  if (_arteImg.complete) desenharCard();
+}
+
 // Dimensões originais da arte: 1080 x 1920
 const ARTE_W = 1080, ARTE_H = 1920;
 
