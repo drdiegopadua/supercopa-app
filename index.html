@@ -86,11 +86,11 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
 .navigation {
   width: 100%;
   height: 70px;
-  background: #209cff;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 16px rgba(21,101,192,0.10);
   position: fixed;
   bottom: 0;
   left: 0;
@@ -127,15 +127,15 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
   position: relative;
   display: block;
   font-size: 1.5em;
-  color: #fff;
+  color: #1565C0;
   line-height: 75px;
-  opacity: 0.75;
+  opacity: 0.45;
   transition: 0.5s;
 }
 
 .navigation ul li.active a .icon {
   opacity: 1;
-  color: #209cff;
+  color: #ffffff;
   transform: translateY(-32px);
 }
 
@@ -144,10 +144,11 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
   top: -50%;
   width: 70px;
   height: 70px;
-  background: var(--clr);
+  background: #1565C0;
   border-radius: 50%;
-  border: 6px solid var(--bg);
+  border: 6px solid #ffffff;
   transition: 0.5s;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.3);
 }
 
 .indicator::before {
@@ -159,7 +160,7 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
   height: 20px;
   background: transparent;
   border-top-right-radius: 20px;
-  box-shadow: 1px -10px 0 0 var(--bg);
+  box-shadow: 1px -10px 0 0 #ffffff;
 }
 
 .indicator::after {
@@ -171,7 +172,7 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
   height: 20px;
   background: transparent;
   border-top-left-radius: 20px;
-  box-shadow: -1px -10px 0 0 var(--bg);
+  box-shadow: -1px -10px 0 0 #ffffff;
 }
 
 .navigation ul li:nth-child(1).active ~ .indicator {
@@ -258,7 +259,7 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
         <div class="indicator"></div>
     </ul>
 </div>
- <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none"> <defs> <filter id="shadowed-goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"/> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/> <feGaussianBlur in="goo" stdDeviation="3" result="shadow"/> <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow"/> <feOffset in="shadow" dx="1" dy="1" result="shadow"/> <feBlend in2="shadow" in="goo" result="goo"/> <feBlend in2="goo" in="SourceGraphic" result="mix"/> </filter> <filter id="goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"/> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/> <feBlend in2="goo" in="SourceGraphic" result="mix"/> </filter> </defs> </svg> <script>const HERO_URL="assets/hero.jpg";function setImgs(){const e=HERO_URL;["splashLogo","topLogo","heroLogo"].forEach(e=>{const t=document.getElementById(e);t&&(t.src="splash-logo.png")});const ob=document.getElementById("obLogo");ob&&(ob.src="logooficial.png");const t=document.getElementById("heroBg");t&&(t.style.backgroundImage=`url('${e}')`);const o=document.getElementById("sbBg");o&&(o.style.backgroundImage=`url('${e}')`)}function closeOnboarding(){const e=document.getElementById("onboarding");e&&(e.classList.remove("on"),e.style.display="none"),localStorage.setItem("onboarded","1"),setTimeout(showInstallBanner,1e3)}function openOnboarding(){const e=document.getElementById("onboarding");e&&(e.style.display="flex",e.classList.add("on"))}setImgs(),window.addEventListener("load",()=>{setTimeout(()=>{const e=document.getElementById("splash"),t=document.getElementById("onboarding");e&&e.classList.add("out"),localStorage.getItem("onboarded")?(setTimeout(showInstallBanner,2e3),loadMvps()):setTimeout(()=>{t&&(t.style.display="flex",t.classList.add("on"))},700)},2700)});let deferredPrompt=null;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),isInStandaloneMode=()=>"standalone"in navigator&&navigator.standalone||window.matchMedia("(display-mode: standalone)").matches;function triggerInstall(){if(isInStandaloneMode()){var b=document.getElementById("installTopBtn");if(b)b.style.display="none";return}if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;var b=document.getElementById("installTopBtn");if(b)b.style.display="none"})}else if(typeof openInstallModal==="function"){openInstallModal()}else{showToast(isIOS?'📲 No Safari: toque em Compartilhar e depois "Adicionar à Tela de Início"':'💡 No menu do navegador, escolha "Instalar aplicativo"')}}function showInstallBanner(){if(isInStandaloneMode()){const e=document.getElementById("installCard");return void(e&&(e.style.display="none"))}localStorage.getItem("installDismissed")||document.getElementById("installBanner").classList.add("show")}function installPWA(){deferredPrompt?(deferredPrompt.prompt(),deferredPrompt.userChoice.then(()=>{dismissInstall()})):isIOS?(showToast('📲 No Safari: toque em compartilhar (⬆️) e depois "Adicionar à Tela de Início"'),setTimeout(()=>dismissInstall(),4e3)):(showToast('💡 No menu do navegador, escolha "Instalar aplicativo" ou "Adicionar à tela inicial"'),setTimeout(()=>dismissInstall(),4e3))}function dismissInstall(){document.getElementById("installBanner").classList.remove("show"),localStorage.setItem("installDismissed","1")}function nav(e,t){document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));var pg=document.getElementById(e);pg&&pg.classList.add("active");document.querySelectorAll(".nav-btn").forEach(e=>e.classList.remove("on"));t&&t.classList&&t.classList.add("on");var navMap={homePage:0,gamesPage:1,tablePage:2,bracketPage:3,maisPage:4};document.querySelectorAll(".navigation ul li.list").forEach(function(el){el.classList.remove("active")});var idx=navMap[e];if(idx!==undefined){var items=document.querySelectorAll(".navigation ul li.list");if(items[idx])items[idx].classList.add("active")}window.scrollTo({top:0,behavior:"smooth"});navigator.vibrate&&navigator.vibrate(6);("gamesPage"===e||"tablePage"===e||"bracketPage"===e)?(loadVoleiDataIndex(),startIndexSheetCycle()):stopIndexSheetCycle()}
+ <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none"> <defs> <filter id="shadowed-goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"/> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/> <feGaussianBlur in="goo" stdDeviation="3" result="shadow"/> <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow"/> <feOffset in="shadow" dx="1" dy="1" result="shadow"/> <feBlend in2="shadow" in="goo" result="goo"/> <feBlend in2="goo" in="SourceGraphic" result="mix"/> </filter> <filter id="goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"/> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/> <feBlend in2="goo" in="SourceGraphic" result="mix"/> </filter> </defs> </svg> <script>const HERO_URL="assets/hero.jpg";function setImgs(){const e=HERO_URL;["splashLogo","topLogo","heroLogo"].forEach(e=>{const t=document.getElementById(e);t&&(t.src="splash-logo.jpeg")});const ob=document.getElementById("obLogo");ob&&(ob.src="splash-logo.jpeg");const t=document.getElementById("heroBg");t&&(t.style.backgroundImage=`url('${e}')`);const o=document.getElementById("sbBg");o&&(o.style.backgroundImage=`url('${e}')`)}function closeOnboarding(){const e=document.getElementById("onboarding");e&&(e.classList.remove("on"),e.style.display="none"),localStorage.setItem("onboarded","1"),setTimeout(showInstallBanner,1e3)}function openOnboarding(){const e=document.getElementById("onboarding");e&&(e.style.display="flex",e.classList.add("on"))}setImgs(),window.addEventListener("load",()=>{setTimeout(()=>{const e=document.getElementById("splash"),t=document.getElementById("onboarding");e&&e.classList.add("out"),localStorage.getItem("onboarded")?(setTimeout(showInstallBanner,2e3),loadMvps()):setTimeout(()=>{t&&(t.style.display="flex",t.classList.add("on"))},700)},2700)});let deferredPrompt=null;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),isInStandaloneMode=()=>"standalone"in navigator&&navigator.standalone||window.matchMedia("(display-mode: standalone)").matches;function triggerInstall(){if(isInStandaloneMode()){var b=document.getElementById("installTopBtn");if(b)b.style.display="none";return}if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;var b=document.getElementById("installTopBtn");if(b)b.style.display="none"})}else if(typeof openInstallModal==="function"){openInstallModal()}else{showToast(isIOS?'📲 No Safari: toque em Compartilhar e depois "Adicionar à Tela de Início"':'💡 No menu do navegador, escolha "Instalar aplicativo"')}}function showInstallBanner(){if(isInStandaloneMode()){const e=document.getElementById("installCard");return void(e&&(e.style.display="none"))}localStorage.getItem("installDismissed")||document.getElementById("installBanner").classList.add("show")}function installPWA(){deferredPrompt?(deferredPrompt.prompt(),deferredPrompt.userChoice.then(()=>{dismissInstall()})):isIOS?(showToast('📲 No Safari: toque em compartilhar (⬆️) e depois "Adicionar à Tela de Início"'),setTimeout(()=>dismissInstall(),4e3)):(showToast('💡 No menu do navegador, escolha "Instalar aplicativo" ou "Adicionar à tela inicial"'),setTimeout(()=>dismissInstall(),4e3))}function dismissInstall(){document.getElementById("installBanner").classList.remove("show"),localStorage.setItem("installDismissed","1")}function nav(e,t){document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));var pg=document.getElementById(e);pg&&pg.classList.add("active");document.querySelectorAll(".nav-btn").forEach(e=>e.classList.remove("on"));t&&t.classList&&t.classList.add("on");var navMap={homePage:0,gamesPage:1,tablePage:2,bracketPage:3,maisPage:4};document.querySelectorAll(".navigation ul li.list").forEach(function(el){el.classList.remove("active")});var idx=navMap[e];if(idx!==undefined){var items=document.querySelectorAll(".navigation ul li.list");if(items[idx])items[idx].classList.add("active")}window.scrollTo({top:0,behavior:"smooth"});navigator.vibrate&&navigator.vibrate(6);("gamesPage"===e||"tablePage"===e||"bracketPage"===e)?(loadVoleiDataIndex(),startIndexSheetCycle()):stopIndexSheetCycle()}
 // === BOLÃO MELHORIAS v2 ===
 
 // Banner de posição no ranking na home
