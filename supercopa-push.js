@@ -86,7 +86,7 @@ async function desativarNotificacoes() {
     const sub = await reg.pushManager.getSubscription();
     if (sub) {
       await sub.unsubscribe();
-      await fetch('/api/push/unsubscribe', {
+      await fetch('https://supercopa-push-server.onrender.com/api/push/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ endpoint: sub.endpoint })
