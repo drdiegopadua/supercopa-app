@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // ────────────────────────────────────────────────────────────
 async function registrarServiceWorker() {
   try {
-    const registration = await navigator.serviceWorker.register('/supercopa-app/supercopa-sw.js');
+    const registration = await navigator.serviceWorker.register('./sw.js');
     console.log('[Push] Service Worker registrado:', registration.scope);
 
     // Escuta mensagens do SW (ex: clique em notificação com app aberto)
