@@ -22,9 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   registrarServiceWorker();
 
-  // Verifica se usuário já tinha dado permissão antes
   if (Notification.permission === 'granted') {
+    // Já tem permissão: garante inscrição ativa
     inscreverNasPush();
+  } else if (Notification.permission === 'default') {
+    // 1ª visita: pede permissão após 5 segundos
+    setTimeout(function () {
+      Notification.requestPermission().then(function (perm) {
+        if (perm === 'granted') {
+          inscreverNasPush().then(function (ok) {
+            if (ok) mostrarToastPush('🔔 Notificações ativadas! Você receberá os resultados em tempo real.', 'ok');
+          });
+        }
+      });
+    }, 5000);
   }
 });
 
