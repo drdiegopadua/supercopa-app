@@ -693,9 +693,7 @@ function onGaleraTimeChange(){
     '</div>').join('');
 }
 
-async function votarGalera(nome,time){
-  const votos=parseInt(localStorage.getItem('galera_votos_usados')||'0');
-  if(votos>=3){showToast('Você já usou seus 3 votos!');return;}
+async function votarGalera(nome,time){showToast("Em Breve!")}
   try{
     await fetch(GALERA_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({mode:'votar_atleta',atleta:nome,time:time}),headers:{'Content-Type':'text/plain'}});
     const novosVotos=votos+1;
