@@ -178,7 +178,64 @@ body.night #gamesListBasq .btn-share{background:rgba(239,77,99,.18)!important;co
   }
 }
 
-</style> 
+
+/* ── MICRO-ANIMAÇÕES ──────────────────────────────── */
+button, .home-card, [onclick], .nav-btn, .tab, .list {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled), .home-card, .nav-btn {
+  transition: transform .12s cubic-bezier(.4,0,.2,1), box-shadow .12s ease, opacity .12s ease;
+}
+
+button:not(:disabled):active, .home-card:active, .nav-btn:active {
+  transform: scale(0.93);
+  opacity: 0.85;
+}
+
+.home-card:active {
+  transform: scale(0.90);
+  box-shadow: 0 2px 8px rgba(0,0,0,.10);
+}
+
+/* Ripple */
+.ripple-host { position: relative; overflow: hidden; }
+@keyframes ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  transform: scale(0);
+  animation: ripple-anim .5s linear;
+  pointer-events: none;
+}
+
+/* Nav button active pop */
+@keyframes nav-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+.nav-btn.on .nav-icon {
+  animation: nav-pop .28s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* Tab switch bounce */
+@keyframes tab-in {
+  0%   { transform: translateY(4px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+.tab.on {
+  animation: tab-in .2s ease;
+}
+
+/* Card hover (desktop) */
+@media (hover: hover) {
+  button:not(:disabled):hover { opacity: 0.88; }
+  .home-card:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+}</style> 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
@@ -907,4 +964,30 @@ function mapTab(tab,btn){
 function abrirPickerTime2(){let m=document.getElementById('modoTorcedorModal');if(m){m.style.display='flex';mostrarTimesPicker('volei');return}m=document.createElement('div');m.id='modoTorcedorModal';m.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:flex-end';m.innerHTML='<div style="background:#f8f9fc;border-radius:20px 20px 0 0;width:100%;padding:16px 16px 30px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:15px;font-weight:800">Escolha seu time 🏆</div><button onclick="document.getElementById(\'modoTorcedorModal\').remove()" style="background:#f0f2f8;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer">✕</button></div><div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:10px;padding:9px 10px;margin-bottom:12px;font-size:11px;color:#1565c0">Escolha seu time para o app dar mais enfoque e adicionar seus jogos aos favoritos.</div><div style="display:flex;gap:8px;margin-bottom:12px"><button id="tabVolei" onclick="mostrarTimesPicker(\'volei\')" style="flex:1;padding:8px;border-radius:10px;border:2px solid #1565c0;background:#1565c0;color:#fff;font-size:13px;font-weight:800;cursor:pointer">🏐 Vôlei</button><button id="tabBasquete" onclick="mostrarTimesPicker(\'basquete\')" style="flex:1;padding:8px;border-radius:10px;border:2px solid #e2e8f2;background:#f0f2f8;color:#64748b;font-size:13px;font-weight:800;cursor:pointer">🏀 Basquete</button></div><div id="modoPickerGrid" style="display:flex;flex-wrap:wrap;gap:8px;max-height:55vh;overflow-y:auto"></div></div>';m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m);mostrarTimesPicker('volei');m.style.display='flex'}function mostrarTimesPicker(sport){const grid=document.getElementById('modoPickerGrid');if(!grid)return;grid.innerHTML='';const tabV=document.getElementById('tabVolei');const tabB=document.getElementById('tabBasquete');if(tabV&&tabB){if(sport==='volei'){tabV.style.cssText='flex:1;padding:8px;border-radius:10px;border:2px solid #1565c0;background:#1565c0;color:#fff;font-size:13px;font-weight:800;cursor:pointer';tabB.style.cssText='flex:1;padding:8px;border-radius:10px;border:2px solid #e2e8f2;background:#f0f2f8;color:#64748b;font-size:13px;font-weight:800;cursor:pointer'}else{tabB.style.cssText='flex:1;padding:8px;border-radius:10px;border:2px solid #f97316;background:#f97316;color:#fff;font-size:13px;font-weight:800;cursor:pointer';tabV.style.cssText='flex:1;padding:8px;border-radius:10px;border:2px solid #e2e8f2;background:#f0f2f8;color:#64748b;font-size:13px;font-weight:800;cursor:pointer'}}let times=new Set();if(sport==='volei'){['grupoA','grupoB','grupoC','grupoD'].forEach(g=>{(tableData[g]||[]).forEach(t=>{if(t.name&&t.name!=='—')times.add(t.name)})});}else{const basqTimes=['CT DAS MONTANHAS','MARLINS','CROSSOVER','CENTRAL SERRANO','ARACRUZ','SAO PEDRO'];basqTimes.forEach(t=>times.add(t));(tableDataBasq.grupoA||[]).concat(tableDataBasq.grupoB||[]).forEach(t=>{if(t.name&&t.name!=='—')times.add(t.name)})}[...times].sort().forEach(t=>{const btn=document.createElement('button');btn.textContent=t;btn.style.cssText='background:#f0f2f8;border:1.5px solid #e2e8f2;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;color:#1565c0;cursor:pointer;transition:.2s';btn.onclick=()=>{escolherMeuTimeEFavoritar(t);document.getElementById('modoTorcedorModal').remove()};btn.onmouseover=()=>btn.style.background='#e0e7ff';btn.onmouseout=()=>btn.style.background='#f0f2f8';grid.appendChild(btn)})}function escolherMeuTimeEFavoritar(time){localStorage.setItem('meu_time',time);const allCards=[...document.querySelectorAll('#gamesList [data-gid], #gamesListBasq [data-gid]')];let added=0;allCards.forEach(card=>{if((card.innerText||card.textContent).includes(time)){const gid=card.dataset.gid;if(gid&&!watched.has(gid)){watched.add(gid);added++}}});localStorage.setItem('watched_games',JSON.stringify([...watched]));showToast('🏆 '+time+' ⭐ +'+added+' favoritos!');initModoTorcedor(false)}
 </script>
 
-</body> </html>
+<script>
+(function(){
+  function addRipple(e){
+    const el=e.currentTarget;
+    const r=el.getBoundingClientRect();
+    const size=Math.max(r.width,r.height);
+    const x=e.clientX-r.left-size/2;
+    const y=e.clientY-r.top-size/2;
+    const wave=document.createElement('span');
+    wave.className='ripple-wave';
+    wave.style.cssText='width:'+size+'px;height:'+size+'px;left:'+x+'px;top:'+y+'px';
+    el.appendChild(wave);
+    wave.addEventListener('animationend',()=>wave.remove());
+  }
+  function initRipple(){
+    document.querySelectorAll('button,.home-card,.nav-btn,.install-btn').forEach(el=>{
+      if(el.dataset.ripple)return;
+      el.dataset.ripple='1';
+      el.classList.add('ripple-host');
+      el.addEventListener('click',addRipple);
+    });
+  }
+  document.addEventListener('DOMContentLoaded',initRipple);
+  // Re-run after dynamic content loads
+  setInterval(initRipple,2000);
+})();
+</script></body> </html>
