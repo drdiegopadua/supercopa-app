@@ -848,37 +848,7 @@ async function shareGameCard(btn){
   }catch(e){console.error(e); if(typeof showToast==='function') showToast('❌ Não foi possível compartilhar');}
 }
 </script>
-<script>
-const list = document.querySelectorAll('.list');
-function activeLink() {
-    list.forEach((item) => item.classList.remove('active'));
-    this.classList.add('active');
-}
-list.forEach((item) => item.addEventListener('click', activeLink));
-
-// Atualizar a função nav original para funcionar com a nova estrutura
-const originalNav = window.nav;
-window.nav = function(pageId, element) {
-    // Chamar a função original de navegação de páginas
-    document.querySelectorAll(".page").forEach(e => e.classList.remove("active"));
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) targetPage.classList.add("active");
-    
-    // Atualizar classes de botões se necessário (compatibilidade)
-    document.querySelectorAll(".nav-btn").forEach(e => e.classList.remove("on"));
-    
-    window.scrollTo({top: 0, behavior: "smooth"});
-    if (navigator.vibrate) navigator.vibrate(6);
-    
-    if (pageId === "gamesPage" || pageId === "tablePage" || pageId === "bracketPage") {
-        if (typeof loadVoleiDataIndex === 'function') loadVoleiDataIndex();
-        if (typeof startIndexSheetCycle === 'function') startIndexSheetCycle();
-    } else {
-        if (typeof stopIndexSheetCycle === 'function') stopIndexSheetCycle();
-    }
-};
-
-// ── MODO TORCEDOR ──────────────────────────────────────
+<script>// ── MODO TORCEDOR ──────────────────────────────────────
 function initModoTorcedor(showPicker){
   const meuTime=localStorage.getItem('meu_time');
   if(!meuTime){if(showPicker)abrirPickerTime();return;}
