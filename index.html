@@ -532,7 +532,7 @@ async function buscarVencedoresVoleiLocal() {
   const data = ((await (await fetch(url)).json()).values) || [];
   const venc = {};
   let num = 1;
-  [[10,11,12],[22,23,24],[34,35,36],[46,47,48]].forEach(rows => {
+  [[11,12,13],[23,24,25],[35,36,37],[47,48,49]].forEach(rows => {
     rows.forEach(r => {
       const v = ((data[r-1]||[])[14]||"").toString().trim();
       if (v && v !== "A DEFINIR" && v !== "—" && v !== "VENCEDOR" && v.toUpperCase() !== "EMPATE") venc[num] = v;
@@ -548,14 +548,18 @@ async function buscarVencedoresBasqueteLocal() {
   const data = ((await (await fetch(url)).json()).values) || [];
   const venc = {};
   let num = 1;
+  const _bpv = raw => { const m = raw.match(/^[A-Za-z]+:\s*(.+)/); return m ? m[1].trim() : raw; };
+  const _bvok = v => v && v !== "—" && v.toLowerCase() !== "empate";
   [4,5,6].forEach(r => {
-    const v = ((data[r]||[])[8]||"").toString().trim();
-    if (v && v !== "—") venc[num] = v;
+    const raw = ((data[r]||[])[8]||"").toString().trim();
+    const v = _bpv(raw);
+    if (_bvok(v)) venc[num] = v;
     num++;
   });
   [4,5,6].forEach(r => {
-    const v = ((data[r]||[])[18]||"").toString().trim();
-    if (v && v !== "—") venc[num] = v;
+    const raw = ((data[r]||[])[18]||"").toString().trim();
+    const v = _bpv(raw);
+    if (_bvok(v)) venc[num] = v;
     num++;
   });
   return venc;
