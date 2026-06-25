@@ -1,11 +1,12 @@
-const CACHE_NAME = 'supercopa-afc-v7';
+const CACHE_NAME = 'supercopa-afc-v8';
 
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.webmanifest',
+  './manifest.json',
   './pwa-icon-192.png',
-  './pwa-icon-512.png'
+  './pwa-icon-512.png',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
