@@ -1,9 +1,9 @@
-const CACHE_NAME = 'supercopa-afc-v8';
+const CACHE_NAME = 'supercopa-afc-v9';
 
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json',
+  './manifest.webmanifest',
   './pwa-icon-192.png',
   './pwa-icon-512.png',
   './apple-touch-icon.png'
