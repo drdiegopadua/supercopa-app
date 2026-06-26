@@ -1,18 +1,20 @@
-const CACHE_NAME = 'supercopa-afc-v9';
+const CACHE_NAME = 'supercopa-afc-v10';
 
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './pwa-icon-192.png',
-  './pwa-icon-512.png',
-  './apple-touch-icon.png'
+  '/',
+  '/index.html',
+  '/manifest.webmanifest',
+  '/pwa-icon-192.png',
+  '/pwa-icon-512.png',
+  '/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.allSettled(urlsToCache.map(url => cache.add(url)))
+    )
   );
 });
 
