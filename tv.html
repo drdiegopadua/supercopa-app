@@ -491,26 +491,20 @@ setInterval(function(){
 // Sheet layout A1:S15, rows 5-7 (index 0-2)
 // Grupo A: A=jogo#(0), B=equipeA(1), D=ptsA(3), E='x'(4), F=ptsB(5), H=equipeB(7)
 // Grupo B: J=jogo#(9), K=equipeA(10), M=ptsA(12), N='x'(13), O=ptsB(14), Q=equipeB(16)
+// Layout sequencial: A2:D7 → rows 0-2 = Grupo A, rows 3-5 = Grupo B
+// Colunas: A(0)=timeA, B(1)=placA, C(2)=placB, D(3)=timeB
 function isTeam(s){return s&&s.trim().length>1&&isNaN(Number(s.trim()));}
 function parseJogos(rows){
   var j=[];
   rows.forEach(function(row,ri){
-    // Grupo A: B(1)=equipeA, H(7)=equipeB, D(3)=ptsA, F(5)=ptsB
-    var eaA=(row[1]||'').trim(),ebA=(row[7]||'').trim();
-    if(isTeam(eaA)||isTeam(ebA)){
-      var s1A=row[3]||'',s2A=row[5]||'';
-      var okA=s1A!==''&&s2A!==''&&!isNaN(parseInt(s1A))&&!isNaN(parseInt(s2A));
-      j.push({g:'A',ri:ri+1,casa:eaA,vis:ebA,
-        ga:okA?parseInt(s1A):null,gb:okA?parseInt(s2A):null,ok:okA});
-    }
-    // Grupo B: K(10)=equipeA, Q(16)=equipeB, M(12)=ptsA, O(14)=ptsB
-    var eaB=(row[10]||'').trim(),ebB=(row[16]||'').trim();
-    if(isTeam(eaB)||isTeam(ebB)){
-      var s1B=row[12]||'',s2B=row[14]||'';
-      var okB=s1B!==''&&s2B!==''&&!isNaN(parseInt(s1B))&&!isNaN(parseInt(s2B));
-      j.push({g:'B',ri:ri+1,casa:isTeam(eaB)?eaB:'—',vis:isTeam(ebB)?ebB:'—',
-        ga:okB?parseInt(s1B):null,gb:okB?parseInt(s2B):null,ok:okB});
-    }
+    var ea=(row[0]||'').trim(),eb=(row[3]||'').trim();
+    if(!isTeam(ea)&&!isTeam(eb))return;
+    var s1=row[1]||'',s2=row[2]||'';
+    var ok=s1!==''&&s2!==''&&!isNaN(parseInt(s1))&&!isNaN(parseInt(s2));
+    var grupo=ri<3?'A':'B';
+    j.push({g:grupo,ri:ri+1,
+      casa:isTeam(ea)?ea:'—',vis:isTeam(eb)?eb:'—',
+      ga:ok?parseInt(s1):null,gb:ok?parseInt(s2):null,ok:ok});
   });
   return j;
 }
@@ -528,7 +522,7 @@ function parseMM(rows){
 // ═══ LOAD ═══
 function loadAll(){
   Promise.all([
-    fetch(au("'Fase de Grupos'!A5:S7")).then(function(r){return r.json();}),
+    fetch(au("'Fase de Grupos'!A2:D7")).then(function(r){return r.json();}),
     fetch(au("'Mata-Mata'!A4:M17")).then(function(r){return r.json();}),
     fetch(au("Página1!A2:F",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
   ]).then(function(res){
@@ -635,7 +629,7 @@ function ativarCampeao(){
   if(cm&&cm!==campAtual){
     campAtual=cm;
     document.getElementById('campNome').textContent=cm;
-    if(!scenes.includes('s-campeao')){scenes.push('s-campeao');buildDots();}
+    // NÃO adiciona automaticamente — só mostra se selecionado no painel TV Config
   }
 }
 
