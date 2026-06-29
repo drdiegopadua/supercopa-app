@@ -488,28 +488,30 @@ setInterval(function(){
 },1000);
 
 // ═══ PARSE JOGOS (Fase de Grupos) ═══
-// Fetch A2:S7 (6 rows, 19 cols). Rows 0-2=Grupo A, Rows 3-5=Grupo B
-// Grupo A cols: B(1)=equipeA, D(3)=ptsA, F(5)=ptsB, H(7)=equipeB
-// Grupo B cols: K(10)=equipeA, M(12)=ptsA, O(14)=ptsB, Q(16)=equipeB
+// Fetch A5:S7 (3 rows = os 3 jogos). Ambos grupos nas MESMAS linhas, colunas diferentes.
+// Grupo A cols: B(1)=equipeA, D(3)=ptsA, F(5)=ptsB, G(6)=equipeB
+// Grupo B cols: K(10)=equipeA, M(12)=ptsA, O(14)=ptsB, P(15)=equipeB
 function isTeam(s){return s&&s.trim().length>1&&isNaN(Number(s.trim()));}
 function parseJogos(rows){
   var j=[];
-  for(var ri=0;ri<6;ri++){
+  for(var ri=0;ri<3;ri++){
     var row=rows[ri]||[];
-    var grupo=ri<3?'A':'B';
-    var ea,eb,s1,s2;
-    if(grupo==='A'){
-      ea=(row[1]||'').trim();eb=(row[7]||'').trim();
-      s1=row[3]||'';s2=row[5]||'';
-    }else{
-      ea=(row[10]||'').trim();eb=(row[16]||'').trim();
-      s1=row[12]||'';s2=row[14]||'';
+    var eaA=(row[1]||'').trim(),ebA=(row[6]||'').trim();
+    var s1A=row[3]||'',s2A=row[5]||'';
+    if(isTeam(eaA)||isTeam(ebA)){
+      var okA=s1A!==''&&s2A!==''&&!isNaN(parseInt(s1A))&&!isNaN(parseInt(s2A));
+      j.push({g:'A',ri:ri+1,
+        casa:isTeam(eaA)?eaA:'—',vis:isTeam(ebA)?ebA:'—',
+        ga:okA?parseInt(s1A):null,gb:okA?parseInt(s2A):null,ok:okA});
     }
-    if(!isTeam(ea)&&!isTeam(eb))continue;
-    var ok=s1!==''&&s2!==''&&!isNaN(parseInt(s1))&&!isNaN(parseInt(s2));
-    j.push({g:grupo,ri:ri+1,
-      casa:isTeam(ea)?ea:'—',vis:isTeam(eb)?eb:'—',
-      ga:ok?parseInt(s1):null,gb:ok?parseInt(s2):null,ok:ok});
+    var eaB=(row[10]||'').trim(),ebB=(row[15]||'').trim();
+    var s1B=row[12]||'',s2B=row[14]||'';
+    if(isTeam(eaB)||isTeam(ebB)){
+      var okB=s1B!==''&&s2B!==''&&!isNaN(parseInt(s1B))&&!isNaN(parseInt(s2B));
+      j.push({g:'B',ri:ri+1,
+        casa:isTeam(eaB)?eaB:'—',vis:isTeam(ebB)?ebB:'—',
+        ga:okB?parseInt(s1B):null,gb:okB?parseInt(s2B):null,ok:okB});
+    }
   }
   return j;
 }
@@ -527,7 +529,7 @@ function parseMM(rows){
 // ═══ LOAD ═══
 function loadAll(){
   Promise.all([
-    fetch(au("'Fase de Grupos'!A2:S7")).then(function(r){return r.json();}),
+    fetch(au("'Fase de Grupos'!A5:S7")).then(function(r){return r.json();}),
     fetch(au("'Mata-Mata'!A4:M17")).then(function(r){return r.json();}),
     fetch(au("Página1!A2:F",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
   ]).then(function(res){
