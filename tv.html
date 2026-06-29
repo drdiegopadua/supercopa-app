@@ -491,23 +491,24 @@ setInterval(function(){
 // Sheet layout A1:S15, rows 5-7 (index 0-2)
 // Grupo A: A=jogo#(0), B=equipeA(1), D=ptsA(3), E='x'(4), F=ptsB(5), H=equipeB(7)
 // Grupo B: J=jogo#(9), K=equipeA(10), M=ptsA(12), N='x'(13), O=ptsB(14), Q=equipeB(16)
+function isTeam(s){return s&&s.trim().length>1&&isNaN(Number(s.trim()));}
 function parseJogos(rows){
   var j=[];
   rows.forEach(function(row,ri){
-    // Grupo A
-    var eaA=row[1]||'',ebA=row[7]||'';
-    if(eaA||ebA){
+    // Grupo A: B(1)=equipeA, H(7)=equipeB, D(3)=ptsA, F(5)=ptsB
+    var eaA=(row[1]||'').trim(),ebA=(row[7]||'').trim();
+    if(isTeam(eaA)||isTeam(ebA)){
       var s1A=row[3]||'',s2A=row[5]||'';
       var okA=s1A!==''&&s2A!==''&&!isNaN(parseInt(s1A))&&!isNaN(parseInt(s2A));
-      j.push({g:'A',ri:ri+1,casa:eaA.trim(),vis:ebA.trim(),
+      j.push({g:'A',ri:ri+1,casa:eaA,vis:ebA,
         ga:okA?parseInt(s1A):null,gb:okA?parseInt(s2A):null,ok:okA});
     }
-    // Grupo B
-    var eaB=row[10]||'',ebB=row[16]||'';
-    if(eaB||ebB){
+    // Grupo B: K(10)=equipeA, Q(16)=equipeB, M(12)=ptsA, O(14)=ptsB
+    var eaB=(row[10]||'').trim(),ebB=(row[16]||'').trim();
+    if(isTeam(eaB)||isTeam(ebB)){
       var s1B=row[12]||'',s2B=row[14]||'';
       var okB=s1B!==''&&s2B!==''&&!isNaN(parseInt(s1B))&&!isNaN(parseInt(s2B));
-      j.push({g:'B',ri:ri+1,casa:eaB.trim(),vis:ebB.trim(),
+      j.push({g:'B',ri:ri+1,casa:isTeam(eaB)?eaB:'—',vis:isTeam(ebB)?ebB:'—',
         ga:okB?parseInt(s1B):null,gb:okB?parseInt(s2B):null,ok:okB});
     }
   });
@@ -639,18 +640,15 @@ function ativarCampeao(){
 }
 
 // ═══ GALERA ═══
+// Sheet cols: A(0)=timestamp, B(1)=nome_votante, C(2)=telefone, D(3)=modalidade, E(4)=time, F(5)=atleta
 function renderGalera(rows){
-  // Col A=naipe, B=atleta, C=time, F=votos (col index 5)
-  // If col F has a number use it; else count rows per athlete
   var counts={};
   rows.forEach(function(r){
-    var at=(r[1]||'').trim(),tm=(r[2]||'').trim(),na=(r[0]||'').trim();
+    var at=(r[5]||'').trim(),tm=(r[4]||'').trim(),na=(r[3]||'').trim();
     if(!at)return;
     var k=at+'||'+tm;
     if(!counts[k])counts[k]={at:at,tm:tm,na:na,v:0};
-    var vCol=r[5]?parseInt(r[5]):NaN;
-    if(!isNaN(vCol)&&vCol>0)counts[k].v=Math.max(counts[k].v,vCol);
-    else counts[k].v++;
+    counts[k].v++;
   });
   var rank=Object.values(counts).sort(function(a,b){return b.v-a.v;}).slice(0,10);
   if(!rank.length){document.getElementById('g-rank').innerHTML='<div style="color:var(--muted);text-align:center;padding:20px;font-size:11px">⏳ Aguardando votos...</div>';return;}
