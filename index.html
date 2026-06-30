@@ -1166,10 +1166,10 @@ function abrirPickerTime2(){let m=document.getElementById('modoTorcedorModal');i
   // Re-run after dynamic content loads
   setInterval(initRipple,2000);
 })();
-let _quizSport="volei";let qIdx=0,qAcertos=0,qErros=0,qNome="",qStartTime=null;const QUIZ_SHEETS_URL="https://script.google.com/macros/s/AKfycbzg9nL9j0cqHr9PlyWAa_YMDphe6FD0Ahnhmh6nzpQXrlYZGGLAFmRlMqJey1IEiyEk/exec";
+let qIdx=0,qAcertos=0,qErros=0,qNome="",qStartTime=null;
 function getActiveQuizQuestions(){return _quizSport==="basquete"?QUIZ_BASQ:QUIZ_VOLEI;}
 
-const QUIZ_VOLEI=[
+var QUIZ_VOLEI_DUP=[
 {q:"Quantos jogadores de cada time ficam na quadra ao mesmo tempo no vôlei?",opts:["5","7","6","8"],ans:2,exp:"São 6 jogadores por equipe em quadra no vôlei! 🏐"},
 {q:"Quantos sets são necessários para vencer uma partida de vôlei (melhor de 5)?",opts:["4","2","5","3"],ans:3,exp:"Para vencer são necessários 3 sets! 🏆"},
 {q:"Até quantos pontos vai um set normal no vôlei?",opts:["21","18","25","30"],ans:2,exp:"Um set é vencido com 25 pontos (com vantagem de 2)!"},
@@ -1212,7 +1212,7 @@ const QUIZ_VOLEI=[
 {q:"Quais esportes fazem parte da Supercopa AFC?",opts:["Vôlei e Futsal","Vôlei, Basquete e Handebol","Basquete e Futebol","Vôlei e Basquete"],ans:3,exp:"A Supercopa AFC tem vôlei e basquete! 🏐🏀"}
 ];
 
-const QUIZ_BASQ=[
+var QUIZ_BASQ_DUP=[
 {q:"Quantos jogadores de cada time ficam em quadra no basquete?",opts:["4","6","5","7"],ans:2,exp:"São 5 jogadores por equipe em quadra no basquete! 🏀"},
 {q:"Quantos pontos vale uma cesta de 3 pontos?",opts:["1","2","4","3"],ans:3,exp:"Uma cesta de além do arco vale 3 pontos! 🏀"},
 {q:"Quantos pontos vale um lance livre?",opts:["2","3","1","0"],ans:2,exp:"Cada lance livre convertido vale 1 ponto!"},
