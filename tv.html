@@ -490,7 +490,7 @@ setInterval(function(){
 // ═══ PARSE JOGOS (Fase de Grupos) ═══
 // Fetch A5:S7 (3 rows = os 3 jogos). Ambos grupos nas MESMAS linhas, colunas diferentes.
 // Grupo A cols: B(1)=equipeA, D(3)=ptsA, F(5)=ptsB, G(6)=equipeB
-// Grupo B cols: K(10)=equipeA, M(12)=ptsA, O(14)=ptsB, P(15)=equipeB
+// Grupo B cols: L(11)=equipeA, N(13)=ptsA, P(15)=ptsB, Q(16)=equipeB
 function isTeam(s){return s&&s.trim().length>1&&isNaN(Number(s.trim()));}
 function parseJogos(rows){
   var j=[];
@@ -504,8 +504,8 @@ function parseJogos(rows){
         casa:isTeam(eaA)?eaA:'—',vis:isTeam(ebA)?ebA:'—',
         ga:okA?parseInt(s1A):null,gb:okA?parseInt(s2A):null,ok:okA});
     }
-    var eaB=(row[10]||'').trim(),ebB=(row[15]||'').trim();
-    var s1B=row[12]||'',s2B=row[14]||'';
+    var eaB=(row[11]||'').trim(),ebB=(row[16]||'').trim();
+    var s1B=row[13]||'',s2B=row[15]||'';
     if(isTeam(eaB)||isTeam(ebB)){
       var okB=s1B!==''&&s2B!==''&&!isNaN(parseInt(s1B))&&!isNaN(parseInt(s2B));
       j.push({g:'B',ri:ri+1,
@@ -550,7 +550,7 @@ function calcClass(grupo){
     A.j++;B.j++;
     if(j.ga>j.gb){A.pts+=2;A.v++;B.pts+=1;B.d++;}
     else if(j.ga<j.gb){B.pts+=2;B.v++;A.pts+=1;A.d++;}
-    else{A.pts+=1;B.pts+=1;}
+    else{A.pts+=1;A.d++;B.pts+=1;B.d++;}
   });
   return Object.values(t).sort(function(a,b){return b.pts-a.pts||b.v-a.v;});
 }
