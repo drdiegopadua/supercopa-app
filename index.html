@@ -595,14 +595,10 @@ async function shareGameCard(btn){
 }
 </script>
 <script>
-const list = document.querySelectorAll('.list');
-function activeLink() {
-    list.forEach((item) => item.classList.remove('active'));
-    this.classList.add('active');
-}
-list.forEach((item) => item.addEventListener('click', activeLink));
-
-// Atualizar a função nav original para funcionar com a nova estrutura
+// (removido: sistema paralelo "activeLink" que competia com nav()
+// para decidir qual item do menu fica ativo, usando so o elemento
+// clicado em vez do navMap -- causava a bolinha do menu ir pra um
+// icone errado/vazio em alguns cliques. nav() ja cuida disso sozinho.)
 const originalNav = window.nav;
 window.nav = function(pageId, element) {
     // Delega para a nav() original (ja cuida de tudo: troca de pagina,
