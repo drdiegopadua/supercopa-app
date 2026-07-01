@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercopa-afc-v10';
+const CACHE_NAME = 'supercopa-afc-v11';
 
 const urlsToCache = [
   '/',
@@ -27,8 +27,25 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const req = event.request;
+
+  // Navegação/HTML: rede primeiro (cai pro cache só se estiver offline).
+  // Evita ficar preso numa versão antiga do app a cada novo deploy.
+  if (req.mode === 'navigate' || req.destination === 'document') {
+    event.respondWith(
+      fetch(req)
+        .then(res => {
+          caches.open(CACHE_NAME).then(cache => cache.put(req, res.clone()));
+          return res;
+        })
+        .catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Demais assets (imagens, manifest etc.): cache primeiro, mais rápido.
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(req).then(response => response || fetch(req))
   );
 });
 
