@@ -357,7 +357,15 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Segoe U
       </div>
     </div>
 
-    <!-- 6: Campeão -->
+    <!-- 6: Ranking do Quiz -->
+    <div class="scene" id="s-quiz">
+      <div class="panel gp" style="flex:1">
+        <div class="ptitle gt"><div class="pdot"></div>🧠 RANKING DO QUIZ</div>
+        <div class="pbody" id="quiz-rank"></div>
+      </div>
+    </div>
+
+    <!-- 7: Campeão -->
     <div class="scene" id="s-campeao">
       <canvas class="confetti-canvas" id="cvCamp"></canvas>
       <div class="camp-scene">
@@ -402,10 +410,11 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Segoe U
 var BASQ_SHEET_ID = '1S3rUVU18W64c4okkxGOYnSLtW-aSyo47l3tos7u-8j0';
 var VOTE_SHEET   = '1jGuJHUHyY3p-PQHm7HmNjcYry_xPheuOT2RmVFHh_Go';
 var API_KEY      = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
+var QUIZ_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxfiPItqNbKhXQP7fxCaOiUcmDGNvXQzRzkwisdC6rzoHIEkQftu6IK4NXGefbmYQ2H/exec';
 var REFRESH      = 30;
 var SCENE_DUR    = 20;
 
-var ALL_SCENES   = ['s-class-a','s-class-b','s-jogos','s-matamata','s-galera','s-campeao'];
+var ALL_SCENES   = ['s-class-a','s-class-b','s-jogos','s-matamata','s-galera','s-quiz','s-campeao'];
 
 var appData      = {j:[],mm:[]};
 var countdown    = REFRESH, curScene=0, scenes=[];
@@ -417,6 +426,7 @@ var SCENE_LABELS = {
   's-jogos'   :'Jogos',
   's-matamata':'Mata-Mata',
   's-galera'  :'Destaque da Galera',
+  's-quiz'    :'Ranking do Quiz',
   's-campeao' :'🏆 Campeão Basquete'
 };
 
@@ -531,11 +541,13 @@ function loadAll(){
   Promise.all([
     fetch(au("'Fase de Grupos'!A5:S7")).then(function(r){return r.json();}),
     fetch(au("'Mata-Mata'!A4:M17")).then(function(r){return r.json();}),
-    fetch(au("Página1!A2:F",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
+    fetch(au("Página1!A2:F",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
+    fetch(QUIZ_SHEETS_URL+'?action=ranking_quiz').then(function(r){return r.json();}).catch(function(){return{ranking:[]};})
   ]).then(function(res){
     appData.j  = parseJogos(res[0].values||[]);
     appData.mm = parseMM(res[1].values||[]);
     renderAll(res[2].values||[]);
+    renderQuizRanking(res[3].ranking||[]);
     document.getElementById('loading').classList.add('hidden');
   }).catch(function(e){console.warn(e);document.getElementById('loading').classList.add('hidden');});
 }
@@ -665,6 +677,24 @@ function renderGalera(rows){
     +'</div>';
   });
   document.getElementById('g-rank').innerHTML=html;
+}
+
+// ═══ RANKING DO QUIZ ═══
+function renderQuizRanking(ranking){
+  var el=document.getElementById('quiz-rank');
+  if(!el)return;
+  if(!ranking.length){el.innerHTML='<div style="color:var(--muted);text-align:center;padding:20px;font-size:11px">⏳ Aguardando participantes...</div>';return;}
+  var top=ranking.slice(0,10);
+  var pc=['gp1','gp2','gp3'];var em=['🥇','🥈','🥉'];
+  var html='';
+  top.forEach(function(p,i){
+    html+='<div class="grow '+(i===0?'g1':i===1?'g2':i===2?'g3':'')+'" style="animation-delay:'+(i*.05)+'s">'
+      +'<div class="gpos '+(pc[i]||'gpn')+'">'+(i<3?em[i]:(i+1))+'</div>'
+      +'<div class="ginfo"><div class="gat">'+p.nome+'</div><div class="gtm">'+p.acertos+'/'+p.total+' · '+p.tempo+'s</div></div>'
+      +'<div class="gvotes">'+p.pct+'%</div>'
+    +'</div>';
+  });
+  el.innerHTML=html;
 }
 
 // ═══ CONFETES ═══
