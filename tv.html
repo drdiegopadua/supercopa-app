@@ -431,6 +431,8 @@ var SCENE_DUR    = 20;
 var JOGO_HORARIOS = {'A-1':'13:00','B-1':'~14:10','A-2':'~15:30','B-2':'~16:45','A-3':'~18:00','B-3':'~19:10'};
 
 var ALL_SCENES   = ['s-class-a','s-class-b','s-jogos','s-matamata','s-galera','s-quiz','s-campeao'];
+var SCENE_CODES  = {'s-class-a':'a','s-class-b':'b','s-jogos':'j','s-matamata':'m','s-galera':'g','s-quiz':'q','s-campeao':'c'};
+var CODE_SCENES  = {'a':'s-class-a','b':'s-class-b','j':'s-jogos','m':'s-matamata','g':'s-galera','q':'s-quiz','c':'s-campeao'};
 
 var appData      = {j:[],mm:[]};
 var countdown    = REFRESH, curScene=0, scenes=[];
@@ -462,7 +464,11 @@ setInterval(tick,1000);tick();
 // ═══ CENAS ═══
 function buildScenes(){
   var params=new URLSearchParams(window.location.search);
-  if(params.get('scenes')){
+  if(params.get('s')){
+    var req=params.get('s').split('').map(function(c){return CODE_SCENES[c];}).filter(Boolean);
+    scenes=req.filter(function(s){return ALL_SCENES.includes(s);});
+    if(!scenes.length)scenes=ALL_SCENES.slice();
+  }else if(params.get('scenes')){
     var req=params.get('scenes').split(',').map(function(s){return s.trim();});
     scenes=req.filter(function(s){return ALL_SCENES.includes(s);});
     if(!scenes.length)scenes=ALL_SCENES.slice();
