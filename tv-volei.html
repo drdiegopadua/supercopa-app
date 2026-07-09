@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>SUPERCOPA AFC 2026 — TV Vôlei</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#050b1a; --bg2:#0a1530; --card:rgba(21,101,192,.09); --border:rgba(21,101,192,.28);
+  --blue:#1565C0; --blue2:#0D47A1; --gold:#C8960C; --gold2:#F4C542;
+  --txt:#eef4ff; --muted:rgba(238,244,255,.55); --blur:blur(14px);
+  --ga:#1565C0; --gb:#C8960C; --gc:#0F9B8E; --gd:#7C5CD4;
+}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ═══ FUNDO ═══ */
+.bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;}
+.bg-mesh{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(21,101,192,.35) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 40% at 100% 100%, rgba(200,150,12,.14) 0%,transparent 55%),
+    radial-gradient(ellipse 45% 35% at 0% 65%, rgba(124,92,212,.10) 0%,transparent 55%);
+  animation:meshDrift 16s ease-in-out infinite alternate;
+}
+@keyframes meshDrift{0%{filter:hue-rotate(0deg) brightness(1);}100%{filter:hue-rotate(-6deg) brightness(1.06);}}
+.stars{position:absolute;inset:0;opacity:.5;background-image:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 70% 20%,#fff,transparent),radial-gradient(1px 1px at 85% 60%,#fff,transparent),radial-gradient(1px 1px at 40% 80%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 45%,#fff,transparent),radial-gradient(1px 1px at 10% 65%,#fff,transparent);background-repeat:no-repeat;}
+
+/* ═══ LAYOUT ═══ */
+.tv-wrap{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;width:100%;}
+.scene-bar-wrap{flex-shrink:0;height:5px;background:rgba(255,255,255,.06);z-index:5;}
+.scene-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold2));transition:width .5s linear;width:100%;}
+.scene-wrapper{flex:1;position:relative;overflow:hidden;min-height:0;}
+.scene{position:absolute;inset:0;overflow:hidden;display:none;flex-direction:column;}
+.scene.active{display:flex;}
+.scene.active .fx{animation:fxIn .6s cubic-bezier(.25,.46,.45,.94) both;}
+.scene.active .fx:nth-child(2){animation-delay:.1s;}
+.scene.active .fx:nth-child(3){animation-delay:.2s;}
+@keyframes fxIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.scene.leaving{animation:sceneOut .3s ease both;}
+@keyframes sceneOut{to{opacity:0;}}
+
+/* ═══ DOTS + LABEL ═══ */
+.sdots{position:fixed;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:30;}
+.sdot{width:5px;height:5px;border-radius:3px;background:rgba(244,197,66,.3);transition:all .4s;}
+.sdot.active{height:20px;background:var(--gold2);}
+.scene-label{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:3px 12px;border-radius:10px;background:rgba(5,11,26,.7);backdrop-filter:blur(8px);z-index:30;}
+.loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .6s;}
+.loading-overlay.hidden{opacity:0;pointer-events:none;}
+.spinner{width:36px;height:36px;border:3px solid rgba(244,197,66,.2);border-top-color:var(--gold2);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═════════════════════════ CENA 1 — CAPA ═════════════════════════ */
+.capa-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:40px 30px 26px;position:relative;}
+.capa-teams-row{display:flex;flex-wrap:wrap;justify-content:center;gap:22px 30px;width:100%;max-width:900px;}
+.capa-team{display:flex;flex-direction:column;align-items:center;gap:8px;width:76px;}
+.capa-crest{
+  width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;letter-spacing:.5px;color:var(--gold2);
+  background:radial-gradient(circle at 35% 30%,rgba(244,197,66,.16),rgba(5,11,26,.9));
+  border:2px solid rgba(244,197,66,.55);box-shadow:0 0 18px rgba(244,197,66,.18),inset 0 0 12px rgba(244,197,66,.08);
+}
+.capa-crest img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
+.capa-tname{font-size:10px;font-weight:800;letter-spacing:.5px;text-align:center;color:var(--txt);text-transform:uppercase;line-height:1.25;}
+.capa-center{display:flex;flex-direction:column;align-items:center;gap:10px;margin:6px 0;}
+.capa-title{
+  font-size:min(15vw,140px);font-weight:900;letter-spacing:6px;line-height:1;text-transform:uppercase;
+  background:linear-gradient(100deg,#F4C542 0%,#fff6d8 18%,#C8960C 40%,#F4C542 60%,#fff6d8 80%,#C8960C 100%);
+  background-size:250% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 6px 24px rgba(244,197,66,.35));
+  animation:shimmer 5s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0% center;}100%{background-position:250% center;}}
+.capa-sub{font-size:15px;font-weight:700;letter-spacing:4px;color:rgba(238,244,255,.75);text-transform:uppercase;text-align:center;}
+.capa-footer{display:flex;align-items:center;gap:10px;opacity:.85;}
+.capa-footer img{width:30px;height:30px;border-radius:8px;}
+.capa-footer span{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.capa-grp-lbl{font-size:9px;font-weight:800;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:-4px;}
+
+/* ═════════════════════════ CENA 2 — EQUIPES ═════════════════════════ */
+.eq-wrap{flex:1;display:flex;flex-direction:column;padding:26px 30px 20px;min-height:0;}
+.eq-header{text-align:center;margin-bottom:22px;flex-shrink:0;}
+.eq-h-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:4px;color:var(--gold2);padding:5px 18px;border:1px solid rgba(244,197,66,.4);border-radius:20px;margin-bottom:10px;background:rgba(244,197,66,.06);}
+.eq-h-title{font-size:26px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;}
+.eq-h-title span{color:var(--muted);font-weight:600;font-size:15px;letter-spacing:1px;}
+.eq-grid{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:14px;min-height:0;}
+.eq-card{
+  border-radius:16px;padding:20px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35);
+}
+.eq-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 40%);pointer-events:none;}
+.eq-crest{
+  width:56px;height:56px;border-radius:50%;background:rgba(5,11,26,.55);border:2px solid rgba(255,255,255,.8);
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.35);flex-shrink:0;
+}
+.eq-crest img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
+.eq-name{font-size:12px;font-weight:900;letter-spacing:.5px;text-align:center;color:#fff;text-transform:uppercase;line-height:1.25;min-height:30px;display:flex;align-items:center;}
+.eq-grp{font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.7);text-transform:uppercase;margin-top:auto;padding-top:6px;border-top:1px solid rgba(255,255,255,.2);width:100%;text-align:center;}
+.eqc-A{background:linear-gradient(160deg,var(--ga),#0a3f7a);}
+.eqc-B{background:linear-gradient(160deg,var(--gb),#8a6300);}
+.eqc-C{background:linear-gradient(160deg,var(--gc),#075c53);}
+.eqc-D{background:linear-gradient(160deg,var(--gd),#4a3480);}
+
+/* ═════════════════════════ CENA 3 — JOGOS ═════════════════════════ */
+.jg-wrap{flex:1;display:flex;flex-direction:column;padding:24px 30px 18px;min-height:0;}
+.jg-header{flex-shrink:0;display:flex;align-items:baseline;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:3px solid var(--gold2);}
+.jg-h-main{font-size:34px;font-weight:900;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+.jg-h-sub{font-size:14px;font-weight:800;letter-spacing:5px;color:var(--gold2);text-transform:uppercase;}
+.jg-list{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;overflow-y:auto;justify-content:center;}
+.jg-row{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.3);height:64px;}
+.jg-team{flex:1;display:flex;align-items:center;gap:12px;padding:0 20px;position:relative;min-width:0;}
+.jg-home{background:linear-gradient(100deg,var(--blue2),var(--blue));justify-content:flex-start;}
+.jg-away{background:linear-gradient(260deg,#7a5c00,var(--gold));justify-content:flex-end;flex-direction:row-reverse;}
+.jg-crest{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.28);border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;flex-shrink:0;}
+.jg-crest img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
+.jg-code{font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.jg-mid{flex-shrink:0;width:150px;background:#0a1024;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%);}
+.jg-badge{font-size:9px;font-weight:800;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;}
+.jg-when{font-size:13px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;}
+.jg-score{font-size:20px;font-weight:900;color:var(--gold2);font-variant-numeric:tabular-nums;}
+.jg-row.done .jg-mid{background:#150f00;}
+
+/* ═════════════════════════ CENA 4 — DASHBOARD ═════════════════════════ */
+.dash-wrap{flex:1;display:flex;flex-direction:column;padding:22px 28px 16px;gap:16px;min-height:0;}
+.dash-header{flex-shrink:0;font-size:15px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.dash-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:14px;min-height:0;}
+.dash-tiles{grid-column:1/3;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex-shrink:0;}
+.dtile{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;box-shadow:0 6px 0 rgba(0,0,0,.25),0 10px 20px rgba(0,0,0,.25);}
+.dt-ic{font-size:18px;}
+.dt-val{font-size:26px;font-weight:900;color:var(--gold2);font-variant-numeric:tabular-nums;}
+.dt-lbl{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;min-height:0;box-shadow:0 10px 26px rgba(0,0,0,.3);}
+.dc-title{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;flex-shrink:0;}
+.d-bars{flex:1;display:flex;flex-direction:column;justify-content:center;gap:9px;overflow-y:auto;}
+.d-bar-row{display:grid;grid-template-columns:120px 1fr 30px;align-items:center;gap:10px;}
+.d-bar-label{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;}
+.d-bar-track{height:20px;background:rgba(255,255,255,.06);border-radius:6px;overflow:visible;position:relative;}
+.d-bar-fill{
+  height:100%;border-radius:6px;min-width:6px;
+  background:linear-gradient(180deg,#3987e5,var(--blue));
+  box-shadow:0 4px 0 var(--blue2),0 8px 14px rgba(21,101,192,.45);
+  transition:width 1s cubic-bezier(.22,.8,.3,1);
+}
+.d-bar-fill.lead{background:linear-gradient(180deg,#ffe27a,var(--gold));box-shadow:0 4px 0 #8a6300,0 8px 14px rgba(200,150,12,.5);}
+.d-bar-val{font-size:13px;font-weight:900;color:var(--gold2);text-align:right;font-variant-numeric:tabular-nums;}
+.d-donut-wrap{flex:1;display:flex;align-items:center;justify-content:center;gap:24px;}
+.d-donut-legend{display:flex;flex-direction:column;gap:10px;}
+.dl-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#fff;}
+.dl-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.dl-val{color:var(--muted);font-weight:600;margin-left:4px;}
+</style>
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-mesh"></div><div class="stars"></div></div>
+
+<div class="loading-overlay" id="loading">
+  <div style="font-size:44px">🏐</div>
+  <div class="spinner"></div>
+  <div style="font-size:11px;color:var(--muted);letter-spacing:2px">CARREGANDO...</div>
+</div>
+
+<div class="tv-wrap">
+  <div class="scene-bar-wrap"><div class="scene-bar" id="sceneBar"></div></div>
+
+  <div class="scene-wrapper" id="sceneWrapper">
+
+    <!-- 1: CAPA -->
+    <div class="scene" id="s-capa">
+      <div class="capa-wrap">
+        <div class="fx" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div class="capa-grp-lbl">Grupos A · B</div>
+          <div class="capa-teams-row" id="capaTop"></div>
+        </div>
+        <div class="fx capa-center">
+          <div class="capa-title">VÔLEI</div>
+          <div class="capa-sub">Supercopa de Voleibol de Afonso Cláudio · Edição 2026</div>
+        </div>
+        <div class="fx" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div class="capa-teams-row" id="capaBottom"></div>
+          <div class="capa-grp-lbl">Grupos C · D</div>
+        </div>
+        <div class="fx capa-footer">
+          <img src="icon-sc-192.png" alt="Supercopa AFC">
+          <span>Supercopa AFC 2026 · Afonso Cláudio/ES</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: EQUIPES -->
+    <div class="scene" id="s-equipes">
+      <div class="eq-wrap">
+        <div class="fx eq-header">
+          <div class="eq-h-badge">Equipes Confirmadas</div>
+          <div class="eq-h-title">Supercopa de Voleibol <span>· Edição 2026</span></div>
+        </div>
+        <div class="fx eq-grid" id="eqGrid"></div>
+      </div>
+    </div>
+
+    <!-- 3: JOGOS -->
+    <div class="scene" id="s-jogos">
+      <div class="jg-wrap">
+        <div class="fx jg-header">
+          <span class="jg-h-main">Supercopa</span><span class="jg-h-sub">Voleibol · Jogos</span>
+        </div>
+        <div class="fx jg-list" id="jgList"></div>
+      </div>
+    </div>
+
+    <!-- 4: DASHBOARD -->
+    <div class="scene" id="s-dashboard">
+      <div class="dash-wrap">
+        <div class="fx dash-header">📊 Dashboard — Supercopa de Voleibol</div>
+        <div class="dash-grid">
+          <div class="fx dash-tiles">
+            <div class="dtile"><div class="dt-ic">🏐</div><div class="dt-val" id="dTotalJogos">0</div><div class="dt-lbl">Jogos no Total</div></div>
+            <div class="dtile"><div class="dt-ic">✅</div><div class="dt-val" id="dRealizados">0</div><div class="dt-lbl">Realizados</div></div>
+            <div class="dtile"><div class="dt-ic">👥</div><div class="dt-val" id="dTotalTimes">0</div><div class="dt-lbl">Times Inscritos</div></div>
+            <div class="dtile"><div class="dt-ic">🏆</div><div class="dt-val" id="dLider" style="font-size:16px;">—</div><div class="dt-lbl">Líder Geral</div></div>
+          </div>
+          <div class="fx dash-card">
+            <div class="dc-title">Pontos por Equipe</div>
+            <div class="d-bars" id="dBars"></div>
+          </div>
+          <div class="fx dash-card">
+            <div class="dc-title">Jogos por Status</div>
+            <div class="d-donut-wrap" id="dDonutWrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sdots" id="sdots"></div>
+  </div>
+  <div class="scene-label" id="sceneLabel">—</div>
+</div>
+
+<script>
+// ═══ CONFIG ═══
+var VOLEI_SHEET_ID = '12-yxLsIplLMAj0Y9jCpzl2OGJLKPhy_lWAtvYP-Vvh8';
+var API_KEY = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
+var REFRESH = 30, SCENE_DUR = 20;
+
+// Mapa nome-do-time -> escudo. Preencher conforme os escudos forem enviados.
+// Ex: 'ES VOLEI':'assets/teams/esvolei.png'
+var VOLEI_LOGOS = {};
+
+var GROUP_COLORS = {A:'#1565C0',B:'#C8960C',C:'#0F9B8E',D:'#7C5CD4'};
+var GRUPOS_ROWS = {
+  A:{classRows:[4,5,6],   gameRows:[10,11,12]},
+  B:{classRows:[16,17,18],gameRows:[22,23,24]},
+  C:{classRows:[28,29,30],gameRows:[34,35,36]},
+  D:{classRows:[40,41,42],gameRows:[46,47,48]}
+};
+
+var ALL_SCENES  = ['s-capa','s-equipes','s-jogos','s-dashboard'];
+var SCENE_CODES = {'s-capa':'c','s-equipes':'e','s-jogos':'j','s-dashboard':'d'};
+var CODE_SCENES = {'c':'s-capa','e':'s-equipes','j':'s-jogos','d':'s-dashboard'};
+var SCENE_LABELS= {'s-capa':'Capa','s-equipes':'Equipes','s-jogos':'Jogos','s-dashboard':'Dashboard'};
+
+var appData = {teams:[], games:[]};
+var countdown = REFRESH, curScene = 0, scenes = [];
+
+function au(range){return 'https://sheets.googleapis.com/v4/spreadsheets/'+VOLEI_SHEET_ID+'/values/'+encodeURIComponent(range)+'?key='+API_KEY;}
+function cc(rows,r,c){return (rows[r]&&rows[r][c])?rows[r][c].toString().trim():'';}
+function isTeamName(s){return s && s.length>1 && !/^EMPATE$/i.test(s);}
+
+function initials(nome){
+  var clean=nome.replace(/^EQUIPE\s*/i,'EQ ').trim();
+  var parts=clean.split(/\s+/).filter(Boolean);
+  if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0]+parts[1][0]).toUpperCase();
+}
+function crestHTML(nome){
+  var logo=VOLEI_LOGOS[nome.toUpperCase()];
+  return logo?'<img src="'+logo+'" alt="'+nome+'" onerror="this.parentElement.textContent=\''+initials(nome)+'\'">':initials(nome);
+}
+
+// ═══ CENAS ═══
+function buildScenes(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('s')){
+    scenes=params.get('s').split('').map(function(c){return CODE_SCENES[c];}).filter(function(s){return s&&ALL_SCENES.includes(s);});
+  }else{
+    try{
+      var saved=localStorage.getItem('supercopa_tv_volei_scenes');
+      if(saved){var p=JSON.parse(saved);scenes=p.filter(function(s){return ALL_SCENES.includes(s);});}
+    }catch(e){}
+  }
+  if(!scenes.length)scenes=ALL_SCENES.slice();
+  buildDots();
+}
+function buildDots(){
+  var el=document.getElementById('sdots');
+  if(scenes.length<=1){el.innerHTML='';return;}
+  el.innerHTML=scenes.map(function(_,i){return'<div class="sdot'+(i===0?' active':'')+'"></div>';}).join('');
+}
+var sceneTimer=null;
+function showScene(idx){
+  var prev=document.querySelector('.scene.active');
+  if(prev){prev.classList.add('leaving');prev.classList.remove('active');setTimeout(function(){prev.classList.remove('leaving');},300);}
+  curScene=idx;
+  var next=document.getElementById(scenes[idx]);
+  if(next)next.classList.add('active');
+  document.querySelectorAll('.sdot').forEach(function(d,i){d.classList.toggle('active',i===idx);});
+  var lbl=document.getElementById('sceneLabel');
+  if(lbl)lbl.textContent=SCENE_LABELS[scenes[idx]]||'';
+  var bar=document.getElementById('sceneBar');
+  bar.style.transition='none';bar.style.width='100%';
+  setTimeout(function(){bar.style.transition='width '+SCENE_DUR+'s linear';bar.style.width='0%';},60);
+}
+function nextScene(){showScene((curScene+1)%scenes.length);}
+function startTimer(){if(sceneTimer)clearInterval(sceneTimer);sceneTimer=setInterval(nextScene,SCENE_DUR*1000);}
+
+// ═══ LOAD ═══
+function loadData(){
+  fetch(au("'Fase de Grupos'!A1:Q49")).then(function(r){return r.json();}).then(function(res){
+    var rows=res.values||[];
+    var teams=[],games=[];
+    Object.keys(GRUPOS_ROWS).forEach(function(g){
+      var cfg=GRUPOS_ROWS[g];
+      cfg.classRows.forEach(function(r){
+        var nome=cc(rows,r,1);
+        if(!isTeamName(nome))return;
+        teams.push({grupo:g,nome:nome,pts:parseInt(cc(rows,r,2))||0,v:parseInt(cc(rows,r,3))||0,d:parseInt(cc(rows,r,4))||0,sp:parseInt(cc(rows,r,5))||0});
+      });
+      cfg.gameRows.forEach(function(r,i){
+        var casa=cc(rows,r,1),vis=cc(rows,r,11);
+        if(!isTeamName(casa)&&!isTeamName(vis))return;
+        var setsC=cc(rows,r,12),setsV=cc(rows,r,13),venc=cc(rows,r,14),data=cc(rows,r,15),local=cc(rows,r,16);
+        var jogado=venc&&!/^EMPATE$/i.test(venc)&&isTeamName(venc);
+        games.push({grupo:g,jogo:i+1,casa:casa,vis:vis,setsC:setsC,setsV:setsV,jogado:jogado,data:data,local:local});
+      });
+    });
+    appData.teams=teams;appData.games=games;
+    renderAll();
+    document.getElementById('loading').classList.add('hidden');
+  }).catch(function(e){console.warn('[TV Volei]',e);document.getElementById('loading').classList.add('hidden');});
+}
+setInterval(function(){countdown--;if(countdown<=0){countdown=REFRESH;loadData();}},1000);
+
+// ═══ RENDER: CAPA ═══
+function renderCapa(){
+  var A=appData.teams.filter(function(t){return t.grupo==='A'||t.grupo==='B';});
+  var B=appData.teams.filter(function(t){return t.grupo==='C'||t.grupo==='D';});
+  function item(t){
+    return '<div class="capa-team"><div class="capa-crest">'+crestHTML(t.nome)+'</div><div class="capa-tname">'+t.nome+'</div></div>';
+  }
+  document.getElementById('capaTop').innerHTML=A.map(item).join('')||'<div style="color:var(--muted);font-size:12px;">Times a confirmar</div>';
+  document.getElementById('capaBottom').innerHTML=B.map(item).join('')||'<div style="color:var(--muted);font-size:12px;">Times a confirmar</div>';
+}
+
+// ═══ RENDER: EQUIPES ═══
+function renderEquipes(){
+  var el=document.getElementById('eqGrid');
+  if(!appData.teams.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:30px;">Aguardando inscrição das equipes...</div>';return;}
+  el.innerHTML=appData.teams.map(function(t){
+    return '<div class="eq-card eqc-'+t.grupo+'">'
+      +'<div class="eq-crest">'+crestHTML(t.nome)+'</div>'
+      +'<div class="eq-name">'+t.nome+'</div>'
+      +'<div class="eq-grp">Grupo '+t.grupo+'</div>'
+    +'</div>';
+  }).join('');
+}
+
+// ═══ RENDER: JOGOS ═══
+function renderJogos(){
+  var el=document.getElementById('jgList');
+  var jogos=appData.games.filter(function(j){return isTeamName(j.casa)&&isTeamName(j.vis);});
+  if(!jogos.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;">Aguardando jogos...</div>';return;}
+  el.innerHTML=jogos.map(function(j,i){
+    var dataOk = j.data && !/EMPATE|DEFINIR/i.test(j.data);
+    var mid = j.jogado
+      ? '<div class="jg-score">'+j.setsC+' × '+j.setsV+'</div><div class="jg-badge" style="margin-top:2px;">Grupo '+j.grupo+'</div>'
+      : '<div class="jg-when">'+(dataOk?j.data:'A definir')+'</div><div class="jg-badge">Grupo '+j.grupo+'</div>';
+    return '<div class="jg-row'+(j.jogado?' done':'')+'" style="animation-delay:'+(i*.04)+'s">'
+      +'<div class="jg-team jg-home"><div class="jg-crest">'+crestHTML(j.casa)+'</div><div class="jg-code">'+j.casa+'</div></div>'
+      +'<div class="jg-mid">'+mid+'</div>'
+      +'<div class="jg-team jg-away"><div class="jg-crest">'+crestHTML(j.vis)+'</div><div class="jg-code">'+j.vis+'</div></div>'
+    +'</div>';
+  }).join('');
+}
+
+// ═══ RENDER: DASHBOARD ═══
+function renderDashboard(){
+  var teams=appData.teams.slice().sort(function(a,b){return b.pts-a.pts||b.sp-a.sp;});
+  var games=appData.games.filter(function(j){return isTeamName(j.casa)&&isTeamName(j.vis);});
+  var realizados=games.filter(function(j){return j.jogado;});
+
+  document.getElementById('dTotalJogos').textContent=games.length;
+  document.getElementById('dRealizados').textContent=realizados.length;
+  document.getElementById('dTotalTimes').textContent=teams.length;
+  document.getElementById('dLider').textContent=teams.length?teams[0].nome:'—';
+
+  var maxPts=Math.max.apply(null,teams.map(function(t){return t.pts;}).concat([1]));
+  var bars=document.getElementById('dBars');
+  if(!teams.length){
+    bars.innerHTML='<div style="text-align:center;color:var(--muted);">Aguardando dados...</div>';
+  }else{
+    bars.innerHTML=teams.map(function(t,i){
+      var pct=Math.max(4,Math.round(t.pts/maxPts*100));
+      return '<div class="d-bar-row">'
+        +'<div class="d-bar-label">'+t.nome+'</div>'
+        +'<div class="d-bar-track"><div class="d-bar-fill'+(i===0&&t.pts>0?' lead':'')+'" style="width:'+pct+'%"></div></div>'
+        +'<div class="d-bar-val">'+t.pts+'</div>'
+      +'</div>';
+    }).join('');
+  }
+
+  var pend=games.length-realizados.length;
+  var total=games.length||1;
+  var pctReal=Math.round(realizados.length/total*100);
+  var circ=2*Math.PI*48;
+  var dash=(pctReal/100*circ).toFixed(1);
+  var svg='<svg viewBox="0 0 120 120" width="150" height="150">'
+    +'<circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="16"/>'
+    +'<circle cx="60" cy="60" r="48" fill="none" stroke="url(#gradD)" stroke-width="16" stroke-linecap="round" '
+      +'stroke-dasharray="'+dash+' '+circ.toFixed(1)+'" transform="rotate(-90 60 60)" style="filter:drop-shadow(0 0 8px rgba(244,197,66,.5));transition:stroke-dasharray 1s ease;"/>'
+    +'<defs><linearGradient id="gradD" x1="0" y1="0" x2="1" y2="1">'
+      +'<stop offset="0%" stop-color="#F4C542"/><stop offset="100%" stop-color="#C8960C"/>'
+    +'</linearGradient></defs>'
+    +'<text x="60" y="55" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">'+pctReal+'%</text>'
+    +'<text x="60" y="72" text-anchor="middle" font-size="9" fill="rgba(238,244,255,.6)">realizados</text>'
+  +'</svg>';
+  var legend='<div class="d-donut-legend">'
+    +'<div class="dl-item"><div class="dl-dot" style="background:var(--gold2);"></div>Realizados <span class="dl-val">'+realizados.length+'</span></div>'
+    +'<div class="dl-item"><div class="dl-dot" style="background:rgba(255,255,255,.15);"></div>Pendentes <span class="dl-val">'+pend+'</span></div>'
+  +'</div>';
+  document.getElementById('dDonutWrap').innerHTML=svg+legend;
+}
+
+function renderAll(){renderCapa();renderEquipes();renderJogos();renderDashboard();}
+
+// ═══ INIT ═══
+setTimeout(function(){buildScenes();showScene(0);startTimer();loadData();},600);
+</script>
+</body>
+</html>
