@@ -172,7 +172,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 .rn2{background:linear-gradient(150deg,#f2f2f2,#b7bcc4 45%,#6d7278);color:#1a0800;box-shadow:0 0 12px rgba(200,210,220,.35),inset 0 1px 1px rgba(255,255,255,.6);}
 .rn3{background:linear-gradient(150deg,#e3a56e,#b06a30 45%,#6e3c14);color:#2b1400;box-shadow:0 0 10px rgba(200,120,50,.3),inset 0 1px 1px rgba(255,255,255,.4);}
 .rnx{background:rgba(255,255,255,.04);border:1.5px solid var(--border);color:var(--muted);box-shadow:none;}
-.cn{font-family:var(--f-display);font-size:19px;font-weight:400;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:8px;}
+.cn{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:19px;font-weight:400;letter-spacing:.5px;padding-left:8px;min-width:0;}
+.cn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.crest{width:32px;height:32px;object-fit:contain;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,.08);padding:2px;filter:drop-shadow(0 2px 5px rgba(0,0,0,.45));}
 .cv{font-size:17px;text-align:center;color:var(--muted);font-weight:600;}
 .cp{font-family:var(--f-display);font-size:22px;font-weight:400;text-align:center;color:var(--acc2);text-shadow:0 0 10px rgba(255,215,0,.3);}
 
@@ -185,8 +187,10 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 }
 .jrow.done{border-color:rgba(255,140,0,.45);box-shadow:0 0 18px -8px rgba(255,107,0,.4);}
 .jmain{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:15px 18px;min-width:0;}
-.jt{font-family:var(--f-display);font-size:17px;font-weight:400;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;}
-.jt.r{text-align:left;}
+.jt{display:flex;align-items:center;gap:9px;justify-content:flex-end;font-family:var(--f-display);font-size:17px;font-weight:400;letter-spacing:.3px;min-width:0;}
+.jt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.jt.r{justify-content:flex-start;}
+.jt .crest{width:34px;height:34px;}
 .jt.w{color:var(--acc2);text-shadow:0 0 8px rgba(255,215,0,.4);}
 .jsc{
   font-family:var(--f-display);font-size:21px;font-weight:400;min-width:82px;text-align:center;
@@ -218,7 +222,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 .bkteam{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 3px;font-family:var(--f-display);font-size:16px;font-weight:400;}
 .bkteam+.bkteam{border-top:1px solid var(--border);}
 .bkteam.w{color:var(--acc2);text-shadow:0 0 8px rgba(255,215,0,.35);}
-.bkteam span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bkt-name{display:flex;align-items:center;gap:8px;flex:1;min-width:0;overflow:hidden;}
+.bkt-name span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bkt-name .crest{width:26px;height:26px;}
 .bks{font-family:var(--f-display);font-size:19px;font-weight:400;flex-shrink:0;min-width:20px;text-align:right;font-variant-numeric:tabular-nums;}
 .bkjoin{position:relative;height:26px;margin:0 18%;}
 .bkjoin::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border);}
@@ -231,9 +237,11 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 .finaltrophy{font-size:36px;margin-bottom:4px;filter:drop-shadow(0 0 12px rgba(255,180,0,.6));}
 .finallbl{font-family:var(--f-display);font-size:15px;font-weight:400;letter-spacing:4px;color:var(--acc2);text-align:center;margin-bottom:12px;text-transform:uppercase;text-shadow:0 0 10px rgba(255,215,0,.3);}
 .finalrow{display:flex;align-items:center;gap:8px;}
-.ft2{flex:1;font-family:var(--f-display);font-size:16px;font-weight:400;padding:8px 10px;border-radius:9px;border:1px solid rgba(255,107,0,.18);background:rgba(255,255,255,.045);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ft2{flex:1;display:flex;align-items:center;gap:8px;justify-content:flex-start;font-family:var(--f-display);font-size:16px;font-weight:400;padding:8px 10px;border-radius:9px;border:1px solid rgba(255,107,0,.18);background:rgba(255,255,255,.045);min-width:0;}
+.ft2 span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ft2 .crest{width:24px;height:24px;}
 .ft2.w{background:linear-gradient(135deg,rgba(255,215,0,.28),rgba(255,107,0,.15));border-color:rgba(255,200,0,.6);color:var(--acc2);text-shadow:0 0 8px rgba(255,215,0,.35);}
-.ft2.r{text-align:right;}
+.ft2.r{justify-content:flex-end;}
 .fsc{font-family:var(--f-display);font-size:20px;font-weight:400;flex-shrink:0;min-width:20px;text-align:center;font-variant-numeric:tabular-nums;}
 .fxs{font-size:13px;color:var(--muted);flex-shrink:0;}
 .finalcamp{text-align:center;font-family:var(--f-display);font-size:16px;font-weight:400;letter-spacing:1px;margin-top:12px;padding:7px 0;color:var(--acc2);text-shadow:0 0 10px rgba(255,215,0,.35);}
@@ -277,6 +285,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 }
 @keyframes badgePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 .camp-titulo{position:relative;z-index:1;font-family:var(--f-cond);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-top:4px;}
+.camp-crest-img{position:relative;z-index:1;width:74px;height:74px;border-radius:16px;background:rgba(255,255,255,.08);padding:6px;margin-top:6px;
+  border:1px solid rgba(255,215,0,.4);box-shadow:0 0 26px rgba(255,180,0,.35);filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));}
 .camp-nome{
   position:relative;z-index:1;font-family:var(--f-display);font-size:44px;font-weight:400;letter-spacing:1px;line-height:1.05;
   background:linear-gradient(90deg,var(--acc),var(--acc2),var(--acc));background-size:200%;
@@ -455,6 +465,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
         </div>
         <div class="camp-naipe-badge">🏀 Basquete</div>
         <div class="camp-titulo">Campeão Basquete 2026</div>
+        <div id="campCrest"></div>
         <div class="camp-nome" id="campNome">A definir</div>
         <div class="camp-sub">SUPERCOPA AFC · AFONSO CLÁUDIO/ES</div>
         <div class="camp-stars">⭐⭐⭐</div>
@@ -518,6 +529,27 @@ var SCENE_LABELS = {
 function au(range,sid){sid=sid||BASQ_SHEET_ID;return'https://sheets.googleapis.com/v4/spreadsheets/'+sid+'/values/'+encodeURIComponent(range)+'?key='+API_KEY;}
 function gc(rows,r,c){return(rows[r]&&rows[r][c])?rows[r][c].toString().trim():'';}
 function pad(v){return String(v).padStart(2,'0');}
+
+// ═══ ESCUDOS DOS TIMES ═══
+var TEAM_LOGOS={
+  'CROSSOVER':'assets/teams/crossover.png',
+  'CENTRALSERRANO':'assets/teams/cesb.png',
+  'CTDASMONTANHAS':'assets/teams/ctmontanhas.png',
+  'MARLINS':'assets/teams/marlins.png',
+  'SAOPEDRO':'assets/teams/saopedro.jpg',
+  'ARACRUZ':'assets/teams/aracruz.png'
+};
+function normTeam(s){
+  return(s||'').toString().toUpperCase()
+    .replace(/[ÁÀÂÃÄ]/g,'A').replace(/[ÉÈÊË]/g,'E').replace(/[ÍÌÎÏ]/g,'I')
+    .replace(/[ÓÒÔÕÖ]/g,'O').replace(/[ÚÙÛÜ]/g,'U').replace(/Ç/g,'C')
+    .replace(/[^A-Z0-9]/g,'');
+}
+function crestImg(nome,cls){
+  var logo=TEAM_LOGOS[normTeam(nome)];
+  if(!logo)return'';
+  return'<img class="'+(cls||'crest')+'" src="'+logo+'" alt="" onerror="this.style.display=\'none\'">';
+}
 
 // ═══ CLOCK ═══
 function tick(){
@@ -664,7 +696,7 @@ function renderClass(grupo,elId){
   cl.forEach(function(t,i){
     html+='<div class="crow '+rc[i]+'" style="animation-delay:'+(i*.05)+'s">'
       +'<div><div class="rn '+rk[i]+'">'+(i+1)+'</div></div>'
-      +'<div class="cn">'+t.nome+'</div>'
+      +'<div class="cn">'+crestImg(t.nome)+'<span>'+t.nome+'</span></div>'
       +'<div class="cv">'+t.j+'</div><div class="cv">'+t.v+'</div><div class="cv">'+t.d+'</div>'
       +'<div class="cp">'+t.pts+'</div>'
     +'</div>';
@@ -682,9 +714,9 @@ function renderJogos(){
     var hora=JOGO_HORARIOS[j.g+'-'+j.ri]||'--:--';
     html+='<div class="jrow '+(j.ok?'done':'')+'" style="animation-delay:'+(i*.05)+'s">'
       +'<div class="jmain">'
-        +'<span class="jt'+(vA?' w':'')+'">'+j.casa+'</span>'
+        +'<span class="jt'+(vA?' w':'')+'">'+crestImg(j.casa)+'<span>'+j.casa+'</span></span>'
         +'<span class="jsc'+(j.ok?'':' vs')+'">'+(j.ok?j.ga+' × '+j.gb:'VS')+'</span>'
-        +'<span class="jt r'+(vB?' w':'')+'">'+j.vis+'</span>'
+        +'<span class="jt r'+(vB?' w':'')+'"><span>'+j.vis+'</span>'+crestImg(j.vis)+'</span>'
       +'</div>'
       +'<div class="jribbon">'
         +'<div class="jgrp">GRUPO '+j.g+'</div>'
@@ -719,7 +751,7 @@ function renderMM(){
   var vfa=finOk&&fa>fb,vfb=finOk&&fb>fa;
 
   function team(name,sc,win){
-    return'<div class="bkteam'+(win?' w':'')+'"><span>'+(name||'A definir')+'</span><span class="bks">'+(sc!==null?sc:'–')+'</span></div>';
+    return'<div class="bkteam'+(win?' w':'')+'"><span class="bkt-name">'+(name?crestImg(name):'')+'<span>'+(name||'A definir')+'</span></span><span class="bks">'+(sc!==null?sc:'–')+'</span></div>';
   }
   function match(phase,t1,s1,w1,t2,s2,w2,d){
     return'<div class="bkmatch" style="animation-delay:'+d+'s">'
@@ -737,11 +769,11 @@ function renderMM(){
       +'<div class="finaltrophy">🏆</div>'
       +'<div class="finallbl">Grande Final</div>'
       +'<div class="finalrow">'
-        +'<div class="ft2'+(vfa?' w':'')+'">'+(finT1||'Venc. SF1')+'</div>'
+        +'<div class="ft2'+(vfa?' w':'')+'">'+(finT1?crestImg(finT1):'')+'<span>'+(finT1||'Venc. SF1')+'</span></div>'
         +'<div class="fsc">'+(finT1&&fa!==null?fa:'–')+'</div>'
         +'<div class="fxs">×</div>'
         +'<div class="fsc">'+(finT2&&fb!==null?fb:'–')+'</div>'
-        +'<div class="ft2 r'+(vfb?' w':'')+'">'+(finT2||'Venc. SF2')+'</div>'
+        +'<div class="ft2 r'+(vfb?' w':'')+'"><span>'+(finT2||'Venc. SF2')+'</span>'+(finT2?crestImg(finT2):'')+'</div>'
       +'</div>'
       +(finOk?'<div class="finalcamp">🥇 '+(fa>fb?finT1:finT2)+'</div>':'')
     +'</div>'
@@ -767,6 +799,8 @@ function ativarCampeao(){
   if(cm&&cm!==campAtual){
     campAtual=cm;
     document.getElementById('campNome').textContent=cm;
+    var cc=document.getElementById('campCrest');
+    if(cc)cc.innerHTML=crestImg(cm,'crest camp-crest-img');
     // NÃO adiciona automaticamente — só mostra se selecionado no painel TV Config
   }
 }
