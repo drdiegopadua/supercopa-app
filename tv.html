@@ -149,9 +149,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Segoe U
   animation:rowSlide .35s ease both;
 }
 .jrow.done{border-color:rgba(255,107,0,.35);}
-.jmain{flex:1;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 16px;min-width:0;}
-.jt{flex:0 1 auto;max-width:36%;font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.jt.r{text-align:right;}
+.jmain{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:14px 16px;min-width:0;}
+.jt{font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;}
+.jt.r{text-align:left;}
 .jt.w{color:var(--acc);}
 .jsc{
   font-size:20px;font-weight:900;min-width:76px;text-align:center;
@@ -629,13 +629,27 @@ function renderJogos(){
 }
 
 // ═══ MATA-MATA ═══
+function _mmPg(v){if(v===undefined||v==='')return null;var n=parseInt(v);return isNaN(n)?null:n;}
+function _mmDecidido(a,b){return a!==null&&b!==null&&a!==b;}
 function renderMM(){
   var mm=appData.mm;
   var sf1=mm[0]||{},sf2=mm[1]||{},fin=mm[2]||{};
-  function pg(v){return(v!==undefined&&v!=='')?parseInt(v)||0:null;}
-  var s1a=pg(sf1.g1),s1b=pg(sf1.g2);var v1a=s1a!==null&&s1b!==null&&s1a>s1b,v1b=s1b!==null&&s1a!==null&&s1b>s1a;
-  var s2a=pg(sf2.g1),s2b=pg(sf2.g2);var v2a=s2a!==null&&s2b!==null&&s2a>s2b,v2b=s2b!==null&&s2a!==null&&s2b>s2a;
-  var fa=pg(fin.g1),fb=pg(fin.g2);var vfa=fa!==null&&fb!==null&&fa>fb,vfb=fa!==null&&fb!==null&&fb>fa;
+  var s1a=_mmPg(sf1.g1),s1b=_mmPg(sf1.g2);
+  var sf1Ok=_mmDecidido(s1a,s1b);
+  var v1a=sf1Ok&&s1a>s1b,v1b=sf1Ok&&s1b>s1a;
+  var vencSf1=sf1Ok?(s1a>s1b?sf1.t1:sf1.t2):null;
+
+  var s2a=_mmPg(sf2.g1),s2b=_mmPg(sf2.g2);
+  var sf2Ok=_mmDecidido(s2a,s2b);
+  var v2a=sf2Ok&&s2a>s2b,v2b=sf2Ok&&s2b>s2a;
+  var vencSf2=sf2Ok?(s2a>s2b?sf2.t1:sf2.t2):null;
+
+  // Times da final só aparecem depois que a semifinal correspondente for decidida —
+  // não confia no nome já digitado na planilha (pode ser projeção prematura).
+  var finT1=vencSf1,finT2=vencSf2;
+  var fa=_mmPg(fin.g1),fb=_mmPg(fin.g2);
+  var finOk=finT1&&finT2&&_mmDecidido(fa,fb);
+  var vfa=finOk&&fa>fb,vfb=finOk&&fb>fa;
 
   function team(name,sc,win){
     return'<div class="bkteam'+(win?' w':'')+'"><span>'+(name||'A definir')+'</span><span class="bks">'+(sc!==null?sc:'–')+'</span></div>';
@@ -656,13 +670,13 @@ function renderMM(){
       +'<div class="finaltrophy">🏆</div>'
       +'<div class="finallbl">Grande Final</div>'
       +'<div class="finalrow">'
-        +'<div class="ft2'+(vfa?' w':'')+'">'+(fin.t1||'Venc. SF1')+'</div>'
-        +'<div class="fsc">'+(fa!==null?fa:'–')+'</div>'
+        +'<div class="ft2'+(vfa?' w':'')+'">'+(finT1||'Venc. SF1')+'</div>'
+        +'<div class="fsc">'+(finT1&&fa!==null?fa:'–')+'</div>'
         +'<div class="fxs">×</div>'
-        +'<div class="fsc">'+(fb!==null?fb:'–')+'</div>'
-        +'<div class="ft2 r'+(vfb?' w':'')+'">'+(fin.t2||'Venc. SF2')+'</div>'
+        +'<div class="fsc">'+(finT2&&fb!==null?fb:'–')+'</div>'
+        +'<div class="ft2 r'+(vfb?' w':'')+'">'+(finT2||'Venc. SF2')+'</div>'
       +'</div>'
-      +(fa!==null&&fb!==null?'<div class="finalcamp">🥇 '+(fa>fb?fin.t1:fin.t2)+'</div>':'')
+      +(finOk?'<div class="finalcamp">🥇 '+(fa>fb?finT1:finT2)+'</div>':'')
     +'</div>'
   +'</div>';
   document.getElementById('mm-basq').innerHTML=html;
@@ -671,11 +685,15 @@ function renderMM(){
 // ═══ CAMPEÃO ═══
 var campAtual='';
 function checkCampeao(){
-  var fin=appData.mm[2]||{};
-  function pg(v){return(v!==undefined&&v!=='')?parseInt(v)||0:null;}
-  var fa=pg(fin.g1),fb=pg(fin.g2);
-  if(fa===null||fb===null)return'';
-  return fa>fb?fin.t1:fin.t2;
+  var sf1=appData.mm[0]||{},sf2=appData.mm[1]||{},fin=appData.mm[2]||{};
+  var s1a=_mmPg(sf1.g1),s1b=_mmPg(sf1.g2);
+  var vencSf1=_mmDecidido(s1a,s1b)?(s1a>s1b?sf1.t1:sf1.t2):null;
+  var s2a=_mmPg(sf2.g1),s2b=_mmPg(sf2.g2);
+  var vencSf2=_mmDecidido(s2a,s2b)?(s2a>s2b?sf2.t1:sf2.t2):null;
+  if(!vencSf1||!vencSf2)return'';
+  var fa=_mmPg(fin.g1),fb=_mmPg(fin.g2);
+  if(!_mmDecidido(fa,fb))return'';
+  return fa>fb?vencSf1:vencSf2;
 }
 function ativarCampeao(){
   var cm=checkCampeao();
