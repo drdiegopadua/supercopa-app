@@ -709,11 +709,44 @@ function galeraSubTab(tab,btn){
   const inactiveStyle='flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B';
   document.getElementById('galeraBtnVotar').style.cssText=inactiveStyle;
   document.getElementById('galeraBtnRanking').style.cssText=inactiveStyle;
+  document.getElementById('galeraBtnPremiacao').style.cssText=inactiveStyle;
   if(btn)btn.style.cssText=activeStyle;
-  const isVotar=tab==='votar';
-  document.getElementById('galeraPanelVotar').style.display=isVotar?'block':'none';
-  document.getElementById('galeraPanelRanking').style.display=isVotar?'none':'block';
-  if(!isVotar)loadGaleraRanking();
+  document.getElementById('galeraPanelVotar').style.display=tab==='votar'?'block':'none';
+  document.getElementById('galeraPanelRanking').style.display=tab==='ranking'?'block':'none';
+  document.getElementById('galeraPanelPremiacao').style.display=tab==='premiacao'?'block':'none';
+  if(tab==='ranking')loadGaleraRanking();
+  if(tab==='premiacao')loadPremiacaoPublic();
+}
+
+const PREMIACAO_CATEGORIAS_PUBLIC=[
+  {key:'MVP',label:'🏆 MVP do Campeonato'},
+  {key:'Melhor Ala',label:'🎯 Melhor Ala'},
+  {key:'Melhor Armador',label:'🧠 Melhor Armador'},
+  {key:'Melhor Pivô',label:'💪 Melhor Pivô'}
+];
+async function loadPremiacaoPublic(){
+  const el=document.getElementById('premiacaoPublicList');
+  try{
+    const url=`https://sheets.googleapis.com/v4/spreadsheets/${ATLETA_SHEET_ID}/values/${encodeURIComponent("'Premiacao'!A2:D10")}?key=${APP_API_KEY}`;
+    const res=await fetch(url);
+    const json=await res.json();
+    const rows=json.values||[];
+    const porCategoria={};
+    rows.forEach(r=>{
+      const cat=(r[0]||'').trim();
+      if(cat)porCategoria[cat]={nome:(r[1]||'').trim(),equipe:(r[2]||'').trim()};
+    });
+    el.innerHTML=PREMIACAO_CATEGORIAS_PUBLIC.map(cat=>{
+      const a=porCategoria[cat.key];
+      return `<div style="background:#fff;border:1px solid #eef0f6;border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+        <div style="font-size:12px;font-weight:800;color:#7C3AED;margin-bottom:4px">${cat.label}</div>
+        ${a&&a.nome?`<div style="font-size:16px;font-weight:900;color:#111">${a.nome}</div><div style="font-size:12px;color:#64748b;margin-top:2px">${a.equipe||''}</div>`
+          :'<div style="font-size:13px;color:#94a3b8">A definir</div>'}
+      </div>`;
+    }).join('');
+  }catch(e){
+    el.innerHTML='<div style="text-align:center;padding:20px;color:#ef4444;font-size:12px">Erro ao carregar.</div>';
+  }
 }
 
 function initGaleraVoting(){
@@ -981,6 +1014,7 @@ async function fetchLinhaTempo(){
   <div style="display:flex;gap:5px;background:#f0f2f8;border-radius:12px;padding:3px;margin-bottom:12px">
     <button id="galeraBtnVotar" onclick="galeraSubTab('votar',this)" style="flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)">🗳️ Votar</button>
     <button id="galeraBtnRanking" onclick="galeraSubTab('ranking',this)" style="flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B">🏆 Top 10</button>
+    <button id="galeraBtnPremiacao" onclick="galeraSubTab('premiacao',this)" style="flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B">🥇 Melhores</button>
   </div>
   <div id="galeraDeadlineBadge" style="text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(124,58,237,.1);color:#7C3AED;border-radius:20px;margin-bottom:12px"></div>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;justify-content:center">
@@ -1017,6 +1051,13 @@ async function fetchLinhaTempo(){
       <button onclick="loadGaleraRanking()" style="font-size:11px;color:#7C3AED;background:0 0;border:none;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:8px;border:1px solid rgba(124,58,237,.3)">↻ Atualizar</button>
     </div>
     <div id="galeraRankingList"><div style="text-align:center;padding:30px;color:#94a3b8;font-size:12px">Carregando...</div></div>
+  </div>
+  <div id="galeraPanelPremiacao" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:14px;font-weight:900;color:#111">🏆 Melhores do Campeonato — Basquete</div>
+      <button onclick="loadPremiacaoPublic()" style="font-size:11px;color:#7C3AED;background:0 0;border:none;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:8px;border:1px solid rgba(124,58,237,.3)">↻ Atualizar</button>
+    </div>
+    <div id="premiacaoPublicList"><div style="text-align:center;padding:30px;color:#94a3b8;font-size:12px">Carregando...</div></div>
   </div>
 </div>
 <!-- Modal identidade -->
