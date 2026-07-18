@@ -423,7 +423,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Segoe U
 
 // ═══ CONFIG ═══
 var BASQ_SHEET_ID = '1S3rUVU18W64c4okkxGOYnSLtW-aSyo47l3tos7u-8j0';
-var VOTE_SHEET   = '1jGuJHUHyY3p-PQHm7HmNjcYry_xPheuOT2RmVFHh_Go';
+var VOTE_SHEET   = '1VS2RWX50aGYquB_AE-X9HQCcTvHsOEJwPcFAJjvD99c';
 var API_KEY      = 'AIzaSyBzIsc4TKy_he2P8PcOgOzs8Eor3EVHBzw';
 var QUIZ_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxfiPItqNbKhXQP7fxCaOiUcmDGNvXQzRzkwisdC6rzoHIEkQftu6IK4NXGefbmYQ2H/exec';
 var REFRESH      = 30;
@@ -563,7 +563,7 @@ function loadAll(){
   Promise.all([
     fetch(au("'Fase de Grupos'!A5:S7")).then(function(r){return r.json();}),
     fetch(au("'Mata-Mata'!A4:M17")).then(function(r){return r.json();}),
-    fetch(au("Página1!A2:F",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
+    fetch(au("Basquete!A2:C",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
     fetch(QUIZ_SHEETS_URL+'?action=ranking_quiz').then(function(r){return r.json();}).catch(function(){return{ranking:[]};})
   ]).then(function(res){
     appData.j  = parseJogos(res[0].values||[]);
@@ -687,11 +687,11 @@ function ativarCampeao(){
 }
 
 // ═══ GALERA ═══
-// Sheet cols: A(0)=timestamp, B(1)=nome_votante, C(2)=telefone, D(3)=modalidade, E(4)=time, F(5)=atleta
+// Sheet cols: A(0)=data-hora, B(1)=atleta, C(2)=time
 function renderGalera(rows){
   var counts={};
   rows.forEach(function(r){
-    var at=(r[5]||'').trim(),tm=(r[4]||'').trim(),na=(r[3]||'').trim();
+    var at=(r[1]||'').trim(),tm=(r[2]||'').trim(),na='';
     if(!at)return;
     var k=at+'||'+tm;
     if(!counts[k])counts[k]={at:at,tm:tm,na:na,v:0};
