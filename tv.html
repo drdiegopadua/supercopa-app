@@ -367,12 +367,16 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 /* ═══ PÔSTER MVP / MELHORES DO CAMPEONATO ═══ */
 .award-scene{
   position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  overflow:hidden;border-radius:22px;
-  background:radial-gradient(ellipse 95% 65% at 50% 8%,rgba(255,120,20,.28) 0%,transparent 55%),
-             linear-gradient(180deg,#200400 0%,#4a0d05 38%,#170300 78%,#0a0200 100%);
+  overflow:hidden;border-radius:22px;background:#0a0200;
   border:1px solid rgba(255,120,30,.3);
   box-shadow:0 24px 60px -20px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
 }
+.award-scene-bg{position:absolute;inset:-2%;z-index:0;
+  background-image:url('assets/tv/bola-macro.png');background-size:cover;background-position:center 40%;background-repeat:no-repeat;
+  filter:saturate(1.15) contrast(1.1) brightness(.8);transform:scale(1.05);}
+.award-scene-tint{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 95% 65% at 50% 8%,rgba(255,120,20,.3) 0%,transparent 55%),
+             linear-gradient(180deg,rgba(32,4,0,.55) 0%,rgba(74,13,5,.42) 38%,rgba(23,3,0,.55) 78%,rgba(10,2,0,.88) 100%);}
 .award-badge{
   position:absolute;top:20px;right:24px;z-index:6;font-family:var(--f-cond);font-weight:800;font-size:13px;letter-spacing:2.5px;
   padding:9px 18px;border-radius:10px;text-transform:uppercase;color:#2b1400;
@@ -380,9 +384,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
   animation:badgePulse 2.4s ease-in-out infinite;
 }
 .award-word{
-  position:absolute;top:4%;left:50%;transform:translateX(-50%);z-index:1;width:100%;text-align:center;
-  font-family:var(--f-display);font-weight:400;color:rgba(255,246,236,.92);letter-spacing:2px;line-height:.9;
-  text-shadow:0 0 70px rgba(255,130,20,.55),0 0 16px rgba(255,200,90,.3);white-space:nowrap;
+  position:absolute;top:2%;left:50%;transform:translateX(-50%);z-index:1;width:100%;text-align:center;
+  font-family:var(--f-display);font-weight:400;color:rgba(255,246,236,.95);letter-spacing:2px;line-height:.9;
+  text-shadow:0 0 70px rgba(255,130,20,.6),0 0 16px rgba(255,200,90,.4),0 3px 0 rgba(0,0,0,.5);white-space:nowrap;
 }
 .award-clouds{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
 .cloud{position:absolute;bottom:-14%;border-radius:50%;opacity:.8;animation:cloudDrift 6s ease-in-out infinite alternate;}
@@ -391,8 +395,10 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 .cloud.c3{right:-8%;width:56%;height:56%;background:radial-gradient(circle,rgba(255,110,20,.8) 0%,rgba(140,20,10,.4) 55%,transparent 75%);animation-delay:.5s;}
 .cloud.c4{right:18%;width:36%;height:36%;background:radial-gradient(circle,rgba(255,245,220,.6) 0%,transparent 72%);animation-delay:1.8s;}
 @keyframes cloudDrift{0%{transform:translateY(0) scale(1);opacity:.6;}100%{transform:translateY(-5%) scale(1.1);opacity:.92;}}
-.award-player{position:relative;z-index:3;max-height:80%;max-width:78%;width:auto;object-fit:contain;margin-top:auto;
-  filter:drop-shadow(0 22px 40px rgba(0,0,0,.65));}
+.award-player{position:relative;z-index:3;max-height:62%;max-width:70%;width:auto;object-fit:contain;margin-top:auto;
+  filter:drop-shadow(0 22px 40px rgba(0,0,0,.65));
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);}
 .award-footer{position:relative;z-index:5;text-align:center;padding:16px 12px 24px;width:100%;
   background:linear-gradient(0deg,rgba(6,1,0,.88) 25%,transparent 100%);}
 .award-cat{font-family:var(--f-cond);font-size:14px;font-weight:800;letter-spacing:5px;text-transform:uppercase;color:var(--acc2);
@@ -584,6 +590,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
     <!-- 8: MVP do Campeonato -->
     <div class="scene" id="s-mvp">
       <div class="award-scene">
+        <div class="award-scene-bg"></div>
+        <div class="award-scene-tint"></div>
         <div class="award-badge">🏀 Supercopa</div>
         <div class="award-clouds"><span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span><span class="cloud c4"></span></div>
         <div class="award-word" style="font-size:190px">MVP</div>
@@ -599,6 +607,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
     <!-- 9: Melhor Ala -->
     <div class="scene" id="s-ala">
       <div class="award-scene">
+        <div class="award-scene-bg"></div>
+        <div class="award-scene-tint"></div>
         <div class="award-badge">🏀 Supercopa</div>
         <div class="award-clouds"><span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span><span class="cloud c4"></span></div>
         <div class="award-word" style="font-size:170px">ALA</div>
@@ -614,6 +624,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
     <!-- 10: Melhor Armador -->
     <div class="scene" id="s-armador">
       <div class="award-scene">
+        <div class="award-scene-bg"></div>
+        <div class="award-scene-tint"></div>
         <div class="award-badge">🏀 Supercopa</div>
         <div class="award-clouds"><span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span><span class="cloud c4"></span></div>
         <div class="award-word" style="font-size:98px">ARMADOR</div>
@@ -629,6 +641,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
     <!-- 11: Melhor Pivô -->
     <div class="scene" id="s-pivo">
       <div class="award-scene">
+        <div class="award-scene-bg"></div>
+        <div class="award-scene-tint"></div>
         <div class="award-badge">🏀 Supercopa</div>
         <div class="award-clouds"><span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span><span class="cloud c4"></span></div>
         <div class="award-word" style="font-size:150px">PIVÔ</div>
