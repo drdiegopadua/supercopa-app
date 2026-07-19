@@ -859,15 +859,36 @@ function loadAll(){
     fetch(au("'Mata-Mata'!A4:M17")).then(function(r){return r.json();}),
     fetch(au("Basquete!A2:C",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
     fetch(QUIZ_SHEETS_URL+'?action=ranking_quiz').then(function(r){return r.json();}).catch(function(){return{ranking:[]};}),
-    fetch(au("'Premiacao'!A2:D10",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
+    fetch(au("'Premiacao'!A2:D10",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
+    fetch(au("'ConfigTV'!A2:B2",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
   ]).then(function(res){
     appData.j  = parseJogos(res[0].values||[]);
     appData.mm = parseMM(res[1].values||[]);
     renderAll(res[2].values||[]);
     renderQuizRanking(res[3].ranking||[]);
     renderPremiacao(res[4].values||[]);
+    applyRemoteScenes(res[5].values||[]);
     document.getElementById('loading').classList.add('hidden');
   }).catch(function(e){console.warn(e);document.getElementById('loading').classList.add('hidden');});
+}
+
+// ═══ CONFIG REMOTA DE CENAS (painel admin → aba ConfigTV) ═══
+// Permite trocar as telas exibidas sem mexer no link da TV: o painel
+// grava os códigos na planilha e a TV aplica no próximo refresh (30s).
+var _remoteCodes=null;
+function applyRemoteScenes(rows){
+  try{
+    var codes=(rows&&rows[0]&&rows[0][0]?rows[0][0]:'').toString().trim();
+    if(!codes||codes===_remoteCodes)return;
+    _remoteCodes=codes;
+    var req=codes.split('').map(function(c){return CODE_SCENES[c];}).filter(Boolean);
+    var list=req.filter(function(s){return ALL_SCENES.includes(s);});
+    if(!list.length)return;
+    list=list.filter(function(s){return s!=='s-home';});
+    list.unshift('s-home');
+    if(JSON.stringify(list)===JSON.stringify(scenes))return;
+    scenes=list;buildDots();showScene(0);startTimer();
+  }catch(e){}
 }
 
 // ═══ MELHORES DO CAMPEONATO (MVP / Ala / Armador / Pivô) ═══
