@@ -408,6 +408,27 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
   display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;}
 .award-team .crest{width:22px;height:22px;border-radius:5px;}
 
+/* ═══ ATLETAS DESTAQUES ═══ */
+.dst-row{
+  display:flex;align-items:center;gap:18px;padding:16px 22px;border-radius:16px;
+  background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,255,255,.02));
+  border:1px solid rgba(255,215,0,.25);
+  animation:rowSlide .35s ease both;
+}
+.dst-badge{
+  flex-shrink:0;width:74px;height:74px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  background:linear-gradient(150deg,#ffe08a,var(--acc2) 45%,#b8790a);color:#2b1400;
+  box-shadow:0 0 16px rgba(255,215,0,.45),inset 0 1px 1px rgba(255,255,255,.6);
+}
+.dst-badge .dst-p{font-family:var(--f-cond);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+.dst-badge .dst-n{font-family:var(--f-display);font-size:30px;font-weight:400;line-height:1;}
+.dst-info{flex:1;min-width:0;}
+.dst-cat{font-family:var(--f-cond);font-size:14px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:4px;text-shadow:0 0 10px rgba(255,180,0,.4);}
+.dst-nome{font-family:var(--f-display);font-size:32px;font-weight:400;letter-spacing:.5px;color:#fff;text-transform:uppercase;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dst-time{display:flex;align-items:center;gap:10px;margin-top:6px;font-family:var(--f-cond);font-size:16px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.dst-time .crest{width:30px;height:30px;border-radius:7px;}
+.dst-star{flex-shrink:0;font-size:34px;filter:drop-shadow(0 0 10px rgba(255,215,0,.55));animation:pdot 2s ease-in-out infinite;}
+
 /* ═══ DOTS ═══ */
 .sdots{position:fixed;right:9px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:20;}
 .sdot{width:5px;height:5px;border-radius:3px;background:rgba(255,140,0,.3);transition:all .4s;}
@@ -568,6 +589,14 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
       </div>
     </div>
 
+    <!-- 6.5: Atletas Destaques -->
+    <div class="scene" id="s-destaques">
+      <div class="panel gp" style="flex:1">
+        <div class="ptitle gt"><div class="pdot"></div>🌟 ATLETAS DESTAQUES</div>
+        <div class="pbody" id="destaques-lista"></div>
+      </div>
+    </div>
+
     <!-- 7: Campeão -->
     <div class="scene" id="s-campeao">
       <canvas class="confetti-canvas" id="cvCamp"></canvas>
@@ -692,9 +721,9 @@ var REFRESH      = 30;
 var SCENE_DUR    = 20;
 var JOGO_HORARIOS = {'A-1':'13:00','B-1':'~14:10','A-2':'~15:30','B-2':'~16:45','A-3':'~18:00','B-3':'~19:10'};
 
-var ALL_SCENES   = ['s-class-a','s-class-b','s-jogos','s-matamata','s-galera','s-quiz','s-campeao','s-mvp','s-ala','s-armador','s-pivo'];
-var SCENE_CODES  = {'s-class-a':'a','s-class-b':'b','s-jogos':'j','s-matamata':'m','s-galera':'g','s-quiz':'q','s-campeao':'c','s-mvp':'v','s-ala':'l','s-armador':'r','s-pivo':'p'};
-var CODE_SCENES  = {'a':'s-class-a','b':'s-class-b','j':'s-jogos','m':'s-matamata','g':'s-galera','q':'s-quiz','c':'s-campeao','v':'s-mvp','l':'s-ala','r':'s-armador','p':'s-pivo'};
+var ALL_SCENES   = ['s-class-a','s-class-b','s-jogos','s-matamata','s-galera','s-quiz','s-destaques','s-campeao','s-mvp','s-ala','s-armador','s-pivo'];
+var SCENE_CODES  = {'s-class-a':'a','s-class-b':'b','s-jogos':'j','s-matamata':'m','s-galera':'g','s-quiz':'q','s-destaques':'d','s-campeao':'c','s-mvp':'v','s-ala':'l','s-armador':'r','s-pivo':'p'};
+var CODE_SCENES  = {'a':'s-class-a','b':'s-class-b','j':'s-jogos','m':'s-matamata','g':'s-galera','q':'s-quiz','d':'s-destaques','c':'s-campeao','v':'s-mvp','l':'s-ala','r':'s-armador','p':'s-pivo'};
 
 var appData      = {j:[],mm:[]};
 var countdown    = REFRESH, curScene=0, scenes=[];
@@ -708,6 +737,7 @@ var SCENE_LABELS = {
   's-matamata':'Mata-Mata',
   's-galera'  :'Destaque da Galera',
   's-quiz'    :'Ranking do Quiz',
+  's-destaques':'🌟 Atletas Destaques',
   's-campeao' :'🏆 Campeão Basquete',
   's-mvp'     :'🏆 MVP do Campeonato',
   's-ala'     :'🎯 Melhor Ala',
@@ -860,7 +890,8 @@ function loadAll(){
     fetch(au("Basquete!A2:C",VOTE_SHEET)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
     fetch(QUIZ_SHEETS_URL+'?action=ranking_quiz').then(function(r){return r.json();}).catch(function(){return{ranking:[]};}),
     fetch(au("'Premiacao'!A2:D10",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
-    fetch(au("'ConfigTV'!A2:B2",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
+    fetch(au("'ConfigTV'!A2:B2",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};}),
+    fetch(au("'Basquete'!A2:F",ATLETA_SHEET_ID)).then(function(r){return r.json();}).catch(function(){return{values:[]};})
   ]).then(function(res){
     appData.j  = parseJogos(res[0].values||[]);
     appData.mm = parseMM(res[1].values||[]);
@@ -868,6 +899,7 @@ function loadAll(){
     renderQuizRanking(res[3].ranking||[]);
     renderPremiacao(res[4].values||[]);
     applyRemoteScenes(res[5].values||[]);
+    renderDestaques(res[6].values||[]);
     document.getElementById('loading').classList.add('hidden');
   }).catch(function(e){console.warn(e);document.getElementById('loading').classList.add('hidden');});
 }
@@ -904,6 +936,33 @@ function renderPremiacao(rows){
     if(elNome)elNome.textContent=nome||'A definir';
     if(elTime)elTime.innerHTML=equipe?(crestImg(equipe)+'<span>'+equipe+'</span>'):'';
   });
+}
+
+// ═══ ATLETAS DESTAQUES (aba "Basquete" da planilha ATLETA DESTAQUE) ═══
+// Cols: A(0)=Modalidade, B(1)=Jogo, C(2)=Nome, D(3)=Equipe, E(4)=Observação, F(5)=Data/Hora
+function renderDestaques(rows){
+  var el=document.getElementById('destaques-lista');
+  if(!el)return;
+  var itens=(rows||[]).filter(function(r){
+    var mod=normTeam(r[0]||'');
+    return(r[2]||'').trim()&&(!mod||mod.indexOf('BASQ')>-1);
+  });
+  if(!itens.length){el.innerHTML='<div style="color:var(--muted);text-align:center;padding:20px;font-size:12px">⏳ Aguardando destaques das partidas...</div>';return;}
+  var html='';
+  itens.forEach(function(r,i){
+    var jogo=(r[1]||'').toString().replace(/^\s*(partida|jogo)\s*/i,'').trim()||String(i+1);
+    var nome=(r[2]||'').trim(),equipe=(r[3]||'').trim();
+    html+='<div class="dst-row" style="animation-delay:'+(i*.07)+'s">'
+      +'<div class="dst-badge"><div class="dst-p">Partida</div><div class="dst-n">'+jogo+'</div></div>'
+      +'<div class="dst-info">'
+        +'<div class="dst-cat">Atleta destaque da partida '+jogo+'</div>'
+        +'<div class="dst-nome">'+nome+'</div>'
+        +(equipe?'<div class="dst-time">'+crestImg(equipe)+'<span>'+equipe+'</span></div>':'')
+      +'</div>'
+      +'<div class="dst-star">🌟</div>'
+    +'</div>';
+  });
+  el.innerHTML=html;
 }
 
 // ═══ CLASSIFICAÇÃO ═══
