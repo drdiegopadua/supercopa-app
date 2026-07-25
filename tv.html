@@ -476,6 +476,12 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
 /* ═══ LOADING ═══ */
 .loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .6s;}
 .loading-overlay.hidden{opacity:0;pointer-events:none;}
+.sound-btn{position:fixed;bottom:110px;right:18px;z-index:210;display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#1a0800;border:none;border-radius:999px;
+  padding:12px 20px;font-family:var(--f-cond);font-weight:800;font-size:14px;letter-spacing:.5px;
+  box-shadow:0 8px 24px rgba(255,140,0,.5);cursor:pointer;animation:soundPulse 1.6s ease-in-out infinite;}
+.sound-btn.hidden{display:none;}
+@keyframes soundPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
 .spinner{width:36px;height:36px;border:3px solid rgba(255,107,0,.2);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
@@ -497,6 +503,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
   <div class="spinner"></div>
   <div style="font-size:11px;color:var(--muted);letter-spacing:2px">CARREGANDO...</div>
 </div>
+
+<audio id="tvMusic" src="assets/tv/tv-music.mp3" loop preload="auto"></audio>
+<button class="sound-btn" id="soundBtn" onclick="ativarSomTV()">🔊 Ativar Som</button>
 
 <div class="tv-wrap">
 
@@ -771,6 +780,25 @@ function crestImg(nome,cls){
   if(!logo)return'';
   return'<img class="'+(cls||'crest')+'" src="'+logo+'" alt="" onerror="this.style.display=\'none\'">';
 }
+
+// ═══ MÚSICA DE FUNDO ═══
+function ativarSomTV(){
+  var audio=document.getElementById('tvMusic');
+  var btn=document.getElementById('soundBtn');
+  if(!audio)return;
+  audio.volume=0.35;
+  audio.play().then(function(){
+    if(btn)btn.classList.add('hidden');
+    localStorage.setItem('tv_som_ativado','1');
+  }).catch(function(){
+    if(btn)btn.classList.remove('hidden');
+  });
+}
+// Tenta tocar sozinho assim que a pagina carrega. Se o navegador bloquear
+// autoplay com som, o botao "Ativar Som" continua visivel como alternativa.
+window.addEventListener('load',function(){
+  ativarSomTV();
+});
 
 // ═══ CLOCK ═══
 function tick(){
