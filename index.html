@@ -806,6 +806,7 @@ const ATLETAS_GALERA=[
   {nome:'Sanley Borges',numero:'35',time:'São Pedro Basquete',modalidade:'basquete'},
   {nome:'Iago Dondoni',numero:'10',time:'São Pedro Basquete',modalidade:'basquete'},
 ];
+const GALERA_ABERTURA={basquete:new Date('2026-07-25T16:00:00Z'),volei:null};
 const GALERA_DEADLINE={basquete:new Date('2026-07-26T14:00:00Z'),volei:new Date('2026-11-29T15:00:00Z')};
 const GALERA_URL='https://script.google.com/macros/s/AKfycbxFjUc_Z7wdPEWMQ_WzbQGNiHBVu0yJsxb8AwZC3-eZm_dHT_yk-hhmdToxXUeiTtxV/exec';
 
@@ -823,11 +824,16 @@ function galeraSubTab(tab,btn){
 
 function initGaleraVoting(){
   const modalidade='basquete';
+  const abertura=GALERA_ABERTURA[modalidade];
   const deadline=GALERA_DEADLINE[modalidade];
-  const encerrado=new Date()>=deadline;
+  const aindaNaoAbriu=abertura&&new Date()<abertura;
+  const encerrado=!aindaNaoAbriu&&new Date()>=deadline;
   const badge=document.getElementById('galeraDeadlineBadge');
   if(badge){
-    if(encerrado){
+    if(aindaNaoAbriu){
+      badge.textContent='⏳ Votação abre em 25/07 às 13h';
+      badge.style.cssText='text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(124,58,237,.1);color:#7C3AED;border-radius:20px;margin-bottom:12px';
+    } else if(encerrado){
       badge.textContent='⛔ Votação encerrada em 26/07 às 11h';
       badge.style.cssText='text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(220,38,38,.1);color:#dc2626;border-radius:20px;margin-bottom:12px';
     } else {
@@ -856,18 +862,27 @@ function initGaleraVoting(){
   const votarArea=document.getElementById('galeraVotarArea');
   const esgotadoArea=document.getElementById('galeraEsgotadoArea');
   const encerradoArea=document.getElementById('galeraEncerradoArea');
-  if(encerrado){
+  const aindaNaoAbriuArea=document.getElementById('galeraAindaNaoAbriuArea');
+  if(aindaNaoAbriu){
     if(votarArea)votarArea.style.display='none';
     if(esgotadoArea)esgotadoArea.style.display='none';
+    if(encerradoArea)encerradoArea.style.display='none';
+    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='block';
+  } else if(encerrado){
+    if(votarArea)votarArea.style.display='none';
+    if(esgotadoArea)esgotadoArea.style.display='none';
+    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
     if(encerradoArea)encerradoArea.style.display='block';
   } else if(usados>=3){
     if(votarArea)votarArea.style.display='none';
     if(esgotadoArea)esgotadoArea.style.display='block';
     if(encerradoArea)encerradoArea.style.display='none';
+    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
   } else {
     if(votarArea)votarArea.style.display='block';
     if(esgotadoArea)esgotadoArea.style.display='none';
     if(encerradoArea)encerradoArea.style.display='none';
+    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
     const sel=document.getElementById('galeraTimeSelect');
     if(sel&&sel.options.length<=1){
       const times=[...new Set(ATLETAS_GALERA.filter(a=>a.modalidade===modalidade).map(a=>a.time))].sort();
@@ -905,6 +920,7 @@ function onGaleraTimeChange(){
 
 async function votarGalera(atleta,time){
   const modalidade='basquete';
+  if(GALERA_ABERTURA[modalidade]&&new Date()<GALERA_ABERTURA[modalidade]){showToast('Votação ainda não abriu!');return;}
   if(new Date()>=GALERA_DEADLINE[modalidade]){showToast('Votação encerrada!');return;}
   const votosKey='galera_votos_'+modalidade;
   const votos=JSON.parse(localStorage.getItem(votosKey)||'[]');
@@ -1102,6 +1118,11 @@ async function fetchLinhaTempo(){
         <svg style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div id="galeraAtletasList" style="display:none"></div>
+    </div>
+    <div id="galeraAindaNaoAbriuArea" style="display:none;text-align:center;padding:30px 16px">
+      <div style="font-size:44px;margin-bottom:12px">⏳</div>
+      <div style="font-size:17px;font-weight:900;color:#7C3AED;margin-bottom:6px">Votação ainda não abriu</div>
+      <div style="font-size:12px;color:#94a3b8;margin-bottom:18px">A votação do Destaque da Galera abre dia 25/07/2026 às 13h.</div>
     </div>
     <div id="galeraEsgotadoArea" style="display:none;text-align:center;padding:30px 16px">
       <div style="font-size:44px;margin-bottom:12px">✅</div>
