@@ -415,19 +415,21 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f-
   border:1px solid rgba(255,215,0,.25);
   animation:rowSlide .35s ease both;
 }
-.dst-badge{
-  flex-shrink:0;width:74px;height:74px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-  background:linear-gradient(150deg,#ffe08a,var(--acc2) 45%,#b8790a);color:#2b1400;
-  box-shadow:0 0 16px rgba(255,215,0,.45),inset 0 1px 1px rgba(255,255,255,.6);
-}
-.dst-badge .dst-p{font-family:var(--f-cond);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
-.dst-badge .dst-n{font-family:var(--f-display);font-size:30px;font-weight:400;line-height:1;}
 .dst-info{flex:1;min-width:0;}
-.dst-cat{font-family:var(--f-cond);font-size:14px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:4px;text-shadow:0 0 10px rgba(255,180,0,.4);}
+.dst-cat{font-family:var(--f-cond);font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:4px;text-shadow:0 0 10px rgba(255,180,0,.4);}
 .dst-nome{font-family:var(--f-display);font-size:32px;font-weight:400;letter-spacing:.5px;color:#fff;text-transform:uppercase;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .dst-time{display:flex;align-items:center;gap:10px;margin-top:6px;font-family:var(--f-cond);font-size:16px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
 .dst-time .crest{width:30px;height:30px;border-radius:7px;}
-.dst-star{flex-shrink:0;font-size:34px;filter:drop-shadow(0 0 10px rgba(255,215,0,.55));animation:pdot 2s ease-in-out infinite;}
+.dst-jogo{margin-top:7px;font-family:var(--f-cond);font-size:12px;font-weight:600;color:rgba(255,246,236,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dst-crest-badge{
+  flex-shrink:0;width:78px;height:78px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.02)),rgba(8,2,0,.5);
+  border:1.5px solid rgba(255,215,0,.45);
+  box-shadow:0 0 18px rgba(255,180,0,.35),inset 0 1px 1px rgba(255,255,255,.15);
+  animation:pdot 2.4s ease-in-out infinite;
+}
+.dst-crest-badge .dst-crest-img{width:56px;height:56px;object-fit:contain;border-radius:0;background:none;padding:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));}
+.dst-crest-badge .dst-crest-fallback{font-size:34px;filter:drop-shadow(0 0 10px rgba(255,215,0,.55));}
 
 /* ═══ DOTS ═══ */
 .sdots{position:fixed;right:9px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:20;}
@@ -950,16 +952,17 @@ function renderDestaques(rows){
   if(!itens.length){el.innerHTML='<div style="color:var(--muted);text-align:center;padding:20px;font-size:12px">⏳ Aguardando destaques das partidas...</div>';return;}
   var html='';
   itens.forEach(function(r,i){
-    var jogo=(r[1]||'').toString().replace(/^\s*(partida|jogo)\s*/i,'').trim()||String(i+1);
+    var jogoDesc=(r[1]||'').toString().trim();
     var nome=(r[2]||'').trim(),equipe=(r[3]||'').trim();
+    var crestHtml=equipe?crestImg(equipe,'dst-crest-img'):'';
     html+='<div class="dst-row" style="animation-delay:'+(i*.07)+'s">'
-      +'<div class="dst-badge"><div class="dst-p">Partida</div><div class="dst-n">'+jogo+'</div></div>'
       +'<div class="dst-info">'
-        +'<div class="dst-cat">Atleta destaque da partida '+jogo+'</div>'
+        +'<div class="dst-cat">🌟 Atleta Destaque</div>'
         +'<div class="dst-nome">'+nome+'</div>'
         +(equipe?'<div class="dst-time">'+crestImg(equipe)+'<span>'+equipe+'</span></div>':'')
+        +(jogoDesc?'<div class="dst-jogo">'+jogoDesc+'</div>':'')
       +'</div>'
-      +'<div class="dst-star">🌟</div>'
+      +'<div class="dst-crest-badge">'+(crestHtml||'<span class="dst-crest-fallback">🌟</span>')+'</div>'
     +'</div>';
   });
   el.innerHTML=html;
