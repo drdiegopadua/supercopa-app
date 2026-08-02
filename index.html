@@ -394,13 +394,21 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
       <div style="font-size:13px;font-weight:800;color:var(--text)" id="caaEquipeLogada"></div>
       <button onclick="caaSair()" style="background:none;border:none;color:#ef4444;font-size:12px;font-weight:700">Sair</button>
     </div>
+    <div id="caaContadores" style="padding:0 16px 10px;display:flex;gap:8px"></div>
+    <div style="padding:0 16px 10px">
+      <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Tipo</label>
+      <select id="caa-tipo" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px">
+        <option value="Atleta">Atleta (máx. 14)</option>
+        <option value="Comissão Técnica">Comissão Técnica (máx. 2)</option>
+      </select>
+    </div>
     <div style="padding:0 16px 14px;display:flex;gap:8px;align-items:flex-end">
       <div style="width:70px">
         <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nº</label>
         <input id="caa-numero" placeholder="Nº" style="width:100%;margin-top:6px;padding:12px 8px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px;text-align:center">
       </div>
       <div style="flex:1">
-        <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nome do Atleta</label>
+        <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nome</label>
         <input id="caa-nome" placeholder="Nome completo" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px">
       </div>
       <button onclick="caaSalvarAtleta()" style="background:#1565c0;color:#fff;border:none;padding:13px 16px;border-radius:10px;font-weight:700;font-size:13px;white-space:nowrap">+ Add</button>
@@ -655,6 +663,15 @@ async function caaEntrar(){
     document.getElementById('caaLoginBox').style.display = 'none';
     document.getElementById('caaGerenciar').style.display = '';
     document.getElementById('caaEquipeLogada').textContent = '🔓 ' + equipe;
+    const fechado = new Date() >= CADASTRO_ATLETAS_FECHA;
+    document.getElementById('caa-tipo').closest('div').style.display = fechado ? 'none' : '';
+    document.getElementById('caa-numero').closest('div[style*="flex-end"]').style.display = fechado ? 'none' : '';
+    if (fechado) {
+      const aviso = document.createElement('div');
+      aviso.style.cssText = 'margin:0 16px 14px;background:#fff3cd;color:#856404;font-size:12px;padding:10px 14px;border-radius:10px';
+      aviso.textContent = '⛔ Prazo de inscrição/edição de atletas encerrado (27/11 às 22h). Lista somente pra consulta.';
+      document.getElementById('caaGerenciar').insertBefore(aviso, document.getElementById('caaContadores').nextSibling);
+    }
     caaCarregarLista();
   } catch(e){ erroEl.textContent = 'Erro de conexão. Tenta de novo.'; erroEl.style.display = ''; }
 }
@@ -670,38 +687,58 @@ function caaSair(){
 
 async function caaCarregarLista(){
   const wrap = document.getElementById('caaLista');
+  const contWrap = document.getElementById('caaContadores');
   if (!caaEquipeAtual){ return; }
   wrap.innerHTML = '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Carregando...</p>';
   try{
     const res = await fetch(SUMULA_SCRIPT_URL + '?action=atletasEquipeApp&equipe=' + encodeURIComponent(caaEquipeAtual) + '&pin=' + encodeURIComponent(caaPinAtual)).then(r=>r.json());
     if (!res.ok){ wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">' + (res.erro||'Sessão expirada, entre de novo.') + '</p>'; caaSair(); return; }
     const atletas = (res.atletas || []).sort((a,b)=>(parseInt(a.numero)||0)-(parseInt(b.numero)||0));
+    const nAtletas = atletas.filter(a => (a.tipo||'Atleta') !== 'Comissão Técnica').length;
+    const nComissao = atletas.filter(a => a.tipo === 'Comissão Técnica').length;
+    if (contWrap) contWrap.innerHTML = `
+      <div style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:16px;font-weight:800;color:var(--text)">${nAtletas}/14</div>
+        <div style="font-size:10px;color:var(--muted)">Atletas</div>
+      </div>
+      <div style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:16px;font-weight:800;color:var(--text)">${nComissao}/2</div>
+        <div style="font-size:10px;color:var(--muted)">Comissão</div>
+      </div>`;
     wrap.innerHTML = atletas.length ? atletas.map(a => `
       <div style="display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:8px">
-        <div style="width:34px;height:34px;border-radius:50%;background:#1565c0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0">${a.numero||'·'}</div>
-        <div style="flex:1;font-weight:600;font-size:13px;color:var(--text)">${a.nome}</div>
+        <div style="width:34px;height:34px;border-radius:50%;background:${a.tipo==='Comissão Técnica'?'#c8960c':'#1565c0'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0">${a.numero||'·'}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px;color:var(--text)">${a.nome}</div>
+          <div style="font-size:10px;color:var(--muted)">${a.tipo==='Comissão Técnica'?'Comissão Técnica':'Atleta'}</div>
+        </div>
         <button onclick="caaRemoverAtleta('${(a.numero||'').toString().replace(/'/g,"'")}','${a.nome.replace(/'/g,"'")}')" style="background:none;border:none;color:#ef4444;font-size:18px;padding:4px">✕</button>
       </div>`).join('') : '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Nenhum atleta cadastrado ainda.</p>';
   } catch(e){
     wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">Erro ao carregar atletas.</p>';
   }
 }
+const CADASTRO_ATLETAS_FECHA = new Date('2026-11-27T22:00:00');
+
 async function caaSalvarAtleta(){
+  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 22h.'); return; }
   if (!caaEquipeAtual){ showToast('Entre com sua equipe primeiro.'); return; }
   const numero = document.getElementById('caa-numero').value.trim();
   const nome = document.getElementById('caa-nome').value.trim();
+  const tipo = document.getElementById('caa-tipo').value;
   if (!nome){ showToast('Digite o nome do atleta.'); return; }
   try{
-    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'cadastrarAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome}) }).then(r=>r.json());
+    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'cadastrarAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome, tipo:tipo}) }).then(r=>r.json());
     if (res.ok){
       document.getElementById('caa-numero').value = '';
       document.getElementById('caa-nome').value = '';
-      showToast('✅ Atleta cadastrado!');
+      showToast('✅ Cadastrado!');
       caaCarregarLista();
     } else showToast('❌ ' + (res.erro || 'erro ao salvar'));
   } catch(e){ showToast('❌ Erro de conexão.'); }
 }
 async function caaRemoverAtleta(numero, nome){
+  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 22h.'); return; }
   if (!confirm('Remover ' + nome + '?')) return;
   try{
     const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'removerAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome}) }).then(r=>r.json());
