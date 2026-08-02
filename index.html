@@ -377,26 +377,36 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
     <button class="icon-btn" onclick='nav("maisPage",document.querySelectorAll(".nav-btn")[4])'>←</button>
     <div class="ptitle" style="padding:0">👥 <span>Cadastrar Atletas</span></div>
   </div>
-  <div style="padding:0 16px 14px;font-size:12px;color:var(--muted)">Cada equipe pode cadastrar o número e nome dos seus jogadores. Essa lista é usada pela arbitragem na súmula digital dos jogos.</div>
+  <div style="padding:0 16px 14px;font-size:12px;color:var(--muted)">Cada equipe cadastra o número e nome dos seus jogadores usando o PIN enviado pela organização. Essa lista é usada pela arbitragem na súmula digital dos jogos.</div>
 
-  <div style="padding:0 16px 10px">
+  <div id="caaLoginBox" style="padding:0 16px 14px">
     <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Sua equipe</label>
-    <select id="caa-equipe-select" onchange="caaEquipeMudou()" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px"></select>
+    <select id="caa-equipe-select" style="width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px"></select>
+    <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">PIN da equipe</label>
+    <input id="caa-pin-input" placeholder="0000" maxlength="4" inputmode="numeric" style="width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;text-align:center;letter-spacing:6px">
+    <div id="caa-login-erro" style="display:none;color:#ef4444;font-size:12px;margin-bottom:10px;text-align:center"></div>
+    <button onclick="caaEntrar()" style="width:100%;background:#1565c0;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:700;font-size:14px">Entrar</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">Não tem o PIN da sua equipe? Fale com a organização da Supercopa.</p>
   </div>
 
-  <div style="padding:0 16px 14px;display:flex;gap:8px;align-items:flex-end">
-    <div style="width:70px">
-      <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nº</label>
-      <input id="caa-numero" placeholder="Nº" style="width:100%;margin-top:6px;padding:12px 8px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px;text-align:center">
+  <div id="caaGerenciar" style="display:none">
+    <div style="padding:0 16px 8px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:13px;font-weight:800;color:var(--text)" id="caaEquipeLogada"></div>
+      <button onclick="caaSair()" style="background:none;border:none;color:#ef4444;font-size:12px;font-weight:700">Sair</button>
     </div>
-    <div style="flex:1">
-      <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nome do Atleta</label>
-      <input id="caa-nome" placeholder="Nome completo" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px">
+    <div style="padding:0 16px 14px;display:flex;gap:8px;align-items:flex-end">
+      <div style="width:70px">
+        <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nº</label>
+        <input id="caa-numero" placeholder="Nº" style="width:100%;margin-top:6px;padding:12px 8px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px;text-align:center">
+      </div>
+      <div style="flex:1">
+        <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Nome do Atleta</label>
+        <input id="caa-nome" placeholder="Nome completo" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px">
+      </div>
+      <button onclick="caaSalvarAtleta()" style="background:#1565c0;color:#fff;border:none;padding:13px 16px;border-radius:10px;font-weight:700;font-size:13px;white-space:nowrap">+ Add</button>
     </div>
-    <button onclick="caaSalvarAtleta()" style="background:#1565c0;color:#fff;border:none;padding:13px 16px;border-radius:10px;font-weight:700;font-size:13px;white-space:nowrap">+ Add</button>
+    <div id="caaLista" style="padding:0 16px 24px"></div>
   </div>
-
-  <div id="caaLista" style="padding:0 16px 24px"></div>
 </section>
 
 </main> 
@@ -614,7 +624,10 @@ function driveThumb(id,size){return"https://drive.google.com/thumbnail?id="+id+"
 async function renderDriveGallery(){const t=document.getElementById("galleryGrid");if(!t)return;t.style.display="grid";if(_driveGalleryCache)return _renderDriveItems(_driveGalleryCache);t.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);font-size:13px"><div style="font-size:28px;margin-bottom:8px">⏳</div>Carregando fotos e vídeos do Drive...</div>';try{if(!DRIVE_GALLERY_SCRIPT_URL||DRIVE_GALLERY_SCRIPT_URL.indexOf("COLE_AQUI")===0)throw new Error("Apps Script ainda não configurado");const r=await fetch(DRIVE_GALLERY_SCRIPT_URL);const data=await r.json();if(!data.ok)throw new Error(data.erro||"Erro no Apps Script");_driveGalleryCache=data.files||[];_renderDriveItems(_driveGalleryCache);}catch(e){t.innerHTML=emptyStateHTML('⚠️','Não foi possível carregar as fotos do Drive agora.');console.warn("Drive gallery error:",e);}}
 function _renderDriveItems(files){const t=document.getElementById("galleryGrid");if(!t)return;if(!files.length){t.innerHTML=emptyStateHTML('🏀','Nenhuma foto ou vídeo no Drive ainda.');return;}t.innerHTML=files.map(f=>{const thumb=driveThumb(f.id,900);const nomeEsc=(f.name||"").replace(/'/g,"\\'");const clickAction=f.isVideo?`openLb('🎬','https://drive.google.com/file/d/${f.id}/preview','${nomeEsc}','Basquete 2026','drivevideo')`:`openLb('📸','${driveThumb(f.id,1600)}','${nomeEsc}','Basquete 2026','photo')`;return`\n    <div class="gallery-item" onclick="${clickAction}" style="position:relative;overflow:hidden;">\n      <img src="${thumb}" alt="${f.name||""}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r-xs);position:absolute;inset:0;" loading="lazy" onerror="this.style.display='none'">\n      ${f.isVideo?'<div style="position:absolute;top:6px;right:6px;z-index:3;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:11px;">▶️</div>':""}\n      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);pointer-events:none;border-radius:var(--r-xs);"></div>\n    </div>`;}).join("");}
 let caaEquipeAtual = '';
+let caaPinAtual = '';
+
 async function initCadastroAtletasApp(){
+  caaSair();
   const sel = document.getElementById('caa-equipe-select');
   sel.innerHTML = '<option value="">Carregando...</option>';
   try{
@@ -625,36 +638,61 @@ async function initCadastroAtletasApp(){
   } catch(e){
     sel.innerHTML = '<option value="">— selecione sua equipe —</option>';
   }
-  caaEquipeMudou();
 }
-function caaEquipeMudou(){
-  caaEquipeAtual = document.getElementById('caa-equipe-select').value;
-  caaCarregarLista();
+
+async function caaEntrar(){
+  const equipe = document.getElementById('caa-equipe-select').value;
+  const pin = document.getElementById('caa-pin-input').value.trim();
+  const erroEl = document.getElementById('caa-login-erro');
+  erroEl.style.display = 'none';
+  if (!equipe){ erroEl.textContent = 'Selecione sua equipe.'; erroEl.style.display = ''; return; }
+  if (!pin){ erroEl.textContent = 'Digite o PIN da sua equipe.'; erroEl.style.display = ''; return; }
+  try{
+    const res = await fetch(SUMULA_SCRIPT_URL + '?action=verificarPinEquipe&equipe=' + encodeURIComponent(equipe) + '&pin=' + encodeURIComponent(pin)).then(r=>r.json());
+    if (!res.ok){ erroEl.textContent = 'PIN incorreto pra essa equipe.'; erroEl.style.display = ''; return; }
+    caaEquipeAtual = equipe;
+    caaPinAtual = pin;
+    document.getElementById('caaLoginBox').style.display = 'none';
+    document.getElementById('caaGerenciar').style.display = '';
+    document.getElementById('caaEquipeLogada').textContent = '🔓 ' + equipe;
+    caaCarregarLista();
+  } catch(e){ erroEl.textContent = 'Erro de conexão. Tenta de novo.'; erroEl.style.display = ''; }
 }
+
+function caaSair(){
+  caaEquipeAtual = '';
+  caaPinAtual = '';
+  document.getElementById('caa-pin-input').value = '';
+  document.getElementById('caa-login-erro').style.display = 'none';
+  document.getElementById('caaLoginBox').style.display = '';
+  document.getElementById('caaGerenciar').style.display = 'none';
+}
+
 async function caaCarregarLista(){
   const wrap = document.getElementById('caaLista');
-  if (!caaEquipeAtual){ wrap.innerHTML = '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Selecione sua equipe pra ver/cadastrar os atletas.</p>'; return; }
+  if (!caaEquipeAtual){ return; }
   wrap.innerHTML = '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Carregando...</p>';
   try{
-    const res = await fetch(SUMULA_SCRIPT_URL + '?action=atletasEquipe&equipe=' + encodeURIComponent(caaEquipeAtual)).then(r=>r.json());
-    const atletas = ((res && res.atletas) || []).sort((a,b)=>(parseInt(a.numero)||0)-(parseInt(b.numero)||0));
+    const res = await fetch(SUMULA_SCRIPT_URL + '?action=atletasEquipeApp&equipe=' + encodeURIComponent(caaEquipeAtual) + '&pin=' + encodeURIComponent(caaPinAtual)).then(r=>r.json());
+    if (!res.ok){ wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">' + (res.erro||'Sessão expirada, entre de novo.') + '</p>'; caaSair(); return; }
+    const atletas = (res.atletas || []).sort((a,b)=>(parseInt(a.numero)||0)-(parseInt(b.numero)||0));
     wrap.innerHTML = atletas.length ? atletas.map(a => `
       <div style="display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:8px">
         <div style="width:34px;height:34px;border-radius:50%;background:#1565c0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0">${a.numero||'·'}</div>
         <div style="flex:1;font-weight:600;font-size:13px;color:var(--text)">${a.nome}</div>
-        <button onclick="caaRemoverAtleta('${(a.numero||'').toString().replace(/'/g,"\'")}','${a.nome.replace(/'/g,"\'")}')" style="background:none;border:none;color:#ef4444;font-size:18px;padding:4px">✕</button>
+        <button onclick="caaRemoverAtleta('${(a.numero||'').toString().replace(/'/g,"'")}','${a.nome.replace(/'/g,"'")}')" style="background:none;border:none;color:#ef4444;font-size:18px;padding:4px">✕</button>
       </div>`).join('') : '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Nenhum atleta cadastrado ainda.</p>';
   } catch(e){
     wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">Erro ao carregar atletas.</p>';
   }
 }
 async function caaSalvarAtleta(){
-  if (!caaEquipeAtual){ showToast('Selecione sua equipe primeiro.'); return; }
+  if (!caaEquipeAtual){ showToast('Entre com sua equipe primeiro.'); return; }
   const numero = document.getElementById('caa-numero').value.trim();
   const nome = document.getElementById('caa-nome').value.trim();
   if (!nome){ showToast('Digite o nome do atleta.'); return; }
   try{
-    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'cadastrarAtleta', equipe:caaEquipeAtual, numero:numero, nome:nome}) }).then(r=>r.json());
+    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'cadastrarAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome}) }).then(r=>r.json());
     if (res.ok){
       document.getElementById('caa-numero').value = '';
       document.getElementById('caa-nome').value = '';
@@ -666,7 +704,7 @@ async function caaSalvarAtleta(){
 async function caaRemoverAtleta(numero, nome){
   if (!confirm('Remover ' + nome + '?')) return;
   try{
-    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'removerAtleta', equipe:caaEquipeAtual, numero:numero, nome:nome}) }).then(r=>r.json());
+    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'removerAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome}) }).then(r=>r.json());
     if (res.ok) caaCarregarLista();
     else showToast('❌ ' + (res.erro || 'erro'));
   } catch(e){ showToast('❌ Erro de conexão.'); }
