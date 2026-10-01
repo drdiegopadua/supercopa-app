@@ -381,7 +381,8 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
 
   <div id="caaLoginBox" style="padding:0 16px 14px">
     <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Sua equipe</label>
-    <select id="caa-equipe-select" style="width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px"></select>
+    <select id="caa-equipe-select" onchange="caaMostrarEscudoSelecionado()" style="width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px"></select>
+    <div id="caa-escudo-preview" style="display:none;text-align:center;margin-bottom:12px"><img id="caa-escudo-img" style="width:72px;height:72px;object-fit:contain;border-radius:12px;background:var(--card2)"></div>
     <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">PIN da equipe</label>
     <input id="caa-pin-input" placeholder="0000" maxlength="4" inputmode="numeric" style="width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;text-align:center;letter-spacing:6px">
     <div id="caa-login-erro" style="display:none;color:#ef4444;font-size:12px;margin-bottom:10px;text-align:center"></div>
@@ -390,8 +391,9 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
   </div>
 
   <div id="caaGerenciar" style="display:none">
-    <div style="padding:0 16px 8px;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:13px;font-weight:800;color:var(--text)" id="caaEquipeLogada"></div>
+    <div style="padding:0 16px 8px;display:flex;align-items:center;gap:10px">
+      <img id="caa-escudo-logado" style="width:40px;height:40px;object-fit:contain;border-radius:8px;background:var(--card2);display:none">
+      <div style="flex:1;font-size:13px;font-weight:800;color:var(--text)" id="caaEquipeLogada"></div>
       <button onclick="caaSair()" style="background:none;border:none;color:#ef4444;font-size:12px;font-weight:700">Sair</button>
     </div>
     <div id="caaContadores" style="padding:0 16px 10px;display:flex;gap:8px"></div>
@@ -399,7 +401,8 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
       <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Tipo</label>
       <select id="caa-tipo" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:14px">
         <option value="Atleta">Atleta (máx. 14)</option>
-        <option value="Comissão Técnica">Comissão Técnica (máx. 2)</option>
+        <option value="Técnico">Técnico</option>
+        <option value="Auxiliar Técnico">Auxiliar Técnico</option>
       </select>
     </div>
     <div style="padding:0 16px 14px;display:flex;gap:8px;align-items:flex-end">
@@ -633,18 +636,35 @@ async function renderDriveGallery(){const t=document.getElementById("galleryGrid
 function _renderDriveItems(files){const t=document.getElementById("galleryGrid");if(!t)return;if(!files.length){t.innerHTML=emptyStateHTML('🏀','Nenhuma foto ou vídeo no Drive ainda.');return;}t.innerHTML=files.map(f=>{const thumb=driveThumb(f.id,900);const nomeEsc=(f.name||"").replace(/'/g,"\\'");const clickAction=f.isVideo?`openLb('🎬','https://drive.google.com/file/d/${f.id}/preview','${nomeEsc}','Basquete 2026','drivevideo')`:`openLb('📸','${driveThumb(f.id,1600)}','${nomeEsc}','Basquete 2026','photo')`;return`\n    <div class="gallery-item" onclick="${clickAction}" style="position:relative;overflow:hidden;">\n      <img src="${thumb}" alt="${f.name||""}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r-xs);position:absolute;inset:0;" loading="lazy" onerror="this.style.display='none'">\n      ${f.isVideo?'<div style="position:absolute;top:6px;right:6px;z-index:3;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:11px;">▶️</div>':""}\n      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);pointer-events:none;border-radius:var(--r-xs);"></div>\n    </div>`;}).join("");}
 let caaEquipeAtual = '';
 let caaPinAtual = '';
+let caaEquipesCache = [];
 
 async function initCadastroAtletasApp(){
   caaSair();
   const sel = document.getElementById('caa-equipe-select');
   sel.innerHTML = '<option value="">Carregando...</option>';
   try{
-    const res = await fetch(SUMULA_SCRIPT_URL + '?action=equipesConhecidas').then(r=>r.json());
-    const equipes = (res && res.equipes) || [];
+    const res = await fetch(SUMULA_SCRIPT_URL + '?action=equipesComPin').then(r=>r.json());
+    caaEquipesCache = (res && res.equipes) || [];
     const meuTime = localStorage.getItem('meu_time') || '';
-    sel.innerHTML = '<option value="">— selecione sua equipe —</option>' + equipes.map(e => '<option value="'+e+'"'+(e===meuTime?' selected':'')+'>'+e+'</option>').join('');
+    sel.innerHTML = caaEquipesCache.length
+      ? '<option value="">— selecione sua equipe —</option>' + caaEquipesCache.map(e => '<option value="'+e.equipe+'"'+(e.equipe===meuTime?' selected':'')+'>'+e.equipe+'</option>').join('')
+      : '<option value="">Nenhuma equipe liberada pra cadastro ainda</option>';
+    caaMostrarEscudoSelecionado();
   } catch(e){
     sel.innerHTML = '<option value="">— selecione sua equipe —</option>';
+  }
+}
+
+function caaMostrarEscudoSelecionado(){
+  const equipe = document.getElementById('caa-equipe-select').value;
+  const info = caaEquipesCache.find(e => e.equipe === equipe);
+  const prev = document.getElementById('caa-escudo-preview');
+  const img = document.getElementById('caa-escudo-img');
+  if (info && info.escudo){
+    img.src = info.escudo;
+    prev.style.display = '';
+  } else {
+    prev.style.display = 'none';
   }
 }
 
@@ -663,13 +683,17 @@ async function caaEntrar(){
     document.getElementById('caaLoginBox').style.display = 'none';
     document.getElementById('caaGerenciar').style.display = '';
     document.getElementById('caaEquipeLogada').textContent = '🔓 ' + equipe;
+    const infoEquipe = caaEquipesCache.find(x => x.equipe === equipe);
+    const escudoLogado = document.getElementById('caa-escudo-logado');
+    if (infoEquipe && infoEquipe.escudo) { escudoLogado.src = infoEquipe.escudo; escudoLogado.style.display = ''; }
+    else escudoLogado.style.display = 'none';
     const fechado = new Date() >= CADASTRO_ATLETAS_FECHA;
     document.getElementById('caa-tipo').closest('div').style.display = fechado ? 'none' : '';
     document.getElementById('caa-numero').closest('div[style*="flex-end"]').style.display = fechado ? 'none' : '';
     if (fechado) {
       const aviso = document.createElement('div');
       aviso.style.cssText = 'margin:0 16px 14px;background:#fff3cd;color:#856404;font-size:12px;padding:10px 14px;border-radius:10px';
-      aviso.textContent = '⛔ Prazo de inscrição/edição de atletas encerrado (27/11 às 22h). Lista somente pra consulta.';
+      aviso.textContent = '⛔ Prazo de inscrição/edição de atletas encerrado (27/11 às 13h). Lista somente pra consulta.';
       document.getElementById('caaGerenciar').insertBefore(aviso, document.getElementById('caaContadores').nextSibling);
     }
     caaCarregarLista();
@@ -693,9 +717,10 @@ async function caaCarregarLista(){
   try{
     const res = await fetch(SUMULA_SCRIPT_URL + '?action=atletasEquipeApp&equipe=' + encodeURIComponent(caaEquipeAtual) + '&pin=' + encodeURIComponent(caaPinAtual)).then(r=>r.json());
     if (!res.ok){ wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">' + (res.erro||'Sessão expirada, entre de novo.') + '</p>'; caaSair(); return; }
+    const ehComissao = (tipo) => tipo === 'Técnico' || tipo === 'Auxiliar Técnico' || tipo === 'Comissão Técnica';
     const atletas = (res.atletas || []).sort((a,b)=>(parseInt(a.numero)||0)-(parseInt(b.numero)||0));
-    const nAtletas = atletas.filter(a => (a.tipo||'Atleta') !== 'Comissão Técnica').length;
-    const nComissao = atletas.filter(a => a.tipo === 'Comissão Técnica').length;
+    const nAtletas = atletas.filter(a => !ehComissao(a.tipo||'Atleta')).length;
+    const nComissao = atletas.filter(a => ehComissao(a.tipo)).length;
     if (contWrap) contWrap.innerHTML = `
       <div style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
         <div style="font-size:16px;font-weight:800;color:var(--text)">${nAtletas}/14</div>
@@ -707,10 +732,10 @@ async function caaCarregarLista(){
       </div>`;
     wrap.innerHTML = atletas.length ? atletas.map(a => `
       <div style="display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:8px">
-        <div style="width:34px;height:34px;border-radius:50%;background:${a.tipo==='Comissão Técnica'?'#c8960c':'#1565c0'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0">${a.numero||'·'}</div>
+        <div style="width:34px;height:34px;border-radius:50%;background:${ehComissao(a.tipo)?'#c8960c':'#1565c0'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0">${a.numero||'·'}</div>
         <div style="flex:1">
           <div style="font-weight:600;font-size:13px;color:var(--text)">${a.nome}</div>
-          <div style="font-size:10px;color:var(--muted)">${a.tipo==='Comissão Técnica'?'Comissão Técnica':'Atleta'}</div>
+          <div style="font-size:10px;color:var(--muted)">${a.tipo==='Comissão Técnica'?'Técnico':(a.tipo||'Atleta')}</div>
         </div>
         <button onclick="caaRemoverAtleta('${(a.numero||'').toString().replace(/'/g,"'")}','${a.nome.replace(/'/g,"'")}')" style="background:none;border:none;color:#ef4444;font-size:18px;padding:4px">✕</button>
       </div>`).join('') : '<p style="text-align:center;color:var(--muted);font-size:12px;padding:20px 0">Nenhum atleta cadastrado ainda.</p>';
@@ -718,10 +743,10 @@ async function caaCarregarLista(){
     wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">Erro ao carregar atletas.</p>';
   }
 }
-const CADASTRO_ATLETAS_FECHA = new Date('2026-11-27T22:00:00');
+const CADASTRO_ATLETAS_FECHA = new Date('2026-11-27T13:00:00');
 
 async function caaSalvarAtleta(){
-  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 22h.'); return; }
+  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 13h.'); return; }
   if (!caaEquipeAtual){ showToast('Entre com sua equipe primeiro.'); return; }
   const numero = document.getElementById('caa-numero').value.trim();
   const nome = document.getElementById('caa-nome').value.trim();
