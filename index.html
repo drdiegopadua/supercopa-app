@@ -940,6 +940,43 @@ function jdElenco(el){
   return linhas.join('');
 }
 let _jdUltimo = null;
+function jdCarregarCardLib_(){
+  return new Promise((resolve, reject)=>{
+    if (!document.getElementById('fontesCard')){
+      const l = document.createElement('link'); l.id = 'fontesCard'; l.rel = 'stylesheet';
+      l.href = 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@900&display=swap';
+      document.head.appendChild(l);
+    }
+    if (window.SC) return resolve();
+    const s = document.createElement('script'); s.src = 'card-resultado.js?v=1';
+    s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
+  });
+}
+async function jdCard(){
+  const s = _jdUltimo; if (!s) return;
+  showToast('🎨 Gerando o card...');
+  try{
+    await jdCarregarCardLib_();
+    let esc = {};
+    try{ const r = await fetch(SUMULA_SCRIPT_URL + '?action=equipesComPin').then(x=>x.json()); ((r&&r.equipes)||[]).forEach(e=>{ if(e.escudo) esc[String(e.equipe).toLowerCase()] = e.escudo; }); }catch(e){}
+    const fin = s.status === 'finalizada' || s.status === 'sets_completos';
+    const venc = s.setsCasa > s.setsVisitante ? s.equipeCasa : s.equipeVisitante;
+    const cv = document.createElement('canvas');
+    await SC.card(cv, {
+      titulo: fin ? 'FIM DE JOGO' : 'AO VIVO',
+      equipeA: String(s.equipeCasa).toUpperCase(), equipeB: String(s.equipeVisitante).toUpperCase(),
+      placarA: fin ? s.setsCasa : s.pontosCasa, placarB: fin ? s.setsVisitante : s.pontosVisitante,
+      escudoA: esc[String(s.equipeCasa).toLowerCase()], escudoB: esc[String(s.equipeVisitante).toLowerCase()],
+      linhas: [fin ? String(venc).toUpperCase() + ' VENCEU' : 'SET ' + Math.min(s.setAtual,3) + ' · SETS ' + s.setsCasa + ' x ' + s.setsVisitante].concat((s.historicoSets||[]).map((x,i)=>(i+1)+'º SET  '+x.a+' x '+x.b))
+    });
+    const blob = await new Promise(res=>{ try{ cv.toBlob(res,'image/png'); }catch(e){ res(null); } });
+    if (!blob){ showToast('⚠️ Não consegui exportar a imagem (escudo bloqueado). Tente de novo.'); return; }
+    const file = new File([blob], 'card-jogo-' + String(s.id||'') + '.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })){ try{ await navigator.share({ files: [file], text: 'Supercopa AFC' }); return; }catch(e){ /* cancelou: baixa mesmo assim */ } }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
+    showToast('⬇️ Card baixado!');
+  }catch(e){ showToast('❌ Erro ao gerar o card.'); }
+}
 function jdCompartilhar(){
   const s = _jdUltimo; if(!s) return;
   const fin = s.status==='finalizada';
@@ -966,6 +1003,7 @@ function jdRender(s){
     +'<div '+card+'><div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px">Escalação do jogo</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><div style="font-size:11px;font-weight:700;margin-bottom:4px;color:var(--text)">'+jdEsc(s.equipeCasa)+'</div>'+jdElenco(s.elencoCasa)+'</div><div><div style="font-size:11px;font-weight:700;margin-bottom:4px;color:var(--text)">'+jdEsc(s.equipeVisitante)+'</div>'+jdElenco(s.elencoVisitante)+'</div></div></div>'
     +'<div '+card+'><div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px">Lances</div>'+(ev.length?ev.map(e=>'<div style="font-size:12px;padding:7px 9px;background:var(--bg2,rgba(0,0,0,.05));border-radius:8px;margin-bottom:5px;color:var(--text)">'+e+'</div>').join(''):'<div style="font-size:12px;color:var(--muted)">Nenhum tempo, cartão ou substituição ainda.</div>')+'</div>'
     +((s.arbitro1||s.apontador)?'<div '+card+'><div style="font-size:11px;color:var(--muted)">Arbitragem: '+jdEsc([s.arbitro1,s.arbitro2].filter(Boolean).join(' e '))+(s.apontador?' · Mesa: '+jdEsc(s.apontador):'')+'</div></div>':'')
+    +'<button onclick="jdCard()" style="display:block;width:100%;background:#2336c4;color:#fff;border:none;font-weight:800;font-size:13px;padding:12px;border-radius:12px;margin-bottom:10px">🖼️ Gerar card do resultado (imagem)</button>'
     +'<button onclick="jdCompartilhar()" style="display:block;width:100%;background:#25D366;color:#fff;border:none;font-weight:800;font-size:13px;padding:12px;border-radius:12px;margin-bottom:10px">📲 Compartilhar placar no WhatsApp</button>'
     +(s.linkPdf?'<a href="'+jdEsc(s.linkPdf)+'" target="_blank" rel="noopener" style="display:block;text-align:center;background:var(--gold);color:#0d1f5c;font-weight:800;font-size:13px;padding:12px;border-radius:12px;text-decoration:none">📄 Ver súmula oficial (PDF)</a>':'');
 }

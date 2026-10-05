@@ -7,185 +7,138 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@900&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#050b1a;--navy2:#0a1530;--blue:#1565C0;--blue2:#0D47A1;--gold:#C8960C;--gold2:#F4C542;--orange:#F57C00;--txt:#eef4ff;--muted:rgba(238,244,255,.6);--A:#2f86ff;--B:#ff8a1f}
-html,body{height:100%;background:#000;overflow:hidden;font-family:'Barlow Condensed','Segoe UI',sans-serif;color:var(--txt);-webkit-font-smoothing:antialiased}
-#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:var(--navy);overflow:hidden}
+:root{--azul:#2336c4;--azul2:#16239a;--laranja:#d9441f;--tinta:#14206b}
+html,body{height:100%;background:#0b0f2e;overflow:hidden;font-family:'Bebas Neue',Impact,sans-serif;color:var(--tinta);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:#e3e3e5;overflow:hidden}
+#bgc{position:absolute;inset:0}
 
-/* fundo */
-.bg{position:absolute;inset:0;background:
- radial-gradient(ellipse 60% 55% at 22% 40%,rgba(47,134,255,.30),transparent 62%),
- radial-gradient(ellipse 60% 55% at 78% 40%,rgba(255,138,31,.24),transparent 62%),
- radial-gradient(ellipse 50% 30% at 50% 0%,rgba(244,197,66,.18),transparent 70%),
- linear-gradient(180deg,#07102a 0%,#050b1a 100%)}
-.bg::after{content:"";position:absolute;inset:0;background:
- repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0 2px,transparent 2px 46px);opacity:.8}
-.court-lines{position:absolute;left:50%;bottom:-120px;width:1500px;height:620px;transform:translateX(-50%) perspective(900px) rotateX(58deg);border:4px solid rgba(255,255,255,.07);opacity:.9}
-.court-lines::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;background:rgba(255,255,255,.07)}
-.light{position:absolute;top:-200px;width:460px;height:1500px;filter:blur(40px);opacity:.22;transform-origin:50% 0}
-.light.l1{left:140px;background:linear-gradient(180deg,#2f86ff,transparent 70%);transform:rotate(18deg);animation:sway 9s ease-in-out infinite alternate}
-.light.l2{right:140px;background:linear-gradient(180deg,#ff8a1f,transparent 70%);transform:rotate(-18deg);animation:sway 11s ease-in-out infinite alternate-reverse}
-@keyframes sway{to{transform:rotate(0deg)}}
-
-/* topo */
-.top{position:absolute;left:0;right:0;top:0;height:132px;display:flex;align-items:center;padding:0 64px;gap:28px;background:linear-gradient(180deg,rgba(5,11,26,.92),rgba(5,11,26,0))}
-.top img{width:92px;height:92px;border-radius:22px;box-shadow:0 0 0 3px rgba(244,197,66,.65),0 10px 30px rgba(0,0,0,.5)}
-.brand{line-height:1}
-.brand b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:50px;letter-spacing:3px;background:linear-gradient(180deg,#fff,#cfe0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand span{font-size:26px;letter-spacing:7px;color:var(--gold2);font-weight:700}
-.where{margin-left:auto;text-align:right;line-height:1.05}
-.where b{display:block;font-size:40px;font-weight:800;letter-spacing:3px}
-.where span{font-size:26px;color:var(--muted);letter-spacing:3px;font-weight:600}
-.live{display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,#ff3b30,#c0201a);padding:10px 26px;border-radius:99px;font-size:34px;font-weight:800;letter-spacing:5px;box-shadow:0 0 0 0 rgba(255,59,48,.7);animation:pulse 1.8s infinite}
-.live i{width:16px;height:16px;border-radius:50%;background:#fff}
-.live.fim{background:linear-gradient(180deg,#22c55e,#15803d);animation:none}
-@keyframes pulse{70%{box-shadow:0 0 0 22px rgba(255,59,48,0)}100%{box-shadow:0 0 0 0 rgba(255,59,48,0)}}
+/* título */
+.titulo{position:absolute;left:0;right:0;top:18px;text-align:center;font-family:'Playfair Display',Georgia,serif;font-weight:900;color:var(--azul);line-height:1;letter-spacing:-2px}
+.titulo .g{font-size:168px}
+.titulo .p{font-size:58px;vertical-align:56px;margin:0 8px}
+.titulo .pt{display:inline-flex;align-items:center;gap:22px}
+.titulo .dot{display:inline-block;width:44px;height:44px;border-radius:50%;background:#e11d1d;box-shadow:0 0 0 0 rgba(225,29,29,.6);animation:pulso 1.6s infinite;margin-right:18px}
+@keyframes pulso{70%{box-shadow:0 0 0 24px rgba(225,29,29,0)}100%{box-shadow:0 0 0 0 rgba(225,29,29,0)}}
+.sub{position:absolute;left:0;right:0;top:218px;text-align:center;font-size:46px;letter-spacing:9px;color:var(--tinta)}
+.sub b{color:var(--laranja);font-weight:400}
 
 /* placar */
-.board{position:absolute;left:64px;right:64px;top:150px;height:470px;display:grid;grid-template-columns:1fr 680px 1fr;gap:0;align-items:stretch}
-.team{position:relative;border-radius:34px;padding:34px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;overflow:hidden}
-.team.A{background:linear-gradient(160deg,rgba(47,134,255,.38),rgba(13,71,161,.20) 60%);border:2px solid rgba(47,134,255,.55)}
-.team.B{background:linear-gradient(200deg,rgba(255,138,31,.34),rgba(150,70,0,.18) 60%);border:2px solid rgba(255,138,31,.55)}
-.team::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent 40%);pointer-events:none}
-.escudo{width:190px;height:190px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 7px rgba(255,255,255,.18),0 18px 40px rgba(0,0,0,.45);flex-shrink:0}
-.escudo img{width:100%;height:100%;object-fit:cover}
-.escudo span{font-family:Anton,sans-serif;font-size:84px;letter-spacing:2px}
-.team.A .escudo span{color:var(--blue2)}.team.B .escudo span{color:#b45309}
-.nome{font-family:Anton,sans-serif;font-weight:400;font-size:56px;line-height:1.02;text-align:center;letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 4px 18px rgba(0,0,0,.5);max-width:100%}
-.sets{display:flex;gap:12px}
-.sets i{flex-shrink:0;width:86px;height:34px;border-radius:99px;border:3px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:20px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.5)}
-.sets i.won{background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold2);color:#1a1200}
-.sets i.cur{border-color:#fff;color:#fff;box-shadow:0 0 22px rgba(255,255,255,.55)}
-.saque{position:absolute;top:22px;right:26px;font-size:30px;font-weight:800;letter-spacing:3px;background:var(--gold2);color:#1a1200;padding:6px 18px;border-radius:99px;display:none;align-items:center;gap:8px;animation:bounce 1.1s ease-in-out infinite}
-.team.serve .saque{display:flex}
-@keyframes bounce{50%{transform:translateY(-8px)}}
+.faixa{position:absolute;left:250px;width:1420px;top:468px;height:240px;background:var(--azul2);box-shadow:0 14px 40px rgba(10,15,60,.35)}
+.esc{position:absolute;top:34px;width:172px;height:172px;border-radius:50%;background:#fff;box-shadow:0 0 0 8px #fff,0 10px 26px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.esc.a{left:48px}.esc.b{right:48px}
+.esc img{width:100%;height:100%;object-fit:cover}
+.esc span{font-size:84px;color:var(--azul2)}
+.quadrado{position:absolute;left:600px;width:720px;top:340px;height:470px;background:var(--azul);box-shadow:0 20px 50px rgba(10,15,60,.45);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.quadrado::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,transparent 2px 22px)}
+.num{display:flex;align-items:center;justify-content:center;line-height:.85;position:relative}
+.num b{font-weight:400;font-size:400px;min-width:250px;text-align:center}
+.num s{text-decoration:none;font-size:90px;margin:0 6px;opacity:.95;transform:translateY(34px)}
+.num b.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(1.35);color:#ffe28a}100%{transform:scale(1)}}
+.qinfo{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:42px;letter-spacing:6px;color:#dfe5ff}
+.qinfo b{color:#fff;font-weight:400}
+.nome{position:absolute;top:714px;width:430px;text-align:center;font-size:56px;letter-spacing:2px;color:var(--tinta);line-height:1}
+.nome.a{left:169px}.nome.b{left:1321px}
+.saque{display:inline-block;background:var(--laranja);color:#fff;font-size:30px;letter-spacing:4px;padding:3px 16px;margin-left:10px;vertical-align:8px;animation:pulo 1.1s ease-in-out infinite}
+.saque.off{display:none}
+@keyframes pulo{50%{transform:translateY(-7px)}}
 
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
-.setlbl{font-size:40px;font-weight:800;letter-spacing:9px;color:var(--gold2)}
-.score{display:flex;align-items:center;justify-content:center;gap:6px;font-family:Anton,sans-serif;line-height:1;margin-top:2px}
-.score b{font-weight:400;font-size:250px;min-width:200px;text-align:center;text-shadow:0 10px 0 rgba(0,0,0,.35),0 0 70px rgba(255,255,255,.18)}
-.score b.A{color:#bcd9ff}.score b.B{color:#ffd7ae}
-.score s{text-decoration:none;font-size:110px;color:var(--gold2);opacity:.9}
-.score b.pop{animation:pop .55s cubic-bezier(.2,1.6,.4,1)}
-@keyframes pop{0%{transform:scale(1.4);color:#fff;text-shadow:0 0 90px #fff}100%{transform:scale(1)}}
-.setsgrande{font-size:40px;font-weight:700;letter-spacing:5px;color:var(--muted);margin-top:4px}
-.setsgrande em{font-style:normal;color:#fff;font-weight:800}
-.parc{font-size:28px;font-weight:600;letter-spacing:3px;color:var(--muted);margin-top:2px}
-
-/* quadras */
-.courts{position:absolute;left:64px;right:64px;top:640px;height:300px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.cc{border-radius:28px;padding:16px 20px;position:relative}
-.cc.A{background:linear-gradient(180deg,rgba(47,134,255,.18),rgba(5,11,26,.5));border:2px solid rgba(47,134,255,.4)}
-.cc.B{background:linear-gradient(180deg,rgba(255,138,31,.16),rgba(5,11,26,.5));border:2px solid rgba(255,138,31,.4)}
-.cc h4{font-size:24px;letter-spacing:5px;font-weight:800;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
-.cc h4 span{color:var(--gold2)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.p{position:relative;height:100px;border-radius:18px;background:rgba(255,255,255,.95);color:#0a1530;display:flex;align-items:center;gap:12px;padding:0 14px;box-shadow:0 8px 18px rgba(0,0,0,.35);overflow:hidden}
-.p .n{font-family:Anton,sans-serif;font-size:58px;line-height:1;min-width:64px;text-align:center}
-.cc.A .p .n{color:var(--blue2)}.cc.B .p .n{color:#c2410c}
-.p .t{font-size:27px;font-weight:700;line-height:1.02;text-transform:uppercase;min-width:0;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.p.sq{background:linear-gradient(180deg,#ffe28a,var(--gold2));box-shadow:0 0 0 4px #fff,0 0 34px rgba(244,197,66,.8)}
-.p.sq::after{content:"SAQUE";position:absolute;right:10px;top:6px;font-size:16px;letter-spacing:2px;font-weight:800;color:#6b4a00}
-.p .c{position:absolute;right:10px;bottom:6px;width:30px;height:30px;border-radius:50%;background:#0a1530;color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.p.vazio{background:rgba(255,255,255,.08);box-shadow:none}
-
-/* faixa de lances + rodapé */
-.ticker{position:absolute;left:64px;right:64px;top:958px;height:62px;border-radius:99px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.14);display:flex;align-items:center;gap:22px;padding:0 32px;font-size:32px;font-weight:700;letter-spacing:2px}
-.ticker b{color:var(--gold2);font-weight:800;letter-spacing:5px;font-size:26px}
-.ticker .ev{opacity:1;transition:opacity .4s}
-.ticker .ev.off{opacity:0}
-.arb{margin-left:auto;font-size:24px;color:var(--muted);letter-spacing:2px;font-weight:600}
-.spons{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(90deg,var(--blue2),var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;gap:70px;font-size:22px;letter-spacing:6px;font-weight:700;color:rgba(255,255,255,.85)}
-.spons img{height:30px}
+/* escalações */
+.esc-lista{position:absolute;top:790px;width:520px}
+.esc-lista.a{left:285px}.esc-lista.b{left:1170px}
+.esc-lista h5{font-weight:400;font-size:40px;letter-spacing:4px;border-bottom:5px solid var(--azul);display:inline-block;margin-bottom:8px;padding-right:20px}
+.esc-lista.b h5{border-color:var(--laranja)}
+.esc-lista .l{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;font-size:38px;letter-spacing:2px;line-height:1.2}
+.esc-lista .l div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.esc-lista .l div.s{color:var(--laranja)}
+.esc-lista .l em{font-style:normal;color:var(--azul);margin-right:6px}
+.esc-lista.b .l em{color:var(--laranja)}
+.centro-baixo{position:absolute;top:836px;left:740px;width:440px;text-align:center}
+.centro-baixo .parc{font-size:44px;letter-spacing:4px;line-height:1.2;color:var(--tinta)}
+.centro-baixo .parc.v{color:var(--laranja);font-size:54px;display:none}
+.fim .centro-baixo .parc.v{display:block}
+.lance{margin-top:12px;font-size:32px;letter-spacing:3px;color:var(--azul2);transition:opacity .4s;min-height:40px}
+.lance.off{opacity:0}
+.arb{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:28px;letter-spacing:5px;color:var(--azul2)}
 
 /* overlays */
-.ov{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(ellipse at center,rgba(5,11,26,.92),rgba(5,11,26,.98))}
-.ov.on{display:flex;animation:fadeIn .5s both}
-@keyframes fadeIn{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
-.ov .k{font-size:44px;font-weight:800;letter-spacing:14px;color:var(--gold2)}
-.ov .big{font-family:Anton,sans-serif;font-size:210px;line-height:1.05;text-align:center;text-shadow:0 12px 0 rgba(0,0,0,.35)}
-.ov .sub{font-size:58px;font-weight:700;letter-spacing:4px;color:#fff;text-align:center;margin-top:8px}
-.ov .trofeu{font-size:150px;line-height:1.15;margin-bottom:14px;animation:bounce 1.4s ease-in-out infinite}
-canvas#conf{position:absolute;inset:0;z-index:25;pointer-events:none}
+.setov{position:absolute;left:0;right:0;top:360px;height:360px;background:var(--azul);z-index:30;display:none;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 0 14px #fff,0 30px 80px rgba(0,0,0,.5)}
+.setov.on{display:flex;animation:entra .5s both}
+@keyframes entra{from{transform:translateX(-120%)}to{transform:none}}
+.setov .k{font-size:54px;letter-spacing:12px;color:#ffe28a}
+.setov .big{font-family:'Playfair Display',serif;font-weight:900;font-size:150px;line-height:1.1}
+.setov .s{font-size:60px;letter-spacing:6px}
+canvas#conf{position:absolute;inset:0;z-index:40;pointer-events:none}
+.rodape{position:absolute;bottom:0;left:0;right:0;height:46px;background:var(--azul2);color:#cdd6ff;display:flex;align-items:center;justify-content:center;gap:60px;font-size:26px;letter-spacing:7px}
 
 /* espera */
-.idle{position:absolute;left:64px;right:64px;top:150px;bottom:70px;display:none;grid-template-columns:1.35fr 1fr;gap:40px}
-.idle.on{display:grid}
-.box{border-radius:34px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);padding:34px 40px}
-.box h3{font-family:Anton,sans-serif;font-weight:400;font-size:56px;letter-spacing:3px;color:var(--gold2);margin-bottom:18px}
-.res{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;padding:16px 0;border-top:2px solid rgba(255,255,255,.1);font-size:42px;font-weight:700;text-transform:uppercase}
-.res:first-of-type{border-top:0}
-.res .a{text-align:right}.res .sc{font-family:Anton,sans-serif;font-size:60px;color:var(--gold2);letter-spacing:3px}
-.res .w{color:#fff}.res .l{color:rgba(255,255,255,.5)}
-.qrbox{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px}
-.qrbox canvas{background:#fff;padding:22px;border-radius:26px;box-shadow:0 0 0 8px rgba(244,197,66,.6),0 20px 50px rgba(0,0,0,.5)}
-.qrbox b{font-family:Anton,sans-serif;font-weight:400;font-size:64px;letter-spacing:2px}
-.qrbox span{font-size:36px;color:var(--muted);letter-spacing:3px;font-weight:600}
-.vazio-msg{font-size:40px;color:var(--muted);letter-spacing:3px;padding:30px 0}
+.espera{display:none}
+.on-espera .espera{display:block}
+.on-espera .jogo{display:none}
+.res{position:absolute;left:140px;top:330px;width:1040px;height:520px;background:var(--azul);box-shadow:0 20px 50px rgba(10,15,60,.45);color:#fff;padding:30px 44px}
+.res h3{font-weight:400;font-size:64px;letter-spacing:6px;color:#ffe28a;margin-bottom:10px}
+.res .r{display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center;font-size:48px;letter-spacing:2px;padding:10px 0;border-top:3px solid rgba(255,255,255,.2)}
+.res .r .a{text-align:right}.res .r .sc{font-size:66px;color:#ffe28a}
+.res .r .l{opacity:.55}
+.res .vz{font-size:44px;letter-spacing:3px;opacity:.85;padding-top:20px}
+.qr{position:absolute;left:1260px;top:330px;width:520px;height:520px;background:#fff;box-shadow:0 20px 50px rgba(10,15,60,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.qr canvas{width:340px;height:340px}
+.qr b{font-weight:400;font-size:52px;letter-spacing:3px;color:var(--azul)}
+.qr span{font-size:32px;letter-spacing:3px;color:var(--tinta)}
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="bg"></div><div class="light l1"></div><div class="light l2"></div><div class="court-lines"></div>
+  <canvas id="bgc" width="1920" height="1080"></canvas>
 
-  <div class="top">
-    <img src="pwa-icon-512.png" alt="">
-    <div class="brand"><b>SUPERCOPA AFC</b><span>2026 · AFONSO CLÁUDIO-ES</span></div>
-    <div class="where"><b id="onde">VÔLEI</b><span id="rodada"></span></div>
-    <div class="live" id="selo"><i></i><span id="seloTxt">AO VIVO</span></div>
-  </div>
+  <div class="titulo" id="titulo"></div>
+  <div class="sub" id="sub"></div>
 
-  <div id="jogo">
-    <div class="board">
-      <div class="team A" id="tA"><div class="saque">🏐 SAQUE</div><div class="escudo" id="escA"></div><div class="nome" id="nomeA"></div><div class="sets" id="setsA"></div></div>
-      <div class="center">
-        <div class="setlbl" id="setlbl">SET 1</div>
-        <div class="score"><b class="A" id="pA">0</b><s>×</s><b class="B" id="pB">0</b></div>
-        <div class="setsgrande" id="setsGrande"></div>
-        <div class="parc" id="parc"></div>
-      </div>
-      <div class="team B" id="tB"><div class="saque">🏐 SAQUE</div><div class="escudo" id="escB"></div><div class="nome" id="nomeB"></div><div class="sets" id="setsB"></div></div>
+  <div class="jogo" id="jogo">
+    <div class="faixa"><div class="esc a" id="escA"></div><div class="esc b" id="escB"></div></div>
+    <div class="quadrado">
+      <div class="num"><b id="pA">0</b><s>x</s><b id="pB">0</b></div>
+      <div class="qinfo" id="qinfo"></div>
     </div>
-    <div class="courts">
-      <div class="cc A"><h4><span id="ccNomeA"></span><em style="font-style:normal">EM QUADRA</em></h4><div class="grid" id="qA"></div></div>
-      <div class="cc B"><h4><span id="ccNomeB"></span><em style="font-style:normal">EM QUADRA</em></h4><div class="grid" id="qB"></div></div>
-    </div>
-    <div class="ticker"><b>LANCE</b><span class="ev" id="ev">Aguardando o início da partida</span><span class="arb" id="arb"></span></div>
+    <div class="nome a" id="nomeA"></div><div class="nome b" id="nomeB"></div>
+    <div class="esc-lista a" id="lstA"></div>
+    <div class="esc-lista b" id="lstB"></div>
+    <div class="centro-baixo"><div class="parc" id="parc"></div><div class="parc v" id="venc"></div><div class="lance" id="lance"></div></div>
+    <div class="arb" id="arb"></div>
   </div>
 
-  <div class="idle" id="idle">
-    <div class="box"><h3>ÚLTIMOS RESULTADOS</h3><div id="resultados"></div></div>
-    <div class="box qrbox"><canvas id="qr" width="10" height="10"></canvas><b>ACOMPANHE PELO APP</b><span>Placar ao vivo, súmulas e mais</span></div>
+  <div class="espera" id="espera">
+    <div class="res"><h3>ÚLTIMOS RESULTADOS</h3><div id="resultados"></div></div>
+    <div class="qr"><canvas id="qr" width="10" height="10"></canvas><b>ACOMPANHE PELO APP</b><span>PLACAR AO VIVO, SÚMULAS E MAIS</span></div>
   </div>
 
-  <div class="ov" id="ovSet"><div class="k" id="ovSetK">SET ENCERRADO</div><div class="big" id="ovSetBig"></div><div class="sub" id="ovSetSub"></div></div>
-  <div class="ov" id="ovFim"><div class="trofeu">🏆</div><div class="k">VENCEDOR</div><div class="big" id="ovFimBig"></div><div class="sub" id="ovFimSub"></div></div>
+  <div class="setov" id="setov"><div class="k" id="setK"></div><div class="big" id="setBig"></div><div class="s" id="setS"></div></div>
   <canvas id="conf" width="1920" height="1080"></canvas>
-
-  <div class="spons" id="spons"><span>APOIO · PATROCÍNIO · REALIZAÇÃO</span></div>
+  <div class="rodape"><span>SUPERCOPA AFC 2026</span><span>·</span><span>AFONSO CLÁUDIO-ES</span><span>·</span><span>SUPERCOPAAFC.COM.BR</span></div>
 </div>
 
+<script src="card-resultado.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwTT4C5NQ6awTRsdzl-t__mKxK0LdMlUKoPVxla43Xj5k_BsKoS5PJGIk-4wNJuDe0Kw/exec";
 const APP_URL = "https://drdiegopadua.github.io/supercopa-app/";
 const Q = new URLSearchParams(location.search);
 const FORCE_ID = (Q.get('jogo') || '').toUpperCase();
 const DEMO = Q.has('demo');
-const IDLE = Q.has('espera');
-
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 function fit() {
-  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
-  const st = $('stage');
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080), st = $('stage');
   st.style.transform = 'scale(' + s + ')';
   st.style.left = ((innerWidth - 1920 * s) / 2) + 'px';
   st.style.top = ((innerHeight - 1080 * s) / 2) + 'px';
 }
 addEventListener('resize', fit); fit();
+
+SC.fontes().then(() => { SC.fundo($('bgc').getContext('2d'), 1920, 1080, 5); });
 
 let escudos = {};
 async function carregarEscudos() {
@@ -195,108 +148,89 @@ async function carregarEscudos() {
   } catch (e) {}
 }
 function escudoHtml(nome) {
-  const u = escudos[String(nome).toLowerCase()];
-  const ini = String(nome).replace(/[^A-Za-zÀ-ú ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase() || '?';
+  const u = escudos[String(nome).toLowerCase()], ini = SC.iniciais(nome);
   return u ? '<img src="' + esc(u) + '" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML=\'<span>' + ini + '</span>\'">' : '<span>' + ini + '</span>';
 }
 
-function setsHtml(s, lado) {
-  const hist = s.historicoSets || [];
-  let h = '';
-  for (let i = 0; i < 3; i++) {
-    const set = hist[i];
-    const ganhou = set && (lado === 'A' ? set.a > set.b : set.b > set.a);
-    const atual = !set && i === hist.length && s.status === 'em_andamento';
-    h += '<i class="' + (ganhou ? 'won' : atual ? 'cur' : '') + '">' + (ganhou ? '✓ ' : '') + 'SET ' + (i + 1) + '</i>';
-  }
-  return h;
+function titulo(modo) {
+  const t = $('titulo');
+  if (modo === 'fim') t.innerHTML = '<span class="g">FIM</span><span class="p">DE</span><span class="g">JOGO</span>';
+  else if (modo === 'espera') t.innerHTML = '<span class="g">INTERVALO</span>';
+  else t.innerHTML = '<span class="pt"><span class="dot"></span><span class="g">AO VIVO</span></span>';
 }
 
-function quadraHtml(rot, capNum, lado) {
-  const ordem = [4, 3, 2, 5, 6, 1];
-  return ordem.map(pos => {
+function lista(rot, capNum, saqueOn) {
+  return '<div class="l">' + [1, 2, 3, 4, 5, 6].map(pos => {
     const p = (rot || [])[pos - 1];
-    if (!p || !p.nome) return '<div class="p vazio"></div>';
-    const nome = String(p.nome).split(' ');
+    if (!p || !p.nome) return '<div></div>';
+    const nome = String(p.nome).toUpperCase().split(' ');
     const curto = nome.length > 1 ? nome[0] + ' ' + nome[nome.length - 1] : nome[0];
     const cap = capNum && p.numero && String(p.numero) === String(capNum);
-    return '<div class="p' + (pos === 1 ? ' sq' : '') + '"><div class="n">' + esc(p.numero || '·') + '</div><div class="t">' + esc(curto) + '</div>' + (cap ? '<div class="c">C</div>' : '') + '</div>';
-  }).join('');
+    return '<div class="' + (pos === 1 && saqueOn ? 's' : '') + '"><em>' + esc(p.numero || '·') + '</em>' + esc(curto) + (cap ? ' (C)' : '') + (pos === 1 && saqueOn ? ' ●' : '') + '</div>';
+  }).join('') + '</div>';
 }
 
-let ultimo = null, tickerLista = [], tickerIdx = 0;
+let ultimo = null, ticker = [], tIdx = 0;
 function eventosDe(s) {
   const nm = (l) => l === 'A' ? s.equipeCasa : s.equipeVisitante;
   const ev = [];
-  (s.substituicoes || []).slice(-2).forEach(b => ev.push('🔁 SUBSTITUIÇÃO · ' + nm(b.equipe) + ' · SAI ' + b.saiu + ' · ENTRA ' + b.entrou));
-  (s.cartoes || []).slice(-2).forEach(c => ev.push((c.tipo === 'Vermelho' ? '🟥 CARTÃO VERMELHO · ' : '🟨 CARTÃO AMARELO · ') + String(c.jogador).replace(/^\d+\s*-\s*/, '') + ' (' + nm(c.equipe) + ')'));
-  (s.timeouts || []).slice(-2).forEach(t => ev.push('⏱ TEMPO TÉCNICO · ' + nm(t.equipe) + ' · SET ' + t.set));
-  return ev;
+  (s.substituicoes || []).slice(-2).forEach(b => ev.push('SUBSTITUIÇÃO · ' + nm(b.equipe) + ' · SAI ' + b.saiu + ' · ENTRA ' + b.entrou));
+  (s.cartoes || []).slice(-2).forEach(c => ev.push((c.tipo === 'Vermelho' ? 'CARTÃO VERMELHO · ' : 'CARTÃO AMARELO · ') + String(c.jogador).replace(/^\d+\s*-\s*/, '') + ' (' + nm(c.equipe) + ')'));
+  (s.timeouts || []).slice(-2).forEach(t => ev.push('TEMPO TÉCNICO · ' + nm(t.equipe) + ' · SET ' + t.set));
+  return ev.map(x => x.toUpperCase());
 }
-
-function render(s) {
-  const fin = s.status === 'finalizada' || s.status === 'sets_completos';
-  $('onde').textContent = 'VÔLEI · JOGO ' + (s.id || '');
-  $('rodada').textContent = s.setAtual > 3 || fin ? 'FIM DE JOGO' : 'SET ' + Math.min(s.setAtual, 3) + ' EM ANDAMENTO';
-  const selo = $('selo'); selo.classList.toggle('fim', fin); $('seloTxt').textContent = fin ? 'ENCERRADO' : 'AO VIVO';
-  $('nomeA').textContent = s.equipeCasa; $('nomeB').textContent = s.equipeVisitante;
-  $('ccNomeA').textContent = s.equipeCasa; $('ccNomeB').textContent = s.equipeVisitante;
-  $('escA').innerHTML = escudoHtml(s.equipeCasa); $('escB').innerHTML = escudoHtml(s.equipeVisitante);
-  $('setsA').innerHTML = setsHtml(s, 'A'); $('setsB').innerHTML = setsHtml(s, 'B');
-  $('tA').classList.toggle('serve', !fin && s.sacando === 'A'); $('tB').classList.toggle('serve', !fin && s.sacando === 'B');
-  $('setlbl').textContent = fin ? 'FINAL' : 'SET ' + Math.min(s.setAtual, 3);
-  const pa = fin ? ((s.historicoSets || []).slice(-1)[0] || {}).a : s.pontosCasa;
-  const pb = fin ? ((s.historicoSets || []).slice(-1)[0] || {}).b : s.pontosVisitante;
-  setPlacar('pA', pa == null ? 0 : pa); setPlacar('pB', pb == null ? 0 : pb);
-  $('setsGrande').innerHTML = 'SETS <em>' + s.setsCasa + '</em> × <em>' + s.setsVisitante + '</em>';
-  $('parc').textContent = (s.historicoSets || []).map((x, i) => 'SET ' + (i + 1) + ': ' + x.a + '×' + x.b).join('   ·   ');
-  $('qA').innerHTML = quadraHtml(s.rotacaoCasa, s.capitaoQuadraCasa || s.capitaoCasa, 'A');
-  $('qB').innerHTML = quadraHtml(s.rotacaoVisitante, s.capitaoQuadraVisitante || s.capitaoVisitante, 'B');
-  $('arb').textContent = [s.arbitro1, s.arbitro2].filter(Boolean).length ? 'ÁRBITROS: ' + [s.arbitro1, s.arbitro2].filter(Boolean).join(' E ').toUpperCase() : '';
-  tickerLista = eventosDe(s);
-  if (!tickerLista.length) $('ev').textContent = fin ? 'Partida encerrada' : 'Partida em andamento';
-}
-function setPlacar(id, v) {
+function setNum(id, v) {
   const el = $(id);
   if (el.textContent !== String(v)) { el.textContent = v; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 }
 
+function render(s) {
+  document.body.classList.remove('on-espera');
+  const fin = s.status === 'finalizada' || s.status === 'sets_completos';
+  titulo(fin ? 'fim' : 'ao vivo');
+  $('stage').classList.toggle('fim', fin);
+  const hist = s.historicoSets || [];
+  $('sub').innerHTML = 'VÔLEI · JOGO ' + esc(s.id || '') + (fin ? '' : ' · <b>SET ' + Math.min(s.setAtual, 3) + '</b>');
+  $('escA').innerHTML = escudoHtml(s.equipeCasa); $('escB').innerHTML = escudoHtml(s.equipeVisitante);
+  $('nomeA').innerHTML = esc(s.equipeCasa).toUpperCase() + '<span class="saque ' + (!fin && s.sacando === 'A' ? '' : 'off') + '">SAQUE</span>';
+  $('nomeB').innerHTML = esc(s.equipeVisitante).toUpperCase() + '<span class="saque ' + (!fin && s.sacando === 'B' ? '' : 'off') + '">SAQUE</span>';
+  if (fin) { setNum('pA', s.setsCasa); setNum('pB', s.setsVisitante); $('qinfo').innerHTML = 'PLACAR EM SETS'; }
+  else { setNum('pA', s.pontosCasa); setNum('pB', s.pontosVisitante); $('qinfo').innerHTML = 'SETS <b>' + s.setsCasa + '</b> x <b>' + s.setsVisitante + '</b>'; }
+  $('parc').innerHTML = hist.map((x, i) => (i + 1) + 'º SET &nbsp;' + x.a + ' x ' + x.b).join('<br>');
+  $('venc').innerHTML = fin ? ((s.setsCasa > s.setsVisitante ? esc(s.equipeCasa) : esc(s.equipeVisitante)).toUpperCase() + ' VENCEU') : '';
+  $('lstA').style.display = $('lstB').style.display = fin ? 'none' : '';
+  $('lstA').innerHTML = '<h5>' + esc(s.equipeCasa).toUpperCase() + '</h5>' + lista(s.rotacaoCasa, s.capitaoQuadraCasa || s.capitaoCasa, s.sacando === 'A');
+  $('lstB').innerHTML = '<h5>' + esc(s.equipeVisitante).toUpperCase() + '</h5>' + lista(s.rotacaoVisitante, s.capitaoQuadraVisitante || s.capitaoVisitante, s.sacando === 'B');
+  const arbs = [s.arbitro1, s.arbitro2].filter(Boolean);
+  $('arb').textContent = arbs.length ? 'ÁRBITROS: ' + arbs.join(' E ').toUpperCase() : '';
+  ticker = eventosDe(s);
+  $('lance').textContent = ticker.length ? ticker[tIdx % ticker.length] : '';
+}
+
 setInterval(() => {
-  if (!tickerLista.length) return;
-  const el = $('ev'); el.classList.add('off');
-  setTimeout(() => { tickerIdx = (tickerIdx + 1) % tickerLista.length; el.textContent = tickerLista[tickerIdx]; el.classList.remove('off'); }, 400);
+  if (!ticker.length) return;
+  const el = $('lance'); el.classList.add('off');
+  setTimeout(() => { tIdx = (tIdx + 1) % ticker.length; el.textContent = ticker[tIdx]; el.classList.remove('off'); }, 400);
 }, 5000);
 
-let ovTimer = null;
-function overlay(id, ms) {
-  const el = $(id); el.classList.add('on');
-  clearTimeout(ovTimer);
-  ovTimer = setTimeout(() => el.classList.remove('on'), ms);
-}
+let ovT = null;
 function anunciar(antes, s) {
   if (!antes) return;
-  const totalAntes = antes.setsCasa + antes.setsVisitante, total = s.setsCasa + s.setsVisitante;
   const fin = s.status === 'finalizada' || s.status === 'sets_completos';
   const finAntes = antes.status === 'finalizada' || antes.status === 'sets_completos';
-  if (fin && !finAntes) {
-    const venc = s.setsCasa > s.setsVisitante ? s.equipeCasa : s.equipeVisitante;
-    $('ovFimBig').textContent = venc;
-    $('ovFimSub').textContent = s.setsCasa + ' × ' + s.setsVisitante + ' em sets · ' + (s.historicoSets || []).map(x => x.a + '×' + x.b).join('  ·  ');
-    overlay('ovFim', 22000); confete(22000);
-  } else if (total > totalAntes) {
+  if (fin && !finAntes) { confete(10000); return; }
+  if (s.setsCasa + s.setsVisitante > antes.setsCasa + antes.setsVisitante) {
     const u = (s.historicoSets || []).slice(-1)[0] || { a: 0, b: 0 };
-    const venc = u.a > u.b ? s.equipeCasa : s.equipeVisitante;
-    $('ovSetK').textContent = 'SET ' + s.historicoSets.length + ' PARA';
-    $('ovSetBig').textContent = venc;
-    $('ovSetSub').textContent = s.equipeCasa + '  ' + u.a + ' × ' + u.b + '  ' + s.equipeVisitante;
-    overlay('ovSet', 7000);
+    $('setK').textContent = 'SET ' + s.historicoSets.length + ' PARA';
+    $('setBig').textContent = u.a > u.b ? s.equipeCasa : s.equipeVisitante;
+    $('setS').textContent = s.equipeCasa.toUpperCase() + '  ' + u.a + ' x ' + u.b + '  ' + s.equipeVisitante.toUpperCase();
+    const el = $('setov'); el.classList.add('on'); clearTimeout(ovT); ovT = setTimeout(() => el.classList.remove('on'), 7000);
   }
 }
 
 function confete(ms) {
-  const c = $('conf'), x = c.getContext('2d');
-  const cores = ['#F4C542', '#2f86ff', '#ff8a1f', '#ffffff', '#22c55e'];
-  const ps = Array.from({ length: 220 }, () => ({ x: Math.random() * 1920, y: -Math.random() * 1080, v: 3 + Math.random() * 6, r: 6 + Math.random() * 10, c: cores[(Math.random() * cores.length) | 0], a: Math.random() * 6, w: Math.random() * .2 - .1 }));
+  const c = $('conf'), x = c.getContext('2d'), cores = ['#2336c4', '#d9441f', '#ffffff', '#16239a'];
+  const ps = Array.from({ length: 200 }, () => ({ x: Math.random() * 1920, y: -Math.random() * 1080, v: 3 + Math.random() * 6, r: 8 + Math.random() * 12, c: cores[(Math.random() * cores.length) | 0], a: Math.random() * 6, w: Math.random() * .2 - .1 }));
   const fim = Date.now() + ms;
   (function f() {
     x.clearRect(0, 0, 1920, 1080);
@@ -306,17 +240,6 @@ function confete(ms) {
   })();
 }
 
-/* modo espera */
-async function mostrarEspera() {
-  $('jogo').style.display = 'none'; $('idle').classList.add('on');
-  $('onde').textContent = 'VÔLEI'; $('rodada').textContent = 'PRÓXIMO JOGO EM BREVE';
-  $('selo').classList.add('fim'); $('seloTxt').textContent = 'INTERVALO';
-  let lista = [];
-  try { lista = ((await fetch(SCRIPT_URL + '?action=partidasFinalizadas').then(r => r.json())) || {}).partidas || []; } catch (e) {}
-  if (DEMO) lista = [{ equipeCasa: 'ES VÔLEI', equipeVisitante: 'CT DAS MONTANHAS', setsCasa: 2, setsVisitante: 0 }, { equipeCasa: 'AFC VÔLEI', equipeVisitante: 'SERRANA', setsCasa: 1, setsVisitante: 2 }, { equipeCasa: 'MONTANHAS', equipeVisitante: 'UNIÃO', setsCasa: 2, setsVisitante: 1 }];
-  $('resultados').innerHTML = lista.length ? lista.slice(0, 5).map(p => '<div class="res"><span class="a ' + (p.setsCasa > p.setsVisitante ? 'w' : 'l') + '">' + esc(p.equipeCasa) + '</span><span class="sc">' + p.setsCasa + ' × ' + p.setsVisitante + '</span><span class="' + (p.setsVisitante > p.setsCasa ? 'w' : 'l') + '">' + esc(p.equipeVisitante) + '</span></div>').join('') : '<div class="vazio-msg">Os resultados aparecem aqui assim que os jogos terminarem.</div>';
-  desenharQr();
-}
 let qrOk = false;
 function desenharQr() {
   if (qrOk) return;
@@ -324,54 +247,63 @@ function desenharQr() {
   s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';
   s.onload = () => {
     const qr = qrcode(0, 'M'); qr.addData(APP_URL); qr.make();
-    const n = qr.getModuleCount(), cs = Math.floor(440 / n), c = $('qr');
+    const n = qr.getModuleCount(), cs = Math.floor(400 / n), c = $('qr');
     c.width = c.height = n * cs; const x = c.getContext('2d');
-    x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.fillStyle = '#0a1530';
+    x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.fillStyle = '#14206b';
     for (let r = 0; r < n; r++) for (let q = 0; q < n; q++) if (qr.isDark(r, q)) x.fillRect(q * cs, r * cs, cs, cs);
     qrOk = true;
   };
   document.head.appendChild(s);
 }
-function mostrarJogo() { $('jogo').style.display = ''; $('idle').classList.remove('on'); }
+async function mostrarEspera() {
+  document.body.classList.add('on-espera'); $('stage').classList.remove('fim');
+  titulo('espera'); $('sub').textContent = 'VÔLEI · PRÓXIMO JOGO EM BREVE';
+  let l = [];
+  try { l = ((await fetch(SCRIPT_URL + '?action=partidasFinalizadas').then(r => r.json())) || {}).partidas || []; } catch (e) {}
+  if (DEMO) l = [{ equipeCasa: 'ES VÔLEI', equipeVisitante: 'CT DAS MONTANHAS', setsCasa: 2, setsVisitante: 0 }, { equipeCasa: 'AFC VÔLEI', equipeVisitante: 'SERRANA', setsCasa: 1, setsVisitante: 2 }, { equipeCasa: 'MONTANHAS', equipeVisitante: 'UNIÃO', setsCasa: 2, setsVisitante: 1 }];
+  $('resultados').innerHTML = l.length ? l.slice(0, 4).map(p => '<div class="r"><span class="a ' + (p.setsCasa > p.setsVisitante ? '' : 'l') + '">' + esc(p.equipeCasa).toUpperCase() + '</span><span class="sc">' + p.setsCasa + ' x ' + p.setsVisitante + '</span><span class="' + (p.setsVisitante > p.setsCasa ? '' : 'l') + '">' + esc(p.equipeVisitante).toUpperCase() + '</span></div>').join('') : '<div class="vz">OS RESULTADOS APARECEM AQUI QUANDO OS JOGOS TERMINAREM.</div>';
+  desenharQr();
+}
 
-/* dados */
 async function buscarJogo() {
-  if (FORCE_ID) {
-    const r = await fetch(SCRIPT_URL + '?action=partida&id=' + encodeURIComponent(FORCE_ID)).then(x => x.json());
-    return r && r.ok ? r.estado : null;
-  }
+  if (FORCE_ID) { const r = await fetch(SCRIPT_URL + '?action=partida&id=' + encodeURIComponent(FORCE_ID)).then(x => x.json()); return r && r.ok ? r.estado : null; }
   const l = await fetch(SCRIPT_URL + '?action=partidasAoVivo').then(x => x.json());
   const ps = (l && l.partidas) || [];
   if (!ps.length) return null;
-  const idx = Math.floor(Date.now() / 20000) % ps.length;
-  const r = await fetch(SCRIPT_URL + '?action=partida&id=' + encodeURIComponent(ps[idx].id)).then(x => x.json());
+  const r = await fetch(SCRIPT_URL + '?action=partida&id=' + encodeURIComponent(ps[Math.floor(Date.now() / 20000) % ps.length].id)).then(x => x.json());
   return r && r.ok ? r.estado : null;
 }
-let idAtual = '';
 async function ciclo() {
   try {
     const s = await buscarJogo();
     if (!s) { ultimo = null; mostrarEspera(); return; }
-    mostrarJogo();
     const antes = (ultimo && ultimo.id === s.id) ? ultimo : null;
     render(s); anunciar(antes, s); ultimo = s;
-  } catch (e) { /* mantém a última tela */ }
+  } catch (e) {}
 }
 
-/* demonstração (sem servidor): ?demo=1 */
 function demo() {
   const J = (n, nome) => ({ numero: String(n), nome: nome });
   const A = ['Ana Souza', 'Bia Lima', 'Carla Dias', 'Duda Alves', 'Edna Reis', 'Fabi Costa'].map((n, i) => J(i + 1, n));
   const B = ['Gabi Rocha', 'Hana Melo', 'Isa Duarte', 'Jana Pires', 'Kátia Nunes', 'Lia Prado'].map((n, i) => J(i + 1, n));
   const s = { id: 'A2', equipeCasa: 'ES VÔLEI', equipeVisitante: 'CT DAS MONTANHAS', status: 'em_andamento', setAtual: 2, pontosCasa: 17, pontosVisitante: 14, setsCasa: 1, setsVisitante: 0, sacando: 'A', historicoSets: [{ a: 25, b: 20 }], rotacaoCasa: A, rotacaoVisitante: B, capitaoCasa: '3', capitaoVisitante: '3', arbitro1: 'Carlos Mesa', arbitro2: 'Ana Linha', timeouts: [{ equipe: 'B', set: 2 }], cartoes: [{ equipe: 'B', jogador: '3 - Isa Duarte', tipo: 'Amarelo', set: 1 }], substituicoes: [{ equipe: 'A', set: 1, saiu: 'Fabi Costa', entrou: 'Mari Luz' }] };
-  render(s); ultimo = s;
-  if (Q.get('demo') === 'fim') { s.status = 'sets_completos'; s.setsCasa = 2; s.historicoSets.push({ a: 25, b: 21 }); render(s); $('ovFimBig').textContent = s.equipeCasa; $('ovFimSub').textContent = '2 × 0 em sets · 25×20  ·  25×21'; $('ovFim').classList.add('on'); confete(60000); }
-  else if (Q.get('demo') === 'set') { $('ovSetK').textContent = 'SET 1 PARA'; $('ovSetBig').textContent = s.equipeCasa; $('ovSetSub').textContent = 'ES VÔLEI  25 × 20  CT DAS MONTANHAS'; $('ovSet').classList.add('on'); }
-  else setInterval(() => { if (Math.random() < .5) s.pontosCasa++; else s.pontosVisitante++; s.sacando = Math.random() < .5 ? 'A' : 'B'; render(s); }, 2500);
+  const m = Q.get('demo');
+  if (m === 'fim') { s.status = 'sets_completos'; s.setsCasa = 2; s.historicoSets.push({ a: 25, b: 21 }); render(s); }
+  else if (m === 'espera') mostrarEspera();
+  else { render(s); setInterval(() => { if (Math.random() < .5) s.pontosCasa++; else s.pontosVisitante++; s.sacando = Math.random() < .5 ? 'A' : 'B'; render(s); }, 2500); }
+  ultimo = s;
 }
 
+/* tecla C = baixa o card do resultado do jogo em tela (1080x1080) */
+addEventListener('keydown', async (e) => {
+  if ((e.key || '').toLowerCase() !== 'c' || !ultimo) return;
+  const s = ultimo, fin = s.status === 'finalizada' || s.status === 'sets_completos';
+  const cv = document.createElement('canvas');
+  await SC.card(cv, { titulo: fin ? 'FIM DE JOGO' : 'AO VIVO', equipeA: s.equipeCasa.toUpperCase(), equipeB: s.equipeVisitante.toUpperCase(), placarA: fin ? s.setsCasa : s.pontosCasa, placarB: fin ? s.setsVisitante : s.pontosVisitante, escudoA: escudos[s.equipeCasa.toLowerCase()], escudoB: escudos[s.equipeVisitante.toLowerCase()], linhas: [fin ? ((s.setsCasa > s.setsVisitante ? s.equipeCasa : s.equipeVisitante).toUpperCase() + ' VENCEU') : 'SET ' + Math.min(s.setAtual, 3)].concat((s.historicoSets || []).map((x, i) => (i + 1) + 'º SET  ' + x.a + ' x ' + x.b)) });
+  const a = document.createElement('a'); a.download = 'card-jogo-' + s.id + '.png'; a.href = cv.toDataURL('image/png'); a.click();
+});
+
 carregarEscudos().then(() => {
-  if (IDLE) { mostrarEspera(); return; }
   if (DEMO) { demo(); return; }
   ciclo(); setInterval(ciclo, 15000);
 });
