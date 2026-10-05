@@ -416,7 +416,22 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
       </div>
       <button onclick="caaSalvarAtleta()" style="background:#1565c0;color:#fff;border:none;padding:13px 16px;border-radius:10px;font-weight:700;font-size:13px;white-space:nowrap">+ Add</button>
     </div>
-    <div id="caaLista" style="padding:0 16px 24px"></div>
+    <div id="caaLista" style="padding:0 16px 14px"></div>
+
+    <div style="padding:0 16px 28px">
+      <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">✍️ Assinaturas da equipe</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Cadastre uma vez — a assinatura do técnico e do capitão é usada automaticamente na súmula oficial dos jogos.</p>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--text)">Técnico</span><span id="caa-ass-status-tecnico" style="font-size:11px;color:var(--muted)"></span></div>
+        <canvas id="caa-ass-canvas-tecnico" width="480" height="160" style="width:100%;aspect-ratio:3/1;background:#fff;border:1.5px dashed #9aa0ab;border-radius:10px;touch-action:none;display:block"></canvas>
+        <div style="display:flex;gap:8px;margin-top:8px"><button onclick="caaAssLimpar('tecnico')" style="flex:1;background:transparent;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px;font-size:12px;font-weight:700">Limpar</button><button onclick="caaAssSalvar('tecnico')" style="flex:2;background:#1565c0;color:#fff;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700">Salvar assinatura do técnico</button></div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--text)">Capitão</span><span id="caa-ass-status-capitao" style="font-size:11px;color:var(--muted)"></span></div>
+        <canvas id="caa-ass-canvas-capitao" width="480" height="160" style="width:100%;aspect-ratio:3/1;background:#fff;border:1.5px dashed #9aa0ab;border-radius:10px;touch-action:none;display:block"></canvas>
+        <div style="display:flex;gap:8px;margin-top:8px"><button onclick="caaAssLimpar('capitao')" style="flex:1;background:transparent;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px;font-size:12px;font-weight:700">Limpar</button><button onclick="caaAssSalvar('capitao')" style="flex:2;background:#1565c0;color:#fff;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700">Salvar assinatura do capitão</button></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -697,7 +712,66 @@ async function caaEntrar(){
       document.getElementById('caaGerenciar').insertBefore(aviso, document.getElementById('caaContadores').nextSibling);
     }
     caaCarregarLista();
+    caaCarregarAssinaturas();
   } catch(e){ erroEl.textContent = 'Erro de conexão. Tenta de novo.'; erroEl.style.display = ''; }
+}
+
+function caaSigPad(canvas){
+  if (canvas._sigPad) return canvas._sigPad;
+  const ctx = canvas.getContext('2d');
+  ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+  let desenhando = false, vazio = true, ult = null;
+  const pos = (ev) => { const r = canvas.getBoundingClientRect(); return { x:(ev.clientX-r.left)*canvas.width/r.width, y:(ev.clientY-r.top)*canvas.height/r.height }; };
+  canvas.addEventListener('pointerdown', (ev) => {
+    ev.preventDefault();
+    try{ canvas.setPointerCapture(ev.pointerId); }catch(e){}
+    desenhando = true; vazio = false; ult = pos(ev);
+    ctx.beginPath(); ctx.moveTo(ult.x, ult.y); ctx.lineTo(ult.x+0.01, ult.y); ctx.stroke();
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (!desenhando) return;
+    const p = pos(ev);
+    ctx.beginPath(); ctx.moveTo(ult.x, ult.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    ult = p;
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(t => canvas.addEventListener(t, () => { desenhando = false; }));
+  canvas._sigPad = {
+    limpar(){ ctx.clearRect(0,0,canvas.width,canvas.height); vazio = true; },
+    vazio(){ return vazio; },
+    dataUrl(){
+      const off = document.createElement('canvas');
+      off.width = 320; off.height = 107;
+      off.getContext('2d').drawImage(canvas, 0, 0, off.width, off.height);
+      return off.toDataURL('image/png');
+    }
+  };
+  return canvas._sigPad;
+}
+
+function caaAssLimpar(papel){ caaSigPad(document.getElementById('caa-ass-canvas-' + papel)).limpar(); }
+
+async function caaCarregarAssinaturas(){
+  ['tecnico','capitao'].forEach(p => { caaSigPad(document.getElementById('caa-ass-canvas-' + p)).limpar(); });
+  try{
+    const res = await fetch(SUMULA_SCRIPT_URL + '?action=assinaturasEquipe&equipe=' + encodeURIComponent(caaEquipeAtual)).then(r=>r.json());
+    const ass = (res && res.assinaturas) || {};
+    ['tecnico','capitao'].forEach(p => {
+      const st = document.getElementById('caa-ass-status-' + p);
+      st.textContent = ass[p] ? '✅ assinatura cadastrada' : 'ainda sem assinatura';
+      st.style.color = ass[p] ? '#22c55e' : '';
+    });
+  }catch(e){ /* sem conexão: segue sem o status */ }
+}
+
+async function caaAssSalvar(papel){
+  if (!caaEquipeAtual){ showToast('Entre com sua equipe primeiro.'); return; }
+  const pad = caaSigPad(document.getElementById('caa-ass-canvas-' + papel));
+  if (pad.vazio()){ showToast('Desenhe a assinatura primeiro.'); return; }
+  try{
+    const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'salvarAssinatura', equipe:caaEquipeAtual, pin:caaPinAtual, papel:papel, assinatura:pad.dataUrl()}) }).then(r=>r.json());
+    if (res.ok){ showToast('✅ Assinatura salva!'); pad.limpar(); caaCarregarAssinaturas(); }
+    else showToast('❌ ' + (res.erro || 'erro ao salvar'));
+  }catch(e){ showToast('❌ Erro de conexão.'); }
 }
 
 function caaSair(){
