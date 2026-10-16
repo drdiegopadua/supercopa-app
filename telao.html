@@ -122,7 +122,7 @@ canvas#conf{position:absolute;inset:0;z-index:40;pointer-events:none}
 
 <script src="card-resultado.js"></script>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwTT4C5NQ6awTRsdzl-t__mKxK0LdMlUKoPVxla43Xj5k_BsKoS5PJGIk-4wNJuDe0Kw/exec";
+const SCRIPT_URL = (function(){try{if(localStorage.getItem("scBackend")==="planilha")return "https://script.google.com/macros/s/AKfycbwwTT4C5NQ6awTRsdzl-t__mKxK0LdMlUKoPVxla43Xj5k_BsKoS5PJGIk-4wNJuDe0Kw/exec";}catch(e){}return "https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api";})();
 const APP_URL = "https://drdiegopadua.github.io/supercopa-app/";
 const Q = new URLSearchParams(location.search);
 const FORCE_ID = (Q.get('jogo') || '').toUpperCase();
