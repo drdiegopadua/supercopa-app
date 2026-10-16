@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercopa-afc-v23';
+const CACHE_NAME = 'supercopa-afc-v24';
 
 const urlsToCache = [
   './',
@@ -21,7 +21,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k !== CACHE_NAME && k !== 'sc-galeria').map(k => caches.delete(k)))
     ).then(() => clients.claim())
   );
 });
@@ -39,6 +39,20 @@ self.addEventListener('fetch', event => {
           return res;
         })
         .catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Fotos da galeria: guarda no aparelho na 1ª vez (abre rápido e funciona sem internet).
+  // O endereço muda (?v=) quando a foto é trocada, então nunca fica foto velha.
+  if (req.method === 'GET' && /\/galeria\/[ft]-\d+\.webp/.test(req.url)) {
+    event.respondWith(
+      caches.open('sc-galeria').then(cache =>
+        cache.match(req).then(hit => hit || fetch(req).then(res => {
+          if (res && res.status === 200) cache.put(req, res.clone());
+          return res;
+        }))
+      )
     );
     return;
   }
