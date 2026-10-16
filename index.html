@@ -1588,261 +1588,117 @@ function basqueteAvisoBloqueio(){showToast('🏀 Basquete por enquanto está pau
 function basqAvisoBloqueio(){showToast('🏀 Basquete encerrado! Escolha seu time para o Vôlei.');}
 function emptyStateHTML(icon,text){return'<div class="empty-state2"><div class="es-icon">'+icon+'</div><div class="es-text">'+text+'</div></div>';}
 function skeletonHTML(n,h){n=n||4;h=h||60;var s='';for(var i=0;i<n;i++)s+='<div class="skeleton" style="height:'+h+'px;margin-bottom:10px"></div>';return s;}
-const ATLETAS_GALERA=[
-  {nome:'Lucas Petronetto (C)',numero:'1',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Carlos Henrique Scalzer',numero:'2',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Ystarllen Rocha',numero:'3',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Luis Gabriel Ribeiro',numero:'4',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Dagoberto Júnior',numero:'5',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Hentony Rangel',numero:'6',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Renan Giestas',numero:'7',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Kevny Rangel',numero:'8',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Ricardo Hollunder',numero:'11',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Saymon Rangel',numero:'12',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Carlos Henrique Giostri',numero:'13',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Marcelo Dutra',numero:'15',time:'CT das Montanhas',modalidade:'basquete'},
-  {nome:'Bruno Merisio',numero:'13',time:'Marlins',modalidade:'basquete'},
-  {nome:'Felippe Piccin',numero:'10',time:'Marlins',modalidade:'basquete'},
-  {nome:'Lucca Santos',numero:'33',time:'Marlins',modalidade:'basquete'},
-  {nome:'Pablo Vinicius',numero:'21',time:'Marlins',modalidade:'basquete'},
-  {nome:'Gabriel Pesente',numero:'30',time:'Marlins',modalidade:'basquete'},
-  {nome:'Igor Tolentino',numero:'17',time:'Marlins',modalidade:'basquete'},
-  {nome:'Fernando Furtado',numero:'27',time:'Marlins',modalidade:'basquete'},
-  {nome:'Pedro Boni de Sá',numero:'4',time:'Marlins',modalidade:'basquete'},
-  {nome:'Paulo Serrano',numero:'34',time:'Marlins',modalidade:'basquete'},
-  {nome:'João Pedro Almeida',numero:'5',time:'Marlins',modalidade:'basquete'},
-  {nome:'Roberto Lourenço',numero:'1',time:'Marlins',modalidade:'basquete'},
-  {nome:'Carlos Eduardo Gonçalves Rodrigues',numero:'28',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'João Pedro Nogueira de Santa Rita',numero:'7',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Carlos Eduardo Miranda Comitre',numero:'31',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Lazaro Contreiro Azevedo',numero:'77',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Pedro Henrique Queiroz',numero:'1',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Lucas Mateus Machado da Silva',numero:'12',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Bernardo Reali Donato',numero:'4',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Lorran Marvila',numero:'22',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Gustavo Leonardo Viana',numero:'10',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Júlio César Carneiro Filho',numero:'33',time:'Crossover Basquete',modalidade:'basquete'},
-  {nome:'Ubiraci Junior',numero:'7/2',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Hebert Martins',numero:'23/24',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Isaías José',numero:'6/33',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Robson Barbosa',numero:'10/10',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Wil Marvilha',numero:'14/32',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Allan dos Anjos',numero:'34/23',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Vanderci Rufino',numero:'12/71',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Weverton Pereira',numero:'50/45',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Joshua Elizeu',numero:'35/0',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Bryan Magno',numero:'8/17',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Vitor Borges',numero:'5/13',time:'Central Serrano Basquete',modalidade:'basquete'},
-  {nome:'Breno Cabidelle Santos',numero:'2',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Kalebe Silva Lima',numero:'3',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Cauã Cassoti Tessarolo',numero:'5',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Yuri Moreira da Silva',numero:'10/6',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Jean Macson de Oliveira Pontes',numero:'7',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Warley Souza de Jesus',numero:'8/4',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Nicolas Loyola Rosa',numero:'9/6',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Ruan Vitor Luiz Lima',numero:'11',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Paulo Henrique Martins Del Caro',numero:'12',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Adriano Bermond Trindade',numero:'13',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Kassio Rangel Barcelos',numero:'17/1',time:'Aracruz Basquete',modalidade:'basquete'},
-  {nome:'Wanderson de Jesus',numero:'33',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Alessandro Rocha Santana',numero:'12',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Victor Oliveira',numero:'77',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Márcio Carlos Silva',numero:'4',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Rahysner Will',numero:'30',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'João Guilherme',numero:'',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Gerciel Krauser',numero:'37',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Davi Rodrigues',numero:'11',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Vitor Christ',numero:'2',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'João Vitor Vieira',numero:'24',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Sanley Borges',numero:'35',time:'São Pedro Basquete',modalidade:'basquete'},
-  {nome:'Iago Dondoni',numero:'10',time:'São Pedro Basquete',modalidade:'basquete'},
-];
-const GALERA_ABERTURA={basquete:new Date('2026-07-25T16:00:00Z'),volei:null};
-const GALERA_DEADLINE={basquete:new Date('2026-07-26T14:00:00Z'),volei:new Date('2026-11-29T15:00:00Z')};
-const GALERA_URL='https://script.google.com/macros/s/AKfycbxFjUc_Z7wdPEWMQ_WzbQGNiHBVu0yJsxb8AwZC3-eZm_dHT_yk-hhmdToxXUeiTtxV/exec';
-
+/* ===== ATLETA DESTAQUE: 1 voto por pessoa (WhatsApp + aparelho), só atletas de jogos encerrados ===== */
+const VOTO_KEY='sc_voto_destaque', DEV_KEY='sc_dev_id';
+let _vot={equipes:[],aberta:true,sel:null,eq:''};
+function _vEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function _vDev(){try{let d=localStorage.getItem(DEV_KEY);if(!d){d='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem(DEV_KEY,d)}return d}catch(e){return ''}}
+function _vMeu(){try{return JSON.parse(localStorage.getItem(VOTO_KEY)||'null')}catch(e){return null}}
 function galeraSubTab(tab,btn){
-  const activeStyle='flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)';
-  const inactiveStyle='flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B';
-  document.getElementById('galeraBtnVotar').style.cssText=inactiveStyle;
-  document.getElementById('galeraBtnRanking').style.cssText=inactiveStyle;
-  if(btn)btn.style.cssText=activeStyle;
-  const isVotar=tab==='votar';
-  document.getElementById('galeraPanelVotar').style.display=isVotar?'block':'none';
-  document.getElementById('galeraPanelRanking').style.display=isVotar?'none':'block';
-  if(!isVotar)loadGaleraRanking();
+  const on='flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)';
+  const off='flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B';
+  const v=tab==='votar';
+  document.getElementById('galeraBtnVotar').style.cssText=v?on:off;
+  document.getElementById('galeraBtnRanking').style.cssText=v?off:on;
+  document.getElementById('galeraPanelVotar').style.display=v?'block':'none';
+  document.getElementById('galeraPanelRanking').style.display=v?'none':'block';
+  if(!v)loadGaleraRanking();
 }
-
-function initGaleraVoting(){
-  const modalidade='basquete';
-  const abertura=GALERA_ABERTURA[modalidade];
-  const deadline=GALERA_DEADLINE[modalidade];
-  const aindaNaoAbriu=abertura&&new Date()<abertura;
-  const encerrado=!aindaNaoAbriu&&new Date()>=deadline;
-  const badge=document.getElementById('galeraDeadlineBadge');
-  if(badge){
-    if(aindaNaoAbriu){
-      badge.textContent='⏳ Votação abre em 25/07 às 13h';
-      badge.style.cssText='text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(124,58,237,.1);color:#7C3AED;border-radius:20px;margin-bottom:12px';
-    } else if(encerrado){
-      badge.textContent='⛔ Votação encerrada em 26/07 às 11h';
-      badge.style.cssText='text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(220,38,38,.1);color:#dc2626;border-radius:20px;margin-bottom:12px';
-    } else {
-      badge.textContent='⏰ Votação aberta · Encerra 26/07/2026 às 11h';
-      badge.style.cssText='text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(124,58,237,.1);color:#7C3AED;border-radius:20px;margin-bottom:12px';
-    }
-  }
-  const votosKey='galera_votos_'+modalidade;
-  const votos=JSON.parse(localStorage.getItem(votosKey)||'[]');
-  const usados=votos.length;
-  const counter=document.getElementById('galeraVotosCounter');
-  if(counter)counter.innerHTML=Array.from({length:3},(_,i)=>'<div style="width:12px;height:12px;border-radius:50%;background:'+(i<usados?'#7C3AED':'#e2e8f2')+';transition:background .3s"></div>').join('');
-  const myVotesEl=document.getElementById('galeraMyVotes');
-  if(myVotesEl){
-    if(votos.length>0){
-      myVotesEl.style.display='block';
-      myVotesEl.innerHTML='<div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Seus votos</div>'+
-        votos.map(v=>'<div style="display:flex;align-items:center;gap:10px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:11px;padding:9px 12px;margin-bottom:7px">'+
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'+
-          '<div><div style="font-size:12px;font-weight:800;color:#7C3AED">'+v.atleta+'</div><div style="font-size:10px;color:#94a3b8">'+v.time+'</div></div>'+
-        '</div>').join('');
-    } else {
-      myVotesEl.style.display='none';
-    }
-  }
-  const votarArea=document.getElementById('galeraVotarArea');
-  const esgotadoArea=document.getElementById('galeraEsgotadoArea');
-  const encerradoArea=document.getElementById('galeraEncerradoArea');
-  const aindaNaoAbriuArea=document.getElementById('galeraAindaNaoAbriuArea');
-  if(aindaNaoAbriu){
-    if(votarArea)votarArea.style.display='none';
-    if(esgotadoArea)esgotadoArea.style.display='none';
-    if(encerradoArea)encerradoArea.style.display='none';
-    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='block';
-  } else if(encerrado){
-    if(votarArea)votarArea.style.display='none';
-    if(esgotadoArea)esgotadoArea.style.display='none';
-    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
-    if(encerradoArea)encerradoArea.style.display='block';
-  } else if(usados>=3){
-    if(votarArea)votarArea.style.display='none';
-    if(esgotadoArea)esgotadoArea.style.display='block';
-    if(encerradoArea)encerradoArea.style.display='none';
-    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
-  } else {
-    if(votarArea)votarArea.style.display='block';
-    if(esgotadoArea)esgotadoArea.style.display='none';
-    if(encerradoArea)encerradoArea.style.display='none';
-    if(aindaNaoAbriuArea)aindaNaoAbriuArea.style.display='none';
-    const sel=document.getElementById('galeraTimeSelect');
-    if(sel&&sel.options.length<=1){
-      const times=[...new Set(ATLETAS_GALERA.filter(a=>a.modalidade===modalidade).map(a=>a.time))].sort();
-      times.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
-    }
-  }
-}
-
-function onGaleraTimeChange(){
-  const modalidade='basquete';
-  const sel=document.getElementById('galeraTimeSelect');
-  const listEl=document.getElementById('galeraAtletasList');
-  if(!sel||!listEl)return;
-  const time=sel.value;
-  if(!time){listEl.style.display='none';listEl.innerHTML='';return;}
-  const votosKey='galera_votos_'+modalidade;
-  const jaVotados=JSON.parse(localStorage.getItem(votosKey)||'[]').map(v=>v.atleta);
-  const atletas=ATLETAS_GALERA.filter(a=>a.time===time&&a.modalidade===modalidade);
-  if(!atletas.length){listEl.style.display='none';return;}
-  listEl.style.display='block';
-  listEl.innerHTML='<div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Escolha o atleta</div>'+
-    atletas.map(a=>{
-      const jaVotou=jaVotados.includes(a.nome);
-      return '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid '+(jaVotou?'rgba(124,58,237,.3)':'#e2e8f2')+';border-radius:12px;padding:10px 14px;margin-bottom:8px">'+
-        '<div style="display:flex;align-items:center;gap:8px">'+
-          '<div style="background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;font-size:13px;flex-shrink:0">#'+a.numero+'</div>'+
-          '<span style="font-size:13px;font-weight:700;color:#111">'+a.nome+'</span>'+
-        '</div>'+
-        (jaVotou
-          ?'<span style="font-size:11px;font-weight:800;color:#7C3AED;background:rgba(124,58,237,.1);padding:5px 10px;border-radius:8px">✓ Votado</span>'
-          :'<button onclick="votarGalera(\''+a.nome.replace(/'/g,"\\'")+'\''+',\''+a.time.replace(/'/g,"\\'")+'\''+')" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer">Votar</button>')+
-      '</div>';
-    }).join('');
-}
-
-async function votarGalera(atleta,time){
-  const modalidade='basquete';
-  if(GALERA_ABERTURA[modalidade]&&new Date()<GALERA_ABERTURA[modalidade]){showToast('Votação ainda não abriu!');return;}
-  if(new Date()>=GALERA_DEADLINE[modalidade]){showToast('Votação encerrada!');return;}
-  const votosKey='galera_votos_'+modalidade;
-  const votos=JSON.parse(localStorage.getItem(votosKey)||'[]');
-  if(votos.length>=3){showToast('Você já usou seus 3 votos!');return;}
-  if(votos.some(v=>v.atleta===atleta)){showToast('Você já votou neste atleta!');return;}
-  const nome=localStorage.getItem('galera_nome');
-  const tel=localStorage.getItem('galera_tel');
-  if(!nome||!tel){
-    document.getElementById('galeraIdentityAtleta').value=atleta;
-    document.getElementById('galeraIdentityTime').value=time;
-    document.getElementById('galeraIdentityModal').style.display='flex';
-    return;
-  }
-  await _submitVotoGalera(atleta,time,nome,tel,modalidade);
-}
-
-async function confirmarIdentidadeGalera(){
-  const nome=document.getElementById('galeraIdentityNome').value.trim();
-  const tel=document.getElementById('galeraIdentityTel').value.trim();
-  if(!nome||nome.length<3){showToast('Informe seu nome completo');return;}
-  if(!tel||tel.replace(/\D/g,'').length<10){showToast('Informe um telefone válido com DDD');return;}
-  localStorage.setItem('galera_nome',nome);
-  localStorage.setItem('galera_tel',tel);
-  const atleta=document.getElementById('galeraIdentityAtleta').value;
-  const time=document.getElementById('galeraIdentityTime').value;
-  document.getElementById('galeraIdentityModal').style.display='none';
-  await _submitVotoGalera(atleta,time,nome,tel,'basquete');
-}
-
-async function _submitVotoGalera(atleta,time,nome,tel,modalidade){
-  showToast('Enviando voto...');
+function renderGaleraVoting(){nav('chatPage',null);setTimeout(initGaleraVoting,100)}
+async function initGaleraVoting(){
+  galeraSubTab('votar',document.getElementById('galeraBtnVotar'));
+  const area=document.getElementById('galeraVotarArea');
+  const meu=_vMeu();
+  if(meu){_vJaVotou(meu);return}
+  area.innerHTML='<div style="padding:6px">'+skeletonHTML(3,48)+'</div>';
   try{
-    await fetch(GALERA_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({action:'votar',nomeVotante:nome,telefone:tel,modalidade,time,atleta})
-    });
-  }catch(e){/* continua mesmo offline */}
-  const votosKey='galera_votos_'+modalidade;
-  const votos=JSON.parse(localStorage.getItem(votosKey)||'[]');
-  votos.push({atleta,time,timestamp:Date.now()});
-  localStorage.setItem(votosKey,JSON.stringify(votos));
-  showToast('✅ Voto em '+atleta+' registrado!');
-  document.getElementById('galeraTimeSelect').value='';
-  document.getElementById('galeraAtletasList').style.display='none';
-  document.getElementById('galeraAtletasList').innerHTML='';
-  initGaleraVoting();
-}
-
-async function loadGaleraRanking(){
-  const el=document.getElementById('galeraRankingList');
-  if(!el)return;
-  el.innerHTML='<div style="padding:6px">'+skeletonHTML(4,44)+'</div>';
-  try{
-    const r=await fetch(GALERA_URL+'?action=ranking&modalidade=basquete');
-    const data=await r.json();
-    if(!data.ranking||!data.ranking.length){
-      el.innerHTML=emptyStateHTML('⭐','Nenhum voto registrado ainda. Seja o primeiro!');
-      return;
-    }
-    const medals=['🥇','🥈','🥉'];
-    el.innerHTML=data.ranking.map((item,i)=>
-      '<div style="display:flex;align-items:center;gap:12px;background:'+(i<3?'rgba(124,58,237,.07)':'#fff')+';border:1.5px solid '+(i<3?'rgba(124,58,237,.22)':'#e2e8f2')+';border-radius:13px;padding:12px 14px;margin-bottom:8px">'+
-        '<div style="font-family:Anton,sans-serif;font-size:'+(i<3?'22':'16')+'px;width:32px;text-align:center;color:#7C3AED">'+(medals[i]||i+1)+'</div>'+
-        '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:#111">'+item.atleta+'</div><div style="font-size:10px;color:#94a3b8;margin-top:1px">'+item.time+'</div></div>'+
-        '<div style="text-align:right"><div style="font-family:Anton,sans-serif;font-size:18px;color:#7C3AED">'+item.votos+'</div><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">votos</div></div>'+
-      '</div>'
-    ).join('');
+    const r=await fetch(SC_API_APP_+'?action=votacao');const d=await r.json();
+    if(!d.ok)throw 0;
+    _vot.equipes=d.equipes||[];_vot.aberta=d.aberta;
+    try{localStorage.setItem('sc_votacao_cache',JSON.stringify(d))}catch(e){}
   }catch(e){
+    try{const c=JSON.parse(localStorage.getItem('sc_votacao_cache')||'null');if(c){_vot.equipes=c.equipes||[];_vot.aberta=c.aberta}else{area.innerHTML=emptyStateHTML('📡','Sem conexão. Tente novamente em instantes.');return}}catch(x){return}
+  }
+  if(!_vot.aberta){area.innerHTML='<div style="text-align:center;padding:30px 16px"><div style="font-size:44px">⛔</div><div style="font-size:17px;font-weight:900;color:#dc2626;margin:8px 0 4px">Votação encerrada</div><div style="font-size:12px;color:#94a3b8">Confira o resultado no ranking.</div></div>';return}
+  if(!_vot.equipes.length){area.innerHTML='<div style="text-align:center;padding:30px 16px"><div style="font-size:44px">⏳</div><div style="font-size:17px;font-weight:900;color:#7C3AED;margin:8px 0 4px">A votação abre com o 1º jogo</div><div style="font-size:12px;color:#94a3b8">Assim que uma partida terminar, os atletas que jogaram aparecem aqui para você votar.</div></div>';return}
+  _vot.sel=null;_vot.eq='';_vDesenhar();
+}
+function _vDesenhar(){
+  const area=document.getElementById('galeraVotarArea');
+  const nm=localStorage.getItem('galera_nome')||'', tl=localStorage.getItem('galera_tel')||'';
+  area.innerHTML=
+  '<div style="font-size:12px;color:#64748b;margin-bottom:10px;line-height:1.5"><b>1 voto por pessoa.</b> Escolha o time e toque no atleta que mais se destacou.</div>'+
+  '<div style="position:relative;margin-bottom:12px"><select id="vEquipe" onchange="vTrocarEquipe(this.value)" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e2e8f2;background:#fff;color:#111;font-size:14px;font-weight:700;outline:0;appearance:none;-webkit-appearance:none">'+
+  '<option value="">1) Escolha o time…</option>'+_vot.equipes.map(e=>'<option value="'+_vEsc(e.equipe)+'"'+(e.equipe===_vot.eq?' selected':'')+'>'+_vEsc(e.equipe)+' ('+e.atletas.length+')</option>').join('')+'</select></div>'+
+  '<div id="vAtletas"></div>'+
+  '<div id="vForm" style="display:none;margin-top:14px;background:#fff;border:1.5px solid #e2e8f2;border-radius:16px;padding:14px">'+
+    '<div id="vEscolhido" style="font-size:13px;font-weight:800;color:#7C3AED;margin-bottom:10px"></div>'+
+    '<input id="vNome" type="text" autocomplete="name" placeholder="Seu nome completo" value="'+_vEsc(nm)+'" style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #e2e8f2;font-size:14px;font-weight:600;outline:0;margin-bottom:8px;box-sizing:border-box;font-family:inherit">'+
+    '<input id="vTel" type="tel" autocomplete="tel" inputmode="tel" placeholder="Seu WhatsApp com DDD" value="'+_vEsc(tl)+'" style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #e2e8f2;font-size:14px;font-weight:600;outline:0;margin-bottom:8px;box-sizing:border-box;font-family:inherit">'+
+    '<label style="display:flex;gap:8px;align-items:flex-start;font-size:11px;color:#64748b;margin-bottom:12px;line-height:1.4"><input id="vAceite" type="checkbox" style="margin-top:2px"> Concordo que cada pessoa vota só 1 vez e que meu WhatsApp seja usado apenas para evitar votos repetidos.</label>'+
+    '<button id="vBtn" onclick="enviarVotoDestaque()" style="width:100%;height:50px;border-radius:13px;border:none;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit">Confirmar meu voto ⭐</button>'+
+  '</div>';
+  if(_vot.eq)vTrocarEquipe(_vot.eq,true);
+}
+function vTrocarEquipe(eq,keep){
+  _vot.eq=eq;if(!keep)_vot.sel=null;
+  const box=document.getElementById('vAtletas');const form=document.getElementById('vForm');
+  const e=_vot.equipes.find(x=>x.equipe===eq);
+  if(!e){box.innerHTML='';form.style.display='none';return}
+  box.innerHTML='<div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2) Toque no atleta</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+  e.atletas.map((a,i)=>{const s=_vot.sel===a.nome;return '<button onclick="vEscolher('+i+')" style="display:flex;align-items:center;gap:8px;text-align:left;background:'+(s?'linear-gradient(135deg,#7C3AED,#6D28D9)':'#fff')+';color:'+(s?'#fff':'#111')+';border:1.5px solid '+(s?'#7C3AED':'#e2e8f2')+';border-radius:12px;padding:9px 10px;cursor:pointer;font-family:inherit">'+
+    '<span style="min-width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;font-size:13px;background:'+(s?'rgba(255,255,255,.22)':'rgba(124,58,237,.1)')+';color:'+(s?'#fff':'#7C3AED')+'">'+(a.numero?_vEsc(a.numero):'–')+'</span>'+
+    '<span style="font-size:12px;font-weight:700;line-height:1.2">'+_vEsc(a.nome)+'</span></button>'}).join('')+'</div>';
+  form.style.display=_vot.sel?'block':'none';
+  if(_vot.sel)document.getElementById('vEscolhido').textContent='Seu voto: '+_vot.sel+' · '+eq;
+}
+function vEscolher(i){
+  const e=_vot.equipes.find(x=>x.equipe===_vot.eq);if(!e)return;
+  _vot.sel=e.atletas[i].nome;vTrocarEquipe(_vot.eq,true);
+  setTimeout(()=>{const f=document.getElementById('vForm');f&&f.scrollIntoView({behavior:'smooth',block:'center'})},60);
+}
+async function enviarVotoDestaque(){
+  const nome=document.getElementById('vNome').value.trim(), tel=document.getElementById('vTel').value.trim(), ac=document.getElementById('vAceite').checked;
+  if(nome.length<3){showToast('Digite seu nome completo');return}
+  if(tel.replace(/\D/g,'').length<10){showToast('Digite um WhatsApp válido com DDD');return}
+  if(!ac){showToast('Marque a caixa de concordância');return}
+  const btn=document.getElementById('vBtn');btn.disabled=true;btn.textContent='Enviando…';
+  try{
+    localStorage.setItem('galera_nome',nome);localStorage.setItem('galera_tel',tel);
+    const r=await fetch(SC_API_APP_,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({acao:'votarDestaque',nome,whatsapp:tel,aceite:true,equipe:_vot.eq,atletaNome:_vot.sel,deviceId:_vDev()})});
+    const d=await r.json();
+    if(d.ok){const m={equipe:d.voto.equipe,nome:d.voto.nome,numero:d.voto.numero};localStorage.setItem(VOTO_KEY,JSON.stringify(m));if(navigator.vibrate)navigator.vibrate([20,40,20]);_vJaVotou(m);galeraSubTab('ranking',document.getElementById('galeraBtnRanking'));return}
+    if(d.jaVotou){localStorage.setItem(VOTO_KEY,JSON.stringify({equipe:'',nome:'(seu voto já foi registrado)',numero:''}));_vJaVotou(_vMeu());showToast('Você já votou');return}
+    showToast(d.erro||'Não foi possível votar');
+  }catch(e){showToast('Sem conexão. Tente de novo.')}
+  btn.disabled=false;btn.textContent='Confirmar meu voto ⭐';
+}
+function _vJaVotou(m){
+  document.getElementById('galeraVotarArea').innerHTML='<div style="text-align:center;padding:26px 16px;background:rgba(124,58,237,.06);border:1.5px solid rgba(124,58,237,.2);border-radius:18px"><div style="font-size:44px">✅</div><div style="font-size:17px;font-weight:900;color:#7C3AED;margin:6px 0 4px">Voto registrado!</div><div style="font-size:13px;font-weight:700;color:#111">'+(m.numero?'#'+_vEsc(m.numero)+' ':'')+_vEsc(m.nome)+'</div><div style="font-size:11px;color:#94a3b8;margin:2px 0 14px">'+_vEsc(m.equipe)+'</div><button onclick="galeraSubTab(\'ranking\',document.getElementById(\'galeraBtnRanking\'))" style="padding:11px 26px;border-radius:12px;border:none;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;font-size:13px;font-weight:800;cursor:pointer">Ver ranking →</button></div>';
+}
+async function loadGaleraRanking(){
+  const el=document.getElementById('galeraRankingList');if(!el)return;
+  if(!el.dataset.ok)el.innerHTML='<div style="padding:6px">'+skeletonHTML(4,44)+'</div>';
+  try{
+    const r=await fetch(SC_API_APP_+'?action=rankingDestaque');const d=await r.json();
+    if(!d.ok)throw 0;
+    try{localStorage.setItem('sc_rank_cache',JSON.stringify(d))}catch(e){}
+    _vRank(el,d);
+  }catch(e){
+    try{const c=JSON.parse(localStorage.getItem('sc_rank_cache')||'null');if(c){_vRank(el,c);return}}catch(x){}
     el.innerHTML='<div style="text-align:center;padding:30px;color:#94a3b8;font-size:12px">Erro ao carregar. Tente novamente.</div>';
   }
+}
+function _vRank(el,d){
+  el.dataset.ok='1';
+  if(!d.ranking||!d.ranking.length){el.innerHTML=emptyStateHTML('⭐','Nenhum voto ainda. Seja o primeiro!');return}
+  const medals=['🥇','🥈','🥉'], max=d.ranking[0].votos||1;
+  el.innerHTML='<div style="text-align:center;font-size:11px;color:#94a3b8;margin-bottom:10px">'+d.totalVotos+' voto'+(d.totalVotos===1?'':'s')+' no total</div>'+d.ranking.map((it,i)=>
+  '<div style="position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;background:'+(i<3?'rgba(124,58,237,.07)':'#fff')+';border:1.5px solid '+(i<3?'rgba(124,58,237,.22)':'#e2e8f2')+';border-radius:13px;padding:11px 13px;margin-bottom:8px">'+
+  '<div style="position:absolute;left:0;top:0;bottom:0;width:'+Math.max(4,Math.round(it.votos/max*100))+'%;background:rgba(124,58,237,.07)"></div>'+
+  '<div style="position:relative;font-family:Anton,sans-serif;font-size:'+(i<3?'22':'15')+'px;width:30px;text-align:center;color:#7C3AED">'+(medals[i]||it.pos)+'</div>'+
+  '<div style="position:relative;flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(it.numero?'#'+_vEsc(it.numero)+' ':'')+_vEsc(it.nome)+'</div><div style="font-size:10px;color:#94a3b8">'+_vEsc(it.equipe)+'</div></div>'+
+  '<div style="position:relative;text-align:right"><div style="font-family:Anton,sans-serif;font-size:18px;color:#7C3AED">'+it.votos+'</div><div style="font-size:9px;color:#94a3b8">'+it.pct+'%</div></div></div>').join('');
 }
 
 // ── LINHA DO TEMPO ─────────────────────────────────────
@@ -1949,65 +1805,18 @@ async function fetchLinhaTempo(){
     }).join('');
   }catch(e){body.innerHTML='<div style="color:#ef4444;padding:20px;text-align:center">Erro ao carregar.</div>';}
 }
-</script> <section id="chatPage" class="page"> <div class="chat-header" style="padding-bottom:8px"> <div style="font-size:15px;font-weight:900;color:var(--text)">🗳️ Atleta Destaque</div> </div> <div id="socialGaleraPanel" style="display:flex;flex:1;overflow-y:auto;padding:14px 14px 80px;flex-direction:column">
-  <div style="display:flex;gap:5px;background:#f0f2f8;border-radius:12px;padding:3px;margin-bottom:12px">
-    <button id="galeraBtnVotar" onclick="galeraSubTab('votar',this)" style="flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)">🗳️ Votar</button>
-    <button id="galeraBtnRanking" onclick="galeraSubTab('ranking',this)" style="flex:1;height:34px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B">🏆 Top 10</button>
+</script> <section id="chatPage" class="page"> <div class="chat-header" style="padding-bottom:8px"> <div style="font-size:15px;font-weight:900;color:var(--text)">⭐ Atleta Destaque</div> </div> <div id="socialGaleraPanel" style="display:flex;flex:1;overflow-y:auto;padding:14px 14px 80px;flex-direction:column">
+  <div style="display:flex;gap:5px;background:#f0f2f8;border-radius:12px;padding:3px;margin-bottom:14px">
+    <button id="galeraBtnVotar" onclick="galeraSubTab('votar',this)" style="flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)">🗳️ Votar</button>
+    <button id="galeraBtnRanking" onclick="galeraSubTab('ranking',this)" style="flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B">🏆 Ranking</button>
   </div>
-  <div id="galeraDeadlineBadge" style="text-align:center;font-size:11px;font-weight:700;padding:7px 14px;background:rgba(124,58,237,.1);color:#7C3AED;border-radius:20px;margin-bottom:12px"></div>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;justify-content:center">
-    <span style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:.5px;text-transform:uppercase">Seus votos:</span>
-    <div id="galeraVotosCounter" style="display:flex;gap:6px"></div>
-  </div>
-  <div id="galeraMyVotes" style="display:none;margin-bottom:12px"></div>
-  <div id="galeraPanelVotar">
-    <div id="galeraVotarArea">
-      <div style="position:relative;margin-bottom:10px">
-        <select id="galeraTimeSelect" onchange="onGaleraTimeChange()" style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #e2e8f2;background:#fff;color:#111;font-size:13px;font-weight:700;outline:0;appearance:none;-webkit-appearance:none;cursor:pointer">
-          <option value="">🏀 Escolha um time...</option>
-        </select>
-        <svg style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div id="galeraAtletasList" style="display:none"></div>
-    </div>
-    <div id="galeraAindaNaoAbriuArea" style="display:none;text-align:center;padding:30px 16px">
-      <div style="font-size:44px;margin-bottom:12px">⏳</div>
-      <div style="font-size:17px;font-weight:900;color:#7C3AED;margin-bottom:6px">Votação ainda não abriu</div>
-      <div style="font-size:12px;color:#94a3b8;margin-bottom:18px">A votação do Destaque da Galera abre dia 25/07/2026 às 13h.</div>
-    </div>
-    <div id="galeraEsgotadoArea" style="display:none;text-align:center;padding:30px 16px">
-      <div style="font-size:44px;margin-bottom:12px">✅</div>
-      <div style="font-size:17px;font-weight:900;color:#7C3AED;margin-bottom:6px">Seus 3 votos foram dados!</div>
-      <div style="font-size:12px;color:#94a3b8;margin-bottom:18px">Veja quem está liderando no ranking.</div>
-      <button onclick="galeraSubTab('ranking',document.getElementById('galeraBtnRanking'))" style="padding:12px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;font-size:13px;font-weight:800;cursor:pointer">Ver Ranking →</button>
-    </div>
-    <div id="galeraEncerradoArea" style="display:none;text-align:center;padding:30px 16px">
-      <div style="font-size:44px;margin-bottom:12px">⛔</div>
-      <div style="font-size:17px;font-weight:900;color:#dc2626;margin-bottom:6px">Votação encerrada</div>
-      <div style="font-size:12px;color:#94a3b8;margin-bottom:18px">O período de votação foi finalizado. Confira o resultado!</div>
-      <button onclick="galeraSubTab('ranking',document.getElementById('galeraBtnRanking'))" style="padding:12px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;font-size:13px;font-weight:800;cursor:pointer">Ver Resultado →</button>
-    </div>
-  </div>
+  <div id="galeraPanelVotar"><div id="galeraVotarArea"></div></div>
   <div id="galeraPanelRanking" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <div style="font-size:14px;font-weight:900;color:#111">🏆 Top 10 — Basquete</div>
-      <button onclick="loadGaleraRanking()" style="font-size:11px;color:#7C3AED;background:0 0;border:none;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:8px;border:1px solid rgba(124,58,237,.3)">↻ Atualizar</button>
+      <div style="font-size:14px;font-weight:900;color:#111">🏆 Mais votados</div>
+      <button onclick="loadGaleraRanking()" style="font-size:11px;color:#7C3AED;background:0 0;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:8px;border:1px solid rgba(124,58,237,.3)">↻ Atualizar</button>
     </div>
-    <div id="galeraRankingList"><div style="padding:6px"><div class="skeleton" style="height:44px;margin-bottom:10px"></div><div class="skeleton" style="height:44px;margin-bottom:10px"></div><div class="skeleton" style="height:44px;margin-bottom:10px"></div><div class="skeleton" style="height:44px;margin-bottom:10px"></div></div></div>
-  </div>
-</div>
-<!-- Modal identidade -->
-<div id="galeraIdentityModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9000;align-items:flex-end;justify-content:center">
-  <div style="background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;animation:slideUp .3s cubic-bezier(.34,1.2,.64,1)">
-    <div style="width:36px;height:4px;background:#e2e8f2;border-radius:999px;margin:0 auto 18px"></div>
-    <div style="font-size:17px;font-weight:900;color:#7C3AED;margin-bottom:4px">Identificação</div>
-    <div style="font-size:12px;color:#94a3b8;margin-bottom:20px">Para votar, informe seu nome e telefone. Você pode usar os 3 votos sem precisar preencher novamente.</div>
-    <input type="hidden" id="galeraIdentityAtleta">
-    <input type="hidden" id="galeraIdentityTime">
-    <input id="galeraIdentityNome" type="text" placeholder="Nome completo" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e2e8f2;font-size:14px;font-weight:600;outline:0;margin-bottom:10px;box-sizing:border-box;font-family:inherit">
-    <input id="galeraIdentityTel" type="tel" placeholder="WhatsApp (com DDD)" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e2e8f2;font-size:14px;font-weight:600;outline:0;margin-bottom:18px;box-sizing:border-box;font-family:inherit">
-    <button onclick="confirmarIdentidadeGalera()" style="width:100%;height:50px;border-radius:13px;border:none;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;font-family:inherit">Confirmar e Votar ✓</button>
-    <button onclick="document.getElementById('galeraIdentityModal').style.display='none'" style="width:100%;height:42px;border-radius:13px;border:1.5px solid #e2e8f2;background:0 0;color:#94a3b8;font-size:13px;cursor:pointer;font-family:inherit">Cancelar</button>
+    <div id="galeraRankingList"></div>
   </div>
 </div> </section> <section id="timesPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh"> <div style="background:#1565c0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px"> <button onclick='nav("homePage",document.querySelectorAll(".nav-btn")[0])' style="background:rgba(255,255,255,.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button> <div style="font-family:Anton,sans-serif;font-size:22px;color:#fff;text-transform:uppercase">Times Inscritos</div> </div> <div style="padding:16px 16px 100px"> <div style="display:flex;gap:8px;margin-bottom:18px"> <button id="timesBtnV" class="sport-btn sport-btn-on" onclick='showTimesTab("volei")'>🏐 Vôlei</button> <button id="timesBtnB" class="sport-btn sport-btn-locked" onclick='showTimesTab("basquete")'>🏀 Basquete <span class="lock-tag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Pausado</span></button> </div> <div id="timesVolei"> <div id="timesGrupoA_wrap"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo A</div><div id="timesGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px"></div></div> <div id="timesGrupoB_wrap"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo B</div><div id="timesGrupoB" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px"></div></div> <div id="timesGrupoC_wrap"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo C</div><div id="timesGrupoC" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px"></div></div> <div id="timesGrupoD_wrap"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo D</div><div id="timesGrupoD" style="display:flex;flex-direction:column;gap:8px"></div></div> </div> <div id="timesBasquete" style="display:none"> <div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo A</div> <div id="timesBasqGrupoA" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px"></div> <div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Grupo B</div> <div id="timesBasqGrupoB" style="display:flex;flex-direction:column;gap:8px"></div> </div> </div> <div id="timeInfoModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)" onclick="event.target===this&&closeTimeInfo()"> <div class="ti-sheet" style="background:var(--card,#fff);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:0 0 max(env(safe-area-inset-bottom),20px);box-shadow:0 -8px 40px rgba(0,0,0,.18);transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.2,.64,1)"> <div style="background:linear-gradient(145deg,#1565c0,#1976d2);border-radius:24px 24px 0 0;padding:20px 20px 28px;text-align:center;position:relative"> <button onclick="closeTimeInfo()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);border:none;border-radius:10px;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button> <div id="tiEscudoWrap" style="width:80px;height:80px;border-radius:20px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center"> <img id="tiEscudo" src="" alt="" style="width:100%;height:100%;object-fit:contain;display:none"> <span id="tiEscudoFallback" style="font-size:36px">🏐</span> </div> <div id="tiNome" style="font-family:Anton,sans-serif;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.5px;line-height:1.1"></div> <div id="tiGrupo" style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase"></div> </div> <div style="padding:20px 20px 8px"> <div style="display:flex;flex-direction:column;gap:12px"> <a id="tiInsta" href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;background:#f8f9fc;border:1px solid #e8ecf4;border-radius:14px;padding:13px 16px;text-decoration:none;-webkit-tap-highlight-color:transparent"> <div style="width:36px;height:36px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"> <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> </div> <div style="flex:1;min-width:0"> <div style="font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Instagram</div> <div id="tiInstaText" style="font-size:14px;font-weight:700;color:#1565c0;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div> </div> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> </a> <div style="display:flex;align-items:center;gap:12px;background:#f8f9fc;border:1px solid #e8ecf4;border-radius:14px;padding:13px 16px"> <div style="width:36px;height:36px;background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> </div> <div> <div style="font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Responsável</div> <div id="tiResp" style="font-size:14px;font-weight:700;color:#111827;margin-top:1px"></div> </div> </div> </div> </div> </div> </div> </section> <section id="transmissaoPage" class="page" style="background:#f8f9fc;padding-bottom:100px;min-height:100vh"> <div style="background:#1565c0;padding:20px 16px 16px;display:flex;align-items:center;gap:12px"> <button onclick='nav("homePage",document.querySelectorAll(".nav-btn")[0])' style="background:rgba(255,255,255,.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button> <div style="font-family:Anton,sans-serif;font-size:22px;color:#fff;text-transform:uppercase">Transmissão</div> </div> <div style="padding:24px 16px;text-align:center"> <div style="font-size:48px;margin-bottom:16px">📡</div> <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:8px">Transmissão ao Vivo</div> <div style="font-size:14px;color:#9ca3af;margin-bottom:24px">Acompanhe os jogos em tempo real</div> <div id="transmissaoContent" style="background:#fff;border:1px solid #e8ecf4;border-radius:18px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)"> <div style="font-size:13px;color:#9ca3af">Link de transmissão será disponibilizado durante o evento.</div> </div> </div> </section> <section id="atletaPage" class="page" style="background:#f8f9fc;padding-bottom:120px;min-height:100vh"> <div style="background:linear-gradient(145deg,#1565c0,#1976d2);padding:20px 16px 20px;display:flex;align-items:center;gap:12px"> <button onclick='nav("homePage",document.querySelectorAll(".nav-btn")[0])' style="background:rgba(255,255,255,.15);border:none;border-radius:10px;width:36px;height:36px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button> <div> <div style="font-family:Anton,sans-serif;font-size:22px;color:#fff;text-transform:uppercase">Atleta Destaque</div> <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px">Melhores jogadores por jogo</div> </div> </div> <div style="display:flex;gap:8px;margin:14px 16px;padding:5px;background:#eef2f9;border:1px solid #e2e8f2;border-radius:16px"> <button id="atletaTabVoleiBtn" onclick='atletaTab("volei",this)' style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#1565C0,#1976D2);color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.32)">🏐 Vôlei</button> <button id="atletaTabBasqBtn" onclick='atletaTab("basquete",this)' style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:not-allowed;background:0 0;color:#64748b;opacity:.5">🏀 Basquete <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button> <button id="atletaTabGaleraBtn" onclick='atletaTab("galera",this)' style="flex:1;height:40px;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;background:0 0;color:#64748b">🗳️ Galera</button> </div> <div id="atletaVoleiSection"> <div style="padding:0 16px 8px"> <div style="font-size:12px;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">🏐 Vôlei</div> <div style="font-size:10px;color:#94a3b8;margin-bottom:12px">12 jogos de grupos · 4 quartas de final · 3 semifinais</div> <div id="atletaVoleiList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px"></div> </div> </div> <div id="atletaBasqSection" style="display:none"> <div style="padding:0 16px 8px"> <div style="font-size:12px;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">🏀 Basquete</div> <div style="font-size:10px;color:#94a3b8;margin-bottom:12px">6 jogos de grupos · 2 semifinais</div> <div style="font-size:12px;font-weight:800;color:#C8960C;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🏆 Melhores do Campeonato</div> <div id="premiacaoAtletaList" style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px"></div> <div id="atletaBasqList" style="display:flex;flex-direction:column;gap:9px;padding-bottom:120px"></div> </div> </div> <div id="atletaGaleraSection" style="display:none;padding-top:8px"></div> </section>  <script>"serviceWorker"in navigator&&window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").then(e=>{console.log("Service worker registered.",e)})})</script> <script>
 async function shareGameCard(btn){
