@@ -316,24 +316,29 @@ function nextScene(){showScene((curScene+1)%scenes.length);}
 function startTimer(){if(sceneTimer)clearInterval(sceneTimer);sceneTimer=setInterval(nextScene,SCENE_DUR*1000);}
 
 // ═══ LOAD ═══
+var SC_API_TV='https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api';
 function loadData(){
-  fetch(au("'Fase de Grupos'!A1:Q49")).then(function(r){return r.json();}).then(function(res){
-    var rows=res.values||[];
+  var KEY='sc_torneio_tv_volei';
+  var ctrl=new AbortController(),to=setTimeout(function(){ctrl.abort();},12000);
+  fetch(SC_API_TV+'?action=torneio&modalidade=volei',{signal:ctrl.signal}).then(function(r){clearTimeout(to);return r.json();}).then(function(T){
+    if(!T.ok)throw new Error(T.erro||'resposta inválida');
+    try{localStorage.setItem(KEY,JSON.stringify(T));}catch(e){}
+    return T;
+  }).catch(function(e){
+    // sem internet: a TV segue mostrando a última tabela carregada
+    console.warn('[TV Volei] offline, usando cache:',e);
+    try{var c=localStorage.getItem(KEY);if(c)return JSON.parse(c);}catch(_){}
+    throw e;
+  }).then(function(T){
     var teams=[],games=[];
-    Object.keys(GRUPOS_ROWS).forEach(function(g){
-      var cfg=GRUPOS_ROWS[g];
-      cfg.classRows.forEach(function(r){
-        var nome=cc(rows,r,1);
-        if(!isTeamName(nome))return;
-        teams.push({grupo:g,nome:nome,pts:parseInt(cc(rows,r,2))||0,v:parseInt(cc(rows,r,3))||0,d:parseInt(cc(rows,r,4))||0,sp:parseInt(cc(rows,r,5))||0});
-      });
-      cfg.gameRows.forEach(function(r,i){
-        var casa=cc(rows,r,1),vis=cc(rows,r,11);
-        if(!isTeamName(casa)&&!isTeamName(vis))return;
-        var setsC=cc(rows,r,12),setsV=cc(rows,r,13),venc=cc(rows,r,14),data=cc(rows,r,15),local=cc(rows,r,16);
-        var jogado=venc&&!/^EMPATE$/i.test(venc)&&isTeamName(venc);
-        games.push({grupo:g,jogo:i+1,casa:casa,vis:vis,setsC:setsC,setsV:setsV,jogado:jogado,data:data,local:local});
-      });
+    (T.grupos||[]).forEach(function(g){
+      g.tabela.forEach(function(l){teams.push({grupo:g.grupo,nome:l.equipe,pts:l.pontos,v:l.vitorias,d:l.derrotas,sp:l.saldoSets});});
+    });
+    (T.jogos||[]).filter(function(j){return j.fase==='grupos';}).forEach(function(j){
+      var jogado=(j.status==='finalizado'||j.status==='wo');
+      var quando='';
+      if(j.data){var p=j.data.split('-');quando=p[2]+'/'+p[1]+(j.hora?' '+j.hora:'');}
+      games.push({grupo:j.grupo,jogo:j.rodada||1,casa:j.casa,vis:j.visitante,setsC:j.setsCasa,setsV:j.setsVisitante,jogado:jogado,data:quando,local:j.quadra||''});
     });
     appData.teams=teams;appData.games=games;
     renderAll();
