@@ -435,19 +435,50 @@ PAGES.numerosPage=['Desde 2021','Números da Supercopa','historia'];
 })();
 
 /* ===== jogos, classificação e mata-mata: escudos, sem emojis ===== */
+
+/* ===== chave do mata-mata em árvore (modelo: sorteio da Champions) ===== */
+function nbBracket(T,esc,shf){
+ var J={};(T.jogos||[]).forEach(function(j){J[j.id]=j});
+ function dtx(j){return j.data?j.data.split('-').reverse().slice(0,2).join('/')+(j.hora?' '+j.hora:''):''}
+ function team(j,s){
+  var n=s?j.visitante:j.casa,def=s?j.visitanteDefinida:j.casaDefinida,rot=s?j.rotuloVisitante:j.rotuloCasa,sc=s?j.setsVisitante:j.setsCasa;
+  var fin=j.status==='finalizado'||j.status==='wo',lv=j.status==='ao_vivo',win=fin&&j.vencedor&&j.vencedor===n;
+  return '<div class="nbt'+(win?' w':fin?' l':'')+'"><i>'+shf(def?n:'')+'</i><span>'+esc(def?n:(rot||'A definir'))+'</span><b>'+((fin||lv)?(sc||0):'')+'</b></div>'}
+ function box(id,tit,cls){
+  var j=J[id];if(!j)return '<div class="nbm ph '+(cls||'')+'"></div>';
+  return '<div class="nbm '+(cls||'')+(j.status==='ao_vivo'?' live':'')+'"><div class="nbh"><span>'+tit+'</span><em>'+(j.status==='ao_vivo'?'AO VIVO':dtx(j))+'</em></div>'+team(j,0)+team(j,1)+'</div>'}
+ var fin=J.FINAL,camp=T.campeao;
+ var champ='<div class="nbc3"><div class="nbfin">'+box('FINAL','Grande final')+'</div>'
+  +'<div class="nbcamp'+(camp?' on':'')+'"><small>Campeão</small>'+(camp?'<span>'+shf(camp)+'</span><b>'+esc(camp)+'</b>':'<b>A definir</b>')+'</div></div>';
+ return '<div class="nbw"><div class="nbk">'
+  +'<div class="nbq" style="grid-area:1/1">'+box('Q1','Quartas 1')+'</div><div class="nbq" style="grid-area:2/1">'+box('Q2','Quartas 2')+'</div>'
+  +'<div class="nbq" style="grid-area:3/1">'+box('Q3','Quartas 3')+'</div><div class="nbq" style="grid-area:4/1">'+box('Q4','Quartas 4')+'</div>'
+  +'<div class="nbv" style="grid-area:1/2/3/3"></div><div class="nbv" style="grid-area:3/2/5/3"></div>'
+  +'<div class="nbs" style="grid-area:1/3/3/4">'+box('SF1','Semifinal 1')+'</div><div class="nbs" style="grid-area:3/3/5/4">'+box('SF2','Semifinal 2')+'</div>'
+  +'<div class="nbv big" style="grid-area:1/4/5/5"></div>'
+  +'<div class="nbf" style="grid-area:1/5/5/6">'+champ+'</div>'
+  +'</div><p class="nbh2">Deslize para o lado para ver a chave inteira</p></div>';
+}
+
+(function(){
+ var _f=window.fetch;
+ window.fetch=function(u){var p=_f.apply(this,arguments);try{if(/action=torneio/.test(String(u)))p.then(function(r){return r.clone?r.clone().json():r.json()}).then(function(d){if(d&&d.ok){window.__TN=d;window.nbDraw&&window.nbDraw()}}).catch(function(){})}catch(e){}return p};
+})();
 (function(){
  var EMO=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,MAP=null,T=null;
  function norm(s){return String(s||'').trim().toLowerCase()}
  function mapa(){if(MAP)return Promise.resolve(MAP);return loadTeams().then(function(t){MAP={};(t||[]).forEach(function(x){if(x.escudo)MAP[norm(x.nome)]=x.escudo});return MAP})}
  function img(src){return '<img class="nesc" src="'+esc(src)+'" alt="" onerror="this.remove()">'}
- function enhance(){
+ function nbDraw(){var host=document.getElementById('bracketVolei');if(!host||!window.__TN)return;mapa().then(function(M){var h=document.getElementById('nbkApp');if(!h){h=document.createElement('div');h.id='nbkApp';host.insertBefore(h,host.querySelector('.bracket-scroll')||host.firstChild)}var html=nbBracket(window.__TN,esc,function(n){var s=n&&M[norm(n)];return s?img(s):'<span class="nph"></span>'});if(h.__h!==html){h.__h=html;h.innerHTML=html}})}
+ window.nbDraw=nbDraw;
+ function enhance(){nbDraw();
   mapa().then(function(M){
    ['tablePage','bracketPage','gamesPage'].forEach(function(id){
     var pg=document.getElementById(id);if(!pg)return;
     pg.querySelectorAll('.mt').forEach(function(m){var ic=m.querySelector('.mt-ic'),nm=m.querySelector('.mt-nm');if(!ic||!nm||ic.dataset.e===nm.textContent)return;ic.dataset.e=nm.textContent;var s=M[norm(nm.textContent)];ic.innerHTML=s?img(s):'<span class="nesc ph"></span>'});
     pg.querySelectorAll('.gc-t').forEach(function(m){var ic=m.querySelector('.gc-t-ic'),nm=m.querySelector('.gc-t-nm');if(!ic||!nm||ic.dataset.e===nm.textContent)return;ic.dataset.e=nm.textContent;var s=M[norm(nm.textContent)];ic.innerHTML=s?img(s):'<span class="nesc ph"></span>';ic.classList.add('nsh')});
     pg.querySelectorAll('.td-nm').forEach(function(n){if(n.dataset.e)return;var nome=n.textContent;n.dataset.e='1';var s=M[norm(nome)];if(s)n.innerHTML=img(s)+'<span>'+esc(nome)+'</span>';else n.innerHTML='<span class="nesc ph"></span><span>'+esc(nome)+'</span>'});
-    var w=document.createTreeWalker(pg,NodeFilter.SHOW_TEXT,null);var n;while((n=w.nextNode())){if(EMO.test(n.nodeValue)){EMO.lastIndex=0;n.nodeValue=n.nodeValue.replace(EMO,'').replace(/^\s{2,}/,' ')}EMO.lastIndex=0}
+    pg.querySelectorAll('.gc').forEach(function(g,i){g.classList.toggle('alt',i%2===1)});var w=document.createTreeWalker(pg,NodeFilter.SHOW_TEXT,null);var n;while((n=w.nextNode())){if(EMO.test(n.nodeValue)){EMO.lastIndex=0;n.nodeValue=n.nodeValue.replace(EMO,'').replace(/^\s{2,}/,' ')}EMO.lastIndex=0}
    })
   })
  }
