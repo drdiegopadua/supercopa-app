@@ -42,7 +42,7 @@ function syncTabs(id){var ix=TABS.findIndex(function(t){return t[0]===id});if(ix
 /* ao trocar de página */
 var last='';
 function onPage(pg){
- if(!pg)return;decorate(pg);if(pg.id===last&&pg.dataset.na)return;last=pg.id;pg.dataset.na='1';document.body.classList.toggle('on-home',pg.id==='homePage');syncTabs(pg.id);
+ if(!pg)return;var _s=document.getElementById('nsheet');if(_s)_s.classList.remove('open');decorate(pg);if(pg.id===last&&pg.dataset.na)return;last=pg.id;pg.dataset.na='1';document.body.classList.toggle('on-home',pg.id==='homePage');syncTabs(pg.id);
  $$('.gc,.sched-card,.news,.card',pg).slice(0,14).forEach(function(e,i){e.style.animation='nUp .5s '+(.04*i)+'s both'});
 }
 new MutationObserver(function(ms){ms.forEach(function(m){var t=m.target;if(t.classList&&t.classList.contains('page')&&t.classList.contains('active'))onPage(t)})}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class']});
