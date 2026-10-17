@@ -85,7 +85,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div></div></div>'+
@@ -130,7 +130,7 @@ PAGES.patrocPage=['Quem apoia','Patrocinadores','patrocinadores'];PAGES.regrasPa
 
 /* ===== inscrição dentro do app ===== */
 mkPage('inscricaoPage','<div class="wrapR"><div id="insbody"><p class="mut">Carregando…</p></div></div>');
-PAGES.inscricaoPage=['Sem taxa de inscrição','Inscrição da equipe','inscricao'];
+PAGES.inscricaoPage=['Supercopa 2026','Inscrições encerradas','inscricao'];
 var INSD=null;
 function insHtml(d){return '<p class="mut" style="margin:6px 2px 14px">Envie sua inscrição apenas se estiver totalmente de acordo com os termos e compromissos estabelecidos.</p>'+
 '<form id="insf" onsubmit="return false">'+
@@ -157,6 +157,10 @@ function insSend(){var f=document.getElementById('insf'),v=function(n){return ((
 function loadIns(){if(INSD)return;fetch('novo/inscricao.json').then(function(r){return r.json()}).then(function(d){INSD=d;document.getElementById('insbody').innerHTML=insHtml(d);var f=document.getElementById('insf');f.addEventListener('change',function(e){if(e.target.name==='aj')document.getElementById('ajq').style.display=e.target.dataset.v==='sim'?'block':'none'});document.getElementById('insenv').onclick=insSend}).catch(function(){document.getElementById('insbody').innerHTML='<p class="mut">Não foi possível carregar o formulário agora.</p>'})}
 var _hk=window.nPageHook;window.nPageHook=function(pg){_hk&&_hk(pg);if(pg.id==='inscricaoPage')loadIns()};
 $$('[onclick*="inscricao.html"]').forEach(function(e){e.setAttribute('onclick',"nav('inscricaoPage',null)")});
+
+/* ENCERRADAS: inscrições */
+loadIns=function(){document.getElementById('insbody').innerHTML='<div style="text-align:center;padding:36px 10px"><div style="font:800 64px var(--display);color:var(--b1)">✓</div><div style="font:800 34px/1 var(--display);text-transform:uppercase;color:#0b2a8f;margin-top:6px">Inscrições encerradas</div><p class="mut" style="margin:10px auto 18px;max-width:300px">Obrigado a todas as equipes que se inscreveram na Supercopa 2026.</p><button type="button" class="nbtn" onclick="nav(\'timesPage\',null);loadTimes()">Ver os times confirmados</button></div>'};
+$$('[onclick*="nav(\'inscricaoPage\'"]').forEach(function(e){e.style.display='none'});
 /* ===== Meu time (novo) ===== */
 function meuTime(){try{return localStorage.getItem('meu_time')||''}catch(e){return ''}}
 function teamByName(n){var a=(TEAMS||[]).filter(function(t){return String(t.nome).toLowerCase()===String(n).toLowerCase()});return a[0]||null}
