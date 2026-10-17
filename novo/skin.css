@@ -18,7 +18,7 @@ body.on-home .topbar,.topbar{background:linear-gradient(165deg,var(--b1),var(--b
 .topbar-particles{display:none!important}
 .dropping-texts-container span{font-family:var(--display)!important;letter-spacing:3px!important}
 /* faixa de título das páginas */
-.nhd{position:relative;color:#fff;padding:max(env(safe-area-inset-top,0px),44px) 18px 70px;clip-path:polygon(0 0,100% 0,100% 88%,0 100%);background:linear-gradient(165deg,var(--b1),var(--b2) 62%,var(--b3));overflow:hidden;margin-bottom:-34px;z-index:1}
+.nhd{position:relative;color:#fff;padding:max(env(safe-area-inset-top,0px),44px) 18px 70px;clip-path:polygon(0 0,100% 0,100% 88%,0 100%);background:linear-gradient(165deg,var(--b1),var(--b2) 62%,var(--b3));overflow:hidden;margin-bottom:10px;z-index:1}
 .nhd::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px;z-index:1}
 .nhd .nbg{position:absolute;inset:0;background-size:cover;background-position:center 28%;filter:grayscale(1) contrast(1.1);mix-blend-mode:luminosity;opacity:.55;animation:nKb 18s ease-in-out infinite alternate}
 .nhd .nsh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,26,92,.15),rgba(11,42,143,.8))}
@@ -34,8 +34,8 @@ body.on-home .topbar,.topbar{background:linear-gradient(165deg,var(--b1),var(--b
 /* tabela de navegação flutuante */
 #nbar{position:fixed;left:14px;right:14px;bottom:max(env(safe-area-inset-bottom,0px),14px);height:64px;border-radius:26px;display:grid;grid-template-columns:repeat(5,1fr);z-index:1000;padding:0 6px;background:rgba(255,255,255,.8);backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);border:1px solid rgba(255,255,255,.7);box-shadow:0 14px 34px rgba(11,42,143,.22);max-width:520px;margin:0 auto}
 #nbar .ind{position:absolute;top:8px;bottom:8px;left:6px;width:calc((100% - 12px)/5);border-radius:19px;background:var(--b1);transition:transform .3s cubic-bezier(.3,.9,.3,1);z-index:0}
-#nbar a{position:relative;z-index:1;display:grid;place-items:center;align-content:center;gap:2px;text-decoration:none;color:var(--mute);font:700 9px var(--body);letter-spacing:1px;text-transform:uppercase;transition:color .2s;-webkit-tap-highlight-color:transparent}
-#nbar a.on{color:#fff}#nbar svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}#nbar a.on svg{animation:nPop .45s cubic-bezier(.3,1.6,.4,1)}
+#nbar button{position:relative;z-index:1;display:grid;place-items:center;align-content:center;gap:2px;text-decoration:none;color:var(--mute);font:700 9px var(--body);letter-spacing:1px;text-transform:uppercase;transition:color .2s;-webkit-tap-highlight-color:transparent}
+#nbar button.on{color:#fff}#nbar button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}#nbar button.on svg{animation:nPop .45s cubic-bezier(.3,1.6,.4,1)}
 @keyframes nPop{0%{transform:translateY(8px) scale(.6)}100%{transform:none}}
 /* home nova */
 #nhome{padding:0 14px}
@@ -94,3 +94,11 @@ body.day .card,.card{border-radius:22px!important}
 .nrp{position:absolute;border-radius:50%;background:rgba(27,82,224,.28);transform:scale(0);animation:nRp .6s ease-out forwards;pointer-events:none}@keyframes nRp{to{transform:scale(1);opacity:0}}
 #ncf{position:fixed;inset:0;z-index:4000;pointer-events:none}
 @media (prefers-reduced-motion:reduce){#nsplash{display:none}*{animation-duration:.01ms!important}}
+
+.topbar .tblogo{width:200px!important;height:auto!important;box-shadow:none!important;filter:drop-shadow(0 10px 24px rgba(5,13,36,.45))}
+.nhd .nlogo{width:auto!important;height:30px!important;box-shadow:none!important;filter:drop-shadow(0 3px 8px rgba(5,13,36,.4))}
+#nsplash img{width:min(300px,70vw)!important;height:auto!important;box-shadow:none!important;border-radius:0!important;filter:drop-shadow(0 20px 40px rgba(5,13,36,.5))}
+#nsplash i{display:none!important}
+#nbar button{all:unset;position:relative;z-index:1;display:grid;place-items:center;align-content:center;gap:2px;color:var(--mute);font:700 9px var(--body);letter-spacing:1px;text-transform:uppercase;transition:color .2s;-webkit-tap-highlight-color:transparent;cursor:pointer}
+#nbar button.on{color:#fff}#nbar button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}#nbar button.on svg{animation:nPop .45s cubic-bezier(.3,1.6,.4,1)}
+.nsh2 .lnk{all:unset;cursor:pointer;font:700 11px var(--body);color:var(--b1);letter-spacing:1px}

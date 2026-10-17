@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercopa-afc-v27';
+const CACHE_NAME = 'supercopa-afc-v28';
 
 const urlsToCache = [
   './',
@@ -9,7 +9,8 @@ const urlsToCache = [
   './apple-touch-icon.png',
   './novo/skin.css',
   './novo/skin.js',
-  './logo-supercopa.jpg'
+  './logo-supercopa.jpg',
+  './novo/logo-branco.png'
 ];
 
 self.addEventListener('install', event => {
