@@ -1,0 +1,95 @@
+/* ===== Supercopa AFC · novo visual do app (camada sobre o app atual) ===== */
+(function(){
+'use strict';
+var API='https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api';
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var IC={home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',tab:'<path d="M4 6h16M4 12h16M4 18h10"/>',star:'<path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.3l1.1-6.2L3 9.7l6.2-.9z"/>',more:'<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M17 5a3.5 3.5 0 010 7M21.5 20c0-2.6-1.5-4.5-3.5-5.4"/>',trophy:'<path d="M7 4h10v6a5 5 0 01-10 0zM7 6H4a3 3 0 003 4M17 6h3a3 3 0 01-3 4M12 15v4M8 20h8"/>',doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',pin:'<path d="M12 21s7-6 7-11a7 7 0 00-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>',live:'<circle cx="12" cy="12" r="2.5"/><path d="M7.5 7.5a6.4 6.4 0 000 9M16.5 7.5a6.4 6.4 0 010 9M4.5 4.5a10.6 10.6 0 000 15M19.5 4.5a10.6 10.6 0 010 15"/>',cam:'<path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13.5" r="3.5"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 015 1c0 1.8-2.5 2-2.5 3.7M12 17.5h.01"/>',shield:'<path d="M12 3l8 3v6c0 5-3.6 8-8 9-4.4-1-8-4-8-9V6z"/>'};
+var I=function(n){return '<svg viewBox="0 0 24 24">'+(IC[n]||IC.star)+'</svg>'};
+var ICMAP={'Times':'users','Jogos':'cal','Tabela':'tab','Mata-mata':'trophy','Regras':'doc','Locais Úteis':'pin','Inscrição':'edit','Live':'live','Votar Destaque':'star','Atleta Destaque':'star','Quiz':'help','Meu Time':'shield','Cadastrar Atletas':'users','Galeria':'cam'};
+try{window.isDayTime=function(){return true};if(typeof applyTheme==='function')applyTheme(true)}catch(e){}
+document.body.classList.add('day');
+/* abertura */
+var sp=document.createElement('div');sp.id='nsplash';sp.innerHTML='<i></i><i></i><img alt="Supercopa AFC" src="logo-supercopa.jpg"><b>AFONSO CLÁUDIO · ES</b>';document.body.appendChild(sp);setTimeout(function(){sp.remove()},2600);
+/* topo da home */
+var tb=$('.topbar');if(tb){var bg=document.createElement('div');bg.className='nbg';bg.style.backgroundImage='url(novo/fotos/home.webp)';var sh=document.createElement('div');sh.className='nsh';var lg=document.createElement('img');lg.className='tblogo';lg.src='logo-supercopa.jpg';lg.alt='';tb.prepend(sh);tb.prepend(bg);tb.insertBefore(lg,sh.nextSibling)}
+/* páginas */
+var PAGES={gamesPage:['Vôlei · 28 e 29 de novembro','Jogos','jogos'],tablePage:['Fase de grupos','Classificação','tabela'],bracketPage:['Fase final','Mata-mata','mata'],schedulePage:['Programação','Agenda','agenda'],maisPage:['Recursos','Mais','mais'],quizPage:['40 perguntas','Quiz da Supercopa','quiz'],timesPage:['Supercopa 2026','Times inscritos','times'],transmissaoPage:['Ao vivo','Transmissão','live'],atletaPage:['Melhores por jogo','Atleta destaque','destaque'],historyPage:['Desde 2021','História','historia'],mapPage:['Ginásio','Mapa do ginásio','mapa'],placesPage:['Afonso Cláudio','Locais úteis','locais'],sumulasPage:['Partidas encerradas','Súmulas','sumulas'],jogoDetalhePage:['Detalhes','Jogo','jogo'],wallpapersPage:['Downloads','Wallpapers','wallpapers'],cadastroAtletasPage:['Equipes · prazo até 27/11','Cadastrar atletas','cadastro'],cardgenPage:['Compartilhe','Card social','card'],qrPage:['Compartilhe','QR Code','qr']};
+function words(el){var idx=0;(function walk(n){Array.prototype.slice.call(n.childNodes).forEach(function(c){if(c.nodeType===3){var f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(function(t){if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return}var w=document.createElement('span');w.className='w';var i=document.createElement('i');i.textContent=t;i.style.animationDelay=(.15+idx++*.09)+'s';w.appendChild(i);f.appendChild(w)});c.replaceWith(f)}else if(c.nodeType===1&&c.tagName!=='BR')walk(c)})})(el)}
+function decorate(pg){
+ var cfg=PAGES[pg.id];if(!cfg||pg.dataset.nd)return;pg.dataset.nd='1';
+ var hd=document.createElement('div');hd.className='nhd';
+ hd.innerHTML='<div class="nbg" style="background-image:url(novo/fotos/'+cfg[2]+'.webp)"></div><div class="nsh"></div><div class="nk"><img class="nlogo" src="logo-supercopa.jpg" alt=""><span>'+esc(cfg[0])+'</span></div><h1 class="nt">'+esc(cfg[1])+'</h1>';
+ var first=pg.firstElementChild;
+ if(first){
+  var back=$('.icon-btn',first)||(first.querySelector('button[onclick*="nav("]'));
+  var isHeaderRow=first.querySelector('.ptitle')||/#1565c0|1565c0,#1976d2/.test(first.getAttribute('style')||'');
+  if(back&&isHeaderRow){hd.querySelector('.nk').prepend(back);back.classList.add('nback')}
+  if(isHeaderRow)first.classList.add('nhide');
+ }
+ $$('[style*="font-size:26px"]',pg).slice(0,2).forEach(function(t){
+  if(t.closest('.nhd'))return;var par=t.parentElement;
+  if(par&&par!==pg&&par.querySelector('.refresh-cd-wrap')&&t===par.firstElementChild){t.classList.add('nhide')}
+  else{t.classList.add('nhide');var n=t.nextElementSibling;if(n&&/font-size:1[23]px/.test(n.getAttribute('style')||'')&&/9ca3af|9CA3AF/i.test(n.getAttribute('style')||''))n.classList.add('nhide')}
+ });
+ pg.insertBefore(hd,pg.firstChild);words(hd.querySelector('.nt'));
+}
+/* barra de baixo */
+var TABS=[['homePage','Início','home'],['gamesPage','Jogos','cal'],['tablePage','Tabela','tab'],['bracketPage','Mata-mata','trophy'],['maisPage','Mais','more']];
+var nb=document.createElement('nav');nb.id='nbar';nb.innerHTML='<span class="ind"></span>'+TABS.map(function(t){return '<a href="javascript:void(0)" data-p="'+t[0]+'">'+I(t[2])+t[1]+'</a>'}).join('');document.body.appendChild(nb);
+nb.addEventListener('click',function(e){var a=e.target.closest('a[data-p]');if(!a)return;var p=a.dataset.p;nav(p,null);if(p==='homePage'){}});
+function syncTabs(id){var ix=TABS.findIndex(function(t){return t[0]===id});if(ix<0)ix=4;$$('a',nb).forEach(function(a,i){a.classList.toggle('on',i===ix)});$('.ind',nb).style.transform='translateX('+(ix*100)+'%)'}
+/* ao trocar de página */
+var last='';
+function onPage(pg){
+ if(!pg)return;decorate(pg);if(pg.id===last&&pg.dataset.na)return;last=pg.id;pg.dataset.na='1';document.body.classList.toggle('on-home',pg.id==='homePage');syncTabs(pg.id);
+ $$('.gc,.sched-card,.news,.card',pg).slice(0,14).forEach(function(e,i){e.style.animation='nUp .5s '+(.04*i)+'s both'});
+}
+new MutationObserver(function(ms){ms.forEach(function(m){var t=m.target;if(t.classList&&t.classList.contains('page')&&t.classList.contains('active'))onPage(t)})}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class']});
+/* paralaxe */
+addEventListener('scroll',function(){var p=scrollY;var b=$('.page.active .nhd .nbg')||$('.topbar .nbg');if(b&&p<700)b.style.translate='0 '+(p*.3)+'px'},{passive:true});
+/* ondas ao toque */
+document.addEventListener('pointerdown',function(e){var el=e.target.closest('.nico button,.ntm,.nrc,.nt2,.home-card,.gc,.nnews');if(!el)return;var r=el.getBoundingClientRect(),s=Math.max(r.width,r.height)*2,d=document.createElement('span');d.className='nrp';d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px';if(getComputedStyle(el).position==='static')el.style.position='relative';el.style.overflow='hidden';el.appendChild(d);setTimeout(function(){d.remove()},650);if(navigator.vibrate)navigator.vibrate(8)});
+/* confete */
+var cf=document.createElement('canvas');cf.id='ncf';document.body.appendChild(cf);
+function confetti(){var W=cf.width=innerWidth,H=cf.height=innerHeight,x=cf.getContext('2d');var C=['#1b52e0','#0b2a8f','#ffffff','#b9d0ff','#071a5c'];var P=[];for(var i=0;i<110;i++)P.push({x:W/2,y:H*.7,vx:(Math.random()-.5)*13,vy:-Math.random()*15-4,s:4+Math.random()*7,c:C[Math.random()*5|0],r:Math.random()*6,vr:(Math.random()-.5)*.4});var f=0;(function go(){x.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=.38;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});if(++f<120)requestAnimationFrame(go);else x.clearRect(0,0,W,H)})()}
+window.nConfetti=confetti;
+if(typeof window.enviarVotoDestaque==='function'){var _ev=window.enviarVotoDestaque;window.enviarVotoDestaque=async function(){var antes=localStorage.getItem('sc_voto_destaque');await _ev.apply(this,arguments);if(!antes&&localStorage.getItem('sc_voto_destaque'))confetti()}}
+/* ficha da equipe */
+var sheet=document.createElement('div');sheet.id='nsheet';sheet.innerHTML='<div class="bg"></div><div class="sh"></div>';document.body.appendChild(sheet);
+sheet.querySelector('.bg').onclick=function(){sheet.classList.remove('open')};
+function openSheet(h){sheet.querySelector('.sh').innerHTML='<div class="grab"></div>'+h;sheet.classList.add('open');sheet.querySelector('.sh').scrollTop=0}
+window.nCloseSheet=function(){sheet.classList.remove('open')};
+var igUrl=function(u){return 'https://instagram.com/'+String(u||'').replace('@','').replace(/\s/g,'')};
+function teamSheet(t){var rows=[['Cidade',esc(t.cidade)],['Instagram',t.instagram?'<a href="'+igUrl(t.instagram)+'" target="_blank" rel="noopener">'+esc(t.instagram)+'</a>':''],['Responsável',esc(t.responsavel)],['Alojamento',esc(t.alojamento)],['Inscrição em',t.inscritaEm?t.inscritaEm.split('-').reverse().join('/'):''],['Como conheceu',esc(t.como)]].filter(function(r){return r[1]});
+ openSheet('<div class="bigesc">'+(t.escudo?'<img src="'+esc(t.escudo)+'" alt="Escudo">':I('shield').replace('<svg','<svg style="width:90px;height:90px;stroke:#1b52e0;fill:none;stroke-width:1.5"'))+'</div><h3>'+esc(t.nome)+'</h3><span class="pillok">'+(t.mod==='b'?(t.nome==='São Pedro'?'Campeão 2026 · Basquete':'Basquete'):'Presença confirmada')+'</span><div style="margin-top:16px">'+rows.map(function(r){return '<div class="irow"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>'}).join('')+'</div><button class="fechar" onclick="nCloseSheet()">Fechar</button>')}
+var TEAMS=null;
+function loadTeams(){return fetch(API+'?action=timesPublicos').then(function(r){return r.json()}).then(function(d){if(d.ok&&d.times&&d.times.length){TEAMS=d.times;try{localStorage.setItem('sc_times_app',JSON.stringify(TEAMS))}catch(e){}}return TEAMS}).catch(function(){return null}).then(function(r){if(r)return r;try{TEAMS=JSON.parse(localStorage.getItem('sc_times_app'))}catch(e){}if(TEAMS&&TEAMS.length)return TEAMS;return fetch('novo/times.json').then(function(x){return x.json()}).then(function(j){TEAMS=j;return j}).catch(function(){return null})})}
+window.nOpenTeam=function(i){if(TEAMS&&TEAMS[i])teamSheet(TEAMS[i])};
+window.renderTimesVolei=function(){var box=$('#timesVolei');if(!box)return;box.innerHTML='<div style="padding:8px;color:#6b7aa5;font-size:13px">Carregando equipes…</div>';loadTeams().then(function(t){t=t||[];box.innerHTML=t.length?t.map(function(x,i){return '<div class="ntm" onclick="nOpenTeam('+i+')" style="animation-delay:'+(i*.05)+'s"><div class="e">'+(x.escudo?'<img src="'+esc(x.escudo)+'" alt="" onerror="this.style.display=\'none\'">':I('shield').replace('<svg','<svg style="width:40px;height:40px;stroke:#1b52e0;fill:none;stroke-width:1.6"'))+'</div><div style="flex:1;min-width:0"><b>'+esc(x.nome)+'</b><small>'+esc(x.cidade)+'</small></div><span style="color:#9fb0d8;font-size:22px">›</span></div>'}).join('')+'<div class="ntm" style="border-style:dashed;justify-content:center;color:#6b7aa5;cursor:default"><b style="color:#6b7aa5">Vaga '+(t.length+1)+' · aberta</b></div>':'<div style="padding:12px;color:#6b7aa5">Os times confirmados aparecem aqui.</div>'})};
+window.openTimeInfo=function(nome,grupo,insta,resp,escudo,mod){teamSheet({nome:nome,cidade:'',instagram:insta,responsavel:resp,escudo:escudo,alojamento:'',inscritaEm:'',como:'',mod:mod==='basquete'?'b':'v'})};
+/* home nova */
+var NEWSFETCH=null;
+function buildHome(){
+ var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
+ var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
+ $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
+ var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
+ box1.innerHTML='<div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div></div></div>'+
+ '<div id="nrailw"></div>';
+ box.innerHTML='<div class="nsh2"><b>Guia da Supercopa</b></div><div class="nico" id="nico">'+tiles.filter(function(t){return t.l}).map(function(t,i){return '<button data-i="'+i+'" style="animation-delay:'+(.2+i*.045)+'s"><span>'+I(ICMAP[t.l]||'star')+'</span>'+esc(t.l)+'</button>'}).join('')+'</div><div class="nsh2"><b>Notícias</b></div><div id="nnews"></div>';
+ var ref=$('#homeAvisos');if(ref&&ref.nextSibling)h.insertBefore(box1,ref.nextSibling);else h.appendChild(box1);
+ var spons=Array.prototype.slice.call(h.children).filter(function(c){return !c.id&&/APOIO/i.test(c.textContent||'')})[0];
+ if(spons)h.insertBefore(box,spons);else h.appendChild(box);box.style.padding='0 14px';
+ $('#nico').addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(!b)return;var t=tiles.filter(function(x){return x.l})[+b.dataset.i];if(t&&t.on){try{(new Function(t.on)).call(b)}catch(x){console.error(x)}}});
+ function cd(){var s=Math.max(0,Math.floor((new Date('2026-11-28T08:00:00-03:00').getTime()-Date.now())/1000));var d=Math.floor(s/86400),hh=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);var e=$('#ncd');if(e)e.textContent=d+'d '+hh+'h '+m+'min'}cd();setInterval(cd,30000);
+ loadTeams().then(function(t){if(!t)return;var n=$('#nteamn');if(n)n.textContent=t.length;var r=$('#nescrow');if(r)r.innerHTML=t.filter(function(x){return x.escudo}).slice(0,8).map(function(x,i){return '<img src="'+esc(x.escudo)+'" alt="" style="animation-delay:'+(i*.2)+'s" onerror="this.remove()">'}).join('')});
+ /* jogos */
+ if(typeof scTorneioApp_==='function')scTorneioApp_().then(function(r){var T=r.t,J=(T.jogos||[]).filter(function(j){return j.data});if(!J.length)return;var hoje=new Date().toISOString().slice(0,10);var L=J.filter(function(j){return j.data===hoje});if(!L.length)L=J.filter(function(j){return !(j.status==='finalizado'||j.status==='wo')}).slice(0,8);if(!L.length)L=J.slice(-8);
+  var nm=function(j,k){return k==='c'?(j.casaDefinida===false?(j.rotuloCasa||'A definir'):j.casa):(j.visitanteDefinida===false?(j.rotuloVisitante||'A definir'):j.visitante)};
+  $('#nrailw').innerHTML='<div class="nsh2"><b>'+(L[0].data===hoje?'Jogos de hoje':'Próximos jogos')+'</b><a href="javascript:void(0)" onclick="nav(\'gamesPage\',null)">VER TODOS</a></div><div class="nrail">'+L.map(function(j,i){var on=j.status==='ao_vivo'||j.status==='finalizado'||j.status==='wo';return '<div class="nrc" style="animation-delay:'+(i*.08)+'s"><div class="m">'+(j.fase==='grupos'?'Grupo '+j.grupo:j.fase)+' · '+(j.hora||'')+'</div><div class="l"><span>'+esc(nm(j,'c'))+'</span><b>'+(on?j.setsCasa:'–')+'</b></div><div class="l"><span>'+esc(nm(j,'v'))+'</span><b>'+(on?j.setsVisitante:'–')+'</b></div></div>'}).join('')+'</div>'}).catch(function(){});
+ /* notícias */
+ fetch(API+'?action=noticias').then(function(r){return r.json()}).then(function(d){var n=(d.noticias||[]);$('#nnews').innerHTML=n.length?n.map(function(x,i){return '<div class="nnews" style="animation-delay:'+(i*.06)+'s"><div class="k">'+esc(x.cat)+' · '+esc(x.data)+'</div><b>'+esc(x.titulo)+'</b>'+(x.corpo?'<p>'+esc(x.corpo)+'</p>':'')+'</div>'}).join(''):'<p style="color:#6b7aa5;font-size:13px">Sem notícias por enquanto.</p>'}).catch(function(){});
+}
+buildHome();onPage($('.page.active')||$('#homePage'));
+})();
