@@ -434,5 +434,25 @@ PAGES.numerosPage=['Desde 2021','Números da Supercopa','historia'];
  var _h=window.nPageHook;window.nPageHook=function(pg){_h&&_h(pg);if(pg.id==='atletaPage')setTimeout(function(){load(pg)},0)};
 })();
 
+/* ===== jogos, classificação e mata-mata: escudos, sem emojis ===== */
+(function(){
+ var EMO=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,MAP=null,T=null;
+ function norm(s){return String(s||'').trim().toLowerCase()}
+ function mapa(){if(MAP)return Promise.resolve(MAP);return loadTeams().then(function(t){MAP={};(t||[]).forEach(function(x){if(x.escudo)MAP[norm(x.nome)]=x.escudo});return MAP})}
+ function img(src){return '<img class="nesc" src="'+esc(src)+'" alt="" onerror="this.remove()">'}
+ function enhance(){
+  mapa().then(function(M){
+   ['tablePage','bracketPage','gamesPage'].forEach(function(id){
+    var pg=document.getElementById(id);if(!pg)return;
+    pg.querySelectorAll('.mt').forEach(function(m){var ic=m.querySelector('.mt-ic'),nm=m.querySelector('.mt-nm');if(!ic||!nm||ic.dataset.e===nm.textContent)return;ic.dataset.e=nm.textContent;var s=M[norm(nm.textContent)];ic.innerHTML=s?img(s):'<span class="nesc ph"></span>'});
+    pg.querySelectorAll('.gc-t').forEach(function(m){var ic=m.querySelector('.gc-t-ic'),nm=m.querySelector('.gc-t-nm');if(!ic||!nm||ic.dataset.e===nm.textContent)return;ic.dataset.e=nm.textContent;var s=M[norm(nm.textContent)];ic.innerHTML=s?img(s):'<span class="nesc ph"></span>';ic.classList.add('nsh')});
+    pg.querySelectorAll('.td-nm').forEach(function(n){if(n.dataset.e)return;var nome=n.textContent;n.dataset.e='1';var s=M[norm(nome)];if(s)n.innerHTML=img(s)+'<span>'+esc(nome)+'</span>';else n.innerHTML='<span class="nesc ph"></span><span>'+esc(nome)+'</span>'});
+    var w=document.createTreeWalker(pg,NodeFilter.SHOW_TEXT,null);var n;while((n=w.nextNode())){if(EMO.test(n.nodeValue)){EMO.lastIndex=0;n.nodeValue=n.nodeValue.replace(EMO,'').replace(/^\s{2,}/,' ')}EMO.lastIndex=0}
+   })
+  })
+ }
+ new MutationObserver(function(){clearTimeout(T);T=setTimeout(enhance,150)}).observe(document.body,{childList:true,subtree:true});
+})();
+
 buildHome();onPage($('.page.active')||$('#homePage'));
 })();
