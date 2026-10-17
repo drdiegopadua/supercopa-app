@@ -180,5 +180,147 @@ window.abrirPickerTime2=function(){
   var sh=document.getElementById('nsheet');sh.querySelectorAll('.pk').forEach(function(b){b.onclick=function(){var n=b.dataset.n;try{escolherMeuTimeEFavoritar(n)}catch(e){try{localStorage.setItem('meu_time',n)}catch(x){}}try{localStorage.setItem('meu_time',n)}catch(x){}b.classList.add('on');if(window.nConfetti)window.nConfetti();setTimeout(function(){fecharPicker();renderMeuTime()},650)}});
   var rm=document.getElementById('pkrm');if(rm)rm.onclick=function(){try{localStorage.removeItem('meu_time')}catch(e){}fecharPicker();renderMeuTime()}})};
 
+/* ===== QUIZ redesenhado (mesma lógica: 1 tentativa, ranking, planilha) ===== */
+(function(){
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var SN={volei:'Vôlei',basquete:'Basquete'};
+var IC={
+ volei:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="24" cy="24" r="19"/><path d="M24 5c3 9 2 18-6 25M5.6 29c9-1 16 2 21 10M42 14c-8 1-15 6-17 15"/></svg>',
+ basquete:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="24" cy="24" r="19"/><path d="M24 5v38M5 24h38M9 10c7 5 7 23 0 28M39 10c-7 5-7 23 0 28"/></svg>'
+};
+var IOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var IX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+var ILOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
+var tick=null,streak=0;
+var EMO=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu;function cl(s){return String(s==null?'':s).replace(EMO,'').replace(/\s+([!?.,])/g,'$1').replace(/\s{2,}/g,' ').trim()}
+function root(){return document.getElementById('quizContent')}
+function stopTick(){if(tick){clearInterval(tick);tick=null}}
+function fmt(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60),r=s%60;return(m<10?'0':'')+m+':'+(r<10?'0':'')+r}
+function view(html,cls){stopTick();var e=root();if(!e)return null;e.innerHTML='<div class="qz '+(cls||'')+'">'+html+'</div>';var p=document.getElementById('quizPage');if(p)p.scrollTop=0;try{window.scrollTo(0,0)}catch(x){}return e}
+function saved(sport){try{var v=localStorage.getItem('quiz_feito_'+sport);return v?JSON.parse(v):null}catch(e){return null}}
+function back(label){return '<button type="button" class="qz-back" onclick="initQuiz()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'+(label||'Voltar')+'</button>'}
+function ring(pct,size){var r=46,c=2*Math.PI*r;return '<svg class="qz-ring" viewBox="0 0 108 108" width="'+size+'" height="'+size+'"><circle cx="54" cy="54" r="'+r+'" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="9"/><circle class="qz-rg" cx="54" cy="54" r="'+r+'" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" transform="rotate(-90 54 54)" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+c.toFixed(1)+'" data-to="'+(c*(1-pct/100)).toFixed(1)+'"/></svg>'}
+function animRing(){requestAnimationFrame(function(){requestAnimationFrame(function(){var g=document.querySelector('.qz-rg');if(g)g.style.strokeDashoffset=g.getAttribute('data-to')})})}
+function countUp(el,to,ms){if(!el)return;var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/ms);k=1-Math.pow(1-k,3);el.textContent=Math.round(to*k);if(k<1)requestAnimationFrame(f)})(t0)}
+
+/* ---------- início ---------- */
+window.initQuiz=function(){
+ qIdx=0;qAcertos=0;qErros=0;qNome='';qFone='';qStartTime=null;streak=0;
+ try{updateQuizStrip()}catch(e){}
+ function card(sp){
+  var on=isQuizSportEnabled(sp),cl=isQuizSportClosed(sp),s=saved(sp),st,cls='';
+  if(s){st='Respondido · '+s.pct+'%';cls='done'}
+  else if(on){st='40 perguntas';cls='open'}
+  else if(cl){st='Encerrado';cls='off'}
+  else{st='Libera em '+QUIZ_ENABLED_DATES[sp].split('-').reverse().slice(0,2).join('/');cls='off'}
+  return '<button type="button" class="qz-sp '+cls+'" onclick="initQuizSport(\''+sp+'\')"><span class="qz-spi">'+IC[sp]+'</span><b>'+SN[sp]+'</b><small>'+st+'</small>'+(cls==='off'?'<span class="qz-lk">'+ILOCK+'</span>':'')+(cls==='done'?'<span class="qz-lk ok">'+IOK+'</span>':'')+'</button>'}
+ view('<div class="qz-intro"><i class="qz-pix"></i><b>Teste o que você sabe</b><span>de vôlei e basquete. Você tem <em>uma única tentativa</em> por esporte.</span></div>'
+ +'<div class="qz-sec"><h4>Escolha o esporte</h4><div class="qz-sports">'+card('volei')+card('basquete')+'</div></div>'
+ +'<button type="button" class="qz-rank" onclick="showQuizRanking()"><span>Ver ranking geral</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>'
+ +'<div class="qz-rules"><h4>Como ganhar</h4><ol><li><b>Responda as 40 perguntas</b> do esporte escolhido.</li><li>Quem tiver a <b>maior % de acertos</b> ganha.</li><li>Em caso de empate, vence quem <b>terminou primeiro</b>.</li><li>Você tem <b>apenas 1 tentativa</b>.</li></ol><p>O campeão será premiado no intervalo entre a Semifinal 1 e a Semifinal 2. Fique de olho no ranking! O vencedor precisa estar na quadra no momento da chamada; se não estiver, chamaremos o próximo colocado.</p></div>');
+};
+
+/* ---------- escolha de esporte: telas de estado ---------- */
+function aviso(sport,titulo,msg){view('<div class="qz-box">'+back()+'<div class="qz-big">'+ILOCK+'</div><h3>'+titulo+'</h3><p>'+msg+'</p></div>')}
+window.initQuizSport=function(sport){
+ _quizSport=sport;
+ var s=saved(sport);
+ if(s){
+  view('<div class="qz-res"><div class="qz-resh">'+back('Início')+'<span class="qz-kick">'+SN[sport]+'</span><div class="qz-rw">'+ring(s.pct,150)+'<div class="qz-rn"><b>'+s.pct+'</b><small>%</small></div></div><h3>Quiz já respondido</h3><p>'+esc(s.nome)+' · '+s.acertos+' de '+s.total+' acertos</p></div><div class="qz-box in"><p class="mut">Cada pessoa tem apenas uma tentativa por esporte. Veja sua posição no ranking.</p><button type="button" class="qz-btn" onclick="showQuizRanking()">Ver ranking</button><button type="button" class="qz-btn gh" onclick="initQuiz()">Outro esporte</button><button type="button" class="qz-lnk" onclick="responderQuizNovamente(\''+sport+'\')">Equipe: liberar nova resposta</button></div></div>');
+  animRing();return}
+ if(!isQuizSportEnabled(sport)){
+  if(isQuizSportClosed(sport))return aviso(sport,'Quiz encerrado','O quiz de '+SN[sport]+' já foi encerrado. Veja o resultado final no ranking.');
+  return aviso(sport,'Ainda não liberado','O quiz de '+SN[sport]+' libera em <b>'+QUIZ_ENABLED_DATES[sport].split('-').reverse().join('/')+'</b>.');
+ }
+ qIdx=0;qAcertos=0;qErros=0;qNome='';qFone='';qStartTime=null;streak=0;
+ var pn='',pf='';try{var l=JSON.parse(localStorage.getItem('sc_quiz_id')||'{}');pn=l.n||'';pf=l.f||''}catch(e){}
+ view('<div class="qz-form">'+back()+'<div class="qz-fh"><span class="qz-fi">'+IC[sport]+'</span><div><small>Quiz de</small><h3>'+SN[sport]+'</h3></div></div>'
+ +'<div class="qz-chips"><span><b>40</b> perguntas</span><span><b>1</b> tentativa</span><span>Valendo ranking</span></div>'
+ +'<label class="qz-f"><span>Seu nome completo</span><input id="quizNomeInput" type="text" autocomplete="name" placeholder="Como você se chama?" value="'+esc(pn)+'"></label>'
+ +'<label class="qz-f"><span>Seu WhatsApp</span><input id="quizFoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="(27) 99999-9999" value="'+esc(pf)+'"></label>'
+ +'<div class="qz-err" id="qzErr"></div>'
+ +'<button type="button" class="qz-btn" onclick="startQuizComNome()">Começar o quiz</button><p class="qz-fine">Seu WhatsApp é usado só para contato caso você vença.</p></div>');
+};
+window.responderQuizNovamente=window.responderQuizNovamente||function(){};
+
+window.startQuizComNome=function(){
+ var ni=document.getElementById('quizNomeInput'),fi=document.getElementById('quizFoneInput'),er=document.getElementById('qzErr');if(!ni||!fi)return;
+ var nome=ni.value.trim(),fone=fi.value.trim();
+ function bad(m,el){if(er)er.textContent=m;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');el.focus()}
+ if(nome.length<3||nome.indexOf(' ')<0&&nome.length<4)return bad('Informe seu nome completo.',ni);
+ if(fone.replace(/\D/g,'').length<8)return bad('Informe um WhatsApp válido.',fi);
+ qNome=nome;qFone=fone;qStartTime=Date.now();qIdx=0;qAcertos=0;qErros=0;streak=0;
+ try{localStorage.setItem('sc_quiz_id',JSON.stringify({n:nome,f:fone}))}catch(e){}
+ renderQuizQuestion();
+};
+
+/* ---------- pergunta ---------- */
+window.renderQuizQuestion=function(){
+ var qs=getActiveQuizQuestions();if(qIdx>=qs.length){finishQuiz();return}
+ var q=qs[qIdx],tot=qs.length,n=qIdx+1;
+ view('<div class="qz-top"><button type="button" class="qz-x" aria-label="Sair" onclick="initQuiz()">'+IX+'</button><div class="qz-pg"><i style="width:'+(qIdx/tot*100)+'%"></i></div><span class="qz-tm" id="qzT">'+fmt((Date.now()-qStartTime)/1000)+'</span></div>'
+ +'<div class="qz-meta"><span class="qz-num"><b>'+(n<10?'0'+n:n)+'</b>/'+tot+'</span><span class="qz-sc ok">'+IOK+qAcertos+'</span><span class="qz-sc er">'+IX+qErros+'</span><span class="qz-st" id="qzSt"'+(streak>=3?'':' hidden')+'>Sequência '+streak+'</span></div>'
+ +'<h3 class="qz-q">'+cl(q.q)+'</h3><div class="qz-opts">'+q.opts.map(function(o,i){return '<button type="button" class="qz-o" style="--i:'+i+'" onclick="answerQuiz('+i+')"><i>'+String.fromCharCode(65+i)+'</i><span>'+cl(o)+'</span></button>'}).join('')+'</div><div class="qz-fb" id="qzFb"></div>','qz-play');
+ requestAnimationFrame(function(){var f=document.querySelector('.qz-pg i');if(f)f.style.width=((qIdx+0.0001)/tot*100)+'%'});
+ tick=setInterval(function(){var t=document.getElementById('qzT');if(!t){stopTick();return}t.textContent=fmt((Date.now()-qStartTime)/1000)},1000);
+ try{updateQuizStrip()}catch(e){}
+};
+window.answerQuiz=function(idx){
+ var qs=getActiveQuizQuestions(),q=qs[qIdx];if(!q)return;
+ var box=document.querySelector('.qz-opts');if(!box||box.classList.contains('lock'))return;box.classList.add('lock');
+ var opts=box.querySelectorAll('.qz-o'),ok=idx===q.ans;
+ opts.forEach(function(o,i){if(i===q.ans)o.classList.add('correct');else if(i===idx)o.classList.add('wrong');else o.classList.add('dim')});
+ if(ok){qAcertos++;streak++}else{qErros++;streak=0}
+ try{navigator.vibrate&&navigator.vibrate(ok?18:[40,30,40])}catch(e){}
+ var last=qIdx+1>=qs.length,fb=document.getElementById('qzFb');
+ var pg=document.querySelector('.qz-pg i');if(pg)pg.style.width=((qIdx+1)/qs.length*100)+'%';
+ var sc=document.querySelectorAll('.qz-sc');if(sc[0])sc[0].lastChild.textContent=qAcertos;if(sc[1])sc[1].lastChild.textContent=qErros;
+ var st=document.getElementById('qzSt');if(st){if(streak>=3){st.hidden=false;st.textContent='Sequência '+streak;st.classList.remove('pop');void st.offsetWidth;st.classList.add('pop')}else st.hidden=true}
+ if(fb){fb.className='qz-fb show '+(ok?'ok':'er');fb.innerHTML='<div class="qz-fbh"><span class="qz-fbi">'+(ok?IOK:IX)+'</span><b>'+(ok?'Resposta certa!':'Não foi dessa vez')+'</b></div>'+(ok?'':'<div class="qz-ca">Resposta: <b>'+String.fromCharCode(65+q.ans)+'. '+q.opts[q.ans]+'</b></div>')+'<p>'+cl(q.exp)+'</p><button type="button" class="qz-btn" onclick="qzNext()">'+(last?'Ver meu resultado':'Próxima pergunta')+'</button>';
+  setTimeout(function(){try{fb.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(e){}},120)}
+ try{updateQuizStrip()}catch(e){}
+};
+window.qzNext=function(){qIdx++;renderQuizQuestion()};
+
+/* ---------- resultado ---------- */
+window.finishQuiz=function(){
+ var qs=getActiveQuizQuestions(),total=qs.length,pct=Math.round(qAcertos/total*100),secs=Math.round((Date.now()-qStartTime)/1000);
+ var data={nome:qNome,fone:qFone,acertos:qAcertos,total:total,pct:pct,tempo:secs,data:new Date().toLocaleString('pt-BR')};
+ try{localStorage.setItem('quiz_feito_'+_quizSport,JSON.stringify(data))}catch(e){}
+ var t=pct>=80?['Craque da Supercopa','Você mandou muito bem!']:pct>=60?['Muito bem!','Bom conhecimento de quadra.']:pct>=40?['Razoável','Dá pra melhorar, continue acompanhando o torneio.']:['Faltou um pouco','Acompanhe os jogos e aprenda mais sobre o esporte.'];
+ view('<div class="qz-res"><div class="qz-resh"><span class="qz-kick">'+SN[_quizSport]+' · concluído</span><div class="qz-rw">'+ring(pct,170)+'<div class="qz-rn"><b id="qzPct">0</b><small>%</small></div></div><h3>'+t[0]+'</h3><p>'+t[1]+'</p></div>'
+ +'<div class="qz-box in"><div class="qz-stats"><div><b class="ok">'+qAcertos+'</b><small>Acertos</small></div><div><b class="er">'+qErros+'</b><small>Erros</small></div><div><b>'+fmt(secs)+'</b><small>Tempo</small></div></div>'
+ +'<div class="qz-saved">'+IOK+'<span>Resultado salvo para <b>'+esc(qNome)+'</b>. Em caso de empate, vence quem terminou primeiro.</span></div>'
+ +'<button type="button" class="qz-btn" onclick="showQuizRanking()">Ver ranking</button><button type="button" class="qz-btn gh" onclick="initQuiz()">Jogar outro esporte</button></div></div>');
+ animRing();countUp(document.getElementById('qzPct'),pct,1400);
+ if(pct>=60&&window.nConfetti)setTimeout(window.nConfetti,500);
+ sendQuizResultToSheet(data);
+};
+
+/* ---------- ranking ---------- */
+window.showQuizRanking=function(){
+ view('<div class="qz-rkh">'+back('Início')+'<span class="qz-kick">Quiz</span><h3>Ranking geral</h3><p>Maior % de acertos. No empate, vence quem terminou primeiro.</p></div><div id="quizRankingList" class="qz-rkl"><div class="qz-sk"></div><div class="qz-sk"></div><div class="qz-sk"></div><div class="qz-sk"></div></div>');
+ loadQuizRanking();
+};
+window.loadQuizRanking=async function(){
+ var el=document.getElementById('quizRankingList');if(!el)return;
+ try{
+  var r=await fetch(QUIZ_SHEETS_URL+'?action=ranking_quiz'),d=await r.json(),rk=d.ranking||[];
+  if(!rk.length){el.innerHTML='<div class="qz-box in"><div class="qz-big">'+IC.volei+'</div><h3>Ninguém no ranking ainda</h3><p>Seja o primeiro a responder!</p></div>';return}
+  var mine={};['volei','basquete'].forEach(function(s){var o=saved(s);if(o)mine[(o.nome||'').trim().toLowerCase()]=1});
+  function row(p,i){return '<div class="qz-row'+(mine[String(p.nome||'').trim().toLowerCase()]?' me':'')+'" style="--i:'+Math.min(i,12)+'"><span class="qz-pos">'+(i+1)+'</span><div class="qz-rn2"><b>'+esc(p.nome)+'</b><small>'+p.acertos+' de '+p.total+' · '+fmt(p.tempo)+'</small></div><span class="qz-pc">'+p.pct+'<small>%</small></span></div>'}
+  var top=rk.slice(0,3),h='';
+  if(top.length){
+   var ord=top.length>=3?[1,0,2]:top.length===2?[1,0]:[0];
+   h+='<div class="qz-pod">'+ord.map(function(i){var p=top[i];return '<div class="pd p'+(i+1)+(mine[String(p.nome||'').trim().toLowerCase()]?' me':'')+'" style="--i:'+i+'"><span class="pn">'+esc(String(p.nome).split(' ')[0])+'</span><div class="pb"><b>'+(i+1)+'</b><em>'+p.pct+'%</em></div></div>'}).join('')+'</div>';
+  }
+  h+=rk.map(row).join('');
+  el.innerHTML=h;
+ }catch(err){el.innerHTML='<div class="qz-box in"><h3>Não foi possível carregar</h3><p>Verifique sua conexão e tente novamente.</p><button type="button" class="qz-btn" onclick="showQuizRanking()">Tentar de novo</button></div>'}
+};
+window.updateQuizHomeButtons=function(){};
+window.addEventListener('pageshow',function(){});
+})();
+
 buildHome();onPage($('.page.active')||$('#homePage'));
 })();
