@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercopa-afc-v33';
+const CACHE_NAME = 'supercopa-afc-v40';
 
 const urlsToCache = [
   './',
@@ -7,6 +7,7 @@ const urlsToCache = [
   './pwa-icon-192.png',
   './pwa-icon-512.png',
   './apple-touch-icon.png',
+  './apple-touch-icon-180.png',
   './novo/skin.css',
   './novo/skin.js',
   './logo-supercopa.jpg',
