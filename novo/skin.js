@@ -85,7 +85,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Números',on:"nav('numerosPage',null)"});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div></div></div>'+
@@ -321,6 +321,104 @@ window.loadQuizRanking=async function(){
 window.updateQuizHomeButtons=function(){};
 window.addEventListener('pageshow',function(){});
 })();
+
+/* ===== Números da Supercopa (dashboard) ===== */
+const NM_API='https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api';
+const NM_ANOS=[2021,2022,2023,2024,2025,2026];
+const NM_TIMES=[6,12,12,12,12,18];
+const NM_ALCANCE=[5000,150000,340000,580000,880000];
+const NM_KM={'Afonso Cláudio':0,'Castelo':90,'Cachoeiro de Itapemirim':125,'Venda Nova do Imigrante':50,'Santa Maria de Jetibá':80,'Vitória':125,'Vila Velha':135,'Serra':115,'Itabaiana':150,'Itaperuna':330,'Atílio Vivácqua':150,'Manhuaçu':180,'Baixo Guandu':160,'Aracruz':170,'Colatina':130,'São Paulo':950};
+const NM_C23=['Vitória','Serra','Vila Velha','Itabaiana','Itaperuna','Cachoeiro de Itapemirim','Atílio Vivácqua'];
+const NM_CID={2021:['Afonso Cláudio','Castelo','Cachoeiro de Itapemirim','Venda Nova do Imigrante','Santa Maria de Jetibá'],2022:['Vitória','Vila Velha','Cachoeiro de Itapemirim','Venda Nova do Imigrante'],2023:NM_C23,2024:NM_C23.concat(['Manhuaçu']),2025:NM_C23.concat(['Manhuaçu']),2026:['Baixo Guandu','Afonso Cláudio','Aracruz','Colatina','Itaperuna','Vitória','Serra','Cachoeiro de Itapemirim','São Paulo']};
+const NM_PREM={alim:85,hosp:90,noites:1,gas:6.3,kml:10,carros:4,pess:16,dias:2};
+const nmN=n=>Math.round(n).toLocaleString('pt-BR');
+const nmR=n=>'R$ '+nmN(n);
+const nmC=n=>n>=1e6?(n/1e6).toFixed(2).replace('.',',')+' mi':n>=1e3?nmN(n/1e3)+' mil':nmN(n);
+
+function nmBars(d,o){o=o||{};const W=560,H=o.h||250,pl=10,pr=10,pt=30,pb=38,mx=Math.max.apply(null,d.map(x=>x.v))*1.12||1,bw=(W-pl-pr)/d.length;
+ let s='<svg viewBox="0 0 '+W+' '+H+'" class="nmc" role="img" aria-label="'+(o.al||'')+'">';
+ for(let i=0;i<=3;i++){const y=pt+(H-pt-pb)*i/3;s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" class="nmg"/>'}
+ d.forEach((x,i)=>{const h=(H-pt-pb)*x.v/mx,x0=pl+i*bw+bw*.16,w=bw*.68,y=H-pb-h;
+  s+='<rect x="'+x0+'" y="'+y+'" width="'+w+'" height="'+h+'" class="nmb'+(x.hi?' hi':'')+'" style="--d:'+i*90+'ms"/><text x="'+(x0+w/2)+'" y="'+(y-8)+'" class="nmv" text-anchor="middle" style="--d:'+(i*90+300)+'ms">'+(o.fmt?o.fmt(x.v):nmN(x.v))+'</text><text x="'+(x0+w/2)+'" y="'+(H-14)+'" class="nml" text-anchor="middle">'+x.l+'</text>'});
+ return s+'</svg>'}
+function nmStack(d,o){o=o||{};const W=560,H=250,pl=10,pr=10,pt=26,pb=38,mx=Math.max.apply(null,d.map(x=>x.a+x.b))*1.1||1,bw=(W-pl-pr)/d.length;
+ let s='<svg viewBox="0 0 '+W+' '+H+'" class="nmc">';
+ for(let i=0;i<=3;i++){const y=pt+(H-pt-pb)*i/3;s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" class="nmg"/>'}
+ d.forEach((x,i)=>{const ha=(H-pt-pb)*x.a/mx,hb=(H-pt-pb)*x.b/mx,x0=pl+i*bw+bw*.14,w=bw*.72,yb=H-pb-hb,ya=yb-ha;
+  s+='<rect x="'+x0+'" y="'+yb+'" width="'+w+'" height="'+hb+'" class="nmb app" style="--d:'+i*50+'ms"/><rect x="'+x0+'" y="'+ya+'" width="'+w+'" height="'+ha+'" class="nmb" style="--d:'+(i*50+80)+'ms"/><text x="'+(x0+w/2)+'" y="'+(H-14)+'" class="nml" text-anchor="middle">'+x.l+'</text>'});
+ return s+'</svg>'}
+function nmLine(d,o){o=o||{};const W=560,H=230,pl=22,pr=22,pt=30,pb=38,mx=Math.max.apply(null,d.map(x=>x.v))*1.15||1,st=(W-pl-pr)/(d.length-1||1);
+ const P=d.map((x,i)=>[pl+i*st,H-pb-(H-pt-pb)*x.v/mx]);
+ let s='<svg viewBox="0 0 '+W+' '+H+'" class="nmc">';
+ for(let i=0;i<=3;i++){const y=pt+(H-pt-pb)*i/3;s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" class="nmg"/>'}
+ const path=P.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');
+ s+='<path d="'+path+'L'+P[P.length-1][0]+' '+(H-pb)+'L'+P[0][0]+' '+(H-pb)+'Z" class="nmar"/><path d="'+path+'" class="nmln" pathLength="1"/>';
+ d.forEach((x,i)=>{s+='<circle cx="'+P[i][0]+'" cy="'+P[i][1]+'" r="5" class="nmdot" style="--d:'+(600+i*120)+'ms"/><text x="'+P[i][0]+'" y="'+(P[i][1]-12)+'" class="nmv" text-anchor="middle" style="--d:'+(600+i*120)+'ms">'+(o.fmt?o.fmt(x.v):nmN(x.v))+'</text><text x="'+P[i][0]+'" y="'+(H-14)+'" class="nml" text-anchor="middle">'+x.l+'</text>'});
+ return s+'</svg>'}
+function nmHBars(d,fmt){const mx=Math.max.apply(null,d.map(x=>x.v))||1;return '<div class="nmh">'+d.map((x,i)=>'<div class="nmhr"><span>'+x.l+'</span><div class="nmht"><i style="width:'+(x.v/mx*100).toFixed(1)+'%;--d:'+i*70+'ms"></i></div><b>'+(fmt?fmt(x.v):nmN(x.v))+'</b></div>').join('')+'</div>'}
+function nmDonut(parts){const tot=parts.reduce((s,p)=>s+p.v,0)||1,R=54,C=2*Math.PI*R;let off=0,s='<svg viewBox="0 0 140 140" class="nmdn"><circle cx="70" cy="70" r="'+R+'" class="nmdb"/>';
+ parts.forEach((p,i)=>{const len=C*p.v/tot;s+='<circle cx="70" cy="70" r="'+R+'" class="nmds s'+i+'" stroke-dasharray="'+len.toFixed(1)+' '+(C-len).toFixed(1)+'" stroke-dashoffset="'+(-off).toFixed(1)+'" transform="rotate(-90 70 70)"/>';off+=len});
+ return s+'<text x="70" y="68" text-anchor="middle" class="nmdt">'+nmC(tot)+'</text><text x="70" y="86" text-anchor="middle" class="nmds2">acessos</text></svg>'}
+
+function nmCalc(p){
+ const out=[];
+ NM_ANOS.forEach((a,i)=>{const t=NM_TIMES[i],cs=NM_CID[a].filter(c=>c!=='Afonso Cláudio'),dist=cs.length?cs.reduce((s,c)=>s+(NM_KM[c]||150),0)/cs.length:0,
+  alim=p.pess*p.alim*p.dias,hosp=p.pess*p.hosp*p.noites,comb=p.carros*(2*dist/p.kml)*p.gas;
+  const vis=Math.max(0,t-1);
+  out.push({a:a,t:t,dist:dist,alim:alim,hosp:hosp,comb:comb,visita:alim+hosp+comb,alimT:t*alim,hospT:vis*hosp,combT:vis*comb,total:t*alim+vis*(hosp+comb)})});
+ return out}
+
+function nmInit(){
+ const $=id=>document.getElementById(id);if(!$('nmK'))return;
+ const rev=()=>{const els=document.querySelectorAll('.nmcard');if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});els.forEach(e=>io.observe(e))};
+ const allc={};NM_ANOS.forEach(a=>NM_CID[a].forEach(c=>allc[c]=1));
+ $('nmK').innerHTML=[[NM_ANOS.length,'Edições'],[NM_TIMES[5]*16,'Atletas em 2026'],[Object.keys(allc).length,'Cidades já representadas'],[nmC(NM_ALCANCE.reduce((s,v)=>s+v,0)),'Visualizações no Instagram']].map(x=>'<div class="stat"><b>'+x[0]+'</b><small>'+x[1]+'</small></div>').join('');
+ $('nmTimes').innerHTML=nmBars(NM_ANOS.map((a,i)=>({l:a,v:NM_TIMES[i],hi:i===5})),{al:'Times por edição'});
+ $('nmAtl').innerHTML=nmLine(NM_ANOS.map((a,i)=>({l:a,v:NM_TIMES[i]*16})),{});
+ $('nmAlc').innerHTML=nmBars(NM_ALCANCE.map((v,i)=>({l:NM_ANOS[i],v:v,hi:i===4})),{fmt:nmC,al:'Alcance Instagram'});
+ $('nmAlcK').innerHTML='<b>'+nmC(NM_ALCANCE[4])+'</b><small>visualizações em 2025</small><p>Crescimento de <b>'+nmN(NM_ALCANCE[4]/NM_ALCANCE[0])+' vezes</b> desde 2021 e de <b>'+Math.round((NM_ALCANCE[4]/NM_ALCANCE[3]-1)*100)+'%</b> sobre 2024.</p>';
+ $('nmCid').innerHTML=nmBars(NM_ANOS.map((a,i)=>({l:a,v:NM_CID[a].length,hi:i===5})),{al:'Cidades por edição'});
+ $('nmCidL').innerHTML=NM_ANOS.slice().reverse().map(a=>'<div class="nmy"><b>'+a+'</b><div>'+NM_CID[a].map(c=>'<span>'+c+'</span>').join('')+'</div></div>').join('');
+ const campos=[['alim','Alimentação por pessoa/dia (R$)'],['hosp','Hospedagem por pessoa/noite (R$)'],['noites','Noites de hospedagem'],['gas','Gasolina (R$/litro)'],['kml','Consumo (km/litro)'],['carros','Carros por equipe'],['pess','Pessoas por equipe'],['dias','Dias de competição']];
+ const p=Object.assign({},NM_PREM);
+ $('nmF').innerHTML=campos.map(c=>'<label><span>'+c[1]+'</span><input type="number" step="any" min="0" data-k="'+c[0]+'" value="'+p[c[0]]+'"></label>').join('');
+ const draw=()=>{const r=nmCalc(p),u=r[5],acum=r.reduce((s,x)=>s+x.total,0);
+  $('nmE').innerHTML=[[nmR(u.visita),'Gasto de uma equipe visitante em 2026'],[nmR(u.total),'Movimento estimado em 2026'],[nmR(acum),'Acumulado 2021 a 2026']].map(x=>'<div class="stat"><b>'+x[0]+'</b><small>'+x[1]+'</small></div>').join('');
+  $('nmEq').innerHTML=nmHBars([{l:'Alimentação ('+p.dias+' dias)',v:u.alim},{l:'Hospedagem ('+p.noites+' noite'+(p.noites==1?'':'s')+')',v:u.hosp},{l:'Combustível (~'+Math.round(u.dist)+' km de ida)',v:u.comb}],nmR)+'<p class="nmfn" style="margin-top:12px">Total por equipe: <b>'+nmR(u.visita)+'</b>, ou '+nmR(u.visita/p.pess)+' por pessoa.</p>';
+  $('nmTot').innerHTML=nmBars(r.map((x,i)=>({l:x.a,v:x.total,hi:i===5})),{fmt:nmC,al:'Movimento por edição'})};
+ draw();$('nmF').addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;const v=parseFloat(e.target.value);p[k]=isFinite(v)&&v>=0?v:0;draw()});
+ rev();
+ /* acessos reais */
+ const get=a=>fetch(NM_API+'?action='+a).then(r=>r.json());
+ Promise.all([get('count_acessos_site'),get('count_acessos'),get('count_installs'),get('acessos_log'),get('ranking_quiz').catch(()=>({}))]).then(r=>{
+  const s=r[0]||{},a=r[1]||{},ins=r[2]||{},log=(r[3]&&r[3].log)||[],q=(r[4]&&r[4].ranking)||[];
+  const uni=(s.unicos||0)+(a.unicos||0),tot=(s.total||0)+(a.total||0);
+  $('nmD').innerHTML=[[nmN(uni),'Aparelhos únicos'],[nmN(tot),'Acessos no total'],[nmN(ins.total||0),'Instalações do app'],[nmN(q.length),'Participantes do quiz']].map(x=>'<div class="stat"><b>'+x[0]+'</b><small>'+x[1]+'</small></div>').join('');
+  const m={};log.forEach(x=>{const k=String(x.data).slice(0,7);(m[k]=m[k]||{a:0,b:0});if(x.plataforma==='app')m[k].b++;else m[k].a++});
+  const ks=Object.keys(m).sort().slice(-12),MS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  $('nmMes').innerHTML=ks.length?nmStack(ks.map(k=>({l:MS[+k.slice(5)-1]+'/'+k.slice(2,4),a:m[k].a,b:m[k].b}))):'<p class="nmfn">Ainda sem acessos registrados.</p>';
+  $('nmPl').innerHTML=nmDonut([{v:s.total||0},{v:a.total||0}])+'<div class="nmdl"><div><i class="s0"></i>Site<b>'+nmN(s.total||0)+'</b><small>'+nmN(s.unicos||0)+' aparelhos únicos</small></div><div><i class="s1"></i>App<b>'+nmN(a.total||0)+'</b><small>'+nmN(a.unicos||0)+' aparelhos únicos</small></div></div>';
+  rev()}).catch(()=>{$('nmD').innerHTML='<div class="stat"><b>—</b><small>Não foi possível carregar os acessos agora</small></div>'})}
+
+/* ===== Números da Supercopa (app) ===== */
+mkPage('numerosPage','<div class="wrapR"><p class="mut" style="margin:6px 2px 14px">Crescimento, alcance, impacto na economia local e audiência digital da Supercopa desde 2021.</p>'
++'<div class="grid2 nmk" id="nmK"></div>'
++'<div class="nsh2"><b>Times por edição</b></div><div class="nmcard"><div id="nmTimes"></div></div>'
++'<div class="nsh2"><b>Atletas inscritos</b></div><div class="nmcard"><div id="nmAtl"></div></div>'
++'<div class="nsh2"><b>Alcance no Instagram</b></div><div class="nmcard"><div id="nmAlc"></div><div id="nmAlcK" class="nmbig"></div></div>'
++'<div class="nsh2"><b>Cidades por edição</b></div><div class="nmcard"><div id="nmCid"></div><div id="nmCidL" class="nmyrs" style="margin-top:14px"></div></div>'
++'<div class="nsh2"><b>Impacto econômico</b></div><div class="nmcard nmin"><h3>Premissas</h3><div class="nmf" id="nmF"></div><p class="nmfn">Valores médios estimados. Altere para recalcular.</p></div>'
++'<div class="grid2 nmk" id="nmE"></div>'
++'<div class="nmcard"><h3>Gasto de uma equipe visitante (2026)</h3><div id="nmEq"></div></div>'
++'<div class="nmcard"><h3>Movimento total por edição</h3><div id="nmTot"></div></div>'
++'<div class="nsh2"><b>Premiação</b></div><div class="nmcard"><div class="nmbig"><small>2021 a 2024</small><b>Troféus</b></div><div class="nmbig" style="margin-top:12px"><small>2025 · campeão e vice</small><b>R$ 1.000 + R$ 500</b></div></div>'
++'<div class="nsh2"><b>Audiência digital</b></div><div class="grid2 nmk" id="nmD"><div class="stat"><b>...</b><small>Carregando</small></div></div>'
++'<div class="nmcard"><h3>Acessos por mês</h3><div id="nmMes"></div><div class="nmleg"><i></i>Site <i class="app"></i>App</div></div>'
++'<div class="nmcard"><h3>Site x App</h3><div id="nmPl" class="nmdw"></div></div>'
++'<p class="nmfn" style="margin:14px 2px 0">Fontes: dados da organização, cadastro de times 2026 e registros anônimos de acesso. Gastos são estimativas.</p></div>');
+PAGES.numerosPage=['Desde 2021','Números da Supercopa','historia'];
+(function(){var _h=window.nPageHook;window.nPageHook=function(pg){_h&&_h(pg);if(pg.id==='numerosPage')setTimeout(nmInit,0)}})();
 
 buildHome();onPage($('.page.active')||$('#homePage'));
 })();
