@@ -202,3 +202,4 @@ body.day .card,.card{border-radius:22px!important}
 @keyframes spOut2{0%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 100% 0)}}
 @keyframes spEdge{0%{opacity:1;bottom:0}100%{opacity:1;bottom:100%}}
 @media (prefers-reduced-motion:reduce){#nsplash{display:none!important}}
+#nsplash .slz img{width:100%!important;max-width:none!important;height:auto!important;left:0!important;filter:none!important;box-shadow:none!important;border-radius:0!important}
