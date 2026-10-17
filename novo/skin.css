@@ -103,6 +103,12 @@ body.day .card,.card{border-radius:22px!important}
 #nbar button.on{color:#fff}#nbar button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}#nbar button.on svg{animation:nPop .45s cubic-bezier(.3,1.6,.4,1)}
 .nsh2 .lnk{all:unset;cursor:pointer;font:700 11px var(--body);color:var(--b1);letter-spacing:1px}
 
+.plg.c1{grid-template-columns:minmax(0,230px);justify-content:center}
+.plg.c2{grid-template-columns:1fr 1fr}
+.plg.c1.real{grid-template-columns:minmax(0,100%)}
+.plg.real .plc{border-color:#1b52e0;box-shadow:0 14px 30px -20px rgba(11,42,143,.6)}
+.nlmq img{width:128px!important;height:77px!important}
+
 #splash{display:none!important}
 #nsplash{position:fixed;inset:0;z-index:5000;background:#071a5c;overflow:hidden;display:block;animation:spExit .8s 2.7s cubic-bezier(.7,0,.2,1) forwards;pointer-events:none}
 #nsplash .spbg{position:absolute;inset:0;background-size:cover;background-position:center;animation:spZoom 3.4s cubic-bezier(.16,.8,.2,1) both;will-change:transform,filter}
