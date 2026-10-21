@@ -85,7 +85,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Pedidos online',on:"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"});tiles.push({l:'Números',on:"nav('numerosPage',null)"});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Pedidos online',on:"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"});window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div><div class="vt">Ver todas as equipes ›</div></div></div>'+
@@ -420,6 +420,25 @@ mkPage('numerosPage','<div class="wrapR"><p class="mut" style="margin:6px 2px 14
 +'<p class="nmfn" style="margin:14px 2px 0">Fontes: dados da organização, cadastro de times 2026 e registros anônimos de acesso. Gastos são estimativas.</p></div>');
 PAGES.numerosPage=['Desde 2021','Números da Supercopa','historia'];
 (function(){var _h=window.nPageHook;window.nPageHook=function(pg){_h&&_h(pg);if(pg.id==='numerosPage')setTimeout(nmInit,0)}})();
+
+/* ===== aba Mais: Meu Time e Números (saíram do Guia da tela inicial) ===== */
+window.nMaisExtra=function(tiles){
+ try{
+  var mp=document.getElementById('maisPage');if(!mp||mp.querySelector('[data-nx]'))return;
+  var base=[].slice.call(mp.querySelectorAll('[onclick]')).filter(function(e){return /regrasPage/.test(e.getAttribute('onclick'))})[0];if(!base)return;
+  var mt=tiles.filter(function(x){return /^Meu Time$/i.test(x.l)})[0];
+  function linha(ico,tit,desc,on){
+   var c=base.cloneNode(true);c.setAttribute('data-nx','1');c.setAttribute('onclick',on);
+   var w=document.createTreeWalker(c,NodeFilter.SHOW_TEXT,null),n,k=0,tx=[];while((n=w.nextNode())){if(n.nodeValue.trim())tx.push(n)}
+   if(tx[0])tx[0].nodeValue=ico;if(tx[1])tx[1].nodeValue=tit;if(tx[2])tx[2].nodeValue=desc;
+   return c}
+  var ref=base,pai=base.parentNode;
+  var a=mt&&mt.on?linha('\u2605','Meu Time','Elenco e dados da sua equipe',mt.on):null;
+  var b=linha('\u25A4','N\u00fameros da Supercopa','Crescimento, impacto e audi\u00eancia',"nav('numerosPage',null)");
+  if(a)pai.insertBefore(a,ref.nextSibling);
+  pai.insertBefore(b,(a||ref).nextSibling);
+ }catch(e){console.error(e)}
+};
 
 /* ===== destaques das partidas no app ===== */
 (function(){
