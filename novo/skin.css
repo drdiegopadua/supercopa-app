@@ -554,3 +554,16 @@ body.day .card,.card{border-radius:22px!important}
 .gc:not(.alt) .gc-bot span{color:#fff!important}
 .gc.alt .gc-bot span{color:#0b2a8f!important}
 .nbw{padding-inline:20px}
+
+/* ===== botão Pedidos online ===== */
+.npedido{display:flex;align-items:center;gap:14px;margin:6px 0 16px;padding:12px 14px;background:linear-gradient(105deg,#0b2a8f,#1b52e0);color:#fff;text-decoration:none;position:relative;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);-webkit-tap-highlight-color:transparent;transition:transform .2s}
+.npedido::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.06) 0 7px,transparent 7px 16px)}
+.npedido:active{transform:scale(.98)}
+.npedido>*{position:relative}
+.npl{width:64px;height:64px;flex:none;background:#fff;display:grid;place-items:center;border-radius:12px}
+.npl img{width:56px;height:56px;object-fit:contain}
+.npt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.npt small{font:700 11px var(--body);letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.npt b{font:800 28px/1 var(--display);text-transform:uppercase;letter-spacing:.5px}
+.npt i{font:500 12.5px var(--body);font-style:normal;opacity:.9}
+.npa{font:800 34px var(--display);opacity:.9;padding-right:2px}
