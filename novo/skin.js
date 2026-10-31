@@ -440,6 +440,27 @@ window.nMaisExtra=function(tiles){
  }catch(e){console.error(e)}
 };
 
+/* ===== contagem de exibições dos logos dos patrocinadores (cada vez que o logo é visto conta 1) ===== */
+function scTrackPatroc(plat, rules) {
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      var el = e.target, st = el.__trk; if (!st) return;
+      if (e.isIntersecting && e.intersectionRatio >= 0.3) { if (!st.on && Date.now() - st.t > 8000) { st.on = true; st.t = Date.now(); enviar(el, st.local); } }
+      else if (!e.isIntersecting) { st.on = false; }
+    });
+  }, { threshold: [0, 0.3] }) : null;
+  function slugs(el) { var o = []; el.querySelectorAll('img').forEach(function (i) { var m = /parceiros\/([a-z0-9-]+)\.png/.exec(i.getAttribute('src') || ''); if (m && o.indexOf(m[1]) < 0) o.push(m[1]); }); return o; }
+  function enviar(el, local) {
+    var s = slugs(el); if (!s.length) return;
+    try { fetch(NM_API, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ tipo: 'patrocinio_view', plataforma: plat, local: local, slugs: s }) }); } catch (e) {}
+  }
+  function varre() { rules.forEach(function (r) { document.querySelectorAll(r.sel).forEach(function (el) { if (el.__trk) return; el.__trk = { local: r.local, on: false, t: 0 }; if (io) io.observe(el); }); }); }
+  varre();
+  new MutationObserver(function () { clearTimeout(scTrackPatroc.t); scTrackPatroc.t = setTimeout(varre, 300); }).observe(document.body, { childList: true, subtree: true });
+}
+
+scTrackPatroc('app',[{sel:'.nlmq',local:'home'},{sel:'#patrocPage .plg',local:'patrocinadores'},{sel:'.npedido',local:'pedidos'}]);
+
 /* ===== destaques das partidas no app ===== */
 (function(){
  var API='https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api';
