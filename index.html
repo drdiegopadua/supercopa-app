@@ -1690,11 +1690,12 @@ async function initGaleraVoting(){
   try{
     const r=await fetch(SC_API_APP_+'?action=votacao');const d=await r.json();
     if(!d.ok)throw 0;
-    _vot.equipes=d.equipes||[];_vot.aberta=d.aberta;
+    _vot.equipes=d.equipes||[];_vot.aberta=d.aberta;_vot.antes=d.antes;_vot.abreEm=d.abreEm;
     try{localStorage.setItem('sc_votacao_cache',JSON.stringify(d))}catch(e){}
   }catch(e){
     try{const c=JSON.parse(localStorage.getItem('sc_votacao_cache')||'null');if(c){_vot.equipes=c.equipes||[];_vot.aberta=c.aberta}else{area.innerHTML=emptyStateHTML('📡','Sem conexão. Tente novamente em instantes.');return}}catch(x){return}
   }
+  if(_vot.antes){area.innerHTML='<div style="text-align:center;padding:30px 16px"><div style="font-size:44px">⏳</div><div style="font-size:17px;font-weight:900;color:#7C3AED;margin:8px 0 4px">A votação ainda não abriu</div><div style="font-size:13px;color:#64748b">Abre em '+(function(x){try{return new Date(x).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(',',' às')}catch(e){return '28/11 às 14:30'}})(_vot.abreEm)+'. Volte aqui para votar no atleta da galera.</div></div>';return}
   if(!_vot.aberta){area.innerHTML='<div style="text-align:center;padding:30px 16px"><div style="font-size:44px">⛔</div><div style="font-size:17px;font-weight:900;color:#dc2626;margin:8px 0 4px">Votação encerrada</div><div style="font-size:12px;color:#94a3b8">Confira o resultado no ranking.</div></div>';return}
   if(!_vot.equipes.length){area.innerHTML='<div style="text-align:center;padding:30px 16px"><div style="font-size:44px">⏳</div><div style="font-size:17px;font-weight:900;color:#7C3AED;margin:8px 0 4px">A votação abre com o 1º jogo</div><div style="font-size:12px;color:#94a3b8">Assim que uma partida terminar, os atletas que jogaram aparecem aqui para você votar.</div></div>';return}
   _vot.sel=null;_vot.eq='';_vDesenhar();
