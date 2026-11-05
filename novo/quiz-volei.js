@@ -1,8 +1,8 @@
-/* Quiz de vôlei: banco de 40 perguntas, sorteadas a cada tentativa (3 regras + 2 curiosidades + 3 Supercopa + 2 história).
+/* Quiz de vôlei: 40 perguntas, todas respondidas, em ordem aleatória (e alternativas embaralhadas) a cada tentativa.
    [pergunta, resposta certa, [3 erradas], explicação, categoria]. As alternativas são embaralhadas a cada tentativa.
    Teste sem gravar no ranking: abra o app com ?quizteste=1 */
 (function(){
-var RODADA={r:3,c:2,s:3,h:2};
+var RODADA={r:99,c:99,s:99,h:99};
 var B=[
 ['Quantos jogadores de cada equipe ficam em quadra ao mesmo tempo?','6',['5','7','8'],'São 6 jogadores por equipe em quadra: 3 na frente e 3 atrás.','r'],
 ['Até quantos pontos vai um set normal?','25',['15','21','30'],'O set vai a 25 pontos, sempre com 2 de vantagem.','r'],
