@@ -252,6 +252,7 @@ window.startQuizComNome=function(){
  if(fone.replace(/\D/g,'').length<8)return bad('Informe um WhatsApp válido.',fi);
  qNome=nome;qFone=fone;qStartTime=Date.now();qIdx=0;qAcertos=0;qErros=0;streak=0;
  try{localStorage.setItem('sc_quiz_id',JSON.stringify({n:nome,f:fone}))}catch(e){}
+ if(window.quizSorteia)quizSorteia(_quizSport);
  renderQuizQuestion();
 };
 
