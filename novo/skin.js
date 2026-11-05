@@ -503,7 +503,7 @@ function nbBracket(T,esc,shf){
 
 (function(){
  var _f=window.fetch;
- window.fetch=function(u){var p=_f.apply(this,arguments);try{if(/action=torneio/.test(String(u)))p.then(function(r){return r.clone?r.clone().json():r.json()}).then(function(d){if(d&&d.ok){window.__TN=d;window.nbDraw&&window.nbDraw()}}).catch(function(){})}catch(e){}return p};
+ window.fetch=function(u){var p=_f.apply(this,arguments);try{if(/action=torneio/.test(String(u)))p.then(function(r){return r.clone?r.clone().json():r.json()}).then(function(d){if(d&&d.ok){if(window.scAgendaOficial)scAgendaOficial(d);window.__TN=d;window.nbDraw&&window.nbDraw()}}).catch(function(){})}catch(e){}return p};
 })();
 (function(){
  var EMO=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,MAP=null,T=null;
