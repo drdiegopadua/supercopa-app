@@ -47,9 +47,9 @@ function decorate(pg){
  pg.insertBefore(hd,pg.firstChild);words(hd.querySelector('.nt'));
 }
 /* barra de baixo */
-var TABS=[['homePage','Início','home'],['gamesPage','Jogos','cal'],['tablePage','Tabela','tab'],['bracketPage','Mata-mata','trophy'],['maisPage','Mais','more']];
+var TABS=[['homePage','Início','home'],['gamesPage','Jogos','cal'],['tablePage','Tabela','tab'],['chatLivePage','Chat','chat'],['maisPage','Mais','more']];
 var nb=document.createElement('nav');nb.id='nbar';nb.innerHTML='<span class="ind"></span>'+TABS.map(function(t){return '<button type="button" data-p="'+t[0]+'">'+I(t[2])+t[1]+'</button>'}).join('');document.body.appendChild(nb);
-nb.addEventListener('click',function(e){var a=e.target.closest('button[data-p]');if(!a)return;var p=a.dataset.p;nav(p,null);if(p==='homePage'){}});
+nb.addEventListener('click',function(e){var a=e.target.closest('button[data-p]');if(!a)return;var p=a.dataset.p;if(p==='chatLivePage'&&window.scChatOpen){scChatOpen();return}nav(p,null);if(p==='homePage'){}});
 function syncTabs(id){var ix=TABS.findIndex(function(t){return t[0]===id});if(ix<0)ix=4;$$('button',nb).forEach(function(a,i){a.classList.toggle('on',i===ix)});$('.ind',nb).style.transform='translateX('+(ix*100)+'%)'}
 /* ao trocar de página */
 var last='';
@@ -85,7 +85,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Pedidos online',on:"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"});tiles.push({l:'Chat da galera',on:"scChatOpen()"});window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Pedidos online',on:"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"});window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div><div class="vt">Ver todas as equipes ›</div></div></div>'+
@@ -530,4 +530,14 @@ function nbBracket(T,esc,shf){
 })();
 
 buildHome();onPage($('.page.active')||$('#homePage'));
+})();
+
+/* mata-mata junto da tabela (a aba de baixo agora é o chat) */
+(function(){
+ var tp=document.getElementById('tablePage'),bp=document.getElementById('bracketPage');if(!tp||!bp)return;
+ tp.parentNode.insertBefore(bp,tp.nextSibling);
+ function sync(){document.body.classList.toggle('tbj',tp.classList.contains('active'))}
+ new MutationObserver(sync).observe(tp,{attributes:true,attributeFilter:['class']});sync();
+ var n0=window.nav;
+ window.nav=function(id,el){if(id==='bracketPage'){var r=n0('tablePage',el);setTimeout(function(){try{bp.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}},400);return r}return n0(id,el)};
 })();

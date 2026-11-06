@@ -581,3 +581,8 @@ body.day .card,.card{border-radius:22px!important}
 #chatPage{position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;height:auto!important;min-height:60vh;overflow:visible!important}
 #chatPage.active{display:block!important}
 #chatPage #socialGaleraPanel{display:block!important;flex:none!important;height:auto!important;overflow:visible!important}
+
+/* mata-mata junto da tabela */
+body.tbj #bracketPage{display:block!important;position:relative!important;min-height:0!important;padding-bottom:110px!important}
+body.tbj #bracketPage::before{content:"";display:block;margin:10px 16px 14px;border-top:2px solid var(--ln)}
+body.tbj #tablePage{min-height:0!important;padding-bottom:10px!important}
