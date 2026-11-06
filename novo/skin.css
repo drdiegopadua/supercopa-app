@@ -567,3 +567,17 @@ body.day .card,.card{border-radius:22px!important}
 .npt b{font:800 28px/1 var(--display);text-transform:uppercase;letter-spacing:.5px}
 .npt i{font:500 12.5px var(--body);font-style:normal;opacity:.9}
 .npa{font:800 34px var(--display);opacity:.9;padding-right:2px}
+
+/* ===== Votação do atleta da galera (mesmo visual do quiz) ===== */
+#chatPage .chat-header{display:none!important}
+#chatPage #socialGaleraPanel{padding:0 0 90px!important}
+.gl .gl-ini{font:800 30px var(--display);color:#fff}
+.gl .gl-t{font-size:34px;line-height:1}
+.gl .gl-num{font:800 24px var(--display);color:#fff}
+.gl .gl-opts{margin-top:6px}
+.gl-ck{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px;font:500 13px/1.4 var(--body);color:var(--mute)}
+.gl-ck input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--b1)}
+.gl .qz-row .qz-rn2 small{display:block}
+#chatPage{position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;height:auto!important;min-height:60vh;overflow:visible!important}
+#chatPage.active{display:block!important}
+#chatPage #socialGaleraPanel{display:block!important;flex:none!important;height:auto!important;overflow:visible!important}
