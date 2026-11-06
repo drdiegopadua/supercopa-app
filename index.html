@@ -1745,11 +1745,11 @@ async function renderHomeAgora(){
 }
 setTimeout(renderHomeAgora,600);setInterval(()=>{if(document.visibilityState==='visible')renderHomeAgora()},60000);
 /* ===== ATLETA DESTAQUE: 1 voto por pessoa (WhatsApp + aparelho), só atletas de jogos encerrados ===== */
-const VOTO_KEY='sc_voto_destaque', DEV_KEY='sc_dev_id';
+const VOTO_KEY='sc_voto_destaque', DEV_KEY='sc_dev_id';const TESTE_V=/[?&]teste=1/.test(location.search);
 let _vot={equipes:[],aberta:true,sel:null,eq:''};
 function _vEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function _vDev(){try{let d=localStorage.getItem(DEV_KEY);if(!d){d='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem(DEV_KEY,d)}return d}catch(e){return ''}}
-function _vMeu(){try{return JSON.parse(localStorage.getItem(VOTO_KEY)||'null')}catch(e){return null}}
+function _vMeu(){if(TESTE_V)return null;try{return JSON.parse(localStorage.getItem(VOTO_KEY)||'null')}catch(e){return null}}
 function galeraSubTab(tab,btn){
   const on='flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#7C3AED,#6D28D9);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)';
   const off='flex:1;height:36px;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B';
@@ -1768,7 +1768,7 @@ async function initGaleraVoting(){
   if(meu){_vJaVotou(meu);return}
   area.innerHTML='<div style="padding:6px">'+skeletonHTML(3,48)+'</div>';
   try{
-    const r=await fetch(SC_API_APP_+'?action=votacao');const d=await r.json();
+    const r=await fetch(SC_API_APP_+'?action=votacao'+(TESTE_V?'&teste=1':''));const d=await r.json();
     if(!d.ok)throw 0;
     _vot.equipes=d.equipes||[];_vot.aberta=d.aberta;_vot.antes=d.antes;_vot.abreEm=d.abreEm;
     try{localStorage.setItem('sc_votacao_cache',JSON.stringify(d))}catch(e){}
@@ -1822,7 +1822,7 @@ async function enviarVotoDestaque(){
   const btn=document.getElementById('vBtn');btn.disabled=true;btn.textContent='Enviando…';
   try{
     localStorage.setItem('galera_nome',nome);localStorage.setItem('galera_tel',tel);
-    const r=await fetch(SC_API_APP_,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({acao:'votarDestaque',nome,whatsapp:tel,aceite:true,equipe:_vot.eq,atletaNome:_vot.sel,deviceId:_vDev()})});
+    const r=await fetch(SC_API_APP_,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({acao:'votarDestaque',nome,whatsapp:tel,aceite:true,equipe:_vot.eq,atletaNome:_vot.sel,teste:TESTE_V,deviceId:TESTE_V?'teste-'+Math.random().toString(36).slice(2):_vDev()})});
     const d=await r.json();
     if(d.ok){const m={equipe:d.voto.equipe,nome:d.voto.nome,numero:d.voto.numero};localStorage.setItem(VOTO_KEY,JSON.stringify(m));if(navigator.vibrate)navigator.vibrate([20,40,20]);_vJaVotou(m);galeraSubTab('ranking',document.getElementById('galeraBtnRanking'));return}
     if(d.jaVotou){localStorage.setItem(VOTO_KEY,JSON.stringify({equipe:'',nome:'(seu voto já foi registrado)',numero:''}));_vJaVotou(_vMeu());showToast('Você já votou');return}
@@ -1837,7 +1837,7 @@ async function loadGaleraRanking(){
   const el=document.getElementById('galeraRankingList');if(!el)return;
   if(!el.dataset.ok)el.innerHTML='<div style="padding:6px">'+skeletonHTML(4,44)+'</div>';
   try{
-    const r=await fetch(SC_API_APP_+'?action=rankingDestaque');const d=await r.json();
+    const r=await fetch(SC_API_APP_+'?action=rankingDestaque'+(TESTE_V?'&teste=1':''));const d=await r.json();
     if(!d.ok)throw 0;
     try{localStorage.setItem('sc_rank_cache',JSON.stringify(d))}catch(e){}
     _vRank(el,d);
