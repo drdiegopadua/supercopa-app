@@ -268,7 +268,7 @@ button:not(:disabled):active, .home-card:active, .nav-btn:active {
 .gxa-item.vis{opacity:1;transform:none}
 .gxa-item.vis:active{transform:scale(.96);transition-duration:.12s}
 .gxa-item.gxa-wide{grid-column:span 2}
-.gxa-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s}
+.gxa-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;opacity:0;transition:opacity .5s}
 .gxa-item img.ok{opacity:1}
 .gxa-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(6,18,46,.7));pointer-events:none}
 .gxa-leg{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:12px 13px;font:700 12px/1.3 'Inter',sans-serif;color:#fff;text-align:left}
@@ -1553,7 +1553,7 @@ async function renderGallery(){
   vazio.style.display="none";bg.style.backgroundImage="url("+_gxaFotos[0].f+")";chip.style.display="inline-flex";
   let n=0;const alvo=_gxaFotos.length,iv=setInterval(()=>{n++;document.getElementById("gxaN").textContent=n;n>=alvo&&clearInterval(iv)},Math.max(18,700/alvo));
   _gxaFotos.forEach((f,i)=>{
-    const b=document.createElement("button");b.type="button";b.className="gxa-item"+((i%7===0&&_gxaFotos.length>=5)?" gxa-wide":"");
+    const b=document.createElement("button");b.type="button";b.className="gxa-item"+((i%7===0&&_gxaFotos.length>=5&&f.w/f.h>=1.25)?" gxa-wide":"");
     if(f.lq)b.style.backgroundImage="url("+f.lq+")";else b.style.backgroundColor="#122a5c";b.dataset.i=i;b.dataset.r=f.w/f.h;b.setAttribute("aria-label",f.cap||"Abrir foto "+(i+1));
     b.innerHTML='<img src="'+f.t+'" alt="'+_gxaEsc(f.cap||"Foto "+(i+1)+" da Supercopa")+'" loading="lazy" decoding="async">'+(f.cap?'<span class="gxa-leg">'+_gxaEsc(f.cap)+"</span>":"");
     const im=b.querySelector("img");im.addEventListener("load",()=>im.classList.add("ok"));im.complete&&im.naturalWidth&&im.classList.add("ok");
@@ -1568,7 +1568,7 @@ function _gxaLayout(){
   const cs=getComputedStyle(g),cols=cs.gridTemplateColumns.split(" ").length,gap=parseFloat(cs.columnGap)||10,pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
   const colW=(g.clientWidth-pad-gap*(cols-1))/cols;
   g.querySelectorAll(".gxa-item").forEach(el=>{
-    const wide=el.classList.contains("gxa-wide"),w=wide?colW*2+gap:colW,asp=wide?1.55:Math.min(Math.max(+el.dataset.r,.66),1.8);
+    const wide=el.classList.contains("gxa-wide"),w=wide?colW*2+gap:colW,asp=wide?1.55:Math.min(Math.max(+el.dataset.r,.5),1.8);
     el.style.gridRowEnd="span "+Math.max(10,Math.round((w/asp+gap)/(6+gap)))
   })
 }
@@ -2206,7 +2206,7 @@ function answerQuiz(idx){const qs=getActiveQuizQuestions();const q=qs[qIdx];cons
 function finishQuiz(){const qs=getActiveQuizQuestions();const total=qs.length;const pct=Math.round(qAcertos/total*100);const key="quiz_feito_"+_quizSport;const data={nome:qNome,fone:qFone,acertos:qAcertos,total:total,pct:pct,tempo:Math.round((Date.now()-qStartTime)/1000),data:new Date().toLocaleString("pt-BR")};localStorage.setItem(key,JSON.stringify(data));const e=document.getElementById("quizContent");if(!e)return;let msg="";if(pct>=80)msg="🏆 Excelente! Você é craque!";else if(pct>=60)msg="👍 Muito bem! Bom conhecimento!";else if(pct>=40)msg="💪 Razoável! Continue estudando!";else msg="📚 Estude mais e tente amanhã!";e.innerHTML=`<div class="quiz-result"><div style="font-size:56px;">🎉</div><div class="quiz-result-n">${pct}%</div><div class="quiz-result-l">${qAcertos} de ${total} acertos</div><div class="quiz-result-msg">${msg}</div><div style="margin:16px 14px 0;background:var(--card2);border:1px solid var(--border-gold);border-radius:14px;padding:16px;text-align:left;"><div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📊 Seu resultado foi salvo!</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Nome: <strong style="color:var(--text)">${qNome}</strong><br>Acertos: <strong style="color:var(--gold)">${qAcertos}/${total} (${pct}%)</strong><br>Tempo: <strong style="color:var(--text)">${Math.round((Date.now()-qStartTime)/1000)}s</strong></div></div><button class="quiz-restart" onclick="initQuiz()">← Jogar outro esporte</button></div>`;sendQuizResultToSheet(data);}
 function sendQuizResultToSheet(data){try{fetch(QUIZ_SHEETS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({tipo:"quiz",nome:data.nome,fone:data.fone,acertos:data.acertos,total:data.total,pct:data.pct,tempo:data.tempo,sport:_quizSport,data:data.data})});}catch(e){}}
 </script><script>try{_trackAppAcesso()}catch(e){}</script>
-<script src="novo/skin.js?v=42"></script><script src="novo/quiz-volei.js?v=2"></script><script src="novo/galera.js?v=1"></script><script src="novo/scchat.js?v=1"></script></body> </html>
+<script src="novo/skin.js?v=43"></script><script src="novo/quiz-volei.js?v=2"></script><script src="novo/galera.js?v=1"></script><script src="novo/scchat.js?v=1"></script></body> </html>
 
 
 
