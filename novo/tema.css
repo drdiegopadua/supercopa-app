@@ -1,0 +1,71 @@
+/* ===== Esqueletos de carregamento ===== */
+@keyframes scSk{to{background-position:-200% 0}}
+.sc-sk{display:grid;gap:10px;padding:6px 0}
+.sc-sk i{display:block;height:78px;border-radius:16px;background:linear-gradient(90deg,#e6edff 25%,#f6f9ff 50%,#e6edff 75%);background-size:200% 100%;animation:scSk 1.2s linear infinite}
+.sc-sk i:nth-child(2){opacity:.72}.sc-sk i:nth-child(3){opacity:.45}
+#gamesList:empty::before,#gxaGrid:empty::before{content:"";display:block;height:300px;margin:6px 12px;background:linear-gradient(90deg,#e6edff 25%,#f6f9ff 50%,#e6edff 75%);background-size:200% 100%;animation:scSk 1.2s linear infinite;-webkit-mask:repeating-linear-gradient(180deg,#000 0 88px,transparent 88px 100px);mask:repeating-linear-gradient(180deg,#000 0 88px,transparent 88px 100px);border-radius:14px}
+@media(prefers-reduced-motion:reduce){.sc-sk i,#gamesList:empty::before,#gxaGrid:empty::before{animation:none}}
+
+/* ===== Tema escuro ===== */
+body.dk{--ink:#e9efff;--mute:#9db0e6;--ln:#26346f;color:#e9efff;background:#0a1130!important}
+html.dk,body.dk{background:#0a1130!important;color-scheme:dark}
+body.dk .sc-sk i,body.dk #gamesList:empty::before,body.dk #gxaGrid:empty::before,body.dk .qz-sk{background:linear-gradient(90deg,#16214f 25%,#1f2d66 50%,#16214f 75%);background-size:200% 100%}
+/* superfícies */
+body.dk #homePage,body.dk .page{background:transparent!important}
+body.dk .nt2:not(.blue),body.dk .nrc,body.dk .nnews,body.dk .ntm,body.dk .rmeta span,body.dk .rart,body.dk .rtbl,body.dk .rhl,body.dk .plc,body.dk .nmcard,body.dk .dpc,body.dk .match-card,
+body.dk .qz-sp,body.dk .qz-box,body.dk .qz-rules,body.dk .qz-chips span,body.dk .qz-o,body.dk .qz-row,body.dk .qz-saved,body.dk .lu,body.dk .opts2 label,body.dk .fs,body.dk .fld,body.dk .drop2,
+body.dk .mtcta,body.dk .mti,body.dk .mtsh,body.dk #nsheet .sh,body.dk .nmk .stat,body.dk .npl,body.dk .nmf input,body.dk .qz-f input,body.dk .pk,body.dk .nseg,body.dk .tbl-row.top2,
+body.dk .card,body.dk .nmht,body.dk .insmsg,body.dk .lt .box{background:#121b45!important;border-color:#26346f!important;color:#e9efff!important;box-shadow:none!important}
+body.dk .gc.alt{background:#141f4d!important;color:#e9efff!important}
+body.dk .gc.alt .gc-sc-num,body.dk .gc.alt .gc-sc-num *,body.dk .gc.alt .gc-bot span{color:#9fc0ff!important}
+body.dk .gc.alt .gc-bot{border-top-color:#2c3b7a!important}
+/* caixinhas de ícone */
+body.dk .nico span,body.dk .mp-t i,body.dk .lu i,body.dk .qz-o i,body.dk .qz-pos,body.dk .mp-x,body.dk .qz-x,body.dk .gc-t-ic.nsh,body.dk .gc .gc-t-ic.nsh,body.dk .nescrow img,body.dk .nlmq img,body.dk .mt-ic,body.dk .nesc.ph,body.dk .nmy span,body.dk .qz-pg{background:#1a2557!important;border-color:#2a3a7c!important;color:#9fc0ff!important}
+body.dk .nico button{color:#dbe5ff!important}
+body.dk .nico button:active span,body.dk .nico button:hover span,body.dk .mp-t:active i,body.dk .mp-t:hover i{background:#3a6cf0!important;color:#fff!important}
+body.dk .qz-o.correct{background:#0f3d2a!important;border-color:#22c55e!important}
+body.dk .qz-o.wrong{background:#4a1620!important;border-color:#e5484d!important}
+body.dk .qz-fb.ok{background:#0f3d2a!important}body.dk .qz-fb.er{background:#4a1620!important}
+body.dk .qz-row.me{background:#1c2c6e!important;border-color:#3a6cf0!important}
+/* títulos e textos que eram azul-escuro */
+body.dk .nsh2 b,body.dk .qz-fh h3,body.dk .qz-top,body.dk .grp-lbl,body.dk .mp-top b,body.dk .lu b,body.dk .qz-sec h4,body.dk .rhl b,body.dk h2,body.dk h3{color:#e9efff!important}
+body.dk .gc-sc-num,body.dk .gc-sc-num *{color:#9fc0ff!important}
+body.dk .gc:not(.alt) .gc-sc-num,body.dk .gc:not(.alt) .gc-sc-num *{color:#fff!important}
+body.dk .mp-top small,body.dk .lu small,body.dk .qz-sec h4{color:#9db0e6!important}
+body.dk .nsh2 .lnk,body.dk .nsh2 a,body.dk .lu em,body.dk .mp-x{color:#8fb0ff!important}
+/* barra de baixo e painel */
+body.dk #nbar{background:rgba(14,20,62,.95)!important;border-top-color:rgba(255,255,255,.08)!important;box-shadow:0 -8px 24px rgba(0,0,0,.45)!important}
+body.dk #nbar button{color:#8d9fd8!important}body.dk #nbar button.on{color:#fff!important}
+body.dk .mp-card{background:rgba(16,24,66,.98)!important;box-shadow:0 20px 50px rgba(0,0,0,.6)!important}
+body.dk .mp-t{color:#dbe5ff!important}
+body.dk .mp-dark{background:linear-gradient(180deg,#1b3fbf,#0b1f6e 55%,#050c33)!important}
+/* campos, chips e controles */
+body.dk input,body.dk select,body.dk textarea{background:#121b45!important;color:#e9efff!important;border-color:#2a3a7c!important}
+body.dk input::placeholder,body.dk textarea::placeholder{color:#7c8fc9!important}
+body.dk .nseg button:not(.on){color:#9db0e6!important}
+body.dk .qz-btn.gh{background:#1a2557!important;color:#e9efff!important}
+body.dk .qz-intro,body.dk .nt2.blue{filter:none}
+/* chat */
+body.dk .scc{background:#121b45!important;border-color:#26346f!important;color:#e9efff!important}
+body.dk .scc-list{background:#0d1538!important}
+body.dk .scc-m:not(.me):not(.of){background:#182466!important;border-color:#2a3a7c!important;color:#e9efff!important}
+body.dk .scc-bar,body.dk .scc-nick,body.dk .scc-foot,body.dk .scc-err,body.dk .scc-closed{background:#121b45!important}
+body.dk .scc-bar textarea,body.dk .scc-nick input{background:#0d1538!important;color:#e9efff!important}
+/* tabelas */
+body.dk table,body.dk .tbl-row,body.dk .td-nm{color:#e9efff!important}
+body.dk tr{background:transparent!important}
+body.dk th{color:#9db0e6!important}
+body.dk hr{border-color:#26346f!important}
+/* transição suave */
+body,body .card,body #nbar{transition:background-color .35s,color .35s}
+/* textos azuis/cinzas que sumiam no escuro */
+body.dk .v,body.dk #nmeu b,body.dk .k,body.dk .nmk b,body.dk .nmcard b,body.dk .nmy b,body.dk .td-pos,body.dk .refresh-cd,body.dk .refresh-btn,body.dk .sched-ics,body.dk #regbody b,body.dk #regbody small,body.dk .rart b,body.dk .rhl b{color:#8fb0ff!important}
+body.dk .nt2.blue .v,body.dk .nt2.blue .lb{color:#fff!important}
+body.dk #regbody p,body.dk #regbody li,body.dk .qz-rules li,body.dk .qz-rules b,body.dk .qz-rules p,body.dk .nmcard p,body.dk .nmht p,body.dk #historyPage div,body.dk #historyPage p,body.dk #historyPage strong{color:#cfd9fb!important}
+body.dk .sched-day-pill{color:#fff!important}
+body.dk [style*="#1565c0" i],body.dk [style*="#1565C0"]{color:#8fb0ff!important}
+body.dk [style*="color:#111" i],body.dk [style*="color:#1f2937" i],body.dk [style*="color:#374151" i]{color:#dbe5ff!important}
+body.dk .sport-selector{background:#121b45!important;border-color:#26346f!important}
+body.dk .sport-btn:not(.sport-btn-on){color:#8d9fd8!important;background:transparent!important}
+body.dk .tab:not(.active):not(.on){background:#121b45!important;color:#b9c8f5!important;border-color:#26346f!important}
+body.dk .qz-spi{background:#1a2557!important;color:#9fc0ff!important}

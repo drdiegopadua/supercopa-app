@@ -1,6 +1,15 @@
 /* Painel "Mais": ao tocar em Mais no menu inferior, abre a tela de opções de dentro dele. */
 (function(){
 var P={
+ moon:'<path d="M20 14.500A8 8 0 019.500 4 8 8 0 1020 14.500z"/>',
+ ball:'<circle cx="12" cy="12" r="9"/><path d="M12 3c-1.5 4.500-.8 9 3.500 13M3.300 13.500c4.500-1.500 9-.5 12.700 2.500M20.600 8.200c-4.500-.5-8.500 1.300-11 5.200M7 5.300c3 1.500 5.500 4 7 7.500"/>',
+ whistle:'<circle cx="15" cy="15" r="5"/><path d="M10 15H3.500V9.500h9.500l3 2.500M12 6l1.500 3M15 15h.01"/>',
+ jersey:'<path d="M8.500 3L3 6l2 4.500 3-1.200V21h8V9.300l3 1.200L21 6l-5.500-3c-.5 2-1.800 3-3.500 3S9 5 8.500 3z"/>',
+ court:'<rect x="3" y="5" width="18" height="14" rx="1.500"/><path d="M12 5v14M3 9.500h4v5H3M21 9.500h-4v5h4"/><circle cx="12" cy="12" r="2"/>',
+ net:'<path d="M3 4v16M21 4v16M3 8h18M3 12h18M3 16h18M8 8v8M13 8v8M18 8v8"/>',
+ clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+ cup:'<path d="M5 8h14l-1.500 12h-11zM3.500 8h17M8 8c0-2.200 1.500-4 4-4s4 1.800 4 4M9.500 13h5"/>',
+
  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M17 5a3.5 3.5 0 010 7M21.5 20c0-2.6-1.5-4.5-3.5-5.4"/>',
  shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2M12 17h.01"/>',
@@ -21,23 +30,24 @@ var P={
 };
 var COR=[['#3d6df2','#1a3fc4','rgba(27,82,224,.38)'],['#8b5cf6','#5b2fd0','rgba(111,63,230,.36)'],['#14b8c6','#0b7f96','rgba(20,150,170,.34)'],['#f59e0b','#c26b00','rgba(220,130,10,.34)'],['#ec4899','#b3246d','rgba(200,50,120,.32)'],['#22c55e','#12873f','rgba(30,160,80,.32)']];
 var T=[
- ['Times','12 equipes','users',"nav('timesPage',null);window.renderTimesVolei&&renderTimesVolei()"],
+ ['Times','12 equipes','jersey',"nav('timesPage',null);window.renderTimesVolei&&renderTimesVolei()"],
  ['Meu time','Seu elenco','shield',"abrirPickerTime2()"],
- ['Quiz','40 perguntas','help',"nav('quizPage',null)"],
+ ['Quiz','40 perguntas','ball',"nav('quizPage',null)"],
  ['Destaque','Vote no craque','star',"renderGaleraVoting()"],
  ['Melhores','Por jogo','medal',"nav('atletaPage',null)"],
  ['Ao vivo','Transmissão','live',"nav('transmissaoPage',null)"],
  ['Agenda','Programação','cal',"nav('schedulePage',null)"],
- ['Regras','Regulamento','doc',"nav('regrasPage',null)"],
+ ['Regras','Regulamento','whistle',"nav('regrasPage',null)"],
  ['Galeria','Fotos','cam','nav("galleryPage",null),renderGallery("2025")'],
- ['Mapa','Ginásio','map',"nav('mapPage',null)"],
+ ['Mapa','Ginásio','court',"nav('mapPage',null)"],
  ['Locais','Saúde e comida','pin',"nav('placesPage',null)"],
  ['Parceiros','Patrocinadores','trophy',"nav('patrocPage',null)"],
  ['Wallpapers','Seu time','phone',"nav('wallpapersPage',null)"],
  ['Números','Impacto','chart',"nav('numerosPage',null)"],
  ['História','Campeões','medal',"nav('historyPage',null)"],
- ['Súmulas','PDF dos jogos','file','nav("sumulasPage",null),renderSumulasFinalizadas()'],
- ['Pedidos','Açaí do Diego','bag',"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"],
+ ['Súmulas','PDF dos jogos','clip','nav("sumulasPage",null),renderSumulasFinalizadas()'],
+ ['Pedidos','Açaí do Diego','cup',"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"],
+ ['Tema','Automático','moon',"scTema.ciclo()",1],
  ['Instagram','@supercopaafc','ig',"window.open('https://www.instagram.com/supercopaafc/','_blank','noopener')"]
 ];
 var el=null,aberto=false;
@@ -45,14 +55,15 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;
 function monta(){
   if(el)return;el=document.createElement('div');el.id='mp';
   el.innerHTML='<div class="mp-bg"></div><div class="mp-dark"></div><div class="mp-card"><div class="mp-top"><div><b>Guia da Supercopa</b><small>Tudo em um lugar</small></div><button type="button" class="mp-x" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="mp-grid">'
-   +T.map(function(t,i){return '<button type="button" class="mp-t" data-i="'+i+'" style="--i:'+i+'"><i><svg viewBox="0 0 24 24">'+P[t[2]]+'</svg></i><b>'+esc(t[0])+'</b></button>'}).join('')
+   +T.map(function(t,i){return '<button type="button" class="mp-t" data-i="'+i+'" style="--i:'+i+'"><i><svg viewBox="0 0 24 24">'+P[t[2]]+'</svg></i><b'+(t[2]==='moon'?' id="mpTema"':'')+'>'+esc(t[0])+'</b></button>'}).join('')
    +'</div></div>';
   var nb=document.getElementById('nbar');document.body.insertBefore(el,nb||null);
   el.addEventListener('click',function(e){
     if(e.target.closest('.mp-x')||e.target.classList.contains('mp-bg')||e.target.classList.contains('mp-dark'))return fecha();
-    var b=e.target.closest('.mp-t');if(!b)return;var code=T[+b.dataset.i][3];fecha(true);
+    var b=e.target.closest('.mp-t');if(!b)return;var it=T[+b.dataset.i],code=it[3];if(it[4]){try{new Function(code)()}catch(er){}return}fecha(true);
     try{new Function(code)()}catch(er){console.warn(er)}setTimeout(atualizaMenu,80);
   });
+  if(window.scTema)scTema.aplica();
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&aberto)fecha()});
 }
 function atualizaMenu(){var pg=document.querySelector('.page.active');if(window.scNavSync&&pg)window.scNavSync(pg.id)}
