@@ -49,11 +49,12 @@ function decorate(pg){
 /* barra de baixo */
 var TABS=[['homePage','Início','home'],['gamesPage','Jogos','cal'],['tablePage','Tabela','tab'],['chatLivePage','Chat','chat'],['maisPage','Mais','more']];
 var nb=document.createElement('nav');nb.id='nbar';nb.innerHTML='<span class="ind"></span>'+TABS.map(function(t){return '<button type="button" data-p="'+t[0]+'">'+I(t[2])+t[1]+'</button>'}).join('');document.body.appendChild(nb);
-nb.addEventListener('click',function(e){var a=e.target.closest('button[data-p]');if(!a)return;var p=a.dataset.p;if(p==='chatLivePage'&&window.scChatOpen){scChatOpen();return}nav(p,null);if(p==='homePage'){}});
+nb.addEventListener('click',function(e){var a=e.target.closest('button[data-p]');if(!a)return;var p=a.dataset.p;if(p==='chatLivePage'&&window.scChatOpen){scChatOpen();return}if(p==='maisPage'&&window.scMais){scMais.toggle();return}nav(p,null);if(p==='homePage'){}});
 $$('button',nb).forEach(function(a,i){a.style.setProperty('--k',i)});
 function syncTabs(id){var ix=TABS.findIndex(function(t){return t[0]===id});if(ix<0)ix=4;var ind=$('.ind',nb),prev=window.__navIx;
  if(prev!=null&&prev!==ix){ind.style.setProperty('--s',(1+Math.min(Math.abs(ix-prev),4)*.14).toFixed(2));ind.classList.remove('go');void ind.offsetWidth;ind.classList.add('go');clearTimeout(window.__navT);window.__navT=setTimeout(function(){ind.classList.remove('go')},650)}
  window.__navIx=ix;$$('button',nb).forEach(function(a,i){a.classList.toggle('on',i===ix)});ind.style.transform='translateX('+(ix*100)+'%)'}
+window.scNavSync=syncTabs;
 /* ao trocar de página */
 var last='';
 function onPage(pg){

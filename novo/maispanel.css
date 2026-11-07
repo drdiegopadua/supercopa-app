@@ -1,0 +1,32 @@
+/* ===== Painel "Mais": abre de dentro do menu inferior (visual do menu e da Guia da Supercopa) ===== */
+#mp{position:fixed;inset:0;z-index:990;pointer-events:none}
+#mp.on{pointer-events:auto}
+#mp .mp-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,26,92,.3),rgba(7,26,92,.7));opacity:0;transition:opacity .35s}
+#mp.on .mp-bg{opacity:1}
+/* faixa azul da marca que aparece atrás da dobra do cartão */
+#mp .mp-dark{position:absolute;left:0;right:0;bottom:0;height:calc(66px + env(safe-area-inset-bottom,0px) + 120px);border-radius:28px 28px 0 0;background:linear-gradient(180deg,#1b52e0,#0b2a8f 55%,#071a5c);box-shadow:0 -10px 40px rgba(5,10,40,.45);transform:translateY(105%);transition:transform .6s cubic-bezier(.3,1.25,.4,1)}
+#mp.on .mp-dark{transform:none}
+/* cartão claro, mesmo vidro do menu, com a borda de baixo dobrada */
+#mp .mp-card{position:absolute;left:12px;right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px) + 40px);max-height:min(66vh,560px);display:flex;flex-direction:column;border-radius:26px 26px 0 0;color:var(--ink);
+ background:rgba(255,255,255,.97);box-shadow:0 20px 50px rgba(5,10,40,.4);
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H100V90C88 99 74 79 56 88C40 96 22 99 0 93Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H100V90C88 99 74 79 56 88C40 96 22 99 0 93Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+ transform-origin:50% 100%;transform:perspective(900px) translateY(60px) rotateX(-22deg) scale(.94);opacity:0;transition:transform .65s cubic-bezier(.25,1.15,.4,1) .08s,opacity .3s .08s}
+#mp.on .mp-card{transform:none;opacity:1}
+#mp .mp-top{flex:none;display:flex;align-items:center;justify-content:space-between;padding:16px 18px 4px}
+#mp .mp-top b{display:block;font:800 22px/1 var(--display);letter-spacing:.5px;text-transform:uppercase;color:var(--ink)}
+#mp .mp-top small{display:block;margin-top:4px;font:700 10px var(--body);letter-spacing:1.4px;text-transform:uppercase;color:var(--mute)}
+#mp .mp-x{all:unset;width:38px;height:38px;display:grid;place-items:center;border-radius:14px;background:#fff;border:1px solid #e3eaf8;color:var(--b1);cursor:pointer;transition:background .2s,color .2s,transform .25s cubic-bezier(.3,1.6,.4,1)}
+#mp .mp-x:active{background:var(--b1);color:#fff;transform:rotate(90deg)}
+#mp .mp-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+#mp .mp-grid{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px 4px;padding:14px 12px 100px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;align-content:start}
+/* atalhos iguais aos da Guia da Supercopa */
+#mp .mp-t{all:unset;cursor:pointer;display:grid;justify-items:center;align-content:start;gap:6px;color:var(--ink);font:700 10px/1.15 var(--body);letter-spacing:.8px;text-transform:uppercase;text-align:center;-webkit-tap-highlight-color:transparent;
+ opacity:0;transform:translateY(18px) scale(.9);transition:opacity .4s,transform .5s cubic-bezier(.3,1.5,.4,1);transition-delay:calc(var(--i)*30ms + 160ms)}
+#mp.on .mp-t{opacity:1;transform:none}
+#mp .mp-t i{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:#fff;border:1px solid #e3eaf8;color:var(--b1);transition:transform .25s cubic-bezier(.3,1.6,.4,1),background .2s,color .2s}
+#mp .mp-t:active i,#mp .mp-t:hover i{background:var(--b1);color:#fff;transform:translateY(-3px) rotate(-4deg)}
+#mp .mp-t i svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#mp .mp-t b{max-width:100%;padding:0 2px;font-weight:700;overflow-wrap:anywhere}
+@media(min-width:700px){#mp .mp-card{max-width:560px;left:50%;right:auto;width:calc(100% - 24px);transform:perspective(900px) translate(-50%,60px) rotateX(-22deg) scale(.94)}#mp.on .mp-card{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){#mp *{transition-duration:.01s!important;transition-delay:0s!important}}
