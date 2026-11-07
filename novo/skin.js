@@ -124,7 +124,7 @@ function regHtml(k){return REGD[k].map(function(b){
  if(b.t==='tbl')return '<table class="rtbl">'+b.rows.map(function(r,ri){return '<tr>'+r.map(function(c){return ri?'<td>'+esc(c)+'</td>':'<th>'+esc(c)+'</th>'}).join('')+'</tr>'}).join('')+'</table>';
  if(b.t==='hl')return '<div class="rhl"><b>'+esc(b.h)+'</b><p>'+b.x+'</p></div>';return ''}).join('')}
 function showReg(k){REGK=k;var bd=document.getElementById('regbody');if(!REGD){return}bd.innerHTML=regHtml(k);var sg=document.getElementById('regseg');$$('button',sg).forEach(function(b){b.classList.toggle('on',b.dataset.k===k)});var p=document.getElementById('regpdf');p.href='regulamento-'+k+'.pdf';p.textContent='Baixar PDF · '+(k==='volei'?'Vôlei':'Basquete');window.scrollTo(0,0)}
-function loadReg(){if(REGD){showReg(REGK);return}fetch('novo/regulamento.json').then(function(r){return r.json()}).then(function(d){REGD=d;showReg(REGK)}).catch(function(){var bd=document.getElementById('regbody');if(bd)bd.innerHTML='<p class="mut">Não foi possível carregar o regulamento agora.</p>'})}
+function loadReg(){if(REGD){showReg(REGK);return}fetch('novo/regulamento.json?v=2').then(function(r){return r.json()}).then(function(d){REGD=d;showReg(REGK)}).catch(function(){var bd=document.getElementById('regbody');if(bd)bd.innerHTML='<p class="mut">Não foi possível carregar o regulamento agora.</p>'})}
 document.addEventListener('click',function(e){var b=e.target.closest('#regseg button');if(b)showReg(b.dataset.k)});
 window.nPageHook=function(pg){if(pg.id==='regrasPage')loadReg()};
 /* tudo que abria o regulamento fora do app agora abre dentro */
