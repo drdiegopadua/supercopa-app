@@ -586,3 +586,4 @@ body.day .card,.card{border-radius:22px!important}
 body.tbj #bracketPage{display:block!important;position:relative!important;min-height:0!important;padding-bottom:110px!important}
 body.tbj #bracketPage::before{content:"";display:block;margin:10px 16px 14px;border-top:2px solid var(--ln)}
 body.tbj #tablePage{min-height:0!important;padding-bottom:10px!important}
+#nrailw{display:none!important}
