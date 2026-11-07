@@ -587,3 +587,15 @@ body.tbj #bracketPage{display:block!important;position:relative!important;min-he
 body.tbj #bracketPage::before{content:"";display:block;margin:10px 16px 14px;border-top:2px solid var(--ln)}
 body.tbj #tablePage{min-height:0!important;padding-bottom:10px!important}
 #nrailw{display:none!important}
+
+/* ===== Locais úteis (visual do quiz) ===== */
+.lu-wrap{padding-bottom:110px}
+.lu{display:flex;align-items:center;gap:13px;margin-bottom:8px;padding:12px 14px;background:#fff;border:2px solid var(--ln);color:var(--ink);text-decoration:none;animation:qzOpt .4s both;animation-delay:calc(var(--i)*45ms);transition:border-color .2s,transform .15s}
+.lu:active{transform:scale(.98);border-color:var(--b1)}
+.lu i{flex:none;width:42px;height:42px;display:grid;place-items:center;background:#e8efff;color:var(--b1)}
+.lu i svg{width:22px;height:22px}
+.lu span{flex:1;min-width:0}
+.lu b{display:block;font:700 17px/1.2 var(--body)}
+.lu small{display:block;margin-top:2px;font:500 13px var(--body);color:var(--mute)}
+.lu em{flex:none;display:flex;align-items:center;gap:2px;font:800 12px var(--body);font-style:normal;letter-spacing:1.4px;text-transform:uppercase;color:var(--b1)}
+.lu em svg{width:16px;height:16px}
