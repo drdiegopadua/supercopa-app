@@ -1527,6 +1527,11 @@ const _ARTE_SRC="cardsocialvolei.png",_ARTE_BASQ_SRC="cardsocialbasquete.png",_a
 
 
 /* ═══════════ GALERIA NOVA DO APP ═══════════ */
+window.scSalvarFoto=async function(url,nome){
+ try{const b=await (await fetch(url)).blob();const f=new File([b],nome,{type:b.type||'image/jpeg'});
+  if(/iP(hone|ad|od)/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}
+  const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)
+ }catch(e){if(e&&e.name==='AbortError')return;window.open(url,'_blank')}};
 const GXA_BASE="https://www.supercopaafc.com.br/",GXA_KEY="sc_galeria_app";
 let _gxaFotos=[],_gxaAtual=0,_gxaSelo="",_gxaOk=false;
 function _gxaEsc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c])}
@@ -1601,6 +1606,7 @@ function _gxaIniciarLb(){
   });
   lb.addEventListener("click",e=>{if(e.target===lb)_gxaFechar()});
   document.addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key==="Escape")_gxaFechar();if(e.key==="ArrowRight")_gxaMostrar(_gxaAtual+1);if(e.key==="ArrowLeft")_gxaMostrar(_gxaAtual-1)});
+  document.getElementById("gxaLbDl").addEventListener("click",ev=>{ev.preventDefault();const f=_gxaFotos[_gxaAtual];if(f)scSalvarFoto(f.f,"supercopa-"+(f.id||(_gxaAtual+1))+".jpg")});
   document.getElementById("gxaLbShare").addEventListener("click",()=>{const u=_gxaFotos[_gxaAtual].f,t="Foto da Supercopa AFC 2026";
     if(navigator.share)navigator.share({title:t,text:t,url:u}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>showToast("🔗 Link da foto copiado!"))})
 }
@@ -2200,7 +2206,7 @@ function answerQuiz(idx){const qs=getActiveQuizQuestions();const q=qs[qIdx];cons
 function finishQuiz(){const qs=getActiveQuizQuestions();const total=qs.length;const pct=Math.round(qAcertos/total*100);const key="quiz_feito_"+_quizSport;const data={nome:qNome,fone:qFone,acertos:qAcertos,total:total,pct:pct,tempo:Math.round((Date.now()-qStartTime)/1000),data:new Date().toLocaleString("pt-BR")};localStorage.setItem(key,JSON.stringify(data));const e=document.getElementById("quizContent");if(!e)return;let msg="";if(pct>=80)msg="🏆 Excelente! Você é craque!";else if(pct>=60)msg="👍 Muito bem! Bom conhecimento!";else if(pct>=40)msg="💪 Razoável! Continue estudando!";else msg="📚 Estude mais e tente amanhã!";e.innerHTML=`<div class="quiz-result"><div style="font-size:56px;">🎉</div><div class="quiz-result-n">${pct}%</div><div class="quiz-result-l">${qAcertos} de ${total} acertos</div><div class="quiz-result-msg">${msg}</div><div style="margin:16px 14px 0;background:var(--card2);border:1px solid var(--border-gold);border-radius:14px;padding:16px;text-align:left;"><div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📊 Seu resultado foi salvo!</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Nome: <strong style="color:var(--text)">${qNome}</strong><br>Acertos: <strong style="color:var(--gold)">${qAcertos}/${total} (${pct}%)</strong><br>Tempo: <strong style="color:var(--text)">${Math.round((Date.now()-qStartTime)/1000)}s</strong></div></div><button class="quiz-restart" onclick="initQuiz()">← Jogar outro esporte</button></div>`;sendQuizResultToSheet(data);}
 function sendQuizResultToSheet(data){try{fetch(QUIZ_SHEETS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({tipo:"quiz",nome:data.nome,fone:data.fone,acertos:data.acertos,total:data.total,pct:data.pct,tempo:data.tempo,sport:_quizSport,data:data.data})});}catch(e){}}
 </script><script>try{_trackAppAcesso()}catch(e){}</script>
-<script src="novo/skin.js?v=41"></script><script src="novo/quiz-volei.js?v=2"></script><script src="novo/galera.js?v=1"></script><script src="novo/scchat.js?v=1"></script></body> </html>
+<script src="novo/skin.js?v=42"></script><script src="novo/quiz-volei.js?v=2"></script><script src="novo/galera.js?v=1"></script><script src="novo/scchat.js?v=1"></script></body> </html>
 
 
 
