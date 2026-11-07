@@ -51,7 +51,7 @@ function monta(){
   el.addEventListener('click',function(e){
     if(e.target.closest('.mp-x')||e.target.classList.contains('mp-bg')||e.target.classList.contains('mp-dark'))return fecha();
     var b=e.target.closest('.mp-t');if(!b)return;var code=T[+b.dataset.i][3];fecha(true);
-    try{new Function(code)()}catch(er){console.warn(er)}
+    try{new Function(code)()}catch(er){console.warn(er)}setTimeout(atualizaMenu,80);
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&aberto)fecha()});
 }
@@ -63,7 +63,9 @@ window.scMais={abre:abre,fecha:fecha,toggle:function(){aberto?fecha():abre()},ab
 var n0=window.nav;
 if(typeof n0==='function')window.nav=function(id,el2){
   if(id==='maisPage'){var r=n0('homePage',null);setTimeout(abre,60);return r}
-  if(aberto)fecha(true);
-  return n0.apply(this,arguments)
+  var estava=aberto;if(aberto)fecha(true);
+  var r2=n0.apply(this,arguments);
+  if(estava)setTimeout(atualizaMenu,40);
+  return r2
 };
 })();
