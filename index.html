@@ -1736,7 +1736,7 @@ async function renderHomeAgora(){
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px"><div style="flex:1;font-size:14px;font-weight:800;text-align:right">'+_agoraEsc(j.casa)+'</div><div style="font-family:Anton,sans-serif;font-size:30px;background:rgba(0,0,0,.25);border-radius:12px;padding:2px 14px">'+(j.setsCasa||0)+' <span style="opacity:.5">×</span> '+(j.setsVisitante||0)+'</div><div style="flex:1;font-size:14px;font-weight:800">'+_agoraEsc(j.visitante)+'</div></div></div>').join('');
     return;
   }
-  if(!fut.length){el.style.display='none';return}
+  el.style.display='none';return; /* bloco Próximo jogo removido da home (só o AO VIVO aparece) */
   const j=fut[0];_agoraAlvo=_agoraQuando(j);
   el.style.display='block';
   el.innerHTML='<div onclick=\''+irJogos+'\' style="background:linear-gradient(135deg,#0d1f5c,#1565c0);border-radius:18px;padding:14px 16px;color:#fff;box-shadow:0 8px 22px rgba(13,31,92,.25);cursor:pointer">'+
