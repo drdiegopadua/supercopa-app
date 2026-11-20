@@ -88,8 +88,17 @@ function abre(){pagina();render();window.scrollTo(0,0)}
 function banner(){var home=document.getElementById('homePage');if(!home||document.getElementById('vcBan'))return;css();
  var b=document.createElement('div');b.id='vcBan';b.className='vc-ban';b.innerHTML='<div class="pz">'+PIZZA+'</div><div class="t"><small>Cortesia Pizzaria Express</small><strong>Voucher · 2 pizzas grátis</strong><em>Resgate com o PIN da sua equipe</em></div><div class="go">Abrir →</div>';
  b.onclick=function(){nav('voucherPage',null);abre()};
- var av=document.getElementById('homeAvisos');if(av&&av.nextSibling)home.insertBefore(b,av.nextSibling);else home.insertBefore(b,home.firstChild)}
-window.scVoucher={abre:abre};
+ home.appendChild(b);posBanner()}
+/* até sábado 28/11 às 13h fica logo abaixo do cadastro de atletas; a partir daí sobe para o topo da página inicial */
+function posBanner(){var home=document.getElementById('homePage'),b=document.getElementById('vcBan');if(!home||!b)return;
+ var topo=Date.now()>=new Date(2026,10,28,13,0,0).getTime();
+ var cad=[].slice.call(home.children).filter(function(e){return /cadastroAtletasPage/.test(e.getAttribute('onclick')||'')})[0];
+ var av=document.getElementById('homeAvisos');
+ if(!topo&&cad){if(cad.nextSibling!==b)home.insertBefore(b,cad.nextSibling)}
+ else if(av){if(av.nextSibling!==b)home.insertBefore(b,av.nextSibling)}
+ else if(home.firstChild!==b)home.insertBefore(b,home.firstChild)}
+setInterval(posBanner,60000);
+window.scVoucher={abre:abre,pos:posBanner};
 function ini(){pagina();banner()}
 document.addEventListener('DOMContentLoaded',ini);if(document.readyState!=='loading')ini();
 })();
