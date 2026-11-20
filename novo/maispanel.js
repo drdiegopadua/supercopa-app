@@ -49,7 +49,6 @@ var T=[
  ['História','Campeões','medal',"nav('historyPage',null)"],
  ['Súmulas','PDF dos jogos','clip','nav("sumulasPage",null),renderSumulasFinalizadas()'],
  ['Pedidos','Açaí do Diego','cup',"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"],
- ['Tema','Automático','moon',"scTema.ciclo()",1],
  ['Instagram','@supercopaafc','ig',"window.open('https://www.instagram.com/supercopaafc/','_blank','noopener')"]
 ];
 var el=null,aberto=false;

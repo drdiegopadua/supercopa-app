@@ -4,13 +4,18 @@ var K='sc_tema';
 function modo(){try{return localStorage.getItem(K)||'auto'}catch(e){return 'auto'}}
 function noite(){var h=new Date().getHours();return h>=19||h<6}
 function sistemaEscuro(){try{return window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches}catch(e){return false}}
-function escuro(){var m=modo();return m==='escuro'||(m==='auto'&&(sistemaEscuro()||noite()))}
+function escuro(){return false} /* modo noturno removido: o app é sempre claro */
 function aplica(){
   var d=escuro();document.documentElement.classList.toggle('dk',d);if(document.body)document.body.classList.toggle('dk',d);
   var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.setAttribute('content',d?'#0a1130':'#1b52e0');
   var l=document.getElementById('mpTema');if(l)l.textContent={auto:'Tema: auto',escuro:'Tema: escuro',claro:'Tema: claro'}[modo()];
 }
-window.scTema={modo:modo,aplica:aplica,ciclo:function(){var n={auto:'escuro',escuro:'claro',claro:'auto'}[modo()];try{localStorage.setItem(K,n)}catch(e){}aplica();return n}};
+window.scTema={modo:modo,aplica:aplica,ciclo:function(){aplica();return 'claro'}};
+/* força o tema claro mesmo que o código antigo tente aplicar o noturno */
+function dia(){var b=document.body;if(b&&(b.classList.contains('night')||!b.classList.contains('day'))){b.classList.remove('night');b.classList.add('day')}}
+window.toggleNight=function(){dia()};window.isDayTime=function(){return true};
+new MutationObserver(dia).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['class']});
+document.addEventListener('DOMContentLoaded',dia);dia();
 document.addEventListener('DOMContentLoaded',aplica);if(document.body)aplica();
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',aplica)}catch(e){}
 setInterval(aplica,5*60*1000);
