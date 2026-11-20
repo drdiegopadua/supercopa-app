@@ -20,6 +20,7 @@ var P={
  doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
  map:'<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
  pin:'<path d="M12 21s7-6 7-11a7 7 0 00-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+ pizza:'<path d="M4 8c5-4 11-4 16 0L12 21z"/><circle cx="10" cy="10" r="1"/><circle cx="14" cy="11" r="1"/><circle cx="12" cy="15" r="1"/>',
  trophy:'<path d="M7 4h10v6a5 5 0 01-10 0zM7 6H4a3 3 0 003 4M17 6h3a3 3 0 01-3 4M12 15v4M8 20h8"/>',
  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
@@ -30,6 +31,7 @@ var P={
 };
 var COR=[['#3d6df2','#1a3fc4','rgba(27,82,224,.38)'],['#8b5cf6','#5b2fd0','rgba(111,63,230,.36)'],['#14b8c6','#0b7f96','rgba(20,150,170,.34)'],['#f59e0b','#c26b00','rgba(220,130,10,.34)'],['#ec4899','#b3246d','rgba(200,50,120,.32)'],['#22c55e','#12873f','rgba(30,160,80,.32)']];
 var T=[
+ ['Voucher','Pizza grátis','pizza',"nav('voucherPage',null);window.scVoucher&&scVoucher.abre()"],
  ['Times','12 equipes','jersey',"nav('timesPage',null);window.renderTimesVolei&&renderTimesVolei()"],
  ['Meu time','Seu elenco','shield',"abrirPickerTime2()"],
  ['Quiz','40 perguntas','ball',"nav('quizPage',null)"],
