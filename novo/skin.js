@@ -116,27 +116,27 @@ var PEDIDOS_LIST=[
   {img:'novo/parceiros/restaurante-do-marcao.png',nome:'Restaurante do Marcão',cat:'Restaurante · Delivery',url:'https://wa.me/5527995005667'},
   {img:'novo/parceiros/jacare-fotografia.png',nome:'Jacaré Fotografia',cat:'Fotos do Evento',url:''}
 ];
-function _pedidoCard(p){
+function _pedidoCard(p,i){
   var tag=p.url?'a href="'+esc(p.url)+'" target="_blank" rel="noopener"':'span';
   var close=p.url?'a':'span';
-  return '<'+tag+' class="nped-card'+(p.url?'':' nped-soon')+'">'
-    +'<div class="nped-logo"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></div>'
+  return '<'+tag+' class="qz-sp'+(p.url?'':' off')+'" style="animation-delay:'+(i*.08)+'s">'
+    +'<div class="nped-spi"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></div>'
     +'<b>'+esc(p.nome)+'</b>'
-    +'<small>'+esc(p.cat)+'</small>'
-    +(p.url?'':'<span class="nped-badge">Em breve</span>')
+    +'<small>'+esc(p.cat)+(p.url?'':' · Em breve')+'</small>'
     +'</'+close+'>';
 }
 function PEDIDO(){
   if(!PEDIDOS_LIST.length)return '';
   var logos=PEDIDOS_LIST.slice(0,3).map(function(p){return '<img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'">'}).join('');
-  return '<button type="button" class="npedido-cta" onclick="nav(\'pedidosPage\',null)">'
+  return '<div class="nsh2"><b>Pedidos Online</b></div>'
+    +'<button type="button" class="npedido-cta" onclick="nav(\'pedidosPage\',null)">'
     +'<div class="npedido-cta-logos">'+logos+'</div>'
-    +'<div class="npedido-cta-txt"><b>Faça seu pedido online</b><small>'+PEDIDOS_LIST.length+' parceiros</small></div>'
+    +'<div class="npedido-cta-txt"><b>Faça seu pedido online</b><small>'+PEDIDOS_LIST.length+' parceiros disponíveis</small></div>'
     +'<span class="npa">›</span></button>';
 }
 function PSTRIP(){return PEDIDO()+'<div class="nsh2"><b>Patrocinadores</b><button type="button" class="lnk" onclick="nav(\'patrocPage\',null)">VER TODOS</button></div><div class="nlmq"><div>'+PALL.concat(PALL).map(function(x){return '<img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy">'}).join('')+'</div></div>'}
 function mkPage(id,html){var s=document.createElement('section');s.id=id;s.className='page';s.innerHTML=html;document.body.insertBefore(s,document.getElementById('nbar'));return s}
-mkPage('pedidosPage','<div style="padding:0 14px 100px"><div style="font:800 22px var(--display);padding:20px 0 4px">Pedidos Online</div><div style="font-size:13px;color:var(--muted);margin-bottom:20px">Escolha onde quer fazer seu pedido</div><div class="nped-grid">'+PEDIDOS_LIST.map(_pedidoCard).join('')+'</div></div>');
+mkPage('pedidosPage','<div class="qz" style="padding-bottom:100px"><div class="qz-hero" style="margin:0 -16px 24px"><span class="qz-kick">Supercopa AFC · 2026</span><h2>Pedidos<br><em>Online</em></h2><p>Escolha onde quer fazer seu pedido</p></div><div class="qz-sports">'+PEDIDOS_LIST.map(_pedidoCard).join('')+'</div></div>');
 mkPage('chatLivePage','<div class="wrapR" style="padding:14px 14px 120px"><div id="chatBoxApp"></div></div>');
 window.scChatOpen=function(){nav('chatLivePage',null);var el=document.getElementById('chatBoxApp');if(el&&window.scChat)scChat.mount(el,{api:'https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api',teste:/[?&]teste=1/.test(location.search)})};
 mkPage('patrocPage','<div class="wrapR"><p class="mut" style="margin:6px 2px 14px">Empresas e instituições que acreditam no esporte da Região das Montanhas e tornam a Supercopa gratuita para as equipes.</p>'+PARC.map(function(t){return '<div class="nsh2" style="margin:20px 2px 10px"><b>'+t[0]+'</b></div><div class="plg c'+t[2]+'">'+t[1].map(function(x,i){return '<figure class="plc" style="animation-delay:'+(i*.08)+'s"><img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy"><figcaption>'+esc(x[1])+'</figcaption></figure>'}).join('')+'</div>'}).join('')+'</div>');
