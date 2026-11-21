@@ -112,10 +112,9 @@ function buildHome(){
 var PARC=[['Realização',[['prefeitura-afonso-claudio','Prefeitura Municipal de Afonso Cláudio']],'1 real'],['Patrocinador Master',[['coroa-instituto','Coroa Instituto']],'1'],['Patrocinadores Prata',[['planet-sports','Planet Sports'],['acai-do-diego','Açaí do Diego'],['casa-homem-do-campo','Casa Homem do Campo'],['sicredi','Sicredi'],['express-pizzas-e-lanches','Express Pizzas e Lanches'],['izi-internet','IZI Internet']],'2'],['Patrocinador Bronze',[['prato-fino','Prato Fino Restaurante e Churrascaria'],['restaurante-do-marcao','Restaurante do Marcão'],['elite-suplementos','Elite Suplementos'],['jacare-fotografia','Jacaré Fotografia'],['laboratorio-cda','Laboratório CDA']],'2'],['Apoio',[['basquetebol-das-montanhas','Basquetebol das Montanhas'],['instituto-cultural-das-montanhas','Instituto Cultural das Montanhas']],'2']];
 var PALL=[];PARC.forEach(function(t){t[1].forEach(function(x){PALL.push(x)})});
 var PEDIDOS_LIST=[
-  {img:'novo/parceiros/acai-do-diego.png',nome:'Açaí do Diego',cat:'Açaí · Delivery',desc:'Peça seu açaí pelo celular',url:'https://pedido.anota.ai/loja/acai-do-diego?f=msa'}
-  /* Adicionar mais empresas aqui:
-  ,{img:'novo/parceiros/nome-empresa.png',nome:'Nome da Empresa',cat:'Categoria',desc:'Descrição breve',url:'https://link-do-pedido'}
-  */
+  {img:'novo/parceiros/acai-do-diego.png',nome:'Açaí do Diego',cat:'Açaí · Delivery',desc:'Peça seu açaí pelo celular',url:'https://pedido.anota.ai/loja/acai-do-diego?f=msa'},
+  {img:'novo/parceiros/restaurante-do-marcao.png',nome:'Restaurante do Marcão',cat:'Restaurante · Delivery',desc:'Faça seu pedido pelo celular',url:'https://wa.me/5527999999999'},
+  {img:'novo/parceiros/jacare-fotografia.png',nome:'Jacaré Fotografia',cat:'Fotos do Evento',desc:'Compre as fotos do evento',url:'https://instagram.com/jacarefotos'}
 ];
 function _pedidoItem(p){
   return '<a class="npedido" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+
