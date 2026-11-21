@@ -10,7 +10,7 @@ body,button,input,select,textarea{font-family:var(--body)!important}
 body:not(.on-home) .topbar{display:none!important}
 body.on-home .topbar,.topbar{background:linear-gradient(165deg,var(--b1),var(--b2) 62%,var(--b3))!important;border-radius:0 0 0 0!important;clip-path:polygon(0 0,100% 0,100% 90%,0 100%);box-shadow:none!important;overflow:hidden;padding-bottom:42px!important}
 .topbar::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
-.topbar .nbg{position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:grayscale(1) contrast(1.1);mix-blend-mode:luminosity;opacity:.5;animation:nKb 20s ease-in-out infinite alternate}
+.topbar .nbg{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-position:center 30%;filter:grayscale(1) contrast(1.1);mix-blend-mode:luminosity;opacity:.5;animation:nKb 20s ease-in-out infinite alternate}
 .topbar .nsh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,26,92,.1),rgba(11,42,143,.75))}
 .topbar>*{position:relative}.topbar>.nbg,.topbar>.nsh{position:absolute}
 .topbar .tblogo{width:64px;height:64px;box-shadow:0 10px 26px rgba(0,0,0,.4);margin-bottom:10px;animation:nSpin 1s cubic-bezier(.2,1.4,.3,1) both}
