@@ -119,10 +119,9 @@ var PEDIDOS_LIST=[
 function _pedidoCard(p,i){
   var tag=p.url?'a href="'+esc(p.url)+'" target="_blank" rel="noopener"':'span';
   var close=p.url?'a':'span';
-  return '<'+tag+' class="qz-sp'+(p.url?'':' off')+'" style="animation-delay:'+(i*.08)+'s">'
+  return '<'+tag+' class="qz-sp nped-sp'+(p.url?'':' off')+'" style="animation-delay:'+(i*.08)+'s">'
     +'<div class="nped-spi"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></div>'
-    +'<b>'+esc(p.nome)+'</b>'
-    +'<small>'+esc(p.cat)+(p.url?'':' · Em breve')+'</small>'
+    +'<div class="nped-info"><b>'+esc(p.nome)+'</b><small>'+esc(p.cat)+(p.url?'':' · Em breve')+'</small></div>'
     +'</'+close+'>';
 }
 function PEDIDO(){

@@ -569,8 +569,12 @@ body.day .card,.card{border-radius:22px!important}
 .npedido-cta-txt small{font:500 12px var(--body);opacity:.8}
 .npa{font:800 28px var(--display);opacity:.9;padding-right:2px;flex-shrink:0}
 /* logo block dentro dos cards qz-sp na pedidosPage */
-.nped-spi{width:52px;height:52px;background:#fff;border:1.5px solid var(--ln);display:grid;place-items:center;overflow:hidden}
-.nped-spi img{width:44px;height:44px;object-fit:contain}
+.qz-sp.nped-sp{padding:0;gap:0;align-items:stretch}
+.nped-spi{width:100%;aspect-ratio:1.1;background:#f4f7ff;border-bottom:1.5px solid var(--ln);display:grid;place-items:center;overflow:hidden}
+.nped-spi img{width:62%;height:62%;object-fit:contain}
+.nped-info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}
+.qz-sp.nped-sp b{font-size:14px;margin-top:0}
+.qz-sp.nped-sp small{font-size:11px}
 
 /* ===== Votação do atleta da galera (mesmo visual do quiz) ===== */
 #chatPage .chat-header{display:none!important}
