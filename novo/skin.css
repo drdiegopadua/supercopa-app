@@ -555,8 +555,8 @@ body.day .card,.card{border-radius:22px!important}
 .gc.alt .gc-bot span{color:#0b2a8f!important}
 .nbw{padding-inline:20px}
 
-/* ===== botão Pedidos online ===== */
-.npedido{display:flex;align-items:center;gap:14px;margin:6px 0 16px;padding:12px 14px;background:linear-gradient(105deg,#0b2a8f,#1b52e0);color:#fff;text-decoration:none;position:relative;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);-webkit-tap-highlight-color:transparent;transition:transform .2s}
+/* ===== seção Pedidos Online ===== */
+.npedido{display:flex;align-items:center;gap:14px;margin:0 0 10px;padding:12px 14px;background:linear-gradient(105deg,#0b2a8f,#1b52e0);color:#fff;text-decoration:none;position:relative;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);-webkit-tap-highlight-color:transparent;transition:transform .2s}
 .npedido::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.06) 0 7px,transparent 7px 16px)}
 .npedido:active{transform:scale(.98)}
 .npedido>*{position:relative}

@@ -89,7 +89,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});tiles.push({l:'Pedidos online',on:"window.open('https://pedido.anota.ai/loja/acai-do-diego?f=msa','_blank','noopener')"});window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});if(typeof PEDIDOS_LIST!=='undefined'&&PEDIDOS_LIST.length){tiles.push({l:'Pedidos online',on:"if(typeof PEDIDOS_LIST!=='undefined'&&PEDIDOS_LIST[0])window.open(PEDIDOS_LIST[0].url,'_blank','noopener')"});}window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div><div class="vt">Ver todas as equipes ›</div></div></div>'+
@@ -111,7 +111,22 @@ function buildHome(){
 /* ===== regras e patrocinadores dentro do app ===== */
 var PARC=[['Realização',[['prefeitura-afonso-claudio','Prefeitura Municipal de Afonso Cláudio']],'1 real'],['Patrocinador Master',[['coroa-instituto','Coroa Instituto']],'1'],['Patrocinadores Prata',[['planet-sports','Planet Sports'],['acai-do-diego','Açaí do Diego'],['casa-homem-do-campo','Casa Homem do Campo'],['sicredi','Sicredi'],['express-pizzas-e-lanches','Express Pizzas e Lanches'],['izi-internet','IZI Internet']],'2'],['Patrocinador Bronze',[['prato-fino','Prato Fino Restaurante e Churrascaria'],['restaurante-do-marcao','Restaurante do Marcão'],['elite-suplementos','Elite Suplementos'],['jacare-fotografia','Jacaré Fotografia'],['laboratorio-cda','Laboratório CDA']],'2'],['Apoio',[['basquetebol-das-montanhas','Basquetebol das Montanhas'],['instituto-cultural-das-montanhas','Instituto Cultural das Montanhas']],'2']];
 var PALL=[];PARC.forEach(function(t){t[1].forEach(function(x){PALL.push(x)})});
-function PEDIDO(){return '<a class="npedido" href="https://pedido.anota.ai/loja/acai-do-diego?f=msa" target="_blank" rel="noopener"><span class="npl"><img src="novo/parceiros/acai-do-diego.png" alt=""></span><span class="npt"><small>Açaí do Diego</small><b>Pedidos online</b><i>Peça seu açaí pelo celular</i></span><span class="npa">›</span></a>'}
+var PEDIDOS_LIST=[
+  {img:'novo/parceiros/acai-do-diego.png',nome:'Açaí do Diego',cat:'Açaí · Delivery',desc:'Peça seu açaí pelo celular',url:'https://pedido.anota.ai/loja/acai-do-diego?f=msa'}
+  /* Adicionar mais empresas aqui:
+  ,{img:'novo/parceiros/nome-empresa.png',nome:'Nome da Empresa',cat:'Categoria',desc:'Descrição breve',url:'https://link-do-pedido'}
+  */
+];
+function PEDIDO(){
+  if(!PEDIDOS_LIST.length)return '';
+  return '<div class="nsh2" style="margin-bottom:4px"><b>Pedidos Online</b></div>'+
+  PEDIDOS_LIST.map(function(p){
+    return '<a class="npedido" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+
+      '<span class="npl"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></span>'+
+      '<span class="npt"><small>'+esc(p.cat||'Delivery')+'</small><b>'+esc(p.nome)+'</b><i>'+esc(p.desc)+'</i></span>'+
+      '<span class="npa">›</span></a>';
+  }).join('')+'<div style="margin-bottom:6px"></div>';
+}
 function PSTRIP(){return PEDIDO()+'<div class="nsh2"><b>Patrocinadores</b><button type="button" class="lnk" onclick="nav(\'patrocPage\',null)">VER TODOS</button></div><div class="nlmq"><div>'+PALL.concat(PALL).map(function(x){return '<img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy">'}).join('')+'</div></div>'}
 function mkPage(id,html){var s=document.createElement('section');s.id=id;s.className='page';s.innerHTML=html;document.body.insertBefore(s,document.getElementById('nbar'));return s}
 mkPage('chatLivePage','<div class="wrapR" style="padding:14px 14px 120px"><div id="chatBoxApp"></div></div>');
