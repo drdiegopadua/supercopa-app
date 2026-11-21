@@ -89,7 +89,7 @@ var NEWSFETCH=null;
 function buildHome(){
  var h=$('#homePage');if(!h||h.dataset.nb)return;h.dataset.nb='1';
  var tiles=$$('.home-card',h).map(function(b){var l=b.querySelector('.home-lbl');return {l:l?l.textContent.trim():'',on:b.getAttribute('onclick')}});
- tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});if(typeof PEDIDOS_LIST!=='undefined'&&PEDIDOS_LIST.length){tiles.push({l:'Pedidos online',on:"if(typeof PEDIDOS_LIST!=='undefined'&&PEDIDOS_LIST[0])window.open(PEDIDOS_LIST[0].url,'_blank','noopener')"});}window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
+ tiles.forEach(function(t){if(/^Regras$/i.test(t.l))t.on="nav('regrasPage',null)"});tiles=tiles.filter(function(t){return !/^Inscri/i.test(t.l)});if(typeof PEDIDOS_LIST!=='undefined'&&PEDIDOS_LIST.length){tiles.push({l:'Pedidos online',on:"nav('pedidosPage',null)"});}window.nMaisExtra&&window.nMaisExtra(tiles);tiles=tiles.filter(function(t){return !/^(Jogos|Tabela|Mata-mata|Meu Time)$/i.test(t.l)});tiles.push({l:'Patrocinadores',on:"nav('patrocPage',null)"});
  $$(':scope > div',h).forEach(function(d){var tx=d.textContent||'';if(d.querySelector('.home-card')||/^\s*(\S+\s+)?Modalidades/.test(tx.slice(0,40))||/Not[ií]cias/.test(tx.slice(0,40))&&!d.id)d.classList.add('nold')});
  var box=document.createElement('div');box.id='nhome';var box1=document.createElement('div');box1.id='nhome1';box1.style.padding='0 14px';
  box1.innerHTML='<div id="nmeu" style="margin-top:14px"></div><div class="nb"><div class="nt2 c2 blue"><div class="nbg" style="background-image:url(novo/fotos/jogos.webp)"></div><div class="lb">Faltam para o vôlei</div><div class="v" id="ncd">–</div><div style="font:600 12px var(--body);margin-top:6px;opacity:.9">28 e 29 de novembro<br>Afonso Cláudio · ES</div></div><div class="nt2 c2" id="nteams"><div class="lb">Equipes confirmadas</div><div class="v" id="nteamn">11</div><div class="nescrow" id="nescrow"></div><div class="vt">Ver todas as equipes ›</div></div></div>'+
@@ -117,18 +117,20 @@ var PEDIDOS_LIST=[
   ,{img:'novo/parceiros/nome-empresa.png',nome:'Nome da Empresa',cat:'Categoria',desc:'Descrição breve',url:'https://link-do-pedido'}
   */
 ];
+function _pedidoItem(p){
+  return '<a class="npedido" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+
+    '<span class="npl"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></span>'+
+    '<span class="npt"><small>'+esc(p.cat||'Delivery')+'</small><b>'+esc(p.nome)+'</b><i>'+esc(p.desc)+'</i></span>'+
+    '<span class="npa">›</span></a>';
+}
 function PEDIDO(){
   if(!PEDIDOS_LIST.length)return '';
-  return '<div class="nsh2" style="margin-bottom:4px"><b>Pedidos Online</b></div>'+
-  PEDIDOS_LIST.map(function(p){
-    return '<a class="npedido" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+
-      '<span class="npl"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></span>'+
-      '<span class="npt"><small>'+esc(p.cat||'Delivery')+'</small><b>'+esc(p.nome)+'</b><i>'+esc(p.desc)+'</i></span>'+
-      '<span class="npa">›</span></a>';
-  }).join('')+'<div style="margin-bottom:6px"></div>';
+  return '<div class="nsh2"><b>Pedidos Online</b><button type="button" class="lnk" onclick="nav(\'pedidosPage\',null)">VER TODOS</button></div>'+
+  PEDIDOS_LIST.map(_pedidoItem).join('')+'<div style="margin-bottom:6px"></div>';
 }
 function PSTRIP(){return PEDIDO()+'<div class="nsh2"><b>Patrocinadores</b><button type="button" class="lnk" onclick="nav(\'patrocPage\',null)">VER TODOS</button></div><div class="nlmq"><div>'+PALL.concat(PALL).map(function(x){return '<img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy">'}).join('')+'</div></div>'}
 function mkPage(id,html){var s=document.createElement('section');s.id=id;s.className='page';s.innerHTML=html;document.body.insertBefore(s,document.getElementById('nbar'));return s}
+mkPage('pedidosPage','<div style="padding:0 14px 100px"><div style="font:800 22px var(--display);padding:20px 0 4px">Pedidos Online</div><div style="font-size:13px;color:var(--muted);margin-bottom:16px">Faça seu pedido nos nossos parceiros</div><div id="pedidosLista">'+PEDIDOS_LIST.map(_pedidoItem).join('')+'</div></div>');
 mkPage('chatLivePage','<div class="wrapR" style="padding:14px 14px 120px"><div id="chatBoxApp"></div></div>');
 window.scChatOpen=function(){nav('chatLivePage',null);var el=document.getElementById('chatBoxApp');if(el&&window.scChat)scChat.mount(el,{api:'https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api',teste:/[?&]teste=1/.test(location.search)})};
 mkPage('patrocPage','<div class="wrapR"><p class="mut" style="margin:6px 2px 14px">Empresas e instituições que acreditam no esporte da Região das Montanhas e tornam a Supercopa gratuita para as equipes.</p>'+PARC.map(function(t){return '<div class="nsh2" style="margin:20px 2px 10px"><b>'+t[0]+'</b></div><div class="plg c'+t[2]+'">'+t[1].map(function(x,i){return '<figure class="plc" style="animation-delay:'+(i*.08)+'s"><img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy"><figcaption>'+esc(x[1])+'</figcaption></figure>'}).join('')+'</div>'}).join('')+'</div>');
