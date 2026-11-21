@@ -112,24 +112,31 @@ function buildHome(){
 var PARC=[['Realização',[['prefeitura-afonso-claudio','Prefeitura Municipal de Afonso Cláudio']],'1 real'],['Patrocinador Master',[['coroa-instituto','Coroa Instituto']],'1'],['Patrocinadores Prata',[['planet-sports','Planet Sports'],['acai-do-diego','Açaí do Diego'],['casa-homem-do-campo','Casa Homem do Campo'],['sicredi','Sicredi'],['express-pizzas-e-lanches','Express Pizzas e Lanches'],['izi-internet','IZI Internet']],'2'],['Patrocinador Bronze',[['prato-fino','Prato Fino Restaurante e Churrascaria'],['restaurante-do-marcao','Restaurante do Marcão'],['elite-suplementos','Elite Suplementos'],['jacare-fotografia','Jacaré Fotografia'],['laboratorio-cda','Laboratório CDA']],'2'],['Apoio',[['basquetebol-das-montanhas','Basquetebol das Montanhas'],['instituto-cultural-das-montanhas','Instituto Cultural das Montanhas']],'2']];
 var PALL=[];PARC.forEach(function(t){t[1].forEach(function(x){PALL.push(x)})});
 var PEDIDOS_LIST=[
-  {img:'novo/parceiros/acai-do-diego.png',nome:'Açaí do Diego',cat:'Açaí · Delivery',desc:'Peça seu açaí pelo celular',url:'https://pedido.anota.ai/loja/acai-do-diego?f=msa'},
-  {img:'novo/parceiros/restaurante-do-marcao.png',nome:'Restaurante do Marcão',cat:'Restaurante · Delivery',desc:'Faça seu pedido pelo celular',url:'https://wa.me/5527999999999'},
-  {img:'novo/parceiros/jacare-fotografia.png',nome:'Jacaré Fotografia',cat:'Fotos do Evento',desc:'Compre as fotos do evento',url:'https://instagram.com/jacarefotos'}
+  {img:'novo/parceiros/acai-do-diego.png',nome:'Açaí do Diego',cat:'Açaí · Delivery',url:'https://pedido.anota.ai/loja/acai-do-diego?f=msa'},
+  {img:'novo/parceiros/restaurante-do-marcao.png',nome:'Restaurante do Marcão',cat:'Restaurante · Delivery',url:'https://wa.me/5527995005667'},
+  {img:'novo/parceiros/jacare-fotografia.png',nome:'Jacaré Fotografia',cat:'Fotos do Evento',url:''}
 ];
-function _pedidoItem(p){
-  return '<a class="npedido" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+
-    '<span class="npl"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></span>'+
-    '<span class="npt"><small>'+esc(p.cat||'Delivery')+'</small><b>'+esc(p.nome)+'</b><i>'+esc(p.desc)+'</i></span>'+
-    '<span class="npa">›</span></a>';
+function _pedidoCard(p){
+  var tag=p.url?'a href="'+esc(p.url)+'" target="_blank" rel="noopener"':'span';
+  var close=p.url?'a':'span';
+  return '<'+tag+' class="nped-card'+(p.url?'':' nped-soon')+'">'
+    +'<div class="nped-logo"><img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'"></div>'
+    +'<b>'+esc(p.nome)+'</b>'
+    +'<small>'+esc(p.cat)+'</small>'
+    +(p.url?'':'<span class="nped-badge">Em breve</span>')
+    +'</'+close+'>';
 }
 function PEDIDO(){
   if(!PEDIDOS_LIST.length)return '';
-  return '<div class="nsh2"><b>Pedidos Online</b><button type="button" class="lnk" onclick="nav(\'pedidosPage\',null)">VER TODOS</button></div>'+
-  PEDIDOS_LIST.map(_pedidoItem).join('')+'<div style="margin-bottom:6px"></div>';
+  var logos=PEDIDOS_LIST.slice(0,3).map(function(p){return '<img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'">'}).join('');
+  return '<button type="button" class="npedido-cta" onclick="nav(\'pedidosPage\',null)">'
+    +'<div class="npedido-cta-logos">'+logos+'</div>'
+    +'<div class="npedido-cta-txt"><b>Faça seu pedido online</b><small>'+PEDIDOS_LIST.length+' parceiros</small></div>'
+    +'<span class="npa">›</span></button>';
 }
 function PSTRIP(){return PEDIDO()+'<div class="nsh2"><b>Patrocinadores</b><button type="button" class="lnk" onclick="nav(\'patrocPage\',null)">VER TODOS</button></div><div class="nlmq"><div>'+PALL.concat(PALL).map(function(x){return '<img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy">'}).join('')+'</div></div>'}
 function mkPage(id,html){var s=document.createElement('section');s.id=id;s.className='page';s.innerHTML=html;document.body.insertBefore(s,document.getElementById('nbar'));return s}
-mkPage('pedidosPage','<div style="padding:0 14px 100px"><div style="font:800 22px var(--display);padding:20px 0 4px">Pedidos Online</div><div style="font-size:13px;color:var(--muted);margin-bottom:16px">Faça seu pedido nos nossos parceiros</div><div id="pedidosLista">'+PEDIDOS_LIST.map(_pedidoItem).join('')+'</div></div>');
+mkPage('pedidosPage','<div style="padding:0 14px 100px"><div style="font:800 22px var(--display);padding:20px 0 4px">Pedidos Online</div><div style="font-size:13px;color:var(--muted);margin-bottom:20px">Escolha onde quer fazer seu pedido</div><div class="nped-grid">'+PEDIDOS_LIST.map(_pedidoCard).join('')+'</div></div>');
 mkPage('chatLivePage','<div class="wrapR" style="padding:14px 14px 120px"><div id="chatBoxApp"></div></div>');
 window.scChatOpen=function(){nav('chatLivePage',null);var el=document.getElementById('chatBoxApp');if(el&&window.scChat)scChat.mount(el,{api:'https://hngwasixgyvnvfanpuax.supabase.co/functions/v1/api',teste:/[?&]teste=1/.test(location.search)})};
 mkPage('patrocPage','<div class="wrapR"><p class="mut" style="margin:6px 2px 14px">Empresas e instituições que acreditam no esporte da Região das Montanhas e tornam a Supercopa gratuita para as equipes.</p>'+PARC.map(function(t){return '<div class="nsh2" style="margin:20px 2px 10px"><b>'+t[0]+'</b></div><div class="plg c'+t[2]+'">'+t[1].map(function(x,i){return '<figure class="plc" style="animation-delay:'+(i*.08)+'s"><img src="novo/parceiros/'+x[0]+'.png" alt="'+esc(x[1])+'" loading="lazy"><figcaption>'+esc(x[1])+'</figcaption></figure>'}).join('')+'</div>'}).join('')+'</div>');

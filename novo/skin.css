@@ -556,17 +556,28 @@ body.day .card,.card{border-radius:22px!important}
 .nbw{padding-inline:20px}
 
 /* ===== seção Pedidos Online ===== */
-.npedido{display:flex;align-items:center;gap:14px;margin:0 0 10px;padding:12px 14px;background:linear-gradient(105deg,#0b2a8f,#1b52e0);color:#fff;text-decoration:none;position:relative;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);-webkit-tap-highlight-color:transparent;transition:transform .2s}
-.npedido::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.06) 0 7px,transparent 7px 16px)}
-.npedido:active{transform:scale(.98)}
-.npedido>*{position:relative}
-.npl{width:64px;height:64px;flex:none;background:#fff;display:grid;place-items:center;border-radius:12px}
-.npl img{width:56px;height:56px;object-fit:contain}
-.npt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.npt small{font:700 11px var(--body);letter-spacing:2px;text-transform:uppercase;opacity:.8}
-.npt b{font:800 28px/1 var(--display);text-transform:uppercase;letter-spacing:.5px}
-.npt i{font:500 12.5px var(--body);font-style:normal;opacity:.9}
-.npa{font:800 34px var(--display);opacity:.9;padding-right:2px}
+/* banner na home */
+.npedido-cta{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:linear-gradient(105deg,#0b2a8f,#1b52e0);color:#fff;border:none;cursor:pointer;position:relative;overflow:hidden;border-radius:0;-webkit-tap-highlight-color:transparent;transition:opacity .15s;text-align:left}
+.npedido-cta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 7px,transparent 7px 16px)}
+.npedido-cta:active{opacity:.85}
+.npedido-cta>*{position:relative}
+.npedido-cta-logos{display:flex;gap:-6px}
+.npedido-cta-logos img{width:40px;height:40px;border-radius:10px;background:#fff;object-fit:contain;border:2px solid rgba(255,255,255,.3);margin-right:-8px}
+.npedido-cta-logos img:last-child{margin-right:0}
+.npedido-cta-txt{flex:1;min-width:0;padding-left:6px}
+.npedido-cta-txt b{display:block;font:800 15px var(--display);letter-spacing:.3px}
+.npedido-cta-txt small{font:500 12px var(--body);opacity:.8}
+.npa{font:800 28px var(--display);opacity:.9;padding-right:2px;flex-shrink:0}
+/* grid de logos na página pedidosPage */
+.nped-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.nped-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px 16px;background:var(--card2);border:1px solid var(--border);border-radius:16px;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent;transition:transform .15s;position:relative;overflow:hidden}
+.nped-card:active{transform:scale(.97)}
+.nped-card b{font:800 13px var(--display);text-align:center;line-height:1.2}
+.nped-card small{font:500 11px var(--body);color:var(--muted);text-align:center}
+.nped-logo{width:80px;height:80px;background:#fff;border-radius:16px;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.nped-logo img{width:68px;height:68px;object-fit:contain}
+.nped-soon{opacity:.6;cursor:default}
+.nped-badge{font:700 10px var(--body);letter-spacing:1px;text-transform:uppercase;background:var(--b1);color:#fff;padding:3px 8px;border-radius:20px;margin-top:2px}
 
 /* ===== Votação do atleta da galera (mesmo visual do quiz) ===== */
 #chatPage .chat-header{display:none!important}
