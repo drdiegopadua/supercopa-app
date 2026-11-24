@@ -1722,7 +1722,8 @@ function _agoraEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&
 function _agoraQuando(j){if(!j.data)return null;const [y,m,d]=j.data.split('-').map(Number),[h,mi]=(j.hora||'00:00').split(':').map(Number);return new Date(y,m-1,d,h||0,mi||0).getTime()}
 async function renderHomeAgora(){
   const el=document.getElementById('homeAgora');if(!el)return;
-  let T;try{T=(await scTorneioApp_()).t}catch(e){return}
+  let T,vMap={};try{T=(await scTorneioApp_()).t}catch(e){return}
+  try{const vr=await fetch(SUMULA_SCRIPT_URL+'?action=partidasAoVivo',{signal:AbortSignal.timeout(5000)});const vd=await vr.json();(vd.partidas||[]).forEach(p=>{vMap[p.id]=p})}catch(e){}
   const js=(T.jogos||[]).filter(j=>j.casaDefinida!==false&&j.visitanteDefinida!==false);
   const vivos=js.filter(j=>j.status==='ao_vivo');
   const fut=js.filter(j=>!_scDecidido(j)&&j.status!=='ao_vivo'&&_agoraQuando(j)).sort((a,b)=>_agoraQuando(a)-_agoraQuando(b));
@@ -1733,7 +1734,7 @@ async function renderHomeAgora(){
     el.style.display='block';
     el.innerHTML=vivos.slice(0,2).map(j=>'<div onclick=\''+irJogos+'\' style="background:linear-gradient(135deg,#7f1d1d,#dc2626);border-radius:18px;padding:14px 16px;color:#fff;margin-bottom:8px;box-shadow:0 8px 22px rgba(220,38,38,.3);cursor:pointer">'+
       '<div style="display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase"><span style="width:8px;height:8px;border-radius:50%;background:#fff;animation:subLinePulse 1s infinite"></span>AO VIVO · '+nomeFase(j)+(j.quadra?' · '+_agoraEsc(j.quadra):'')+'</div>'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px"><div style="flex:1;font-size:14px;font-weight:800;text-align:right">'+_agoraEsc(j.casa)+'</div><div style="font-family:Anton,sans-serif;font-size:30px;background:rgba(0,0,0,.25);border-radius:12px;padding:2px 14px">'+(j.setsCasa||0)+' <span style="opacity:.5">×</span> '+(j.setsVisitante||0)+'</div><div style="flex:1;font-size:14px;font-weight:800">'+_agoraEsc(j.visitante)+'</div></div></div>').join('');
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px"><div style="flex:1;font-size:14px;font-weight:800;text-align:right">'+_agoraEsc(j.casa)+'</div><div style="text-align:center">'+(vMap[j.id]?'<div style="font-family:Anton,sans-serif;font-size:30px;background:rgba(0,0,0,.25);border-radius:12px;padding:2px 14px">'+((vMap[j.id].pontosCasa)||0)+' <span style="opacity:.5">×</span> '+((vMap[j.id].pontosVisitante)||0)+'</div><div style="font-size:9px;opacity:.8;margin-top:2px">sets '+(vMap[j.id].setsCasa||0)+'×'+(vMap[j.id].setsVisitante||0)+'</div>':'<div style="font-family:Anton,sans-serif;font-size:30px;background:rgba(0,0,0,.25);border-radius:12px;padding:2px 14px">'+(j.setsCasa||0)+' <span style="opacity:.5">×</span> '+(j.setsVisitante||0)+'</div>')+'</div><div style="flex:1;font-size:14px;font-weight:800">'+_agoraEsc(j.visitante)+'</div></div></div>').join('');
     return;
   }
   el.style.display='none';return; /* bloco Próximo jogo removido da home (só o AO VIVO aparece) */
