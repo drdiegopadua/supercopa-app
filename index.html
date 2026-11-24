@@ -693,7 +693,10 @@ function _scDtFmt(j,def){
 function _scDecidido(j){return j&&(j.status==="finalizado"||j.status==="wo")}
 async function loadVoleiDataIndex(){
   try{
-    const r=await scTorneioApp_(),T=r.t;
+    let vMap={};
+    const[r,vr]=await Promise.all([scTorneioApp_(),fetch(SUMULA_SCRIPT_URL+'?action=partidasAoVivo',{signal:AbortSignal.timeout(5000)}).catch(()=>null)]);
+    if(vr)try{const vd=await vr.json();(vd.partidas||[]).forEach(p=>{vMap[p.id]=p})}catch(e){}
+    const T=r.t;
     ["A","B","C","D"].forEach(L=>{
       const g=(T.grupos||[]).find(x=>x.grupo===L);
       tableData["grupo"+L]=g?g.tabela.map(l=>({pos:String(l.pos),name:l.equipe,city:"",badge:"",pj:String(l.jogos),v:String(l.vitorias),d:String(l.derrotas),sp:String(l.saldoSets),pts:String(l.pontos)})):[]
@@ -726,7 +729,8 @@ async function loadVoleiDataIndex(){
         bloco("quartas","QUARTAS DE FINAL","quartas");
         bloco("semifinal","SEMIFINAL","semi");
         bloco("final","🏆 GRANDE FINAL","final",' style="color:var(--gold)"');
-        m.innerHTML=(r.offline?`<div style="text-align:center;color:#b45309;font-size:11px;padding:6px">⚠️ Sem conexão — última tabela carregada (${new Date(r.em).toLocaleString("pt-BR")})</div>`:"")+v
+        m.innerHTML=(r.offline?`<div style="text-align:center;color:#b45309;font-size:11px;padding:6px">⚠️ Sem conexão — última tabela carregada (${new Date(r.em).toLocaleString("pt-BR")})</div>`:"")+v;
+        Object.keys(vMap).forEach(id=>{const lp=vMap[id];const card=m.querySelector('[data-gid="sg'+id+'"]');if(!card)return;const sc=card.querySelector('.gc-sc');if(!sc)return;const num=sc.querySelector('.gc-sc-num');if(num){num.innerHTML=(lp.pontosCasa||0)+' <span style="opacity:.5">×</span> '+(lp.pontosVisitante||0)}let sets=sc.querySelector('.gc-sc-sets');if(!sets){sets=document.createElement('div');sets.className='gc-sc-sets';sc.appendChild(sets)}sets.textContent='sets '+(lp.setsCasa||0)+'×'+(lp.setsVisitante||0)});
       }
       watched.forEach(e=>{const t=document.getElementById("w-"+e);t&&(t.classList.add("on"),t.innerHTML="✅ Acompanhando")});
       const I=document.querySelector("#gamesPage .tab.on");
