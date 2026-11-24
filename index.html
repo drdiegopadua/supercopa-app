@@ -693,12 +693,13 @@ function _scDtFmt(j,def){
 function _scDecidido(j){return j&&(j.status==="finalizado"||j.status==="wo")}
 async function loadVoleiDataIndex(){
   try{
-    let vMap={};
+    let vMap={},vivos=[];
     const[r,vr]=await Promise.all([scTorneioApp_(),fetch(SUMULA_SCRIPT_URL+'?action=partidasAoVivo',{signal:AbortSignal.timeout(5000)}).catch(()=>null)]);
-    if(vr)try{const vd=await vr.json();(vd.partidas||[]).forEach(p=>{vMap[p.id]=p})}catch(e){}
+    if(vr)try{const vd=await vr.json();vivos=vd.partidas||[];vivos.forEach(p=>{vMap[p.id]=p})}catch(e){}
     const T=r.t;
+    const gsProj=(function(grupos,vs){if(!vs||!vs.length)return grupos;return grupos.map(function(g){var tab=g.tabela.map(function(t){return Object.assign({},t,{_proj:false})});var idx={};tab.forEach(function(t,i){idx[String(t.equipe||'').trim().toLowerCase()]=i});vs.forEach(function(p){var cN=String(p.equipeCasa||'').trim().toLowerCase(),vN=String(p.equipeVisitante||'').trim().toLowerCase(),iA=idx[cN],iB=idx[vN];if(iA==null||iB==null)return;var cL=(p.setsCasa||0)>(p.setsVisitante||0)||((p.setsCasa||0)===(p.setsVisitante||0)&&(p.pontosCasa||0)>(p.pontosVisitante||0));var vL=(p.setsVisitante||0)>(p.setsCasa||0)||((p.setsCasa||0)===(p.setsVisitante||0)&&(p.pontosVisitante||0)>(p.pontosCasa||0));if(!cL&&!vL)return;var wI=cL?iA:iB,lI=cL?iB:iA,wS=cL?(p.setsCasa||0):(p.setsVisitante||0),lS=cL?(p.setsVisitante||0):(p.setsCasa||0);var finW=2,finL=wS>lS?lS:1;var pW=finL===0?3:2,pL=finL===0?0:1;tab[wI]=Object.assign({},tab[wI],{pontos:(tab[wI].pontos||0)+pW,vitorias:(tab[wI].vitorias||0)+1,jogos:(tab[wI].jogos||0)+1,saldoSets:(tab[wI].saldoSets||0)+(finW-finL),_proj:true});tab[lI]=Object.assign({},tab[lI],{pontos:(tab[lI].pontos||0)+pL,jogos:(tab[lI].jogos||0)+1,saldoSets:(tab[lI].saldoSets||0)-(finW-finL),_proj:true})});var sorted=tab.slice().sort(function(a,b){return(b.pontos-a.pontos)||(b.vitorias-a.vitorias)||(b.saldoSets-a.saldoSets)||((b.saldoPontos||0)-(a.saldoPontos||0))});return Object.assign({},g,{tabela:sorted})})})(T.grupos||[],vivos);
     ["A","B","C","D"].forEach(L=>{
-      const g=(T.grupos||[]).find(x=>x.grupo===L);
+      const g=gsProj.find(x=>x.grupo===L);
       tableData["grupo"+L]=g?g.tabela.map(l=>({pos:String(l.pos),name:l.equipe,city:"",badge:"",pj:String(l.jogos),v:String(l.vitorias),d:String(l.derrotas),sp:String(l.saldoSets),pts:String(l.pontos)})):[]
     });
     renderTable(curGrp);
