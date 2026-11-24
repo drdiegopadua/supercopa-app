@@ -1749,7 +1749,7 @@ async function renderHomeAgora(){
     c.textContent=d>0?('em '+d+'d '+h+'h'):(h>0?('em '+h+'h '+mi+'min'):('em '+mi+' min'))};
   tick();_agoraT=setInterval(tick,30000);
 }
-setTimeout(renderHomeAgora,600);setInterval(()=>{if(document.visibilityState==='visible')renderHomeAgora()},60000);
+setTimeout(renderHomeAgora,600);setInterval(()=>{if(document.visibilityState==='visible')renderHomeAgora()},10000);
 /* ===== ATLETA DESTAQUE: 1 voto por pessoa (WhatsApp + aparelho), só atletas de jogos encerrados ===== */
 const VOTO_KEY='sc_voto_destaque', DEV_KEY='sc_dev_id';const TESTE_V=/[?&]teste=1/.test(location.search);
 let _vot={equipes:[],aberta:true,sel:null,eq:''};
