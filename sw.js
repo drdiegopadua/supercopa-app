@@ -28,6 +28,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE_NAME && k !== 'sc-galeria').map(k => caches.delete(k)))
     ).then(() => clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window' }).then(cs => cs.forEach(c => c.postMessage({ type: 'SW_UPDATED' }))))
   );
 });
 
