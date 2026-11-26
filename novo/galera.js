@@ -15,6 +15,11 @@ function rankBtn(){return '<button type="button" class="qz-rank" onclick="glRank
 function aviso(titulo,msg){view(teste()+'<div class="qz-box in"><div class="qz-big">'+ILOCK+'</div><h3>'+titulo+'</h3><p>'+msg+'</p></div>'+rankBtn())}
 function fdt(x){try{return new Date(x).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(',',' às')}catch(e){return '28/11 às 14:30'}}
 
+var ATLETAS_TESTE=[
+  {equipe:'ES Vôlei',atletas:[{nome:'João Pedro Silva',numero:'1'},{nome:'Carlos Oliveira',numero:'4'},{nome:'Lucas Martins',numero:'7'},{nome:'Rafael Costa',numero:'10'}]},
+  {equipe:'CTV Arabôlei',atletas:[{nome:'Marcos Souza',numero:'2'},{nome:'Paulo Fernandes',numero:'5'},{nome:'André Lima',numero:'9'},{nome:'Diego Rocha',numero:'11'}]},
+  {equipe:'Vôlei Serra',atletas:[{nome:'Thiago Alves',numero:'3'},{nome:'Bruno Santos',numero:'6'},{nome:'Felipe Nunes',numero:'8'},{nome:'Gustavo Pires',numero:'12'}]}
+];
 window.initGaleraVoting=async function(){
   view('<div class="qz-sk"></div><div class="qz-sk"></div><div class="qz-sk"></div>');
   try{
@@ -25,6 +30,7 @@ window.initGaleraVoting=async function(){
   }catch(e){
     try{var c=JSON.parse(localStorage.getItem('sc_votacao_cache')||'null');if(c){_vot.equipes=c.equipes||[];_vot.aberta=c.aberta;_vot.antes=c.antes;_vot.abreEm=c.abreEm}else return aviso('Sem conexão','Tente novamente em instantes.')}catch(x){return aviso('Sem conexão','Tente novamente em instantes.')}
   }
+  if(TESTE_V){_vot.aberta=true;_vot.antes=false;if(!_vot.equipes.length)_vot.equipes=ATLETAS_TESTE;}
   window.glHome();
 };
 window.glHome=function(){
