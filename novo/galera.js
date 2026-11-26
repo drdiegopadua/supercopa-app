@@ -29,8 +29,7 @@ window.initGaleraVoting=async function(){
 };
 window.glHome=function(){
   var meu=_vMeu();if(meu)return glFeito(meu);
-  if(_vot.antes&&!TESTE_V)return aviso('A votação ainda não abriu','Abre em <b>'+fdt(_vot.abreEm)+'</b> e fecha no domingo às 14h. Volte aqui para votar no atleta da galera.');
-  if(!_vot.aberta&&!TESTE_V)return aviso('Votação encerrada','Confira o resultado no ranking.');
+  if(!_vot.aberta&&!TESTE_V)return _vot.antes?aviso('A votação ainda não abriu','Abre em <b>'+fdt(_vot.abreEm)+'</b> e fecha no domingo às 14h. Volte aqui para votar no atleta da galera.'):aviso('Votação encerrada','Confira o resultado no ranking.');
   if(!_vot.equipes.length)return aviso('A votação abre com o 1º jogo','Assim que uma partida terminar, os atletas que jogaram aparecem aqui para você votar.');
   view(teste()+'<div class="qz-intro"><i class="qz-pix"></i><b>Quem foi o destaque?</b><span>Vote no jogador que mais brilhou. <em>Uma pessoa, um voto.</em></span></div>'
    +'<div class="qz-sec"><h4>1. Escolha o time</h4><div class="qz-sports">'+_vot.equipes.map(function(e,i){return '<button type="button" class="qz-sp open" onclick="glTime('+i+')"><span class="qz-spi gl-ini">'+esc(String(e.equipe).trim().charAt(0).toUpperCase())+'</span><b>'+esc(e.equipe)+'</b><small>'+e.atletas.length+' atletas</small></button>'}).join('')+'</div></div>'+rankBtn());
