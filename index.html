@@ -884,7 +884,7 @@ async function caaEntrar(){
     if (fechado) {
       const aviso = document.createElement('div');
       aviso.style.cssText = 'margin:0 16px 14px;background:#fff3cd;color:#856404;font-size:12px;padding:10px 14px;border-radius:10px';
-      aviso.textContent = '⛔ Prazo de inscrição/edição de atletas encerrado (27/11 às 13h). Lista somente pra consulta.';
+      aviso.textContent = '⛔ Prazo de inscrição/edição de atletas encerrado (27/11 às 23h59). Lista somente pra consulta.';
       document.getElementById('caaGerenciar').insertBefore(aviso, document.getElementById('caaContadores').nextSibling);
     }
     caaCarregarLista();
@@ -1030,7 +1030,7 @@ async function caaSalvarAtleta(){
   } catch(e){ showToast('❌ Erro de conexão.'); }
 }
 async function caaRemoverAtleta(numero, nome){
-  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 22h.'); return; }
+  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 23h59.'); return; }
   if (!confirm('Remover ' + nome + '?')) return;
   try{
     const res = await fetch(SUMULA_SCRIPT_URL, { method:'POST', body: JSON.stringify({acao:'removerAtletaApp', equipe:caaEquipeAtual, pin:caaPinAtual, numero:numero, nome:nome}) }).then(r=>r.json());
