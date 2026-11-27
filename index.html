@@ -1010,10 +1010,10 @@ async function caaCarregarLista(){
     wrap.innerHTML = '<p style="text-align:center;color:#ef4444;font-size:12px;padding:20px 0">Erro ao carregar atletas.</p>';
   }
 }
-const CADASTRO_ATLETAS_FECHA = new Date('2026-11-27T13:00:00');
+const CADASTRO_ATLETAS_FECHA = new Date('2026-11-27T23:59:00');
 
 async function caaSalvarAtleta(){
-  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 13h.'); return; }
+  if (new Date() >= CADASTRO_ATLETAS_FECHA){ showToast('⛔ Prazo encerrado: inscrições/edições de atletas fecharam em 27/11 às 23h59.'); return; }
   if (!caaEquipeAtual){ showToast('Entre com sua equipe primeiro.'); return; }
   const numero = document.getElementById('caa-numero').value.trim();
   const nome = document.getElementById('caa-nome').value.trim();
