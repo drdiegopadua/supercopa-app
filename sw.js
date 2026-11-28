@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercopa-afc-v76';
+const CACHE_NAME = 'supercopa-afc-v77';
 
 const urlsToCache = [
   './',
