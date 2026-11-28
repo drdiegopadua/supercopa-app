@@ -37,7 +37,7 @@ var T=[
  ['Quiz','40 perguntas','ball',"nav('quizPage',null)"],
  ['Destaque','Vote no craque','star',"renderGaleraVoting()"],
  ['Melhores','Por jogo','medal',"nav('atletaPage',null)"],
- ['Ao vivo','Transmissão','live',"nav('transmissaoPage',null)"],
+ ['Ao vivo','Transmissão','live',"nav('transmissaoPage',null);loadTransmissaoConfig()"],
  ['Agenda','Programação','cal',"nav('schedulePage',null)"],
  ['Regras','Regulamento','whistle',"nav('regrasPage',null)"],
  ['Galeria','Fotos','cam','nav("galleryPage",null),renderGallery("2025")'],
